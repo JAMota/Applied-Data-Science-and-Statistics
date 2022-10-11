@@ -1,0 +1,4 @@
+in linear regression graphics it is not possible to represent causation, it has to come from outer sources
+
+
+there can be correlation without any causation

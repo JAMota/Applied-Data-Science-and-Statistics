@@ -1,0 +1,9 @@
+don't forget to match colour with the theme
+
+you can emphasize a single case that is very out of the norm by breaking the axis for that case and appending the value
+
+make sure the graphics are not missleading with proper proportions
+
+make the design choices that higlight the most important information
+
+try not to hide information of one information with the other information
