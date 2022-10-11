@@ -1,0 +1,10 @@
+simulation are made to understand ways to aproach a problem and understanting certain distributions
+
+small simulations to
+
+
+simulations are for problems that are too hard theoreticly 
+
+
+use large enough numbers > 10000
+

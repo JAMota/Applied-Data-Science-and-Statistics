@@ -1,0 +1,5 @@
+if we are looking at success rate its binomial
+
+if we are counting it is poisson
+
+if we have 'at least' and have a discrete variable you can use pmf
