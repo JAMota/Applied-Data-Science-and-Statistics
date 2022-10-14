@@ -187,7 +187,10 @@ ggplot(data=iris, aes(x=Sepal.Length,y=Sepal.Width)) +
 ggplot(data=iris, aes(x=Sepal.Length,y=Sepal.Width)) +
   geom_point(colour='black') + # Specifying a scatter plot
   geom_smooth(method="lm") + # creates de "correlation" ## worst correlation ever
-  labs(xlab, ylab,ggtitle ) # Axes labels
+   # Axes labels
+  xlab('S width')+
+  ylab('S Length')+
+  ggtitle('good title')
 
 ?labs
 
