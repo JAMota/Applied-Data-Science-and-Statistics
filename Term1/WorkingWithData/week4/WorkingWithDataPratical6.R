@@ -147,3 +147,18 @@ ggplot(data=juniorschoolLmerdiag, aes(x=Fitted,y=Residuals,col=schoolID)) +
   ggtitle("Lowest level residuals facetting by school")
 
 plot_model(juniorschoollmer1, type = "re") #Plotting random effects
+
+##Here we are looking at the performance of the model. We would like to see that the school random effects
+## are randomly scattered about 0 (they are here), and that there are no major outliers.
+
+install.packages('effects')
+library(effects)
+
+#Marginal effects
+plot_model(juniorschoollmer1, type = "eff", terms = "mathsYear1") +
+  geom_point(aes(x=mathsYear1,y=mathsYear3),data=junirSchoolData)
+
+##The marginal plot lets us see the overall association between year 1 maths scores and year 3 maths scores
+## when we have dealt with the clustering through random intercepts.
+
+
