@@ -61,7 +61,7 @@ withinVarianceIOfTheCollection <- (1/5)*sum((sapply(CollectionOf5Elementes,sd)/s
 ##  Xj: the mean of group j
 ##  X..: the overall mean
 
-betweenVarianceOfTheCollection <- (1/4)*sum((sapply(CollectionOf5Elementes,mean)-qbar)^2)
+betweenVarianceOfTheCollection <- (1/4)*sum((sapply(CollectionOf5Elementes,mean)-totalMean)^2)
 
 #This calculates T
 ## T =  withinVariance + (1 + 1/m )B
@@ -81,7 +81,7 @@ lappyTest
 listOfNumbers = c(2, 3, 5)
 listOfStrings = c("aa", "bb", "cc", "dd", "ee")
 listOfBooleans = c(TRUE, FALSE, TRUE, FALSE, FALSE)
-CollectionOfLists = list(n, s, b, 3) # x contains copies of n, s, b
+CollectionOfLists = list(listOfBooleans, listOfStrings, listOfBooleans, 3) # x contains copies of n, s, b
 
 ## We can select just a single list from the collection by using the [] operator
 
@@ -125,7 +125,7 @@ summary(regressionModel)
  ##TODO ASK how am I supposed to see from the summary that some values are missing?
 
 #install.packages('naniar')
-#library('naniar')
+library('naniar')
 
 ##graphs/maps and gives a percentage of the missing variables values in the dataset
 
@@ -248,7 +248,7 @@ avereageCoefficientOfCivilianLiberties = mean(c(civilianLibertiesCoefficient1,ci
 ##compare the average coefficient of civilian liberties with the mi.meld result
 
 
-mi.meld(coefecientAmelia, ses.amelia)
+mi.meld(coefecientAmelia, standardErrorAmelia)
 
 avereageCoefficientOfCivilianLiberties
 
@@ -325,7 +325,7 @@ standardDeviation = sd(ameliaPassedDataSet$imputations$imp1$civlib)
 
 #SE =  σ (sample standard deviation) / sqrt(m)
 
-SE = (σ / sqrt(m))
+SE = (standardDeviation / sqrt(m))
  
 #V = 1/m + sum(SE)^2 
 
@@ -348,7 +348,7 @@ SET = sqrt(T)
 
 SET
 
-mi.meld(coefecientAmelia, ses.amelia)
+mi.meld(coefecientAmelia, standardErrorAmelia)
 
 ################################################### SOLUTION TO EX4 ###############################################
 
@@ -362,7 +362,7 @@ coefmeans <- colMeans(coefecientAmelia)
 #Building the components for Rubin’s rules
 ##########
 #V - the within variance. We square the extracted standard errors and take colMeans
-V <- colMeans(ses.amelia^2)
+V <- colMeans(standardErrorAmelia^2)
 # We calculate the between variance
 # the sweep function takes 4 arguments - 1. the object to be operated on (a matrix )
 # 2. an indicator: 1 = rowwise, 2 = columnwise
@@ -377,10 +377,13 @@ SEt <- sqrt(T)
 #Show the output
 SEt
 
-mi.meld(coefecientAmelia, ses.amelia)
+mi.meld(coefecientAmelia, standardErrorAmelia)
 
 
+################################################# TIDYVERSE VERSION ################################################
 
+## Note, unclass() is necessary because bind_rows() will complain when dealing with lists with the amelia class,
+## which is what amelia() returns
 
 
 

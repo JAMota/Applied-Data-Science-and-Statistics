@@ -212,7 +212,10 @@ ggplot(data=iris, aes(x=Sepal.Length,y=Sepal.Width)) +
   geom_point(aes(color = Species)) + # Specifying a scatter plot
   scale_color_manual(values=c("#999999", "#E69F00", "#56B4E9")) + 
   geom_smooth(method="lm") + # creates de "correlation" ## worst correlation ever
-  labs(xlab, ylab,ggtitle ) + # Axes labels
+  # Axes labels
+  xlab('S width')+
+  ylab('S Length')+
+  ggtitle('good title') +
   facet_grid(. ~ Species) # Facet split by columns
   
 ?geom_point
@@ -230,7 +233,9 @@ ggplot(data=iris, aes(x=Sepal.Length,y=Sepal.Width)) +
   geom_point(aes(color = Species)) + # Specifying a scatter plot
   scale_color_manual(values=c("#999999", "#E69F00", "#56B4E9")) + 
   geom_smooth(method="lm") + # creates de "correlation" ## worst correlation ever
-  labs(xlab, ylab,ggtitle ) + # Axes labels
+  xlab('S width')+
+  ylab('S Length')+
+  ggtitle('good title') +
   facet_grid(. ~ Species) # Facet split by columns
 
 
