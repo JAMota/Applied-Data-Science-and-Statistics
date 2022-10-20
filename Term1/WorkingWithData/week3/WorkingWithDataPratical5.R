@@ -386,6 +386,89 @@ mi.meld(coefecientAmelia, standardErrorAmelia)
 ## which is what amelia() returns
 
 
+allImputations = bind_rows(unclass(ameliaPassedDataSet$imputations), .id = "m") %>%
+  group_by(m) %>%
+  nest()
+
+allImputations
+
+
+modelsImputations <- allImputations %>%
+  mutate(model = data %>% map(~ lm(gdp_pc ~ trade + civlib, data = .)),
+         tidied = model %>% map(~ tidy(., conf.int = TRUE)),
+         glance = model %>% map(~ glance(.)))
+
+modelsImputations
+
+
+modelsImputations %>%
+  filter(m == "imp1") %>%
+  unnest(tidied)
+
+##Amelia has a built-in function for using Rubin’s rules named mi.meld() that accepts two m-by-k matrices
+## (one for coefficients and one for standard errors)
+
+params <- modelsImputations %>%
+  unnest(tidied) %>%
+  select(m, term, estimate, std.error) %>%
+  gather(key, value, estimate, std.error) %>%
+  spread(term, value)
+
+params
+
+
+justCoefficientes <- params %>%
+  filter(key == "estimate") %>%
+  ungroup %>%
+  select(-m, -key)
+
+justCoefficientes 
+
+
+justStandardErrors <- params %>%
+  filter(key == "std.error") %>%
+  ungroup %>%
+  select(-m, -key)
+
+justStandardErrors
+
+
+#This runs mi.meld on columns 2:4 of the tibbles justCoefficients and justStandardErrors
+coefficientsMelded <- mi.meld(justCoefficientes, justStandardErrors)
+
+##In order to calculate the p-value and confidence intervals, we need to extract the degrees of freedom from
+## one of the imputed models
+
+
+modelDegreeFreedom <- modelsImputations %>%
+  unnest(glance) %>%
+  filter(m == "imp1") %>%
+  pull(df.residual)
+
+modelDegreeFreedom
+
+
+meldedSummary <- as.data.frame(cbind(t(coefficientsMelded$q.mi),
+                                      t(coefficientsMelded$se.mi))) %>%
+  magrittr::set_colnames(c("estimate", "std.error")) %>%
+  mutate(term = rownames(.)) %>%
+  select(term, everything()) %>%
+  mutate(statistic = estimate / std.error,
+         conf.low = estimate + std.error * qt(0.025, modelDegreeFreedom),
+         conf.high = estimate + std.error * qt(0.975, modelDegreeFreedom),
+         p.value = 2 * pt(abs(statistic), modelDegreeFreedom, lower.tail = FALSE))
+
+meldedSummary
+
+coefficientsMelded
+  
+
+
+
+
+
+
+
 
 
 
