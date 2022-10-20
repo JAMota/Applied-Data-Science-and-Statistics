@@ -1,0 +1,5 @@
+for hieracquies we want something that isn't a number, we prefer something more indepent in terms of each values
+we prefer if it is a grouping, not a number, doesn't have an order
+
+
+ggthemes uses the wall street jornal theme and makes it look pretty neat

@@ -1,0 +1,301 @@
+---
+title: "MTHM501 Working with data"
+subtitle: "Hierarchical modelling"
+# output: 
+#   beamer_presentation:
+# # keep_tex: true
+# # toc: true
+#    slide_level: 3
+#    includes:
+#     in_header: Kelson.txt
+# # after_body: ~/Dropbox/teaching/table-of-contents.txt
+output: pdf_document
+
+---
+\def\begincols{\begin{columns}}
+\def\begincol{\begin{column}}
+\def\endcol{\end{column}}
+\def\endcols{\end{columns}}
+
+```{r eval=T, echo=F}
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  ifelse(options$size != "normalsize", paste0("\\", options$size,"\n\n", x, "\n\n \\normalsize"), x)
+})
+
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(knitr)
+
+
+```
+
+# Introduction
+
+In this session we will carry out some hierarchical modelling in `R`.
+
+# Preliminaries 
+
+We need the following packages
+
+* `lme4` - A tool that implements hierarchical modelling.
+* `lmerTest`  - A library that implements significance testing for lmer
+* `tidyverse`  - A library that implements tidyverse functions
+* `readxl`  - A library allows importing of excel data
+* `magrittr` - A library for piping
+* `sjPlot` - A library for plotting hierarchical model output
+* `sjmisc` - A library of miscellaneous functions for hierarchical models
+* `sjstats` - A library with an icc function
+* `arm` - A library with a function to extract standard errors from lmer
+
+You may need to download and install the package yourself in `R`. We use the `require()` function to load them into the `R` library.
+
+```{r,eval=FALSE}
+# Loading packages
+require(lme4)
+require(lmerTest)
+require(tidyverse)
+require(readxl)
+require(magrittr)
+require(sjPlot)
+require(sjmisc)
+require(sjstats)
+require(arm)
+```
+```{r, echo=FALSE, include=FALSE}
+require(lme4)
+require(lmerTest)
+require(tidyverse)
+require(readxl)
+require(magrittr)
+require(sjPlot)
+require(sjmisc)
+require(sjstats)
+require(arm)
+```
+
+# Data
+
+To demonstrate how to perform hierarchical modelling in `R` we will use data on a junior school project from inner London. The data consists of 728 pupils in 48 primary schools and their scores on a mathematics test on two occasions separated by 3 years.  
+
+```{r echo=F}
+# Loading jsp-728.xls file
+#jsp <- read_xls(path="/Users/mjk223/Dropbox/Working_with_Data/Week8/Data/jsp-728.xls")
+jsp <- read_xls(path="/Users/markkelson/Dropbox/Working_with_Data/Week8/Data/jsp-728.xls")
+```
+```{r echo=T, eval=F}
+# Loading jsp-728.xls file
+jsp <- read_xls(path="jsp-728.xls")
+```
+
+
+```{r echo=T, eval=T}
+head(jsp)
+```
+
+
+## Wrangling
+These variable names are informative, but not convenient for coding (too long, with punctuation and spaces). We will recode them. It is good practise to try to keep at least one version of the original data untouched, so we will save a new version of the data. 
+
+```{r eval=T, echo=T}
+jspnew <- rename(jsp,MathsYr3= `math yr 3`,
+                     MathsYr1 = `math yr 1`, 
+                     Boy = `Gender: boy=1`,
+                     SocialClassManual= `Social class: manual=1`,
+                     SchoolID = `School ID`, 
+                     NormScoreYr3 = `Normal score yr 3`,
+                     NormScoreYr1 = `Normal score yr 1`
+                 )
+head(jspnew)
+```
+
+We also notice that Boy, SocialClassManual and SchoolID are treated as numbers (with decimals) (\<dbl\> appears under the column headings), but these are not numbers. We recode them to factors.
+
+```{r eval=T, echo=T}
+jspnew <- mutate(jspnew,Boy = as.factor(Boy),
+                     SocialClassManual= as.factor(SocialClassManual),
+                     SchoolID = as.factor(SchoolID) 
+                 )
+head(jspnew)
+```
+The accompanying lecture selected out the first 5 schools to work on a smaller dataset, but we will use the full dataset. 
+<!-- Finally, for illustration purposes, it will be easier to work with a smaller number of schools than 48, so we restrict ourselves, arbitrarily to 5. -->
+<!-- ```{r eval=T, echo=T} -->
+<!-- jspnew5 <- jspnew %>% filter( -->
+<!--                      as.numeric(SchoolID) <= 5 #Numeric School IDs less than or equal to 5 are returned -->
+<!--                  ) %>%  -->
+<!--               droplevels() # -->
+<!-- head(jspnew5) -->
+<!-- ``` -->
+
+We begin by fitting a simple linear model to the entire data, erroneously ignoring the hierarchical structure. The model is 
+
+$$
+y_i=\alpha + \beta x_i+\epsilon_i
+$$
+where $y_i$ is the maths score in year 3 for the $i^{th}$ pupil, $x_i$ is the maths score in year 1 for the $i_{th}$ pupil.
+
+```{r eval=T,echo=T}
+jsplm <- lm(MathsYr3~MathsYr1,data=jspnew)
+summary(jsplm)
+
+ggplot(data=jspnew,aes(x=MathsYr1,y=MathsYr3)) +
+  geom_point() + 
+  stat_smooth(method = "lm", col = "red") + 
+  xlab("Maths score in Year 1") + 
+  ylab("Maths Score in Year 3") + 
+  ggtitle("Relationship between maths scores in years 1 and 3")
+```
+Ignoring the hierarchy, we can see that year 1 maths score is a strong predictor of year 3 maths score. This is corroborated by the plot. 
+
+We now proceed (as in the lecture) to fit a fixed effect model where we allow each school to have it's own intercept and slope. Remember, these are not hierarchical models. The output of 'summary' is not presented here as it is long. Look for yourself. 
+
+```{r eval=F,echo=T}
+jspFElm <- lm(MathsYr3~MathsYr1 + SchoolID + MathsYr1*SchoolID,data=jspnew)
+summary(jspFElm)
+```
+```{r eval=T,echo=F}
+jspFElm <- lm(MathsYr3~MathsYr1 + SchoolID + MathsYr1*SchoolID,data=jspnew)
+```
+
+```{r eval=T,echo=T}
+ggplot(data=jspnew,aes(x=MathsYr1,y=MathsYr3,col=SchoolID)) +
+  geom_point() + 
+  stat_smooth(method = "lm", aes(col = SchoolID),alpha=0.15) + 
+  xlab("Maths score in Year 1") + 
+  ylab("Maths Score in Year 3") + 
+  ggtitle("Relationship between maths scores in years 1 and 3")
+```
+
+There is evidence here perhaps that some schools have different relationships between year 1 maths scores and year 3 maths scores. 
+
+# Hierarchical modelling
+
+Now we want to actually explore this data hierarchically. We begin by fitting a random intercepts model. This allows the school intercepts to be drawn from a normal distribution.
+
+```{r eval=T, echo=T}
+jsplmer1 <- lmer(MathsYr3~MathsYr1  + (1|SchoolID) ,data=jspnew)
+summary(jsplmer1)
+```
+Maths in year 1 remains a strong predictor of maths scores in year 3. We can compare the coefficients from the linear model (that ignored clustering) with the coefficients from this hierarchical model. 
+```{r eval= T,echo=T}
+#Fixed effects for the lm model
+jsplm %>%  coef() %>% round(5)
+#Fixed effect standard errors for the lm model
+jsplm %>% se.coef() %>% round(5)
+
+#Fixed effects for the lmer model
+jsplmer1 %>% fixef() %>% round(5)
+#Fixed effect standard errors : extract2 extracts elements of a list
+#and unlists them for the lmer model
+jsplmer1 %>% se.coef() %>% extract2(1) %>% round(5)
+```
+You can see that there is virtually no difference between the fixed effects. The standard error for the intercept is (appropriately) larger for the lmer model than for the lm model. We can explore the variance components of the hierarchical model as follows. 
+
+```{r eval=T,echo=T}
+jsplmer1vc <- VarCorr(jsplmer1)
+print(jsplmer1vc,comp="Variance")
+```
+This reveals that the variance attributable to the intercept level is much less than the residual error. The ICC as follows 
+
+```{r eval=T, echo=T}
+3.2887/(3.2887+19.8053)
+icc(jsplmer1) #same as above
+```
+This implies that roughly 14% of the variability in year 3 maths scores is attributable to school-level differences. We can also plot the lowest level residuals, random effects and the marginal effects
+
+```{r eval=T, echo=T}
+jsplmerdiag <- data.frame(Residuals=resid(jsplmer1),
+                          SchoolID=jspnew$SchoolID,
+                          Fitted= fitted(jsplmer1))
+
+ggplot(data=jsplmerdiag, aes(x=Fitted,y=Residuals,col=SchoolID)) + 
+  geom_point() + 
+  facet_wrap(~SchoolID) + 
+  ggtitle("Lowest level residuals facetting by school")
+
+```
+We can explore this plot to see whether the model is fitting well for all schools. You might have questions about the model fit for schools 14, 30, 35. 
+```{r eval=T,echo=T}
+plot_model(jsplmer1, type = "re") #Plotting random effects
+```
+Here we are looking at the performance of the model. We would like to see that the school random effects are randomly scattered about 0 (they are here), and that there are no major outliers. 
+```{r eval=T,echo=T,warning=F,comment=F}
+#Marginal effects
+plot_model(jsplmer1, type = "eff", terms = "MathsYr1") +
+  geom_point(aes(x=MathsYr1,y=MathsYr3),data=jspnew)
+```
+The marginal plot lets us see the overall association between year 1 maths scores and year 3 maths scores when we have dealt with the clustering through random intercepts. 
+
+### Random slopes model
+We can further allow the slopes of the relationship between maths scores for each school to be drawn from a distribution of possible slopes. 
+```{r eval=T, echo=T,warning=F,message=F}
+jsplmer2 <- lmer(MathsYr3~MathsYr1  + (1+ MathsYr1|SchoolID) ,data=jspnew)
+summary(jsplmer2)
+```
+This gives a convergence warning which we can suppress by specifying the optimizer to be used.
+
+```{r eval=T, echo=T,warning=F,message=F}
+jsplmer2 <- lmer(MathsYr3~MathsYr1  + (1+ MathsYr1|SchoolID) ,data=jspnew,
+control = lmerControl(optimizer ="Nelder_Mead"))
+summary(jsplmer2)
+```
+<!--- https://stats.stackexchange.com/questions/242109/model-failed-to-converge-warning-in-lmer--->
+The code below plots predictions from the model without using the sjPlot library (in case there is difficulty loading it). Note at the end we use 'ggthemes' to change how the plot looks. There are many theme options available. Have a look at some of the others. 
+
+```{r eval=T,warning=F,message=F, echo=T }
+
+jspnew$jsplmer.predictions <- predict(jsplmer2)
+
+ggplot(aes(x = MathsYr1, y = jsplmer.predictions, 
+                                color = SchoolID), data = jspnew) +
+geom_line(size=.3) +
+geom_point(aes(y = MathsYr3)) +
+  xlab("Year 1 Maths Score") +
+  ylab("Year 3 Maths score") +
+ggthemes::theme_tufte()
+
+```
+We can explore the lowest level residuals, the random effects and the marginal effects as before.
+
+```{r eval=T, echo=T}
+jsplmer2diag <- data.frame(Residuals=resid(jsplmer2),
+                           SchoolID=jspnew$SchoolID,
+                           Fitted= fitted(jsplmer2))
+
+ggplot(data=jsplmer2diag, aes(x=Fitted,y=Residuals,col=SchoolID)) +
+  geom_point() + 
+  facet_wrap(~SchoolID) + 
+  ggtitle("Lowest level residuals by school")
+
+```
+These lowest level residual plots look better than the ones from the random intercept model.
+```{r eval=T,echo=T}
+plot_model(jsplmer2, type = "re")
+```
+These random effects indicate that there is not much difference in intercepts for the schools in this model (less than before) but there are some differences in slope. 
+```{r eval=T,echo=T}
+#Marginal effects
+plot_model(jsplmer2, type = "eff", terms = "MathsYr1") +
+  geom_point(aes(x=MathsYr1,y=MathsYr3),data=jspnew)
+```
+```{r eval=T, echo=T}
+# library(gridExtra)
+# #sjp.lmer(jsplmer2, type = "fe.cor")
+# #sjp.lmer(jsplmer2, type = "re.qq")
+# p <- plot_model(jsplmer2, type = "diag")
+# plot_grid(p)
+```
+
+
+We now have two models, jsplmer1 and jsplmer2. We can formally compare these using the 'anova' function.
+
+```{r eval=T,echo=T}
+anova(jsplmer1,jsplmer2)
+```
+We can see that the second model is a better fit (the p-value is highly significant). 
+
