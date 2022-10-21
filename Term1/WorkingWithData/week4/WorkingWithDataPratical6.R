@@ -161,4 +161,58 @@ plot_model(juniorschoollmer1, type = "eff", terms = "mathsYear1") +
 ##The marginal plot lets us see the overall association between year 1 maths scores and year 3 maths scores
 ## when we have dealt with the clustering through random intercepts.
 
+################################################### RANDO SLOPES ##################################################
+
+##We can further allow the slopes of the relationship between maths scores for each school to be drawn from
+## a distribution of possible slopes
+
+
+juniorSchoolLmer2 <- lmer(mathsYear3~mathsYear1 + (1+ mathsYear1|schoolID) ,data=junirSchoolData)
+summary(juniorSchoolLmer2)
+
+## This gives a convergence warning which we can suppress by specifying the optimizer to be used
+
+juniorSchoolLmer2 <- lmer(mathsYear3~mathsYear1 + (1+ mathsYear1|schoolID) ,data=junirSchoolData,
+                 control = lmerControl(optimizer ="Nelder_Mead"))
+summary(juniorSchoolLmer2)
+
+##The code below plots predictions from the model without using the sjPlot library (in case there is difficulty
+## loading it). Note at the end we use ‘ggthemes’ to change how the plot looks. There are many theme options
+## available. Have a look at some of the others
+
+library(ggthemes)
+
+
+
+junirSchoolData$juniorSchoolLmer.predictions <- predict(juniorSchoolLmer2)
+
+ggplot(aes(x = mathsYear1, y = juniorSchoolLmer.predictions,
+           color = schoolID), data = junirSchoolData) +
+  geom_line(size=.3) +
+  geom_point(aes(y = mathsYear3)) +
+  xlab("Year 1 Maths Score") +
+  ylab("Year 3 Maths score") +
+  ggthemes::theme_tufte()
+
+
+## We can explore the lowest level residuals, the random effects and the marginal effects as before.
+
+juniorSchoolLmer2diag <- data.frame(Residuals=resid(juniorSchoolLmer2),
+                           schoolID=junirSchoolData$schoolID,
+                           Fitted= fitted(juniorSchoolLmer2))
+
+
+ggplot(data=juniorSchoolLmer2diag, aes(x=Fitted,y=Residuals,col=schoolID)) +
+  geom_point() +
+  facet_wrap(~schoolID) +
+  ggtitle("Lowest level residuals by school")
+
+
+
+
+
+
+
+
+
 
