@@ -1,13 +1,48 @@
-```{r}
-install.packages('tinytex')
-```
+---
+##install.packages('tinytex')
+##library(tinytex)
+## a few hours of trial and errors can save you a few minutes of reading the proper documentation :)
+## https://quarto.org/docs/output-formats/pdf-basics.html
+## go to terminal tab down there and type quarto install tool tinytex
+---
 
 ---
 title: "WorkingWithDataAssignment"
-author: "JoaoMota"
+author: "João Mota"
 format: pdf
 editor: visual
 ---
+
+```{r}
+library(haven)
+library(tidyverse)
+```
+
+```{r}
+## Very important documentation for the 2018 data set //it is a supprise toll that will help us later
+technicalAnnex2018 = 'https://doc.ukdataservice.ac.uk/doc/8406/mrdoc/pdf/8406_cyber_security_breaches_survey_2018_technical_annex.pdf'
+
+## this is the loading the first year of this level of survey data set 
+dataCyberSecuritySurvey2018 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2018/UKDA-8406-spss-CyberSurvey2018/spss/spss24/17-054294-01_csbs_2018_final_data_deidentified_v1_12042018_public.sav')
+
+## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey
+dataCyberSecuritySurvey2018$year = '2018'
+```
+
+
+```{r}
+##renaming all the bloody variables to a more java like name
+
+dataCyberSecuritySurvey2018TidyName <- rename(dataCyberSecuritySurvey2018,isBusiness= 'samptype')
+
+## terrible boolean pratice but if isBusiness is 1 it is a business if it is 2 it is a charity
+
+##dataCyberSecuritySurvey2018TidyName
+
+```
+
+
+
 
 ## Quarto
 
