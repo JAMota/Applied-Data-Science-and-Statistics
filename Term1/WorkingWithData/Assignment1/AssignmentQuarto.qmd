@@ -29,16 +29,49 @@ dataCyberSecuritySurvey2018 = read_spss('C:/AppliedDataScienceAndStatistics/Appl
 dataCyberSecuritySurvey2018$year = '2018'
 ```
 
+## Now we do the same for the other years before we merge them
+
+
+```{r}
+## loading the second year of this level of survey data set 
+dataCyberSecuritySurvey2019 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2019/UKDA-8480-spss-CyberSurvey2019/spss/spss24/csbs_2019_raw_data.sav')
+
+## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey
+dataCyberSecuritySurvey2019$year = '2019'
+```
+
+
+```{r}
+## loading the third year of this level of survey data set 
+dataCyberSecuritySurvey2020 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2020/UKDA-8638-spss-CyberSurvey2020/spss/spss25/csbs2020_final_banded_variables_only_180320_public.sav')
+
+## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey
+dataCyberSecuritySurvey2020$year = '2020'
+```
+
+
+```{r}
+## loading the forth year of this level of survey data set 
+dataCyberSecuritySurvey2021 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2020/UKDA-8638-spss-CyberSurvey2020/spss/spss25/csbs2020_final_banded_variables_only_180320_public.sav')
+
+## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey
+dataCyberSecuritySurvey2021$year = '2021'
+```
+
 
 ```{r}
 ##renaming all the bloody variables to a more java like name
 
 dataCyberSecuritySurvey2018TidyName <- rename(dataCyberSecuritySurvey2018,isBusiness= 'samptype')
 
-## terrible boolean pratice but if isBusiness is 1 it is a business if it is 2 it is a charity
+## if isBusiness is 1 it is a business if it is 2 it is a charity
 
 ##dataCyberSecuritySurvey2018TidyName
+## never forget if R can't show all displayed text from a computation it breaks both the rendering and ##the refreshing of the rendered code for some reason ¯/_(ツ)_/¯
 
+```
+
+```{r}
 ```
 
 
