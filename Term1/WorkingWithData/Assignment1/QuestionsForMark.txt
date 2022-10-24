@@ -1,0 +1,3 @@
+Q1: what is considered neat, reproducible  code?
+
+Q2: is it bothersome to have too many comments some even a bit personal or should I remove them in the final version?

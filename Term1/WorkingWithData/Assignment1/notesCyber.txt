@@ -1,0 +1,40 @@
+https://doc.ukdataservice.ac.uk/doc/8406/mrdoc/pdf/8406_cyber_security_breaches_survey_2018_technical_annex.pdf
+
+1.2 Strengths and limitations of the 2018 survey
+While there have been other surveys about cyber security in organisations in recent years,
+these have often used partially representative sampling or data collection methods. By contrast,
+the Cyber Security Breaches Survey series is intended to be statistically representative of UK
+businesses of all sizes and all relevant sectors, and UK registered charities in all income bands.
+
+The 2018 survey shares the same strengths as the 2016 and 2017 surveys:
+• the use of random-probability sampling to avoid selection bias
+• the inclusion of micro and small businesses, and low-income charities, which ensures that
+the respective findings are not skewed towards larger organisations
+• a telephone data collection approach, which aims to also include businesses and charities
+with less of an online presence (compared to online surveys)
+• a comprehensive attempt to obtain accurate spending and cost data from respondents, by
+using a pre-interview questions sheet and microsite, and giving respondents flexibility in
+how they can answer (e.g. allowing numeric and banded £ amounts, as well as answers
+given as percentages of turnover or IT spending)
+• a consideration of the cost of cyber security breaches beyond the immediate time-cost
+(e.g. explicitly asking respondents to take into account their direct costs, recovery costs
+and long-term costs, while giving a description of what might be included within each of
+these costs)
+
+Two main limitations might be considered to be as follows:
+• Organisations can only tell us about the cyber security breaches or attacks that they have
+detected. There may be other, breaches or attacks affecting organisations, but which are
+not identified as such by their systems or by staff. Therefore, the survey may have a
+tendency to systematically underestimate the real level of breaches or attacks.
+• When it comes to estimates of spending and costs associated with cyber security, this
+survey still ultimately depends on self-reported figures from organisations. As previous
+years’ findings suggest, most organisations do not actively monitor the financial cost of
+cyber security breaches. Moreover, as above organisations cannot tell us about the cost of
+any undetected breaches or attacks. Again, this implies that respondents may
+underestimate the total cost of all breaches or attacks (including undetected ones)
+
+
+2.3 Sampling
+The survey is designed to represent enterprises (i.e. the whole organisation) rather than
+establishments (i.e. local or regional offices or sites). This reflects that multi-site organisations
+will typically have connected IT devices and will therefore deal with cyber security centrally.
