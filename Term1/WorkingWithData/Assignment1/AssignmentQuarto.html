@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="João Mota">
 
-<title>WorkingWithDataAssignment</title>
+<title>My document</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -109,19 +108,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">WorkingWithDataAssignment</h1>
+<h1 class="title">My document</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>João Mota </p>
-          </div>
-  </div>
     
   
     
@@ -145,7 +138,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Very important documentation for the 2018 data set //it is a supprise toll that will help us later</span></span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Very important documentation for the 2018 data set //it is a surprise toll that will help us later</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>technicalAnnex2018 <span class="ot">=</span> <span class="st">'https://doc.ukdataservice.ac.uk/doc/8406/mrdoc/pdf/8406_cyber_security_breaches_survey_2018_technical_annex.pdf'</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="do">## this is the loading the first year of this level of survey data set </span></span>
@@ -154,15 +147,43 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="do">## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey</span></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>dataCyberSecuritySurvey2018<span class="sc">$</span>year <span class="ot">=</span> <span class="st">'2018'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<section id="now-we-do-the-same-for-the-other-years-before-we-merge-them" class="level2">
+<h2 class="anchored" data-anchor-id="now-we-do-the-same-for-the-other-years-before-we-merge-them">Now we do the same for the other years before we merge them</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">##renaming all the bloody variables to a more java like name</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>dataCyberSecuritySurvey2018TidyName <span class="ot">&lt;-</span> <span class="fu">rename</span>(dataCyberSecuritySurvey2018,<span class="at">isBusiness=</span> <span class="st">'samptype'</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="do">## terrible boolean pratice but if isBusiness is 1 it is a business if it is 2 it is a charity</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="do">##dataCyberSecuritySurvey2018TidyName</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## loading the second year of this level of survey data set </span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>dataCyberSecuritySurvey2019 <span class="ot">=</span> <span class="fu">read_spss</span>(<span class="st">'C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2019/UKDA-8480-spss-CyberSurvey2019/spss/spss24/csbs_2019_raw_data.sav'</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="do">## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>dataCyberSecuritySurvey2019<span class="sc">$</span>year <span class="ot">=</span> <span class="st">'2019'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="do">## loading the third year of this level of survey data set </span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>dataCyberSecuritySurvey2020 <span class="ot">=</span> <span class="fu">read_spss</span>(<span class="st">'C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2020/UKDA-8638-spss-CyberSurvey2020/spss/spss25/csbs2020_final_banded_variables_only_180320_public.sav'</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="do">## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>dataCyberSecuritySurvey2020<span class="sc">$</span>year <span class="ot">=</span> <span class="st">'2020'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="do">## loading the forth year of this level of survey data set </span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>dataCyberSecuritySurvey2021 <span class="ot">=</span> <span class="fu">read_spss</span>(<span class="st">'C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2020/UKDA-8638-spss-CyberSurvey2020/spss/spss25/csbs2020_final_banded_variables_only_180320_public.sav'</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="do">## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>dataCyberSecuritySurvey2021<span class="sc">$</span>year <span class="ot">=</span> <span class="st">'2021'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">##renaming all the bloody variables to a more java like name</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>dataCyberSecuritySurvey2018TidyName <span class="ot">&lt;-</span> <span class="fu">rename</span>(dataCyberSecuritySurvey2018,<span class="at">isBusiness=</span> <span class="st">'samptype'</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="do">## if isBusiness is 1 it is a business if it is 2 it is a charity</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="do">##dataCyberSecuritySurvey2018TidyName</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="do">## never forget if R can't show all displayed text from a computation it breaks both the rendering and ##the refreshing of the rendered code for some reason ¯/_(ツ)_/¯</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">##browseURL(technicalAnnex2018)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
 <section id="quarto" class="level2">
 <h2 class="anchored" data-anchor-id="quarto">Quarto</h2>
 <p>Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <a href="https://quarto.org" class="uri">https://quarto.org</a>.</p>
@@ -171,7 +192,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="running-code">Running Code</h2>
 <p>When you click the <strong>Render</strong> button a document will be generated that includes both content and the output of embedded code. You can embed code like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2</code></pre>
 </div>

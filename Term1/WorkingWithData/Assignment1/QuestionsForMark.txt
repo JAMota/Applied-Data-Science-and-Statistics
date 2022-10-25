@@ -1,3 +1,15 @@
 Q1: what is considered neat, reproducible  code?
 
 Q2: is it bothersome to have too many comments some even a bit personal or should I remove them in the final version?
+
+
+looking for evidence that we have engaged with the lectured material multiple imputation, graphs, etc
+
+get the file download it form the onedrive just because it is neat
+
+how to convert from the quarto html to proper pdf
+
+missing data about the values of the cost and income lost
+
+possible things instead of financial lost in terms of imediate and long term could also be
+loss of data, how damaging were the attacks depending on the level of the organisation, micro, multinational or charity

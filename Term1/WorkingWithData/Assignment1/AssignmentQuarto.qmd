@@ -1,17 +1,21 @@
 ---
-##install.packages('tinytex')
-##library(tinytex)
-## a few hours of trial and errors can save you a few minutes of reading the proper documentation :)
-## https://quarto.org/docs/output-formats/pdf-basics.html
-## go to terminal tab down there and type quarto install tool tinytex
----
-
----
 title: "WorkingWithDataAssignment"
 author: "João Mota"
 format: pdf
 editor: visual
 ---
+
+
+```
+##install.packages('tinytex')
+##library(tinytex)
+## a few hours of trial and errors can save you a few minutes of reading the proper documentation :)
+## https://quarto.org/docs/output-formats/pdf-basics.html
+## go to terminal tab down there and type quarto install tool tinytex
+
+## NOTE TO SELF!!!! using quarto is the same as playing restart Rstudio simulator 2022 because nothing is properly recached and they have a worse garbage collecter then assembly so if the pdf is not rendering and you
+```
+
 
 ```{r}
 library(haven)
@@ -19,7 +23,7 @@ library(tidyverse)
 ```
 
 ```{r}
-## Very important documentation for the 2018 data set //it is a supprise toll that will help us later
+## Very important documentation for the 2018 data set //it is a surprise toll that will help us later
 technicalAnnex2018 = 'https://doc.ukdataservice.ac.uk/doc/8406/mrdoc/pdf/8406_cyber_security_breaches_survey_2018_technical_annex.pdf'
 
 ## this is the loading the first year of this level of survey data set 
@@ -72,6 +76,10 @@ dataCyberSecuritySurvey2018TidyName <- rename(dataCyberSecuritySurvey2018,isBusi
 ```
 
 ```{r}
+browseURL(technicalAnnex2018)
+
+
+
 ```
 
 
