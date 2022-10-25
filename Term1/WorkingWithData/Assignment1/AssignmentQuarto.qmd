@@ -5,23 +5,20 @@ format: pdf
 editor: visual
 ---
 
+##install.packages('tinytex') ##library(tinytex) \## a few hours of trial and errors can save you a few minutes of reading the proper documentation :) \## https://quarto.org/docs/output-formats/pdf-basics.html \## go to terminal tab down there and type quarto install tool tinytex
 
-```
-##install.packages('tinytex')
-##library(tinytex)
-## a few hours of trial and errors can save you a few minutes of reading the proper documentation :)
-## https://quarto.org/docs/output-formats/pdf-basics.html
-## go to terminal tab down there and type quarto install tool tinytex
+## NOTE TO SELF!!!! using quarto is the same as playing restart Rstudio simulator 2022 because nothing \## is properly recached and they have a worse garbage collecter than assembly so if you still get the
 
-## NOTE TO SELF!!!! using quarto is the same as playing restart Rstudio simulator 2022 because nothing ## is properly recached and they have a worse garbage collecter than assembly so if you still get the 
 ## same error after changing the just restart rstudio and remember to never ever ever change the
-## initial format or add anything close to it because it will break the pdf and start generating html
-## also please be smart and read https://quarto.org/docs/reference/formats/pdf.html for the formating
 
+## initial format or add anything close to it because it will break the pdf and start generating html
+
+## also please be smart and read https://quarto.org/docs/reference/formats/pdf.html for the formating
 
 ```{r}
 library(haven)
 library(tidyverse)
+library(dplyr)
 ```
 
 ```{r}
@@ -37,7 +34,6 @@ dataCyberSecuritySurvey2018$year = '2018'
 
 ## Now we do the same for the other years before we merge them
 
-
 ```{r}
 ## loading the second year of this level of survey data set 
 dataCyberSecuritySurvey2019 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2019/UKDA-8480-spss-CyberSurvey2019/spss/spss24/csbs_2019_raw_data.sav')
@@ -46,7 +42,6 @@ dataCyberSecuritySurvey2019 = read_spss('C:/AppliedDataScienceAndStatistics/Appl
 dataCyberSecuritySurvey2019$year = '2019'
 ```
 
-
 ```{r}
 ## loading the third year of this level of survey data set 
 dataCyberSecuritySurvey2020 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2020/UKDA-8638-spss-CyberSurvey2020/spss/spss25/csbs2020_final_banded_variables_only_180320_public.sav')
@@ -54,7 +49,6 @@ dataCyberSecuritySurvey2020 = read_spss('C:/AppliedDataScienceAndStatistics/Appl
 ## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey
 dataCyberSecuritySurvey2020$year = '2020'
 ```
-
 
 ```{r}
 ## loading the forth year of this level of survey data set 
@@ -72,6 +66,14 @@ dataCyberSecuritySurvey2022 = read_spss('C:/AppliedDataScienceAndStatistics/Appl
 dataCyberSecuritySurvey2022$year = '2022'
 ```
 
+```{r}
+## Now that we have all data loaded lets start by tidying up data set by data set start from 2018
+
+
+## for some sweet sweet documentation about the questions starting from page 26
+browseURL(technicalAnnex2018)
+
+```
 
 ```{r}
 ##renaming all the bloody variables to a more java like name
@@ -79,22 +81,19 @@ dataCyberSecuritySurvey2022$year = '2022'
 dataCyberSecuritySurvey2018TidyName <- rename(dataCyberSecuritySurvey2018,isBusiness= 'samptype')
 
 ## if isBusiness is 1 it is a business if it is 2 it is a charity
+## will change it the 2 to 0 because what is the point of a boolean without boolean values
 
 ##dataCyberSecuritySurvey2018TidyName
 ## never forget if R can't show all displayed text from a computation it breaks both the rendering and ##the refreshing of the rendered code for some reason ¯/_(ツ)_/¯
+## future edit anything and everything breaks for no reason at all, just kill it and reopen
+## refer to the first NOTE TO SELF for more information
 
-```
+## typex is 1-2 for businesses and 3 for charities so redundant and can be removed
 
-```{r}
-## for some sweet sweet documentation about the questions from page 26
-browseURL(technicalAnnex2018)
-
-
-
-```
 
 
 
+```
 
 ## Quarto
 
