@@ -93,8 +93,8 @@ dataCyberSecuritySurvey2022$year = '2022'
 
 
 ## for some sweet sweet documentation about the questions starting from page 26
-##TODO remove comment
-#browseURL(technicalAnnex2018)
+##TODO comment in case of fire or debugging
+browseURL(technicalAnnex2018)
 
 ```
 
@@ -102,22 +102,12 @@ dataCyberSecuritySurvey2022$year = '2022'
 ## This entire code snippet is tidying up the type of organisation for the 2018 survey
 ##renaming the bloody variables to a more java like name
 
-dataCyberSecuritySurvey2018TidyName = rename(dataCyberSecuritySurvey2018,isBusiness= 'samptype')
+dataCyberSecuritySurvey2018TidyName = rename(dataCyberSecuritySurvey2018,instituitionTypes= 'samptype')
 
-## if isBusiness is 1 it is a business if it is 2 it is a charity
-## will change it the 2 to 0 because what is the point of a boolean without boolean values
-
-n = length(dataCyberSecuritySurvey2018TidyName$isBusiness)
+## if instituitionTypes is 1 it is a business if it is 2 it is a charity and in the future 3 is for schools and education
 
 
-
-for (i in 1:n) {
-  if(dataCyberSecuritySurvey2018TidyName$isBusiness[i] == 2){
-    dataCyberSecuritySurvey2018TidyName$isBusiness[i] = 0
-  }
-}
-
-##daily remimder that there is a boolean type but it is called logical
+##daily reminder that there is a boolean type but it is called logical
 ##
 ##Numeric -	Set of all real numbers
 ##Integer -	Set of all integers, Z
@@ -125,16 +115,11 @@ for (i in 1:n) {
 ##Complex -	Set of complex numbers
 ##Character -	“a”, “b”, “c”, …, “ç”, “#”, “~”, …., “1”, “2”, …etc
 
-str(dataCyberSecuritySurvey2018TidyName$isBusiness)
-## it is a string so lets make it a proper boolean
 
-  dataCyberSecuritySurvey2018TidyName$isBusiness = as.integer(dataCyberSecuritySurvey2018TidyName$isBusiness)
+## it is a string so lets make it a proper numeric code
 
-dataCyberSecuritySurvey2018TidyName$isBusiness = as.logical(dataCyberSecuritySurvey2018TidyName$isBusiness)
+  dataCyberSecuritySurvey2018TidyName$instituitionTypes = as.integer(dataCyberSecuritySurvey2018TidyName$instituitionTypes)
 
-## is it in a glorious boolean state where true is business and false is charity
-
-str(dataCyberSecuritySurvey2018TidyName$isBusiness)
 
 ## typex is 1-2 for businesses and 3 for charities so redundant and can be removed
 
@@ -148,24 +133,76 @@ dataCyberSecuritySurvey2018TidyName = dataCyberSecuritySurvey2018TidyName %>% se
 
 ```
 
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-technicalAnnex2021 = "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/977491/20-046099-01_CSBS_2021_quant_technical_annex_v2.4__clean__190321.pdf"
-```
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+## see questioner documentation start from page 27
+
 technicalAnnex2019 = "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/950097/Cyber_Security_Breaches_Survey_2019_-_Technical_Annex_V2.pdf"
+##TODO comment in case of fire or debugging
+browseURL(technicalAnnex2019)
 ```
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+## see questioner documentation start from page 31
+
 technicalAnnex2020 = "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/874693/Technical_annex_-_Cyber_Security_Breaches_Survey_2020.pdf"
+
+##TODO comment in case of fire or debugging
+browseURL(technicalAnnex2020)
 ```
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+## see questioner documentation start from page 28
+
+technicalAnnex2021 = "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/977491/20-046099-01_CSBS_2021_quant_technical_annex_v2.4__clean__190321.pdf"
+
+##TODO comment in case of fire or debugging
+browseURL(technicalAnnex2021)
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+## see questioner documentation start from page 36
+
 technicalAnnex2022 = "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1064446/Technical_annex_-_cyber_security_breaches_survey_March_2022__WEB_.pdf"
+
+##TODO comment in case of fire or debugging
+browseURL(technicalAnnex2022)
+
+## trying not to get arrested for DDoSing the uk goverment by making a request to all the pdfs after rendering the page for the nth because I can't code nor debug (challenge impossible)
+##bonus points if I get an exeter ip banned because of it
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
+## time to recycle the code for the 2018 survey that gets a "neat" code of the institution types
+
+## This entire code snippet is tidying up the type of organisation for the 2019 survey
+##renaming the bloody variables to a more java like name
+
+dataCyberSecuritySurvey2019TidyName = rename(dataCyberSecuritySurvey2019,instituitionTypes= 'samptype')
+
+  dataCyberSecuritySurvey2019TidyName$instituitionTypes = as.integer(dataCyberSecuritySurvey2019TidyName$instituitionTypes)
+  
+    str(dataCyberSecuritySurvey2019TidyName$instituitionTypes)
+
+  
+## typex is redundant be we already have an indentifies for each type of institution and can be removed
+## same for questtype since this questioner has more redundancy than amazon and google data centers combined
+
+dataCyberSecuritySurvey2019TidyName = dataCyberSecuritySurvey2019TidyName %>% select(-one_of('typex', 'questtype'))
+
 ```
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
+## I continue to save the planet by recycling as much as I can, mostly recycled code from the previous snippet today though
+## this time we do have the concept of education institutions as our code just annoy me after I thought they should be converted to boolean like a getter in java
+
+dataCyberSecuritySurvey2020TidyName = rename(dataCyberSecuritySurvey2020,instituitionTypes= 'samptype')
+
+  dataCyberSecuritySurvey2020TidyName$instituitionTypes = as.integer(dataCyberSecuritySurvey2020TidyName$instituitionTypes)
+  
+    str(dataCyberSecuritySurvey2020TidyName$instituitionTypes)
+
+  
+## typex is redundant be we already have an indentifies for each type of institution and can be removed
+## same for questtype since this questioner has more redundancy than amazon and google data centers combined
+
+dataCyberSecuritySurvey2020TidyName = dataCyberSecuritySurvey2019TidyName %>% select(-one_of('typex', 'questtype'))
 ```
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 1 + 1
