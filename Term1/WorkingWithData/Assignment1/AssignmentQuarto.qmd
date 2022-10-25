@@ -1,27 +1,47 @@
 ---
 title: "WorkingWithDataAssignment"
 author: "João Mota"
-format: pdf
+format:
+  pdf:
+    toc: true
+    number-sections: true
+    colorlinks: true
+    documentclass: scrartcl
+    papersize: a4
+    code-fold: true
+    geometry:
+      - top=30mm
+      - left=15mm
+      - right = 15mm
+      - heightrounded
+    editor_options:
+      markdown:
+        wrap: 72
+
 editor: visual
 ---
 
-##install.packages('tinytex') ##library(tinytex) \## a few hours of trial and errors can save you a few minutes of reading the proper documentation :) \## https://quarto.org/docs/output-formats/pdf-basics.html \## go to terminal tab down there and type quarto install tool tinytex
 
-## NOTE TO SELF!!!! using quarto is the same as playing restart Rstudio simulator 2022 because nothing \## is properly recached and they have a worse garbage collecter than assembly so if you still get the
-
-## same error after changing the just restart rstudio and remember to never ever ever change the
-
-## initial format or add anything close to it because it will break the pdf and start generating html
-
-## also please be smart and read https://quarto.org/docs/reference/formats/pdf.html for the formating
+/*   
+A few hours of trial and errors can save you a few minutes of reading the proper documentation :) 
+ https://quarto.org/docs/output-formats/pdf-basics.html   
+Go to terminal tab down there and type quarto install tool tinytex   
+NOTE TO SELF!!!! using quarto is the same as playing restart Rstudio simulator 2022 because nothing is properly recached and they have a worse garbage collecter than assembly so if you still get the
+same error after changing the just restart rstudio and remember to never ever ever change the
+ initial format or add anything close to it because it will break the pdf and start generating html
+also please be smart and read https://quarto.org/docs/reference/formats/pdf.html for the formating  
+*/
 
 ```{r}
 library(haven)
 library(tidyverse)
 library(dplyr)
+library(geometry) 
+#install.packages('hyperref')
+library(formatR)
 ```
 
-```{r}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ## Very important documentation for the 2018 data set //it is a surprise toll that will help us later
 technicalAnnex2018 = 'https://doc.ukdataservice.ac.uk/doc/8406/mrdoc/pdf/8406_cyber_security_breaches_survey_2018_technical_annex.pdf'
 
@@ -34,7 +54,7 @@ dataCyberSecuritySurvey2018$year = '2018'
 
 ## Now we do the same for the other years before we merge them
 
-```{r}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ## loading the second year of this level of survey data set 
 dataCyberSecuritySurvey2019 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2019/UKDA-8480-spss-CyberSurvey2019/spss/spss24/csbs_2019_raw_data.sav')
 
@@ -42,7 +62,7 @@ dataCyberSecuritySurvey2019 = read_spss('C:/AppliedDataScienceAndStatistics/Appl
 dataCyberSecuritySurvey2019$year = '2019'
 ```
 
-```{r}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ## loading the third year of this level of survey data set 
 dataCyberSecuritySurvey2020 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2020/UKDA-8638-spss-CyberSurvey2020/spss/spss25/csbs2020_final_banded_variables_only_180320_public.sav')
 
@@ -50,7 +70,7 @@ dataCyberSecuritySurvey2020 = read_spss('C:/AppliedDataScienceAndStatistics/Appl
 dataCyberSecuritySurvey2020$year = '2020'
 ```
 
-```{r}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ## loading the forth year of this level of survey data set 
 dataCyberSecuritySurvey2021 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2020/UKDA-8638-spss-CyberSurvey2020/spss/spss25/csbs2020_final_banded_variables_only_180320_public.sav')
 
@@ -58,7 +78,7 @@ dataCyberSecuritySurvey2021 = read_spss('C:/AppliedDataScienceAndStatistics/Appl
 dataCyberSecuritySurvey2021$year = '2021'
 ```
 
-```{r}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ## loading the fifth and final year of this level of survey data set 
 dataCyberSecuritySurvey2022 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2022/UKDA-8970-spss/spss/spss25/dcms_csbs_2022_banded_cost_data_only_v4_public.sav')
 
@@ -66,19 +86,20 @@ dataCyberSecuritySurvey2022 = read_spss('C:/AppliedDataScienceAndStatistics/Appl
 dataCyberSecuritySurvey2022$year = '2022'
 ```
 
-```{r}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ## Now that we have all data loaded lets start by tidying up data set by data set start from 2018
 
 
 ## for some sweet sweet documentation about the questions starting from page 26
-browseURL(technicalAnnex2018)
+##TODO remove comment
+#browseURL(technicalAnnex2018)
 
 ```
 
-```{r}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ##renaming all the bloody variables to a more java like name
 
-dataCyberSecuritySurvey2018TidyName <- rename(dataCyberSecuritySurvey2018,isBusiness= 'samptype')
+dataCyberSecuritySurvey2018TidyName = rename(dataCyberSecuritySurvey2018,isBusiness= 'samptype')
 
 ## if isBusiness is 1 it is a business if it is 2 it is a charity
 ## will change it the 2 to 0 because what is the point of a boolean without boolean values
