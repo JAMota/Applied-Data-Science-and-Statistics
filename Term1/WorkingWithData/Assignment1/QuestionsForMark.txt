@@ -16,3 +16,6 @@ loss of data, how damaging were the attacks depending on the level of the organi
 
 
 Talk about the limitation of the reporting infraestructure for loss of income, costs, loss of files
+
+
+ggridges for nice graphs one on top of eaach other

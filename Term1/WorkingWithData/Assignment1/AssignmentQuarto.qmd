@@ -47,7 +47,7 @@ technicalAnnex2018 = 'https://doc.ukdataservice.ac.uk/doc/8406/mrdoc/pdf/8406_cy
 
 ## this is the loading the first year of this level of survey data set
 ## after burning my entire brain, replacing it with the backup one and also burning that one I discovered that it is just these lines that aren't being formatted in pdf because they are absolutely huge but at least it works for the other ones #FicaADica
-## I assume it was thanks to formatR ?? I won't bother to redo every single bloody step again, enough for a lifetime and a half
+## I assume it was thanks to formatR ?? I won't bother to redo every single bloody step again, enough pain and stack for the day
 dataCyberSecuritySurvey2018 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2018/UKDA-8406-spss-CyberSurvey2018/spss/spss24/17-054294-01_csbs_2018_final_data_deidentified_v1_12042018_public.sav')
 
 ## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey
@@ -99,23 +99,85 @@ dataCyberSecuritySurvey2022$year = '2022'
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-##renaming all the bloody variables to a more java like name
+## This entire code snippet is tidying up the type of organisation for the 2018 survey
+##renaming the bloody variables to a more java like name
 
 dataCyberSecuritySurvey2018TidyName = rename(dataCyberSecuritySurvey2018,isBusiness= 'samptype')
 
 ## if isBusiness is 1 it is a business if it is 2 it is a charity
 ## will change it the 2 to 0 because what is the point of a boolean without boolean values
 
+n = length(dataCyberSecuritySurvey2018TidyName$isBusiness)
+
+
+
+for (i in 1:n) {
+  if(dataCyberSecuritySurvey2018TidyName$isBusiness[i] == 2){
+    dataCyberSecuritySurvey2018TidyName$isBusiness[i] = 0
+  }
+}
+
+##daily remimder that there is a boolean type but it is called logical
+##
+##Numeric -	Set of all real numbers
+##Integer -	Set of all integers, Z
+##Logical - -	TRUE and FALSE
+##Complex -	Set of complex numbers
+##Character -	“a”, “b”, “c”, …, “ç”, “#”, “~”, …., “1”, “2”, …etc
+
+str(dataCyberSecuritySurvey2018TidyName$isBusiness)
+## it is a string so lets make it a proper boolean
+
+  dataCyberSecuritySurvey2018TidyName$isBusiness = as.integer(dataCyberSecuritySurvey2018TidyName$isBusiness)
+
+dataCyberSecuritySurvey2018TidyName$isBusiness = as.logical(dataCyberSecuritySurvey2018TidyName$isBusiness)
+
+## is it in a glorious boolean state where true is business and false is charity
+
+str(dataCyberSecuritySurvey2018TidyName$isBusiness)
+
+## typex is 1-2 for businesses and 3 for charities so redundant and can be removed
+
+dataCyberSecuritySurvey2018TidyName = dataCyberSecuritySurvey2018TidyName %>% select(-typex)
+
+
 ##dataCyberSecuritySurvey2018TidyName
 ## never forget if R can't show all displayed text from a computation it breaks both the rendering and ##the refreshing of the rendered code for some reason ¯/_(ツ)_/¯
 ## future edit anything and everything breaks for no reason at all, just kill it and reopen
 ## refer to the first NOTE TO SELF for more information
 
-## typex is 1-2 for businesses and 3 for charities so redundant and can be removed
+```
 
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+technicalAnnex2021 = "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/977491/20-046099-01_CSBS_2021_quant_technical_annex_v2.4__clean__190321.pdf"
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+technicalAnnex2019 = "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/950097/Cyber_Security_Breaches_Survey_2019_-_Technical_Annex_V2.pdf"
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+technicalAnnex2020 = "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/874693/Technical_annex_-_Cyber_Security_Breaches_Survey_2020.pdf"
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+technicalAnnex2022 = "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1064446/Technical_annex_-_cyber_security_breaches_survey_March_2022__WEB_.pdf"
+```
 
-
-
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
 ```
 
 ## Quarto
@@ -126,7 +188,7 @@ Quarto enables you to weave together content and executable code into a finished
 
 When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
 
-```{r}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 1 + 1
 ```
 
