@@ -205,6 +205,43 @@ dataCyberSecuritySurvey2020TidyName = rename(dataCyberSecuritySurvey2020,institu
 dataCyberSecuritySurvey2020TidyName = dataCyberSecuritySurvey2020TidyName %>% select(-one_of('typex', 'questtype'))
 ```
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+##saving the planet one recycled snippet of code at a time
+
+
+dataCyberSecuritySurvey2021TidyName = rename(dataCyberSecuritySurvey2021,instituitionTypes= 'samptype')
+
+  dataCyberSecuritySurvey2021TidyName$instituitionTypes = as.integer(dataCyberSecuritySurvey2021TidyName$instituitionTypes)
+  
+    str(dataCyberSecuritySurvey2021TidyName$instituitionTypes)
+
+  
+## typex is redundant be we already have an indentifies for each type of institution and can be removed
+## same for questtype since this questioner has more redundancy than amazon and google data centers combined
+
+dataCyberSecuritySurvey2021TidyName = dataCyberSecuritySurvey2021TidyName %>% select(-one_of('typex', 'questtype'))
+
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+## this comment was already dealt by the garbage collector unlike the previous ones
+
+dataCyberSecuritySurvey2022TidyName = rename(dataCyberSecuritySurvey2022,instituitionTypes= 'samptype')
+
+  dataCyberSecuritySurvey2022TidyName$instituitionTypes = as.integer(dataCyberSecuritySurvey2022TidyName$instituitionTypes)
+  
+    str(dataCyberSecuritySurvey2022TidyName$instituitionTypes)
+
+  
+## questtype is redundant be we already have an indentifies for each type of institution and can be removed
+
+dataCyberSecuritySurvey2022TidyName = dataCyberSecuritySurvey2022TidyName %>% select(-questtype)
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 1 + 1
 ```
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
@@ -216,6 +253,13 @@ dataCyberSecuritySurvey2020TidyName = dataCyberSecuritySurvey2020TidyName %>% se
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 1 + 1
 ```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+
 
 ## Quarto
 
