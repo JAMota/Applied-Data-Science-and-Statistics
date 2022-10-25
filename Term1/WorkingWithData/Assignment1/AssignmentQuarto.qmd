@@ -202,7 +202,7 @@ dataCyberSecuritySurvey2020TidyName = rename(dataCyberSecuritySurvey2020,institu
 ## typex is redundant be we already have an indentifies for each type of institution and can be removed
 ## same for questtype since this questioner has more redundancy than amazon and google data centers combined
 
-dataCyberSecuritySurvey2020TidyName = dataCyberSecuritySurvey2019TidyName %>% select(-one_of('typex', 'questtype'))
+dataCyberSecuritySurvey2020TidyName = dataCyberSecuritySurvey2020TidyName %>% select(-one_of('typex', 'questtype'))
 ```
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 1 + 1
