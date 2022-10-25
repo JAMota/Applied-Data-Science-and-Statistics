@@ -45,7 +45,9 @@ library(formatR)
 ## Very important documentation for the 2018 data set //it is a surprise toll that will help us later
 technicalAnnex2018 = 'https://doc.ukdataservice.ac.uk/doc/8406/mrdoc/pdf/8406_cyber_security_breaches_survey_2018_technical_annex.pdf'
 
-## this is the loading the first year of this level of survey data set 
+## this is the loading the first year of this level of survey data set
+## after burning my entire brain, replacing it with the backup one and also burning that one I discovered that it is just these lines that aren't being formatted in pdf because they are absolutely huge but at least it works for the other ones #FicaADica
+## I assume it was thanks to formatR ?? I won't bother to redo every single bloody step again, enough for a lifetime and a half
 dataCyberSecuritySurvey2018 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2018/UKDA-8406-spss-CyberSurvey2018/spss/spss24/17-054294-01_csbs_2018_final_data_deidentified_v1_12042018_public.sav')
 
 ## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey
