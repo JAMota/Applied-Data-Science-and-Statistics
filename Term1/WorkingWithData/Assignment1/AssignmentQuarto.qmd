@@ -13,8 +13,10 @@ editor: visual
 ## https://quarto.org/docs/output-formats/pdf-basics.html
 ## go to terminal tab down there and type quarto install tool tinytex
 
-## NOTE TO SELF!!!! using quarto is the same as playing restart Rstudio simulator 2022 because nothing is properly recached and they have a worse garbage collecter then assembly so if the pdf is not rendering and you
-```
+## NOTE TO SELF!!!! using quarto is the same as playing restart Rstudio simulator 2022 because nothing ## is properly recached and they have a worse garbage collecter than assembly so if you still get the 
+## same error after changing the just restart rstudio and remember to never ever ever change the
+## initial format or add anything close to it because it will break the pdf and start generating html
+## also please be smart and read https://quarto.org/docs/reference/formats/pdf.html for the formating
 
 
 ```{r}
@@ -62,6 +64,14 @@ dataCyberSecuritySurvey2021 = read_spss('C:/AppliedDataScienceAndStatistics/Appl
 dataCyberSecuritySurvey2021$year = '2021'
 ```
 
+```{r}
+## loading the fifth and final year of this level of survey data set 
+dataCyberSecuritySurvey2022 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2022/UKDA-8970-spss/spss/spss25/dcms_csbs_2022_banded_cost_data_only_v4_public.sav')
+
+## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey
+dataCyberSecuritySurvey2022$year = '2022'
+```
+
 
 ```{r}
 ##renaming all the bloody variables to a more java like name
@@ -76,6 +86,7 @@ dataCyberSecuritySurvey2018TidyName <- rename(dataCyberSecuritySurvey2018,isBusi
 ```
 
 ```{r}
+## for some sweet sweet documentation about the questions from page 26
 browseURL(technicalAnnex2018)
 
 
