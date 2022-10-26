@@ -21,19 +21,16 @@ format:
 editor: visual
 ---
 
-/\*\
-A few hours of trial and errors can save you a few minutes of reading
-the proper documentation :)
-https://quarto.org/docs/output-formats/pdf-basics.html\
-Go to terminal tab down there and type quarto install tool tinytex\
-NOTE TO SELF!!!! using quarto is the same as playing restart Rstudio
-simulator 2022 because nothing is properly recached and they have a
-worse garbage collecter than assembly so if you still get the same error
-after changing the just restart rstudio and remember to never ever ever
-change the initial format or add anything close to it because it will
-break the pdf and start generating html also please be smart and read
-https://quarto.org/docs/reference/formats/pdf.html for the formating\
-\*/
+
+/*   
+A few hours of trial and errors can save you a few minutes of reading the proper documentation :) 
+ https://quarto.org/docs/output-formats/pdf-basics.html   
+Go to terminal tab down there and type quarto install tool tinytex   
+NOTE TO SELF!!!! using quarto is the same as playing restart Rstudio simulator 2022 because nothing is properly recached and they have a worse garbage collecter than assembly so if you still get the
+same error after changing the just restart rstudio and remember to never ever ever change the
+ initial format or add anything close to it because it will break the pdf and start generating html
+also please be smart and read https://quarto.org/docs/reference/formats/pdf.html for the formating  
+*/
 
 ```{r}
 library(haven)
@@ -136,6 +133,7 @@ dataCyberSecuritySurvey2018TidyName = dataCyberSecuritySurvey2018TidyName %>% se
 
 ```
 
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ## see questioner documentation start from page 27
 
@@ -143,7 +141,6 @@ technicalAnnex2019 = "https://assets.publishing.service.gov.uk/government/upload
 ##TODO comment in case of fire or debugging
 browseURL(technicalAnnex2019)
 ```
-
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ## see questioner documentation start from page 31
 
@@ -152,7 +149,6 @@ technicalAnnex2020 = "https://assets.publishing.service.gov.uk/government/upload
 ##TODO comment in case of fire or debugging
 browseURL(technicalAnnex2020)
 ```
-
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ## see questioner documentation start from page 28
 
@@ -161,7 +157,6 @@ technicalAnnex2021 = "https://assets.publishing.service.gov.uk/government/upload
 ##TODO comment in case of fire or debugging
 browseURL(technicalAnnex2021)
 ```
-
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ## see questioner documentation start from page 36
 
@@ -193,7 +188,6 @@ dataCyberSecuritySurvey2019TidyName = rename(dataCyberSecuritySurvey2019,institu
 dataCyberSecuritySurvey2019TidyName = dataCyberSecuritySurvey2019TidyName %>% select(-one_of('typex', 'questtype'))
 
 ```
-
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ## I continue to save the planet by recycling as much as I can, mostly recycled code from the previous snippet today though
 ## this time we do have the concept of education institutions as our code just annoy me after I thought they should be converted to boolean like a getter in java
@@ -210,7 +204,6 @@ dataCyberSecuritySurvey2020TidyName = rename(dataCyberSecuritySurvey2020,institu
 
 dataCyberSecuritySurvey2020TidyName = dataCyberSecuritySurvey2020TidyName %>% select(-one_of('typex', 'questtype'))
 ```
-
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ##saving the planet one recycled snippet of code at a time
 
@@ -228,7 +221,6 @@ dataCyberSecuritySurvey2021TidyName = rename(dataCyberSecuritySurvey2021,institu
 dataCyberSecuritySurvey2021TidyName = dataCyberSecuritySurvey2021TidyName %>% select(-one_of('typex', 'questtype'))
 
 ```
-
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ## this comment was already dealt by the garbage collector unlike the previous ones
 
@@ -243,49 +235,39 @@ dataCyberSecuritySurvey2022TidyName = rename(dataCyberSecuritySurvey2022,institu
 
 dataCyberSecuritySurvey2022TidyName = dataCyberSecuritySurvey2022TidyName %>% select(-questtype)
 ```
-
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 1 + 1
 ```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
-```
 
 ## Quarto
 
-Quarto enables you to weave together content and executable code into a
-finished document. To learn more about Quarto see <https://quarto.org>.
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
 
 ## Running Code
 
-When you click the **Render** button a document will be generated that
-includes both content and the output of embedded code. You can embed
-code like this:
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 1 + 1
@@ -298,5 +280,4 @@ You can add options to executable code like this
 2 * 2
 ```
 
-The `echo: false` option disables the printing of code (only output is
-displayed).
+The `echo: false` option disables the printing of code (only output is displayed).

@@ -6,8 +6,8 @@ Q2: is it bothersome to have too many comments some even a bit personal or shoul
 looking for evidence that we have engaged with the lectured material multiple imputation, graphs, etc
 
 get the file download it form the onedrive just because it is neat
+## can't do it, it is sensitive goverment data
 
-how to convert from the quarto html to proper pdf
 
 missing data about the values of the cost and income lost
 
