@@ -19,3 +19,8 @@ Talk about the limitation of the reporting infraestructure for loss of income, c
 
 
 ggridges for nice graphs one on top of eaach other
+
+
+Q: I have a question about the quarto pdf exportation, if I wanted to do a table of content for indexing all my report topics and code would that count for the 8 page limit?
+
+R: Hi Joao, no I don’t think it would. I am really talking about 8 pages of text/figures
