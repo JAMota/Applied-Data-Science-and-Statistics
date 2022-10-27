@@ -558,10 +558,59 @@ dataCyberSecuritySurvey2019TidyNameSizeCyber = dataCyberSecuritySurvey2019TidyNa
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
+## removing the cyber security insurance claims because they don't give us relevant data to what we are analyzing in the data set
+## pro tip: having insurance does not make you more or less likely to be targeted nor does it change the costs of the attack
+
+############################################## 2018 ####################################################
+
+dataCyberSecuritySurvey2018TidyNameSizeCyber = dataCyberSecuritySurvey2018TidyNameSizeCyber %>% select(-(insurex:noinsure19))
+
+############################################## 2019 ####################################################
+
+dataCyberSecuritySurvey2019TidyNameSizeCyber = dataCyberSecuritySurvey2019TidyNameSizeCyber %>% select(-(insurex:noinsure19))
+
+############################################## 2020 ####################################################
+
+dataCyberSecuritySurvey2020TidyNameSizeCyber = dataCyberSecuritySurvey2020TidyNameSizeCyber %>% select(-(insurex:claim))
+
+############################################## 2021 ####################################################
+
+dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSizeCyber %>% select(-(insurex:claim))
+
+############################################## 2022 ####################################################
+
+dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-(insurex:claim))
+
 ```
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
+## we are removing the questions about asking for info, advice, guidance about cyber security or government schemes
+
+############################################## 2018 ####################################################
+
+dataCyberSecuritySurvey2018TidyNameSizeCyber = dataCyberSecuritySurvey2018TidyNameSizeCyber %>% select(-(info1:trainwho7))
+
+############################################## 2019 ####################################################
+
+dataCyberSecuritySurvey2019TidyNameSizeCyber = dataCyberSecuritySurvey2019TidyNameSizeCyber %>% select(-(info1:trainwho7))
+
+############################################## 2020 ####################################################
+
+dataCyberSecuritySurvey2020TidyNameSizeCyber = dataCyberSecuritySurvey2020TidyNameSizeCyber %>% select(-(info1:scheme5))
+
+############################################## 2021 ####################################################
+
+dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSizeCyber %>% select(-(info1:scheme5))
+
+############################################## 2022 ####################################################
+
+## here we have more that we need to remove because they introduced questions similar to the ones that we are removing but with the government as a source for reason to make implementations which we are also not interested in
+
+dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-(info1:govtact44))
+
+
+
+
 ```
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 1 + 1
