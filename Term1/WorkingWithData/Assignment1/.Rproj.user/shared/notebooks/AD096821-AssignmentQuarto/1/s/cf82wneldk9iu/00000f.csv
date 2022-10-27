@@ -1,20 +1,6 @@
-"0","install.packages('fontspec')
-"
-"2","Installing package into ‘C:/Users/AndreMota/AppData/Local/R/win-library/4.2’
-(as ‘lib’ is unspecified)
-"
-"1","Warning in "
-"1",""
-"1","install.packages"
-"1",""
-"1"," :
-  "
-"1",""
-"1","package ‘fontspec’ is not available for this version of R
-
-A version of this package for your version of R might be available elsewhere,
-see the ideas at
-https://cran.r-project.org/doc/manuals/r-patched/R-admin.html#Installing-packages"
-"1",""
-"1","
-"
+"0","library(haven)"
+"0","library(tidyverse)"
+"0","library(dplyr)"
+"0","library(geometry) "
+"0","#install.packages('fontspec')"
+"0","library(formatR)"

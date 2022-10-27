@@ -336,14 +336,58 @@ for (i in 1:numberOfCycles) {
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-## we don't 
+## we don't need neither the combined regions (since those are for business analyzes and we don't do those) same for sector_comb1 and 2.
 
+## region_comb? throw it in the trash. sector_comb1? throw it in the trash. sector_comb2? throw it in the trash.
+
+############################################## 2018 ####################################################
+
+dataCyberSecuritySurvey2018TidyNameSize = dataCyberSecuritySurvey2018TidyNameSize %>% select(-one_of('region_comb', 'sector_comb1','sector_comb2'))
+
+############################################## 2019 ####################################################
+
+dataCyberSecuritySurvey2019TidyNameSize = dataCyberSecuritySurvey2019TidyNameSize %>% select(-one_of('region_comb', 'sector_comb2'))
+
+############################################## 2020 ####################################################
+
+dataCyberSecuritySurvey2020TidyNameSize = dataCyberSecuritySurvey2020TidyNameSize %>% select(-one_of('region_comb', 'sector_comb2'))
+
+############################################## 2021 ####################################################
+
+dataCyberSecuritySurvey2021TidyNameSize = dataCyberSecuritySurvey2021TidyNameSize %>% select(-one_of('region_comb', 'sector_comb2'))
+
+############################################## 2022 ####################################################
+
+dataCyberSecuritySurvey2022TidyNameSize = dataCyberSecuritySurvey2022TidyNameSize %>% select(-one_of('region_comb', 'sector_comb2'))
 
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
+## removing social media questions that stopped being used after the 2029 survey
+##I can't believe they didn't bothered to removed them even when not used, they were even more lazy than me and I am a full-blooded south European 
+
+############################################## 2018 ####################################################
+
+dataCyberSecuritySurvey2018TidyNameSize = dataCyberSecuritySurvey2018TidyNameSize %>% select(-(online1:online11))
+
+############################################## 2019 ####################################################
+
+dataCyberSecuritySurvey2019TidyNameSize = dataCyberSecuritySurvey2019TidyNameSize %>% select(-(online1:online11))
+
+############################################## 2020 ####################################################
+
+dataCyberSecuritySurvey2020TidyNameSize = dataCyberSecuritySurvey2020TidyNameSize %>% select(-(online1:online11))
+
+############################################## 2021 ####################################################
+
+dataCyberSecuritySurvey2021TidyNameSize = dataCyberSecuritySurvey2021TidyNameSize %>% select(-(online1:online11))
+
+############################################## 2022 ####################################################
+
+dataCyberSecuritySurvey2022TidyNameSize = dataCyberSecuritySurvey2022TidyNameSize %>% select(-(online1:online11))
+
+
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
