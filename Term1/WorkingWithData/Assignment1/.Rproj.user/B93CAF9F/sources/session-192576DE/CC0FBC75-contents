@@ -8,7 +8,6 @@ format:
     colorlinks: true
     documentclass: scrartcl
     papersize: a4
-    mainfont: Tex Gyre Termes
     code-fold: true
     geometry:
       - top=30mm
@@ -364,8 +363,9 @@ dataCyberSecuritySurvey2022TidyNameSize = dataCyberSecuritySurvey2022TidyNameSiz
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-## removing social media questions that stopped being used after the 2029 survey
-##I can't believe they didn't bothered to removed them even when not used, they were even more lazy than me and I am a full-blooded south European 
+## removing social media questions that are irrelevant because they are absolutely terrible metrics to understand the digitalization of an institution 
+##Note to self: if I have time get all of these type of functions in try catch because them breaking up with the select error is no good and it makes me cry every time I have to manually run a part of the snippet and see which is one the bad one
+## https://r-lang.com/r-trycatch-function/  ## #FicaADica
 
 ############################################## 2018 ####################################################
 
@@ -385,27 +385,280 @@ dataCyberSecuritySurvey2021TidyNameSize = dataCyberSecuritySurvey2021TidyNameSiz
 
 ############################################## 2022 ####################################################
 
-dataCyberSecuritySurvey2022TidyNameSize = dataCyberSecuritySurvey2022TidyNameSize %>% select(-(online1:online11))
+dataCyberSecuritySurvey2022TidyNameSize = dataCyberSecuritySurvey2022TidyNameSize %>% select(-(online1:online14))
 
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+##removing the question about the mobile usage because it also is a terrible indicator of a company digitalization
+
+############################################## 2018 ####################################################
+
+dataCyberSecuritySurvey2018TidyNameSize = dataCyberSecuritySurvey2018TidyNameSize %>% select(-mobile)
+
+############################################## 2019 ####################################################
+
+dataCyberSecuritySurvey2019TidyNameSize = dataCyberSecuritySurvey2019TidyNameSize %>% select(-mobile)
+
+############################################## 2020 ####################################################
+
+dataCyberSecuritySurvey2020TidyNameSize = dataCyberSecuritySurvey2020TidyNameSize %>% select(-mobile)
+
+############################################## 2021 ####################################################
+
+dataCyberSecuritySurvey2021TidyNameSize = dataCyberSecuritySurvey2021TidyNameSize %>% select(-mobile)
+
+############################################## 2022 ####################################################
+
+dataCyberSecuritySurvey2022TidyNameSize = dataCyberSecuritySurvey2022TidyNameSize %>% select(-mobile)
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+## question about the attitude and outsourcing of cyber security have been removed the the surveys starting from 2020 so it doesn't make sense to keep them in the 2018 and 2019 data set
+
+## I will start doing some proper garbage collection and this time I am not just taking myself out
+## I will only ever have the original data and the most recent modified one
+
+
+############################################## 2018 ####################################################
+
+dataCyberSecuritySurvey2018TidyNameSize = dataCyberSecuritySurvey2018TidyNameSize %>% select(-(outsource:attitude4))
+
+############################################## 2019 ####################################################
+
+dataCyberSecuritySurvey2019TidyNameSize = dataCyberSecuritySurvey2019TidyNameSize %>% select(-(outsource:attitude4))
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+## since we want to have access to some proper data we will tidy the questions about how big of a priority is cyber security and how often are the higher ups updated about it
+##this could really use some try catches because for the some weird reason -97 == NA does not return true or false, this is like javascript levels of bad
+
+## also excepting this very first one the removals will be at the end so they are computed as if they were a transaction because try and catch is a lie to sell more lines of codes
+
+## thanks to a blessing for our lord not finding the object only gives a warning and we ignore those as long as it still lets run the rest of the code 
+
+rm(dataCyberSecuritySurvey2018TidyName)
+rm(dataCyberSecuritySurvey2019TidyName)
+rm(dataCyberSecuritySurvey2020TidyName)
+rm(dataCyberSecuritySurvey2021TidyName)
+rm(dataCyberSecuritySurvey2022TidyName)
+
+############################################## 2018 ####################################################
+numberOfCycles = length(dataCyberSecuritySurvey2018TidyNameSize$priority)
+
+dataCyberSecuritySurvey2018TidyNameSizeCyber = dataCyberSecuritySurvey2018TidyNameSize
+
+##apparently we have to be careful because an already inserted NA on the variable breaks the 
+for (i in 1:numberOfCycles) {
+  if(dataCyberSecuritySurvey2018TidyNameSizeCyber$priority[i] == -97){
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$priority[i] = NA
+  }
+    if(dataCyberSecuritySurvey2018TidyNameSizeCyber$update[i] == -97){
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$update[i] = NA
+  }
+    
+}
+
+############################################## 2019 ####################################################
+
+numberOfCycles = length(dataCyberSecuritySurvey2019TidyNameSize$priority)
+
+dataCyberSecuritySurvey2019TidyNameSizeCyber = dataCyberSecuritySurvey2019TidyNameSize
+
+
+##apparently we have to be careful because an already inserted NA on the variable breaks the 
+for (i in 1:numberOfCycles) {
+  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$priority[i] == -97){
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$priority[i] = NA
+  }
+    if(dataCyberSecuritySurvey2019TidyNameSizeCyber$update[i] == -97){
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$update[i] = NA
+  }
+    
+}
+
+############################################## 2020 ####################################################
+
+numberOfCycles = length(dataCyberSecuritySurvey2020TidyNameSize$priority)
+
+dataCyberSecuritySurvey2020TidyNameSizeCyber = dataCyberSecuritySurvey2020TidyNameSize
+
+
+##apparently we have to be careful because an already inserted NA on the variable breaks the 
+for (i in 1:numberOfCycles) {
+  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$priority[i] == -97){
+    dataCyberSecuritySurvey2020TidyNameSizeCyber$priority[i] = NA
+  }
+    if(dataCyberSecuritySurvey2020TidyNameSizeCyber$update[i] == -97){
+    dataCyberSecuritySurvey2020TidyNameSizeCyber$update[i] = NA
+  }
+}    
+
+############################################## 2021 ####################################################
+
+numberOfCycles = length(dataCyberSecuritySurvey2021TidyNameSize$priority)
+
+dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSize
+
+
+##apparently we have to be careful because an already inserted NA on the variable breaks the 
+for (i in 1:numberOfCycles) {
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$priority[i] == -97){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$priority[i] = NA
+  }
+    if(dataCyberSecuritySurvey2021TidyNameSizeCyber$update[i] == -97){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$update[i] = NA
+  }
+} 
+
+############################################## 2022 ####################################################
+
+numberOfCycles = length(dataCyberSecuritySurvey2022TidyNameSize$priority)
+
+dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSize
+
+
+##apparently we have to be careful because an already inserted NA on the variable breaks the 
+for (i in 1:numberOfCycles) {
+  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$priority[i] == -97){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$priority[i] = NA
+  }
+    if(dataCyberSecuritySurvey2022TidyNameSizeCyber$update[i] == -97){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$update[i] = NA
+  }
+}
+
+## garbage man? Well, of course I know him. He is me.
+
+rm(dataCyberSecuritySurvey2018TidyNameSize)
+rm(dataCyberSecuritySurvey2019TidyNameSize)
+rm(dataCyberSecuritySurvey2020TidyNameSize)
+rm(dataCyberSecuritySurvey2021TidyNameSize)
+rm(dataCyberSecuritySurvey2022TidyNameSize)
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+##questions about reason of investment in cybersecuirty were removed form the pre-pilot survey in 2020
+
+############################################## 2018 ####################################################
+
+dataCyberSecuritySurvey2018TidyNameSizeCyber = dataCyberSecuritySurvey2018TidyNameSizeCyber %>% select(-(reason1:reason27))
+
+############################################## 2019 ####################################################
+
+dataCyberSecuritySurvey2019TidyNameSizeCyber = dataCyberSecuritySurvey2019TidyNameSizeCyber %>% select(-(reason1:reason28))
+
+## the rest were already deleted
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 1 + 1
 ```
-
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 1 + 1
 ```
-
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 1 + 1
 ```
-
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 1 + 1
 ```
-
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+1 + 1
+```
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 1 + 1
 ```

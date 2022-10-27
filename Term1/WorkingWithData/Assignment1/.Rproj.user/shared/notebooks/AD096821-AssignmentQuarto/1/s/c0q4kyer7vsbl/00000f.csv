@@ -1,13 +1,14 @@
-"0","############################################## 2020 ####################################################
-
-dataCyberSecuritySurvey2019TidyNameSize = dataCyberSecuritySurvey2019TidyNameSize %>% select(-(online1:online11))
-"
+"0","##questions about reason of investment in cybersecuirty were removed form the pre-pilot survey in 2020"
+"0",""
+"0","############################################## 2018 ####################################################"
+"0",""
+"0","dataCyberSecuritySurvey2018TidyNameSizeCyber = dataCyberSecuritySurvey2018TidyNameSizeCyber %>% select(-(reason1:reason27))"
 "1","[1m[33mError[39m in `select()`:[22m
 [33m![39m Can't subset columns that don't exist.
-[31m✖[39m Column `online1` doesn't exist.
+[31m✖[39m Column `reason1` doesn't exist.
 Backtrace:
-[90m  1. [39mdataCyberSecuritySurvey2019TidyNameSize %>% ...
-[90m  3. [39m[1mdplyr[22m:::select.data.frame(., -(online1:online11))
+[90m  1. [39mdataCyberSecuritySurvey2018TidyNameSizeCyber %>% ...
+[90m  3. [39m[1mdplyr[22m:::select.data.frame(., -(reason1:reason27))
 [90m  6. [39m[1mtidyselect[22m::eval_select(expr(c(...)), .data)
 [90m  7. [39mtidyselect:::eval_select_impl(...)
 [90m 16. [39mtidyselect:::vars_select_eval(...)
