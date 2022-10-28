@@ -623,7 +623,27 @@ dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNa
 ## manage 6 - don't know/missing data
 ## manage 7 - absolutely nothings, good luck have fun
 
-1 + 1
+
+
+numberOfCycles = length(dataCyberSecuritySurvey2018TidyNameSizeCyber$manage1)
+
+dataCyberSecuritySurvey2018TidyNameSizeCyber$management = NA
+
+for (i in 1:numberOfCycles) {
+  
+  ## can't make this a switch case because they are all different variables ffs
+  
+  if(dataCyberSecuritySurvey2018TidyNameSizeCyber$manage1[i] == 1){
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$management[i] = 1
+  }
+    if(dataCyberSecuritySurvey2018TidyNameSizeCyber$manage2[i] == 1){
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$management[i] = 2
+  }
+  
+  
+  
+}
+
 ```
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 1 + 1
