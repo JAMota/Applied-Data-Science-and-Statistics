@@ -621,9 +621,10 @@ dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNa
 ## manage 4 - Business Continuity Plan
 ## manage 5 - Staff members whose job role includes information security or governance //it stopped being used after the 2020 survey 
 ## manage 6 - don't know/missing data
-## manage 7 - absolutely nothings, good luck have fun
+## manage 7 - absolutely nothings, good luck have fun (rip bozzo)
+## manage 8 - written list of what is critical to protect (only exists in the survey of 2022)
 
-
+##################################################### 2018 ###############################################
 
 numberOfCycles = length(dataCyberSecuritySurvey2018TidyNameSizeCyber$manage1)
 
@@ -636,13 +637,199 @@ for (i in 1:numberOfCycles) {
   if(dataCyberSecuritySurvey2018TidyNameSizeCyber$manage1[i] == 1){
     dataCyberSecuritySurvey2018TidyNameSizeCyber$management[i] = 1
   }
-    if(dataCyberSecuritySurvey2018TidyNameSizeCyber$manage2[i] == 1){
+  if(dataCyberSecuritySurvey2018TidyNameSizeCyber$manage2[i] == 1){
     dataCyberSecuritySurvey2018TidyNameSizeCyber$management[i] = 2
+    }
+  if(dataCyberSecuritySurvey2018TidyNameSizeCyber$manage3[i] == 1){
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$management[i] = 3
+  }
+  if(dataCyberSecuritySurvey2018TidyNameSizeCyber$manage4[i] == 1){
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$management[i] = 4
+  }
+  if(dataCyberSecuritySurvey2018TidyNameSizeCyber$manage5[i] == 1){
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$management[i] = 5
+  }
+  ##not needed since by default they are all = NA, just here to remind me 
+  #if(dataCyberSecuritySurvey2018TidyNameSizeCyber$manage6[i] == 1){
+  #  dataCyberSecuritySurvey2018TidyNameSizeCyber$management[i] = NA
+  #}
+  if(dataCyberSecuritySurvey2018TidyNameSizeCyber$manage7[i] == 1){
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$management[i] = 7
+  }
+  
+  
+}
+
+
+##################################################### 2019 ###############################################
+
+numberOfCycles = length(dataCyberSecuritySurvey2019TidyNameSizeCyber$manage1)
+
+dataCyberSecuritySurvey2019TidyNameSizeCyber$management = NA
+
+for (i in 1:numberOfCycles) {
+  
+  ## can't make this a switch case because they are all different variables ffs
+  
+  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$manage1[i] == 1){
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$management[i] = 1
+  }
+  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$manage2[i] == 1){
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$management[i] = 2
+    }
+  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$manage3[i] == 1){
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$management[i] = 3
+  }
+  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$manage4[i] == 1){
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$management[i] = 4
+  }
+  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$manage5[i] == 1){
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$management[i] = 5
+  }
+  ##not needed since by default they are all = NA , just here to remind me 
+  #if(dataCyberSecuritySurvey2019TidyNameSizeCyber$manage6[i] == 1){
+  #  dataCyberSecuritySurvey2019TidyNameSizeCyber$management[i] = NA
+  #}
+  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$manage7[i] == 1){
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$management[i] = 7
+  }
+  
+  
+}
+
+
+##################################################### 2020 ###############################################
+
+numberOfCycles = length(dataCyberSecuritySurvey2020TidyNameSizeCyber$manage1)
+
+dataCyberSecuritySurvey2020TidyNameSizeCyber$management = NA
+
+for (i in 1:numberOfCycles) {
+  
+  ## can't make this a switch case because they are all different variables ffs
+  
+  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$manage1[i] == 1){
+    dataCyberSecuritySurvey2020TidyNameSizeCyber$management[i] = 1
+  }
+  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$manage2[i] == 1){
+    dataCyberSecuritySurvey2020TidyNameSizeCyber$management[i] = 2
+    }
+  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$manage3[i] == 1){
+    dataCyberSecuritySurvey2020TidyNameSizeCyber$management[i] = 3
+  }
+  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$manage4[i] == 1){
+    dataCyberSecuritySurvey2020TidyNameSizeCyber$management[i] = 4
+  }
+  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$manage5[i] == 1){
+    dataCyberSecuritySurvey2020TidyNameSizeCyber$management[i] = 5
+  }
+  ##not needed since by default they are all = NA , just here to remind me 
+  #if(dataCyberSecuritySurvey2020TidyNameSizeCyber$manage6[i] == 1){
+  #  dataCyberSecuritySurvey2020TidyNameSizeCyber$management[i] = NA
+  #}
+  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$manage7[i] == 1){
+    dataCyberSecuritySurvey2020TidyNameSizeCyber$management[i] = 7
+  }
+  
+  
+}
+
+##################################################### 2021 ###############################################
+
+numberOfCycles = length(dataCyberSecuritySurvey2021TidyNameSizeCyber$manage1)
+
+dataCyberSecuritySurvey2021TidyNameSizeCyber$management = NA
+
+for (i in 1:numberOfCycles) {
+  
+  ## can't make this a switch case because they are all different variables ffs
+  
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$manage1[i] == 1){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$management[i] = 1
+  }
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$manage2[i] == 1){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$management[i] = 2
+    }
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$manage3[i] == 1){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$management[i] = 3
+  }
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$manage4[i] == 1){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$management[i] = 4
+  }
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$manage5[i] == 1){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$management[i] = 5
+  }
+  ##not needed since by default they are all = NA , just here to remind me 
+  #if(dataCyberSecuritySurvey2021TidyNameSizeCyber$manage6[i] == 1){
+  #  dataCyberSecuritySurvey2021TidyNameSizeCyber$management[i] = NA
+  #}
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$manage7[i] == 1){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$management[i] = 7
+  }
+  
+  
+}
+
+##################################################### 2022 ###############################################
+
+numberOfCycles = length(dataCyberSecuritySurvey2022TidyNameSizeCyber$manage1)
+
+dataCyberSecuritySurvey2022TidyNameSizeCyber$management = NA
+
+##This part of the data set has an huge amount of missing values and now I will be force to do try and catch because the 
+##nevermind sharrooq saved me by mentioning the is.na so I will be cheesing with it instead, truly a blessing, studyroom at 21 just hits harders
+
+
+  ## can't make this a switch case because they are all different variables ffs
+
+for (i in 1:numberOfCycles) {
+  
+  ?replace_na
+  ##using this to make the values -10001 and I will remove them after the computation 
+  
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$manage1[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$manage1[i], -10001)
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$manage2[i] =  replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$manage2[i], -10001)
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$manage3[i] =  replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$manage3[i], -10001)
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$manage4[i] =  replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$manage4[i], -10001)
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$manage5[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$manage5[i], -10001)
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$manage6[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$manage6[i], -10001)
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$manage7[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$manage7[i], -10001)
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$manage8[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$manage8[i], -10001)
+  
+  
+  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$manage1[i] == 1 ){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$management[i] = 1
+  }
+  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$manage2[i] == 1){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$management[i] = 2
+    }
+  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$manage3[i] == 1){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$management[i] = 3
+  }
+  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$manage4[i] == 1){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$management[i] = 4
+  }
+  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$manage5[i] == 1){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$management[i] = 5
+  }
+  ##not needed since by default they are all = NA , just here to remind me 
+  #if(dataCyberSecuritySurvey2022TidyNameSizeCyber$manage6[i] == 1){
+  #  dataCyberSecuritySurvey2022TidyNameSizeCyber$management[i] = NA
+  #}
+  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$manage7[i] == 1){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$management[i] = 7
   }
   
   
   
 }
+
+dataCyberSecuritySurvey2018TidyNameSizeCyber = dataCyberSecuritySurvey2018TidyNameSizeCyber %>% select(-(manage1:manage7))
+dataCyberSecuritySurvey2019TidyNameSizeCyber = dataCyberSecuritySurvey2019TidyNameSizeCyber %>% select(-(manage1:manage7))
+dataCyberSecuritySurvey2020TidyNameSizeCyber = dataCyberSecuritySurvey2020TidyNameSizeCyber %>% select(-(manage1:manage7))
+dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSizeCyber %>% select(-(manage1:manage7))
+dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-(manage1:manage8))
+ 
 
 ```
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
