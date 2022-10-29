@@ -830,17 +830,57 @@ dataCyberSecuritySurvey2020TidyNameSizeCyber = dataCyberSecuritySurvey2020TidyNa
 dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSizeCyber %>% select(-(manage1:manage7))
 dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-(manage1:manage8))
  
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## now we are removing the reasons why they don't have the appropriate measures because we are more interested in the questions about security after these ones 
+##also it was deleted after 2019
+
+##that is a catch 22
+dataCyberSecuritySurvey2018TidyNameSizeCyber = dataCyberSecuritySurvey2018TidyNameSizeCyber %>% select(-(nopol1:nopol22))
+dataCyberSecuritySurvey2019TidyNameSizeCyber = dataCyberSecuritySurvey2019TidyNameSizeCyber %>% select(-(nopol1:nopol22))
 
 ```
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
+
+## sadly all the questions about measures done in the last 12 moths have changes quite a bit during the years which makes it impossible to have a good year to year analysis when we aren't comparing the same thing
+
+dataCyberSecuritySurvey2018TidyNameSizeCyber = dataCyberSecuritySurvey2018TidyNameSizeCyber %>% select(-(ident1:ident8))
+dataCyberSecuritySurvey2019TidyNameSizeCyber = dataCyberSecuritySurvey2019TidyNameSizeCyber %>% select(-(ident1:ident8))
+dataCyberSecuritySurvey2020TidyNameSizeCyber = dataCyberSecuritySurvey2020TidyNameSizeCyber %>% select(-(ident1:ident11))
+dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSizeCyber %>% select(-(ident1:ident11))
+dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-(ident1:ident7))
+
+##this only exists in 2022 so it makes no sense to look at 
+dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-(comply1:audit))
+
 ```
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
+## This is where the fun begins with some proper policies
+##simping for incremental backups
+
+
+##rule 1 - applying software updates
+##rule 2 - up to date maleware protection
+##rule 3 - well configured firewalls
+##rule 4 - proper permission configuration
+##rule 5 - monitoring user activity
+##rule 6 - encrypting personal data
+##rule 7 - security controls on company devices
+##rule 8 - only allowing access from company devices
+##rule 9 - segregated guest wireless / so basically a DMZ
+##rule 10 - don't know
+##rule 11 - none (YOLO)
+##rule 12 - strong passwords
+
+
+
+
 ```
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
-```
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 1 + 1
 ```
