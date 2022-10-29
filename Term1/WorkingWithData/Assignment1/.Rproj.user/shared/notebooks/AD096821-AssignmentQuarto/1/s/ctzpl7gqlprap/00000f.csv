@@ -7,4 +7,6 @@
 "0","dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSizeCyber %>% select(-(ident1:ident11))"
 "0","dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-(ident1:ident7))"
 "0",""
+"0","##this only exists in 2022 so it makes no sense to look at "
+"0","dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-(comply1:audit))"
 "0",""
