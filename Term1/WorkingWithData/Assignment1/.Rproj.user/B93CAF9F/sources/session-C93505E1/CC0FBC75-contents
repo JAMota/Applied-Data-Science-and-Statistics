@@ -973,8 +973,8 @@ dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules = 0
 for (i in 1:numberOfCycles) {
   
 ##handing missing data that will be 
-#  dataCyberSecuritySurvey2019TidyNameSizeCyber$rules6[i] = #replace_na(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules6[i], -10001)
-  dataCyberSecuritySurvey2019TidyNameSizeCyber$rules12[i] = replace_na(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules12[i], -10001)
+#  dataCyberSecuritySurvey2019TidyNameSizeCyber$rules6[i] = #replace_na(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules6[i], -10004)
+  dataCyberSecuritySurvey2019TidyNameSizeCyber$rules12[i] = replace_na(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules12[i], -10004)
   
   ## can't make this a switch case because they are all different variables ffs
   
@@ -1046,7 +1046,7 @@ dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules = 0
 for (i in 1:numberOfCycles) {
   
   ## can't make this a switch case because they are all different variables ffs
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$rules12[i] = replace_na(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules12[i], -10001)
+    dataCyberSecuritySurvey2020TidyNameSizeCyber$rules12[i] = replace_na(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules12[i], -10004)
   
   if(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules1[i] == 1){
     dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] + 1
@@ -1116,7 +1116,7 @@ dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules = 0
 for (i in 1:numberOfCycles) {
   
   ## can't make this a switch case because they are all different variables ffs
-      dataCyberSecuritySurvey2021TidyNameSizeCyber$rules12[i] = replace_na(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules12[i], -10001)
+      dataCyberSecuritySurvey2021TidyNameSizeCyber$rules12[i] = replace_na(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules12[i], -10004)
   
   if(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules1[i] == 1){
     dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] + 1
@@ -1186,9 +1186,9 @@ dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules = NA
 for (i in 1:numberOfCycles) {
   
   ## can't make this a switch case because they are all different variables ffs
-      dataCyberSecuritySurvey2022TidyNameSizeCyber$rules8[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules8[i], -10001)  
-      dataCyberSecuritySurvey2022TidyNameSizeCyber$rules9[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules9[i], -10001)
-      dataCyberSecuritySurvey2022TidyNameSizeCyber$rules12[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules12[i], -10001)
+      dataCyberSecuritySurvey2022TidyNameSizeCyber$rules8[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules8[i], -10004)  
+      dataCyberSecuritySurvey2022TidyNameSizeCyber$rules9[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules9[i], -10004)
+      dataCyberSecuritySurvey2022TidyNameSizeCyber$rules12[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules12[i], -10004)
   
   
   if(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules1[i] == 1){
@@ -1251,12 +1251,92 @@ for (i in 1:numberOfCycles) {
 }
 
 
+## now we can remove all those rules columns that we are no longer using
+
+dataCyberSecuritySurvey2018TidyNameSizeCyber = dataCyberSecuritySurvey2018TidyNameSizeCyber %>% select(-(rules1:rules14))
+dataCyberSecuritySurvey2019TidyNameSizeCyber = dataCyberSecuritySurvey2019TidyNameSizeCyber %>% select(-(rules1:rules16))
+dataCyberSecuritySurvey2020TidyNameSizeCyber = dataCyberSecuritySurvey2020TidyNameSizeCyber %>% select(-(rules1:rules17))
+dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSizeCyber %>% select(-(rules1:rules17))
+dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-(rules1:rules20))
+
+
 
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
+## we do a little policing but sadly not the one QoS type on cisco servers
+
+
+##policy 1 - what can be stored in the removable devices
+##policy 2 - remote working
+##policy 3 - what staff are permitted to do on your organisations IT devices
+##policy 4 - use of personally-owned devices for business activities
+##policy 5 - Use of new digital technologies such as cloud computing (seriously what the hell is this question smh)
+##policy 6 - data classification
+##policy 7 - a Document Management System
+##policy 8 - don't know (estudasses)
+##policy 9 - none of these (YOLO)
+##policies 10,11 and 12 were only made in 2022 so not work comparing
+
+
+## TODO TODO TODO TODO unfuck this mess as well because I just don't know anymore
+## good news is that I have a solution, bad news is that it is not a perfect solution
+## at least I won't be able to cause a stack overflow because with a precision of 53 bits, and represents to that precision a range of absolute values from about 2e-308 to 2e+308
+
+
+##################################################### 2018 ###############################################
+
+numberOfCycles = length(dataCyberSecuritySurvey2018TidyNameSizeCyber$policy1)
+
+dataCyberSecuritySurvey2018TidyNameSizeCyber$Policies = 0
+
+for (i in 1:numberOfCycles) {
+  
+       dataCyberSecuritySurvey2018TidyNameSizeCyber$policy1[i] = replace_na(dataCyberSecuritySurvey2018TidyNameSizeCyber$policy1[i], -10005) 
+       dataCyberSecuritySurvey2018TidyNameSizeCyber$policy2[i] = replace_na(dataCyberSecuritySurvey2018TidyNameSizeCyber$policy2[i], -10005)
+       dataCyberSecuritySurvey2018TidyNameSizeCyber$policy3[i] = replace_na(dataCyberSecuritySurvey2018TidyNameSizeCyber$policy3[i], -10005)
+       dataCyberSecuritySurvey2018TidyNameSizeCyber$policy4[i] = replace_na(dataCyberSecuritySurvey2018TidyNameSizeCyber$policy4[i], -10005)
+       dataCyberSecuritySurvey2018TidyNameSizeCyber$policy5[i] = replace_na(dataCyberSecuritySurvey2018TidyNameSizeCyber$policy5[i], -10005)
+       dataCyberSecuritySurvey2018TidyNameSizeCyber$policy6[i] = replace_na(dataCyberSecuritySurvey2018TidyNameSizeCyber$policy6[i], -10005)
+       dataCyberSecuritySurvey2018TidyNameSizeCyber$policy7[i] = replace_na(dataCyberSecuritySurvey2018TidyNameSizeCyber$policy7[i], -10005)
+       dataCyberSecuritySurvey2018TidyNameSizeCyber$policy8[i] = replace_na(dataCyberSecuritySurvey2018TidyNameSizeCyber$policy8[i], -10005)
+       dataCyberSecuritySurvey2018TidyNameSizeCyber$policy9[i] = replace_na(dataCyberSecuritySurvey2018TidyNameSizeCyber$policy9[i], -10005)
+       
+  
+  ## can't make this a switch case because they are all different variables ffs
+  
+  if(dataCyberSecuritySurvey2018TidyNameSizeCyber$policy1[i] == 1){
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$Policies[i] = dataCyberSecuritySurvey2018TidyNameSizeCyber$Policies[i] + 1
+  }
+  if(dataCyberSecuritySurvey2018TidyNameSizeCyber$policy2[i] == 1){
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$Policies[i] = dataCyberSecuritySurvey2018TidyNameSizeCyber$Policies[i] + 10
+    }
+  if(dataCyberSecuritySurvey2018TidyNameSizeCyber$policy3[i] == 1){
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$Policies[i] = dataCyberSecuritySurvey2018TidyNameSizeCyber$Policies[i] + 100
+    }
+  if(dataCyberSecuritySurvey2018TidyNameSizeCyber$policy4[i] == 1){
+      dataCyberSecuritySurvey2018TidyNameSizeCyber$Policies[i] = dataCyberSecuritySurvey2018TidyNameSizeCyber$Policies[i] + 1000
+  }
+  if(dataCyberSecuritySurvey2018TidyNameSizeCyber$policy5[i] == 1){
+      dataCyberSecuritySurvey2018TidyNameSizeCyber$Policies[i] = dataCyberSecuritySurvey2018TidyNameSizeCyber$Policies[i] + 10000
+    }
+  if(dataCyberSecuritySurvey2018TidyNameSizeCyber$policy6[i] == 1){
+      dataCyberSecuritySurvey2018TidyNameSizeCyber$Policies[i] = dataCyberSecuritySurvey2018TidyNameSizeCyber$Policies[i] + 100000
+    }
+  if(dataCyberSecuritySurvey2018TidyNameSizeCyber$policy7[i] == 1){
+      dataCyberSecuritySurvey2018TidyNameSizeCyber$Policies[i] = dataCyberSecuritySurvey2018TidyNameSizeCyber$Policies[i] + 1000000
+  }
+  if(dataCyberSecuritySurvey2018TidyNameSizeCyber$policy8[i] == 1){
+      dataCyberSecuritySurvey2018TidyNameSizeCyber$Policies[i] = NA
+  }
+  if(dataCyberSecuritySurvey2018TidyNameSizeCyber$policy9[i] == 1){
+      dataCyberSecuritySurvey2018TidyNameSizeCyber$Policies[i] = dataCyberSecuritySurvey2018TidyNameSizeCyber$Policies[i] + 100000000
+  }
+  
+  
+}
+
 ```
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 1 + 1
