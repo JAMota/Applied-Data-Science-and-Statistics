@@ -40,7 +40,7 @@ library(haven)
 library(tidyverse)
 library(dplyr)
 library(geometry) 
-#install.packages('fontspec')
+#install.packages("Rmpfr")
 library(formatR)
 ```
 
@@ -895,61 +895,63 @@ dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNa
 
 
 ## TODO TODO TODO TODO unfuck this mess as well because I just don't know anymore
+## good news is that I have a solution, bad news is that it is not a perfect solution
+## at least I won't be able to cause a stack overflow because with a precision of 53 bits, and represents to that precision a range of absolute values from about 2e-308 to 2e+308
 
 
 ##################################################### 2018 ###############################################
 
 numberOfCycles = length(dataCyberSecuritySurvey2018TidyNameSizeCyber$rules1)
 
-dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules = NA
+dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules = 0
 
 for (i in 1:numberOfCycles) {
   
   ## can't make this a switch case because they are all different variables ffs
   
   if(dataCyberSecuritySurvey2018TidyNameSizeCyber$rules1[i] == 1){
-    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = 1
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] + 1
   }
   if(dataCyberSecuritySurvey2018TidyNameSizeCyber$rules1[i] == 1){
-    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = 2
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] + 10
     }
   if(dataCyberSecuritySurvey2018TidyNameSizeCyber$rules3[i] == 1){
-    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = 3
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] + 100
   }
   if(dataCyberSecuritySurvey2018TidyNameSizeCyber$rules4[i] == 1){
-    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = 4
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] + 1000
   }
   if(dataCyberSecuritySurvey2018TidyNameSizeCyber$rules5[i] == 1){
-    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = 5
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] + 10000
   }
-  ##not needed since the code was dropped after 2018, just here to remind me 
-  #if(dataCyberSecuritySurvey2018TidyNameSizeCyber$manage6[i] == 1){
-  #  dataCyberSecuritySurvey2018TidyNameSizeCyber$management[i] = NA
-  #}
+
+  if(dataCyberSecuritySurvey2018TidyNameSizeCyber$rules6[i] == 1){
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = NA
+  }
   
   if(dataCyberSecuritySurvey2018TidyNameSizeCyber$rules7[i] == 1){
-    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = 7
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] + 1000000
   }
     if(dataCyberSecuritySurvey2018TidyNameSizeCyber$rules8[i] == 1){
-    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = 8
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] + 10000000
   }
   if(dataCyberSecuritySurvey2018TidyNameSizeCyber$rules9[i] == 1){
-    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = 9
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] + 100000000
     }
   if(dataCyberSecuritySurvey2018TidyNameSizeCyber$rules10[i] == 1){
-    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = 10
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] + 1000000000
   }
   if(dataCyberSecuritySurvey2018TidyNameSizeCyber$rules11[i] == 1){
-    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = 11
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] + 10000000000
   }
   if(dataCyberSecuritySurvey2018TidyNameSizeCyber$rules12[i] == 1){
-    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = 12
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] + 100000000000
   }
     if(dataCyberSecuritySurvey2018TidyNameSizeCyber$rules13[i] == 1){
-    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = 13
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] + 1000000000000
   }
   if(dataCyberSecuritySurvey2018TidyNameSizeCyber$rules14[i] == 1){
-    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = 14
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2018TidyNameSizeCyber$internalRules[i] + 10000000000000
   }
   
   
@@ -960,7 +962,7 @@ for (i in 1:numberOfCycles) {
 
 numberOfCycles = length(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules1)
 
-dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules = NA
+dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules = 0
 
 ##it was at this moment I realised, I fucked up, like really hard because 
 ## I have to change a crap ton of things to collection because I was only receiving the last value from them like an idiot
@@ -976,42 +978,42 @@ for (i in 1:numberOfCycles) {
   ## can't make this a switch case because they are all different variables ffs
   
   if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules1[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = 1
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 1
   }
   if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules1[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = 2
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 10
     }
   if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules3[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = 3
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 100
   }
   if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules4[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = 4
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 1000
   }
   if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules5[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = 5
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 10000
   }
-  ##not needed since the code was dropped after 2018, just here to remind me 
-  #if(dataCyberSecuritySurvey2018TidyNameSizeCyber$manage6[i] == 1){
-  #  dataCyberSecuritySurvey2018TidyNameSizeCyber$management[i] = NA
-  #}
+
+  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules6[i] == 1){
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = NA
+  }
   
   if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules7[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = 7
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 1000000
   }
     if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules8[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = 8
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 10000000
   }
   if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules9[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = 9
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 100000000
     }
   if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules10[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = 10
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 1000000000
   }
   if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules11[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = 11
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 10000000000
   }
   if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules12[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = 12
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 100000000000
   }
     if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules13[i] == 1){
     dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = 13
@@ -1027,6 +1029,7 @@ for (i in 1:numberOfCycles) {
   #  dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = 16
   #}
   
+
   
 }
 
