@@ -1573,6 +1573,12 @@ dataCyberSecuritySurvey2018TidyNameSizeCyber = dataCyberSecuritySurvey2018TidyNa
 dataCyberSecuritySurvey2019TidyNameSizeCyber = dataCyberSecuritySurvey2019TidyNameSizeCyber %>% select(-(tensteps:implemb))
 
 ## TODO: think if I should keep the review of cyber security documentation colum
+## removing it since i don't have it on 2018 and I don't think I will be using it
+
+dataCyberSecuritySurvey2019TidyNameSizeCyber = dataCyberSecuritySurvey2019TidyNameSizeCyber %>% select(-review)
+dataCyberSecuritySurvey2020TidyNameSizeCyber = dataCyberSecuritySurvey2020TidyNameSizeCyber %>% select(-review)
+dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSizeCyber %>% select(-review)
+dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-review)
 
 ## in 2022 they asked some proper questions about cyber security training and cyber security strategy that will be removed for lack of comparrison with the other years
 
@@ -1737,39 +1743,158 @@ for (i in 1:numberOfCycles) {
   if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type2[i] == 1){
     dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] + 10
   }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type3[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] + 100
+  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type3[i] == 1){
+    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] + 100
   }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type4[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] + 1000
+  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type4[i] == 1){
+    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] + 1000
   }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type5[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] + 10000
+  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type5[i] == 1){
+    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] + 10000
   }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type6[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] + 100000
+  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type6[i] == 1){
+    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] + 100000
   }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type7[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] + 1000000
+  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type7[i] == 1){
+    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] + 1000000
   }
-    if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type8[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] + 10000000
+    if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type8[i] == 1){
+    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] + 10000000
     }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type9[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] + 100000000
+  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type9[i] == 1){
+    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] + 100000000
   }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type10[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] = NA
+  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type10[i] == 1){
+    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = NA
   }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type11[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] + 10000000000
+  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type11[i] == 1){
+    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] + 10000000000
   }
-    if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type12[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] + 100000000000
+    if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type12[i] == 1){
+    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] + 100000000000
+    }
+  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type13[i] == 1){
+    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] + 1000000
     }
   
 }
 
+
+##################################################### 2021 ###############################################
+
+numberOfCycles = length(dataCyberSecuritySurvey2021TidyNameSizeCyber$type1)
+
+dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes = 0
+
+for (i in 1:numberOfCycles) {
+  
+  ## can't make this a switch case because they are all different variables ffs
+  
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type1[i] == 1){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 1
+  }
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type2[i] == 1){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 10
+  }
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type3[i] == 1){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 100
+  }
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type4[i] == 1){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 1000
+  }
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type5[i] == 1){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 10000
+  }
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type6[i] == 1){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 100000
+  }
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type7[i] == 1){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 1000000
+  }
+    if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type8[i] == 1){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 10000000
+    }
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type9[i] == 1){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 100000000
+  }
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type10[i] == 1){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = NA
+  }
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type11[i] == 1){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 10000000000
+  }
+    if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type12[i] == 1){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 100000000000
+    }
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type13[i] == 1){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 1000000
+    }
+  
+}
+
+##################################################### 2022 ###############################################
+
+numberOfCycles = length(dataCyberSecuritySurvey2022TidyNameSizeCyber$type1)
+
+dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes = 0
+
+for (i in 1:numberOfCycles) {
+  
+  dataCyberSecuritySurvey2022TidyNameSizeCyber$type13[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$type13[i], -10001)
+  
+  ## can't make this a switch case because they are all different variables ffs
+  
+  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type1[i] == 1){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 1
+  }
+  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type2[i] == 1){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 10
+  }
+  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type3[i] == 1){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 100
+  }
+  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type4[i] == 1){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 1000
+  }
+  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type5[i] == 1){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 10000
+  }
+  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type6[i] == 1){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 100000
+  }
+  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type7[i] == 1){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 1000000
+  }
+    if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type8[i] == 1){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 10000000
+    }
+  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type9[i] == 1){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 100000000
+  }
+  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type10[i] == 1){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = NA
+  }
+  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type11[i] == 1){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 10000000000
+  }
+    if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type12[i] == 1){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 100000000000
+    }
+  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type13[i] == 1){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 1000000
+    }
+  
+}
+
+
+dataCyberSecuritySurvey2018TidyNameSizeCyber = dataCyberSecuritySurvey2018TidyNameSizeCyber %>% select(-(type1:type12))
+dataCyberSecuritySurvey2019TidyNameSizeCyber = dataCyberSecuritySurvey2019TidyNameSizeCyber %>% select(-(type1:type12))
+dataCyberSecuritySurvey2020TidyNameSizeCyber = dataCyberSecuritySurvey2020TidyNameSizeCyber %>% select(-(type1:type13))
+dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSizeCyber %>% select(-(type1:type13))
+dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-(type1:type16))
+
+
+## i think I will also remove the frequency of the attack since I won't be using them for anything and also removing the  //TODO review this choice
 
 
 

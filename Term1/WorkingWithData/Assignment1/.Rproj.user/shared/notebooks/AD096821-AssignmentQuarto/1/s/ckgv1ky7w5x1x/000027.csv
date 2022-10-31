@@ -103,8 +103,8 @@
 "0","for (i in 1:numberOfCycles) {"
 "0","  "
 "0","##handing missing data that will be "
-"0","#  dataCyberSecuritySurvey2019TidyNameSizeCyber$rules6[i] = #replace_na(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules6[i], -10001)"
-"0","  dataCyberSecuritySurvey2019TidyNameSizeCyber$rules12[i] = replace_na(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules12[i], -10001)"
+"0","#  dataCyberSecuritySurvey2019TidyNameSizeCyber$rules6[i] = #replace_na(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules6[i], -10004)"
+"0","  dataCyberSecuritySurvey2019TidyNameSizeCyber$rules12[i] = replace_na(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules12[i], -10004)"
 "0","  "
 "0","  ## can't make this a switch case because they are all different variables ffs"
 "0","  "
@@ -176,7 +176,7 @@
 "0","for (i in 1:numberOfCycles) {"
 "0","  "
 "0","  ## can't make this a switch case because they are all different variables ffs"
-"0","    dataCyberSecuritySurvey2020TidyNameSizeCyber$rules12[i] = replace_na(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules12[i], -10001)"
+"0","    dataCyberSecuritySurvey2020TidyNameSizeCyber$rules12[i] = replace_na(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules12[i], -10004)"
 "0","  "
 "0","  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules1[i] == 1){"
 "0","    dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] + 1"
@@ -246,7 +246,7 @@
 "0","for (i in 1:numberOfCycles) {"
 "0","  "
 "0","  ## can't make this a switch case because they are all different variables ffs"
-"0","      dataCyberSecuritySurvey2021TidyNameSizeCyber$rules12[i] = replace_na(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules12[i], -10001)"
+"0","      dataCyberSecuritySurvey2021TidyNameSizeCyber$rules12[i] = replace_na(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules12[i], -10004)"
 "0","  "
 "0","  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules1[i] == 1){"
 "0","    dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] + 1"
@@ -316,9 +316,9 @@
 "0","for (i in 1:numberOfCycles) {"
 "0","  "
 "0","  ## can't make this a switch case because they are all different variables ffs"
-"0","      dataCyberSecuritySurvey2022TidyNameSizeCyber$rules8[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules8[i], -10001)  "
-"0","      dataCyberSecuritySurvey2022TidyNameSizeCyber$rules9[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules9[i], -10001)"
-"0","      dataCyberSecuritySurvey2022TidyNameSizeCyber$rules12[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules12[i], -10001)"
+"0","      dataCyberSecuritySurvey2022TidyNameSizeCyber$rules8[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules8[i], -10004)  "
+"0","      dataCyberSecuritySurvey2022TidyNameSizeCyber$rules9[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules9[i], -10004)"
+"0","      dataCyberSecuritySurvey2022TidyNameSizeCyber$rules12[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules12[i], -10004)"
 "0","  "
 "0","  "
 "0","  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules1[i] == 1){"
@@ -383,20 +383,12 @@
 "0",""
 "0","## now we can remove all those rules columns that we are no longer using"
 "0",""
-"0","dataCyberSecuritySurvey2018TidyNameSizeCyber = dataCyberSecuritySurvey2018TidyNameSizeCyber %>% select(-(rule1:rule14))"
-"1","[1m[33mError[39m in `select()`:[22m
-[33m![39m Can't subset columns that don't exist.
-[31m✖[39m Column `rule1` doesn't exist.
-Backtrace:
-[90m  1. [39mdataCyberSecuritySurvey2018TidyNameSizeCyber %>% ...
-[90m  3. [39m[1mdplyr[22m:::select.data.frame(., -(rule1:rule14))
-[90m  6. [39m[1mtidyselect[22m::eval_select(expr(c(...)), .data)
-[90m  7. [39mtidyselect:::eval_select_impl(...)
-[90m 16. [39mtidyselect:::vars_select_eval(...)
-     ...
-[90m 22. [39mtidyselect:::eval_colon(expr, data_mask, context_mask)
-[90m 23. [39mtidyselect:::walk_data_tree(...)
-[90m 24. [39mtidyselect:::as_indices_sel_impl(...)
-[90m 25. [39mtidyselect:::as_indices_impl(x, vars, call = call, strict = strict)
-[90m 26. [39m[1m[94mtidyselect:::chr_as_locations([39m[22mx, vars, call = call[1m[94m)[39m[22m
-"
+"0","dataCyberSecuritySurvey2018TidyNameSizeCyber = dataCyberSecuritySurvey2018TidyNameSizeCyber %>% select(-(rules1:rules14))"
+"0","dataCyberSecuritySurvey2019TidyNameSizeCyber = dataCyberSecuritySurvey2019TidyNameSizeCyber %>% select(-(rules1:rules16))"
+"0","dataCyberSecuritySurvey2020TidyNameSizeCyber = dataCyberSecuritySurvey2020TidyNameSizeCyber %>% select(-(rules1:rules17))"
+"0","dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSizeCyber %>% select(-(rules1:rules17))"
+"0","dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-(rules1:rules20))"
+"0",""
+"0",""
+"0",""
+"0",""
