@@ -4,3 +4,8 @@
 "0","library(geometry) "
 "0","#install.packages(""Rmpfr"")"
 "0","library(formatR)"
+"0","#install.packages(""devtools"")"
+"0","devtools::install_github(""cardiomoon/autoReg"")"
+"2","Skipping install of 'autoReg' from a github remote, the SHA1 (6bc789c9) has not changed since last install.
+  Use `force = TRUE` to force installation
+"
