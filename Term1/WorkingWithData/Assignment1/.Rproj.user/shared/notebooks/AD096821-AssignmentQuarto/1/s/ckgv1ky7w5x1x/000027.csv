@@ -311,7 +311,7 @@
 "0",""
 "0","numberOfCycles = length(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules1)"
 "0",""
-"0","dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules = NA"
+"0","dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules = 0"
 "0",""
 "0","for (i in 1:numberOfCycles) {"
 "0","  "

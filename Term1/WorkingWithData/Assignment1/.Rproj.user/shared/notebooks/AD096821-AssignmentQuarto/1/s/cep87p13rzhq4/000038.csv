@@ -179,6 +179,8 @@
 "0","  "
 "0","  ?replace_na"
 "0","  ##using this to make the values -10001 and I will remove them after the computation "
+"0","  ## dear god I am being biased again because I wasn't recording the missing values in the answers"
+"0","  ## this is such a mess, how will I be able to apply proper missing data modules with this"
 "0","  "
 "0","    dataCyberSecuritySurvey2022TidyNameSizeCyber$manage1[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$manage1[i], -10001)"
 "0","    dataCyberSecuritySurvey2022TidyNameSizeCyber$manage2[i] =  replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$manage2[i], -10001)"
