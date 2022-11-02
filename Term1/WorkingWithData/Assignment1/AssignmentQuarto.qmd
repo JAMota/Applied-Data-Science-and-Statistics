@@ -2371,12 +2371,15 @@ dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled = dataCyberSecuritySurvey
 
 imp = mice(dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled, m=5, maxit=10, method="pmm")
 
+## don't forget https://stats.stackexchange.com/questions/76488/error-system-is-computationally-singular-when-running-a-glm
 
-view(init$loggedEvents)
+#view(init$loggedEvents)
 
 #str(dataCyberSecuritySurvey2022TidyNameSizeCyber)
 
 dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled = unlabelled(dataCyberSecuritySurvey2022TidyNameSizeCyber)
+
+#test = unlabelled(dataCyberSecuritySurvey2022TidyNameSizeCyber)
 
 #look_for(dataCyberSecuritySurvey2022TidyNameSizeCyber)
 
