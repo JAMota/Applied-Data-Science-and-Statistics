@@ -897,7 +897,7 @@ dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNa
 ## I want to cry but at least I have a solution that will just take me a few more hours to implement
 ## we will have to delabbel and then clean all the labels from the 
 
-dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled = unlabelled(dataCyberSecuritySurvey2022TidyNameSizeCyber)
+#dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled = unlabelled(dataCyberSecuritySurvey2022TidyNameSizeCyber)
 
 ```
 
@@ -2276,7 +2276,13 @@ dataCyberSecuritySurvey2018TidyNameSizeCyber = dataCyberSecuritySurvey2018TidyNa
 dataCyberSecuritySurvey2019TidyNameSizeCyber = dataCyberSecuritySurvey2019TidyNameSizeCyber %>% select(-(impact1:weight))
 dataCyberSecuritySurvey2020TidyNameSizeCyber = dataCyberSecuritySurvey2020TidyNameSizeCyber %>% select(-(impact1:weight))
 dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSizeCyber %>% select(-(impact1:weight))
-dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-(impact1:weight))
+
+
+dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-(impact1:prevent56))
+
+
+dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-(incidcontent1:weight))
+
 
 ## we also won't be looking at which country inside the uk the charities belong
 
@@ -2323,9 +2329,50 @@ summary(dataCyberSecuritySurvey2020TidyNameSizeCyber)
 summary(dataCyberSecuritySurvey2021TidyNameSizeCyber)
 summary(dataCyberSecuritySurvey2022TidyNameSizeCyber)
 
+
+## I want to cry but at least I have a solution that will just take me a few more hours to implement
+## we will have to delabbel and then clean all the labels from the 
+
+dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled = unlabelled(dataCyberSecuritySurvey2022TidyNameSizeCyber)
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+## I want to cry but at least I have a solution that will just take me a few more hours to implement
+## we will have to delabbel and then clean all the labels from the 
+
+dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$update = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$update)
+
+dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$priority = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$priority)
+
+dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$sizeb = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$sizeb)
+
+dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$typex = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$typex)
+
+dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$sizea = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$sizea)
+
+dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$imid = as.character(dataCyberSecuritySurvey2022TidyNameSizeCyber$imid)
+
+dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$damagedirsx_bands = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$damagedirsx_bands)
+
+dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$damagedirlx_bands = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$damagedirlx_bands)
+
+missmap(dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled)
+
+
+str(dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled)
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ##remember we must make the imputations before we merge the data of all the years
 
-imp <- mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=5, maxit=10, method="pmm")
+dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled = dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled %>% select(-(management:outcomes))
+
+imp = mice(dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled, m=5, maxit=10, method="pmm")
+
+
+view(init$loggedEvents)
 
 #str(dataCyberSecuritySurvey2022TidyNameSizeCyber)
 
@@ -2333,23 +2380,7 @@ dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled = unlabelled(dataCyberSec
 
 #look_for(dataCyberSecuritySurvey2022TidyNameSizeCyber)
 
-dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$update = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$update)
 
-str(dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled)
-
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-## I want to cry but at least I have a solution that will just take me a few more hours to implement
-## we will have to delabbel and then clean all the labels from the 
-
-dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled = unlabelled(dataCyberSecuritySurvey2022TidyNameSizeCyber)
-
-
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
