@@ -1,8 +1,0 @@
-"0",""
-"0","## now we are removing the reasons why they don't have the appropriate measures because we are more interested in the questions about security after these ones "
-"0","##also it was deleted after 2019"
-"0",""
-"0","##that is a catch 22"
-"0","dataCyberSecuritySurvey2018TidyNameSizeCyber = dataCyberSecuritySurvey2018TidyNameSizeCyber %>% select(-(nopol1:nopol22))"
-"0","dataCyberSecuritySurvey2019TidyNameSizeCyber = dataCyberSecuritySurvey2019TidyNameSizeCyber %>% select(-(nopol1:nopol22))"
-"0",""

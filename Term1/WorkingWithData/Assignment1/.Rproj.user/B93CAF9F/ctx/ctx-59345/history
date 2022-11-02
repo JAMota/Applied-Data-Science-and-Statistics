@@ -1,0 +1,512 @@
+dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSizeCyber %>% select(-one_of('income','income2'))
+dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-one_of('income','income2'))
+##cleanign 2018 specific
+dataCyberSecuritySurvey2018TidyNameSizeCyber = dataCyberSecuritySurvey2018TidyNameSizeCyber %>% select(-(charityo:core))
+##removing last year specific
+dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-title)
+library(haven)
+library(tidyverse)
+library(dplyr)
+library(geometry)
+#install.packages("Rmpfr")
+library(formatR)
+#install.packages("devtools")
+#devtools::install_github("cardiomoon/autoReg")
+library(Amelia)
+## Very important documentation for the 2018 data set //it is a surprise toll that will help us later
+technicalAnnex2018 = 'https://doc.ukdataservice.ac.uk/doc/8406/mrdoc/pdf/8406_cyber_security_breaches_survey_2018_technical_annex.pdf'
+## this is the loading the first year of this level of survey data set
+## after burning my entire brain, replacing it with the backup one and also burning that one I discovered that it is just these lines that aren't being formatted in pdf because they are absolutely huge but at least it works for the other ones #FicaADica
+## I assume it was thanks to formatR ?? I won't bother to redo every single bloody step again, enough pain and stack for the day
+dataCyberSecuritySurvey2018 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2018/UKDA-8406-spss-CyberSurvey2018/spss/spss24/17-054294-01_csbs_2018_final_data_deidentified_v1_12042018_public.sav')
+## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey
+dataCyberSecuritySurvey2018$year = '2018'
+## loading the second year of this level of survey data set
+dataCyberSecuritySurvey2019 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2019/UKDA-8480-spss-CyberSurvey2019/spss/spss24/csbs_2019_raw_data.sav')
+## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey
+dataCyberSecuritySurvey2019$year = '2019'
+## loading the third year of this level of survey data set
+dataCyberSecuritySurvey2020 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2020/UKDA-8638-spss-CyberSurvey2020/spss/spss25/csbs2020_final_banded_variables_only_180320_public.sav')
+## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey
+dataCyberSecuritySurvey2020$year = '2020'
+## loading the forth year of this level of survey data set
+dataCyberSecuritySurvey2021 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2020/UKDA-8638-spss-CyberSurvey2020/spss/spss25/csbs2020_final_banded_variables_only_180320_public.sav')
+## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey
+dataCyberSecuritySurvey2021$year = '2021'
+## loading the fifth and final year of this level of survey data set
+dataCyberSecuritySurvey2022 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2022/UKDA-8970-spss/spss/spss25/dcms_csbs_2022_banded_cost_data_only_v4_public.sav')
+## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey
+dataCyberSecuritySurvey2022$year = '2022'
+## Now that we have all data loaded lets start by tidying up data set by data set start from 2018
+## for some sweet sweet documentation about the questions starting from page 26
+##TODO comment in case of fire or debugging
+browseURL(technicalAnnex2018)
+## This entire code snippet is tidying up the type of organisation for the 2018 survey
+##renaming the bloody variables to a more java like name
+dataCyberSecuritySurvey2018TidyName = rename(dataCyberSecuritySurvey2018,instituitionTypes= 'samptype')
+## if instituitionTypes is 1 it is a business if it is 2 it is a charity and in the future 3 is for schools and education
+##daily reminder that there is a boolean type but it is called logical
+##
+##Numeric -	Set of all real numbers
+##Integer -	Set of all integers, Z
+##Logical - -	TRUE and FALSE
+##Complex -	Set of complex numbers
+##Character -	“a”, “b”, “c”, …, “ç”, “#”, “~”, …., “1”, “2”, …etc
+## it is a string so lets make it a proper numeric code
+dataCyberSecuritySurvey2018TidyName$instituitionTypes = as.integer(dataCyberSecuritySurvey2018TidyName$instituitionTypes)
+## typex is 1-2 for businesses and 3 for charities so redundant and can be removed
+dataCyberSecuritySurvey2018TidyName = dataCyberSecuritySurvey2018TidyName %>% select(-typex)
+##dataCyberSecuritySurvey2018TidyName
+## never forget if R can't show all displayed text from a computation it breaks both the rendering and ##the refreshing of the rendered code for some reason ¯/_(ツ)_/¯
+## future edit anything and everything breaks for no reason at all, just kill it and reopen
+## refer to the first NOTE TO SELF for more information
+## see questioner documentation start from page 27
+technicalAnnex2019 = "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/950097/Cyber_Security_Breaches_Survey_2019_-_Technical_Annex_V2.pdf"
+##TODO comment in case of fire or debugging
+browseURL(technicalAnnex2019)
+## see questioner documentation start from page 31
+technicalAnnex2020 = "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/874693/Technical_annex_-_Cyber_Security_Breaches_Survey_2020.pdf"
+##TODO comment in case of fire or debugging
+browseURL(technicalAnnex2020)
+## see questioner documentation start from page 28
+technicalAnnex2021 = "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/977491/20-046099-01_CSBS_2021_quant_technical_annex_v2.4__clean__190321.pdf"
+##TODO comment in case of fire or debugging
+browseURL(technicalAnnex2021)
+## see questioner documentation start from page 36
+technicalAnnex2022 = "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1064446/Technical_annex_-_cyber_security_breaches_survey_March_2022__WEB_.pdf"
+##TODO comment in case of fire or debugging
+browseURL(technicalAnnex2022)
+## trying not to get arrested for DDoSing the uk goverment by making a request to all the pdfs after rendering the page for the nth because I can't code nor debug (challenge impossible)
+##bonus points if I get an exeter ip banned because of it
+## time to recycle the code for the 2018 survey that gets a "neat" code of the institution types
+## This entire code snippet is tidying up the type of organisation for the 2019 survey
+##renaming the bloody variables to a more java like name
+dataCyberSecuritySurvey2019TidyName = rename(dataCyberSecuritySurvey2019,instituitionTypes= 'samptype')
+dataCyberSecuritySurvey2019TidyName$instituitionTypes = as.integer(dataCyberSecuritySurvey2019TidyName$instituitionTypes)
+str(dataCyberSecuritySurvey2019TidyName$instituitionTypes)
+## typex is redundant be we already have an indentifies for each type of institution and can be removed
+## same for questtype since this questioner has more redundancy than amazon and google data centers combined
+dataCyberSecuritySurvey2019TidyName = dataCyberSecuritySurvey2019TidyName %>% select(-one_of('typex', 'questtype'))
+## I continue to save the planet by recycling as much as I can, mostly recycled code from the previous snippet today though
+## this time we do have the concept of education institutions as our code just annoy me after I thought they should be converted to boolean like a getter in java
+dataCyberSecuritySurvey2020TidyName = rename(dataCyberSecuritySurvey2020,instituitionTypes= 'samptype')
+dataCyberSecuritySurvey2020TidyName$instituitionTypes = as.integer(dataCyberSecuritySurvey2020TidyName$instituitionTypes)
+str(dataCyberSecuritySurvey2020TidyName$instituitionTypes)
+## typex is redundant be we already have an indentifies for each type of institution and can be removed
+## same for questtype since this questioner has more redundancy than amazon and google data centers combined
+dataCyberSecuritySurvey2020TidyName = dataCyberSecuritySurvey2020TidyName %>% select(-one_of('typex', 'questtype'))
+##saving the planet one recycled snippet of code at a time
+dataCyberSecuritySurvey2021TidyName = rename(dataCyberSecuritySurvey2021,instituitionTypes= 'samptype')
+dataCyberSecuritySurvey2021TidyName$instituitionTypes = as.integer(dataCyberSecuritySurvey2021TidyName$instituitionTypes)
+str(dataCyberSecuritySurvey2021TidyName$instituitionTypes)
+## typex is redundant be we already have an indentifies for each type of institution and can be removed
+## same for questtype since this questioner has more redundancy than amazon and google data centers combined
+dataCyberSecuritySurvey2021TidyName = dataCyberSecuritySurvey2021TidyName %>% select(-one_of('typex', 'questtype'))
+## this comment was already dealt by the garbage collector unlike the previous ones
+dataCyberSecuritySurvey2022TidyName = rename(dataCyberSecuritySurvey2022,instituitionTypes= 'samptype')
+dataCyberSecuritySurvey2022TidyName$instituitionTypes = as.integer(dataCyberSecuritySurvey2022TidyName$instituitionTypes)
+str(dataCyberSecuritySurvey2022TidyName$instituitionTypes)
+## questtype is redundant be we already have an indentifies for each type of institution and can be removed
+dataCyberSecuritySurvey2022TidyName = dataCyberSecuritySurvey2022TidyName %>% select(-questtype)
+## now that we have started the data wrangling we will categorize all institutions by size
+## remember that for some wicked reason they use -97 for missing values for anything without a proper missing value code for each question
+## I will start by simply nulling every single -97 so we can see how much is missing and then possibly make a table with custom missing values for each like I did in C (remember to start from -1000 to -1999 like standard ACLs)
+############################################## 2018 ####################################################
+numberOfCycles = length(dataCyberSecuritySurvey2018TidyName$sizea)
+dataCyberSecuritySurvey2018TidyNameSize = dataCyberSecuritySurvey2018TidyName
+##apparently we have to be careful because an already inserted NA on the variable breaks the
+for (i in 1:numberOfCycles) {
+if(dataCyberSecuritySurvey2018TidyNameSize$sizea[i] == -97){
+dataCyberSecuritySurvey2018TidyNameSize$sizea[i] = NA
+}
+if(dataCyberSecuritySurvey2018TidyNameSize$sizeb[i] == -97){
+dataCyberSecuritySurvey2018TidyNameSize$sizeb[i] = NA
+}
+}
+############################################## 2019 ####################################################
+numberOfCycles = length(dataCyberSecuritySurvey2019TidyName$sizea)
+dataCyberSecuritySurvey2019TidyNameSize = dataCyberSecuritySurvey2019TidyName
+##apparently we have to be careful because an already inserted NA on the variable breaks the
+for (i in 1:numberOfCycles) {
+if(dataCyberSecuritySurvey2019TidyNameSize$sizea[i] == -97){
+dataCyberSecuritySurvey2019TidyNameSize$sizea[i] = NA
+}
+if(dataCyberSecuritySurvey2019TidyNameSize$sizeb[i] == -97){
+dataCyberSecuritySurvey2019TidyNameSize$sizeb[i] = NA
+}
+}
+############################################## 2020 ####################################################
+numberOfCycles = length(dataCyberSecuritySurvey2020TidyName$sizea)
+dataCyberSecuritySurvey2020TidyNameSize = dataCyberSecuritySurvey2020TidyName
+##apparently we have to be careful because an already inserted NA on the variable breaks the
+for (i in 1:numberOfCycles) {
+if(dataCyberSecuritySurvey2020TidyNameSize$sizea[i] == -97){
+dataCyberSecuritySurvey2020TidyNameSize$sizea[i] = NA
+}
+if(dataCyberSecuritySurvey2020TidyNameSize$sizeb[i] == -97){
+dataCyberSecuritySurvey2020TidyNameSize$sizeb[i] = NA
+}
+}
+############################################## 2021 ####################################################
+numberOfCycles = length(dataCyberSecuritySurvey2021TidyName$sizea)
+dataCyberSecuritySurvey2021TidyNameSize = dataCyberSecuritySurvey2021TidyName
+##apparently we have to be careful because an already inserted NA on the variable breaks the
+for (i in 1:numberOfCycles) {
+if(dataCyberSecuritySurvey2021TidyNameSize$sizea[i] == -97){
+dataCyberSecuritySurvey2021TidyNameSize$sizea[i] = NA
+}
+if(dataCyberSecuritySurvey2021TidyNameSize$sizeb[i] == -97){
+dataCyberSecuritySurvey2021TidyNameSize$sizeb[i] = NA
+}
+}
+############################################## 2022 ####################################################
+numberOfCycles = length(dataCyberSecuritySurvey2022TidyName$sizea)
+dataCyberSecuritySurvey2022TidyNameSize = dataCyberSecuritySurvey2022TidyName
+##apparently we have to be careful because an already inserted NA on the variable breaks the
+for (i in 1:numberOfCycles) {
+if(dataCyberSecuritySurvey2022TidyNameSize$sizea[i] == -97){
+dataCyberSecuritySurvey2022TidyNameSize$sizea[i] = NA
+}
+if(dataCyberSecuritySurvey2022TidyNameSize$sizeb[i] == -97){
+dataCyberSecuritySurvey2022TidyNameSize$sizeb[i] = NA
+}
+}
+## we don't need neither the combined regions (since those are for business analyzes and we don't do those) same for sector_comb1 and 2.
+## region_comb? throw it in the trash. sector_comb1? throw it in the trash. sector_comb2? throw it in the trash.
+############################################## 2018 ####################################################
+dataCyberSecuritySurvey2018TidyNameSize = dataCyberSecuritySurvey2018TidyNameSize %>% select(-one_of('region_comb', 'sector_comb1','sector_comb2'))
+############################################## 2019 ####################################################
+dataCyberSecuritySurvey2019TidyNameSize = dataCyberSecuritySurvey2019TidyNameSize %>% select(-one_of('region_comb', 'sector_comb2'))
+############################################## 2020 ####################################################
+dataCyberSecuritySurvey2020TidyNameSize = dataCyberSecuritySurvey2020TidyNameSize %>% select(-one_of('region_comb', 'sector_comb2'))
+############################################## 2021 ####################################################
+dataCyberSecuritySurvey2021TidyNameSize = dataCyberSecuritySurvey2021TidyNameSize %>% select(-one_of('region_comb', 'sector_comb2'))
+############################################## 2022 ####################################################
+dataCyberSecuritySurvey2022TidyNameSize = dataCyberSecuritySurvey2022TidyNameSize %>% select(-one_of('region_comb', 'sector_comb2'))
+## removing social media questions that are irrelevant because they are absolutely terrible metrics to understand the digitalization of an institution
+##Note to self: if I have time get all of these type of functions in try catch because them breaking up with the select error is no good and it makes me cry every time I have to manually run a part of the snippet and see which is one the bad one
+## https://r-lang.com/r-trycatch-function/  ## #FicaADica
+############################################## 2018 ####################################################
+dataCyberSecuritySurvey2018TidyNameSize = dataCyberSecuritySurvey2018TidyNameSize %>% select(-(online1:online11))
+############################################## 2019 ####################################################
+dataCyberSecuritySurvey2019TidyNameSize = dataCyberSecuritySurvey2019TidyNameSize %>% select(-(online1:online11))
+############################################## 2020 ####################################################
+dataCyberSecuritySurvey2020TidyNameSize = dataCyberSecuritySurvey2020TidyNameSize %>% select(-(online1:online11))
+############################################## 2021 ####################################################
+dataCyberSecuritySurvey2021TidyNameSize = dataCyberSecuritySurvey2021TidyNameSize %>% select(-(online1:online11))
+############################################## 2022 ####################################################
+dataCyberSecuritySurvey2022TidyNameSize = dataCyberSecuritySurvey2022TidyNameSize %>% select(-(online1:online14))
+##removing the question about the mobile usage because it also is a terrible indicator of a company digitalization
+############################################## 2018 ####################################################
+dataCyberSecuritySurvey2018TidyNameSize = dataCyberSecuritySurvey2018TidyNameSize %>% select(-mobile)
+############################################## 2019 ####################################################
+dataCyberSecuritySurvey2019TidyNameSize = dataCyberSecuritySurvey2019TidyNameSize %>% select(-mobile)
+############################################## 2020 ####################################################
+dataCyberSecuritySurvey2020TidyNameSize = dataCyberSecuritySurvey2020TidyNameSize %>% select(-mobile)
+############################################## 2021 ####################################################
+dataCyberSecuritySurvey2021TidyNameSize = dataCyberSecuritySurvey2021TidyNameSize %>% select(-mobile)
+############################################## 2022 ####################################################
+dataCyberSecuritySurvey2022TidyNameSize = dataCyberSecuritySurvey2022TidyNameSize %>% select(-mobile)
+## question about the attitude and outsourcing of cyber security have been removed the the surveys starting from 2020 so it doesn't make sense to keep them in the 2018 and 2019 data set
+## I will start doing some proper garbage collection and this time I am not just taking myself out
+## I will only ever have the original data and the most recent modified one
+############################################## 2018 ####################################################
+dataCyberSecuritySurvey2018TidyNameSize = dataCyberSecuritySurvey2018TidyNameSize %>% select(-(outsource:attitude4))
+############################################## 2019 ####################################################
+dataCyberSecuritySurvey2019TidyNameSize = dataCyberSecuritySurvey2019TidyNameSize %>% select(-(outsource:attitude4))
+## since we want to have access to some proper data we will tidy the questions about how big of a priority is cyber security and how often are the higher ups updated about it
+##this could really use some try catches because for the some weird reason -97 == NA does not return true or false, this is like javascript levels of bad
+## also excepting this very first one the removals will be at the end so they are computed as if they were a transaction because try and catch is a lie to sell more lines of codes
+## thanks to a blessing for our lord not finding the object only gives a warning and we ignore those as long as it still lets run the rest of the code
+rm(dataCyberSecuritySurvey2018TidyName)
+rm(dataCyberSecuritySurvey2019TidyName)
+rm(dataCyberSecuritySurvey2020TidyName)
+rm(dataCyberSecuritySurvey2021TidyName)
+rm(dataCyberSecuritySurvey2022TidyName)
+############################################## 2018 ####################################################
+numberOfCycles = length(dataCyberSecuritySurvey2018TidyNameSize$priority)
+dataCyberSecuritySurvey2018TidyNameSizeCyber = dataCyberSecuritySurvey2018TidyNameSize
+##apparently we have to be careful because an already inserted NA on the variable breaks the
+for (i in 1:numberOfCycles) {
+if(dataCyberSecuritySurvey2018TidyNameSizeCyber$priority[i] == -97){
+dataCyberSecuritySurvey2018TidyNameSizeCyber$priority[i] = NA
+}
+if(dataCyberSecuritySurvey2018TidyNameSizeCyber$update[i] == -97){
+dataCyberSecuritySurvey2018TidyNameSizeCyber$update[i] = NA
+}
+}
+############################################## 2019 ####################################################
+numberOfCycles = length(dataCyberSecuritySurvey2019TidyNameSize$priority)
+dataCyberSecuritySurvey2019TidyNameSizeCyber = dataCyberSecuritySurvey2019TidyNameSize
+##apparently we have to be careful because an already inserted NA on the variable breaks the
+for (i in 1:numberOfCycles) {
+if(dataCyberSecuritySurvey2019TidyNameSizeCyber$priority[i] == -97){
+dataCyberSecuritySurvey2019TidyNameSizeCyber$priority[i] = NA
+}
+if(dataCyberSecuritySurvey2019TidyNameSizeCyber$update[i] == -97){
+dataCyberSecuritySurvey2019TidyNameSizeCyber$update[i] = NA
+}
+}
+############################################## 2020 ####################################################
+numberOfCycles = length(dataCyberSecuritySurvey2020TidyNameSize$priority)
+dataCyberSecuritySurvey2020TidyNameSizeCyber = dataCyberSecuritySurvey2020TidyNameSize
+##apparently we have to be careful because an already inserted NA on the variable breaks the
+for (i in 1:numberOfCycles) {
+if(dataCyberSecuritySurvey2020TidyNameSizeCyber$priority[i] == -97){
+dataCyberSecuritySurvey2020TidyNameSizeCyber$priority[i] = NA
+}
+if(dataCyberSecuritySurvey2020TidyNameSizeCyber$update[i] == -97){
+dataCyberSecuritySurvey2020TidyNameSizeCyber$update[i] = NA
+}
+}
+############################################## 2021 ####################################################
+numberOfCycles = length(dataCyberSecuritySurvey2021TidyNameSize$priority)
+dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSize
+##apparently we have to be careful because an already inserted NA on the variable breaks the
+for (i in 1:numberOfCycles) {
+if(dataCyberSecuritySurvey2021TidyNameSizeCyber$priority[i] == -97){
+dataCyberSecuritySurvey2021TidyNameSizeCyber$priority[i] = NA
+}
+if(dataCyberSecuritySurvey2021TidyNameSizeCyber$update[i] == -97){
+dataCyberSecuritySurvey2021TidyNameSizeCyber$update[i] = NA
+}
+}
+############################################## 2022 ####################################################
+numberOfCycles = length(dataCyberSecuritySurvey2022TidyNameSize$priority)
+dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSize
+##apparently we have to be careful because an already inserted NA on the variable breaks the
+for (i in 1:numberOfCycles) {
+if(dataCyberSecuritySurvey2022TidyNameSizeCyber$priority[i] == -97){
+dataCyberSecuritySurvey2022TidyNameSizeCyber$priority[i] = NA
+}
+if(dataCyberSecuritySurvey2022TidyNameSizeCyber$update[i] == -97){
+dataCyberSecuritySurvey2022TidyNameSizeCyber$update[i] = NA
+}
+}
+## garbage man? Well, of course I know him. He is me.
+rm(dataCyberSecuritySurvey2018TidyNameSize)
+rm(dataCyberSecuritySurvey2019TidyNameSize)
+rm(dataCyberSecuritySurvey2020TidyNameSize)
+rm(dataCyberSecuritySurvey2021TidyNameSize)
+rm(dataCyberSecuritySurvey2022TidyNameSize)
+##questions about reason of investment in cybersecuirty were removed form the pre-pilot survey in 2020
+############################################## 2018 ####################################################
+dataCyberSecuritySurvey2018TidyNameSizeCyber = dataCyberSecuritySurvey2018TidyNameSizeCyber %>% select(-(reason1:reason27))
+############################################## 2019 ####################################################
+dataCyberSecuritySurvey2019TidyNameSizeCyber = dataCyberSecuritySurvey2019TidyNameSizeCyber %>% select(-(reason1:reason28))
+## the rest were already deleted
+## removing the cyber security insurance claims because they don't give us relevant data to what we are analyzing in the data set
+## pro tip: having insurance does not make you more or less likely to be targeted nor does it change the costs of the attack
+############################################## 2018 ####################################################
+dataCyberSecuritySurvey2018TidyNameSizeCyber = dataCyberSecuritySurvey2018TidyNameSizeCyber %>% select(-(insurex:noinsure19))
+############################################## 2019 ####################################################
+dataCyberSecuritySurvey2019TidyNameSizeCyber = dataCyberSecuritySurvey2019TidyNameSizeCyber %>% select(-(insurex:noinsure19))
+############################################## 2020 ####################################################
+dataCyberSecuritySurvey2020TidyNameSizeCyber = dataCyberSecuritySurvey2020TidyNameSizeCyber %>% select(-(insurex:claim))
+############################################## 2021 ####################################################
+dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSizeCyber %>% select(-(insurex:claim))
+############################################## 2022 ####################################################
+dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-(insurex:claim))
+## we are removing the questions about asking for info, advice, guidance about cyber security or government schemes
+############################################## 2018 ####################################################
+dataCyberSecuritySurvey2018TidyNameSizeCyber = dataCyberSecuritySurvey2018TidyNameSizeCyber %>% select(-(info1:trainwho7))
+############################################## 2019 ####################################################
+dataCyberSecuritySurvey2019TidyNameSizeCyber = dataCyberSecuritySurvey2019TidyNameSizeCyber %>% select(-(info1:trainwho7))
+############################################## 2020 ####################################################
+dataCyberSecuritySurvey2020TidyNameSizeCyber = dataCyberSecuritySurvey2020TidyNameSizeCyber %>% select(-(info1:scheme5))
+############################################## 2021 ####################################################
+dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSizeCyber %>% select(-(info1:scheme5))
+############################################## 2022 ####################################################
+## here we have more that we need to remove because they introduced questions similar to the ones that we are removing but with the government as a source for reason to make implementations which we are also not interested in
+dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-(info1:govtact44))
+library(mice)
+install.packages("mice")
+install.packages("mice")
+library(mice)
+install.packages("VIM")
+library(VIM)
+?aggr()
+aggr(dataCyberSecuritySurvey2022TidyNameSizeCyber, col=c('white','red'), numbers=1, sortVars=TRUE, cex.axis=.7, gap=3, ylab=c("Percentage of missing data","Missing Data Pattern"))
+aggr(dataCyberSecuritySurvey2022TidyNameSizeCyber, col=c('white','red'), numbers=1, sortVars=TRUE, cex.axis=.7, gap=3, ylab=c("Percentage of missing data","Missing Data Pattern"))
+imp = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=5, maxit=10, method="pmm")
+dataCyberSecuritySurvey2022TidyNameSizeCyber
+head(imp <- mice(data, m=5, maxit=10, method="pmm"))
+head(dataCyberSecuritySurvey2022TidyNameSizeCyber)
+imp = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=5, maxit=10, method="pmm")
+mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=5, maxit=10, method="pmm")
+View(dataCyberSecuritySurvey2022TidyNameSizeCyber)
+View(dataCyberSecuritySurvey2022TidyNameSizeCyber)
+?labelled
+?labelled
+str(dataCyberSecuritySurvey2022TidyNameSizeCyber)
+imp = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=5, maxit=10, method="pmm")
+imp = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=5, maxit=10, method="pmm")
+library(haven)
+library(tidyverse)
+library(dplyr)
+library(geometry)
+#install.packages("Rmpfr")
+library(formatR)
+install.packages("VIM")
+#devtools::install_github("cardiomoon/autoReg")
+library(Amelia)
+library(mice)
+library(VIM)
+## Very important documentation for the 2018 data set //it is a surprise toll that will help us later
+technicalAnnex2018 = 'https://doc.ukdataservice.ac.uk/doc/8406/mrdoc/pdf/8406_cyber_security_breaches_survey_2018_technical_annex.pdf'
+## this is the loading the first year of this level of survey data set
+## after burning my entire brain, replacing it with the backup one and also burning that one I discovered that it is just these lines that aren't being formatted in pdf because they are absolutely huge but at least it works for the other ones #FicaADica
+## I assume it was thanks to formatR ?? I won't bother to redo every single bloody step again, enough pain and stack for the day
+dataCyberSecuritySurvey2018 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2018/UKDA-8406-spss-CyberSurvey2018/spss/spss24/17-054294-01_csbs_2018_final_data_deidentified_v1_12042018_public.sav')
+## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey
+dataCyberSecuritySurvey2018$year = '2018'
+## loading the second year of this level of survey data set
+dataCyberSecuritySurvey2019 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2019/UKDA-8480-spss-CyberSurvey2019/spss/spss24/csbs_2019_raw_data.sav')
+## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey
+dataCyberSecuritySurvey2019$year = '2019'
+## loading the third year of this level of survey data set
+dataCyberSecuritySurvey2020 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2020/UKDA-8638-spss-CyberSurvey2020/spss/spss25/csbs2020_final_banded_variables_only_180320_public.sav')
+## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey
+dataCyberSecuritySurvey2020$year = '2020'
+## loading the forth year of this level of survey data set
+dataCyberSecuritySurvey2021 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2020/UKDA-8638-spss-CyberSurvey2020/spss/spss25/csbs2020_final_banded_variables_only_180320_public.sav')
+## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey
+dataCyberSecuritySurvey2021$year = '2021'
+## loading the fifth and final year of this level of survey data set
+dataCyberSecuritySurvey2022 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2022/UKDA-8970-spss/spss/spss25/dcms_csbs_2022_banded_cost_data_only_v4_public.sav')
+## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey
+dataCyberSecuritySurvey2022$year = '2022'
+## Now that we have all data loaded lets start by tidying up data set by data set start from 2018
+## for some sweet sweet documentation about the questions starting from page 26
+##TODO comment in case of fire or debugging
+browseURL(technicalAnnex2018)
+## This entire code snippet is tidying up the type of organisation for the 2018 survey
+##renaming the bloody variables to a more java like name
+dataCyberSecuritySurvey2018TidyName = rename(dataCyberSecuritySurvey2018,instituitionTypes= 'samptype')
+## if instituitionTypes is 1 it is a business if it is 2 it is a charity and in the future 3 is for schools and education
+##daily reminder that there is a boolean type but it is called logical
+##
+##Numeric -	Set of all real numbers
+##Integer -	Set of all integers, Z
+##Logical - -	TRUE and FALSE
+##Complex -	Set of complex numbers
+##Character -	“a”, “b”, “c”, …, “ç”, “#”, “~”, …., “1”, “2”, …etc
+## it is a string so lets make it a proper numeric code
+dataCyberSecuritySurvey2018TidyName$instituitionTypes = as.integer(dataCyberSecuritySurvey2018TidyName$instituitionTypes)
+## typex is 1-2 for businesses and 3 for charities so redundant and can be removed
+dataCyberSecuritySurvey2018TidyName = dataCyberSecuritySurvey2018TidyName %>% select(-typex)
+##dataCyberSecuritySurvey2018TidyName
+## never forget if R can't show all displayed text from a computation it breaks both the rendering and ##the refreshing of the rendered code for some reason ¯/_(ツ)_/¯
+## future edit anything and everything breaks for no reason at all, just kill it and reopen
+## refer to the first NOTE TO SELF for more information
+## see questioner documentation start from page 27
+technicalAnnex2019 = "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/950097/Cyber_Security_Breaches_Survey_2019_-_Technical_Annex_V2.pdf"
+##TODO comment in case of fire or debugging
+browseURL(technicalAnnex2019)
+## see questioner documentation start from page 31
+technicalAnnex2020 = "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/874693/Technical_annex_-_Cyber_Security_Breaches_Survey_2020.pdf"
+##TODO comment in case of fire or debugging
+browseURL(technicalAnnex2020)
+## see questioner documentation start from page 28
+technicalAnnex2021 = "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/977491/20-046099-01_CSBS_2021_quant_technical_annex_v2.4__clean__190321.pdf"
+##TODO comment in case of fire or debugging
+browseURL(technicalAnnex2021)
+## see questioner documentation start from page 36
+technicalAnnex2022 = "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1064446/Technical_annex_-_cyber_security_breaches_survey_March_2022__WEB_.pdf"
+##TODO comment in case of fire or debugging
+browseURL(technicalAnnex2022)
+## trying not to get arrested for DDoSing the uk goverment by making a request to all the pdfs after rendering the page for the nth because I can't code nor debug (challenge impossible)
+##bonus points if I get an exeter ip banned because of it
+## time to recycle the code for the 2018 survey that gets a "neat" code of the institution types
+## This entire code snippet is tidying up the type of organisation for the 2019 survey
+##renaming the bloody variables to a more java like name
+dataCyberSecuritySurvey2019TidyName = rename(dataCyberSecuritySurvey2019,instituitionTypes= 'samptype')
+dataCyberSecuritySurvey2019TidyName$instituitionTypes = as.integer(dataCyberSecuritySurvey2019TidyName$instituitionTypes)
+str(dataCyberSecuritySurvey2019TidyName$instituitionTypes)
+## typex is redundant be we already have an indentifies for each type of institution and can be removed
+## same for questtype since this questioner has more redundancy than amazon and google data centers combined
+dataCyberSecuritySurvey2019TidyName = dataCyberSecuritySurvey2019TidyName %>% select(-one_of('typex', 'questtype'))
+## I continue to save the planet by recycling as much as I can, mostly recycled code from the previous snippet today though
+## this time we do have the concept of education institutions as our code just annoy me after I thought they should be converted to boolean like a getter in java
+dataCyberSecuritySurvey2020TidyName = rename(dataCyberSecuritySurvey2020,instituitionTypes= 'samptype')
+dataCyberSecuritySurvey2020TidyName$instituitionTypes = as.integer(dataCyberSecuritySurvey2020TidyName$instituitionTypes)
+str(dataCyberSecuritySurvey2020TidyName$instituitionTypes)
+## typex is redundant be we already have an indentifies for each type of institution and can be removed
+## same for questtype since this questioner has more redundancy than amazon and google data centers combined
+dataCyberSecuritySurvey2020TidyName = dataCyberSecuritySurvey2020TidyName %>% select(-one_of('typex', 'questtype'))
+##saving the planet one recycled snippet of code at a time
+dataCyberSecuritySurvey2021TidyName = rename(dataCyberSecuritySurvey2021,instituitionTypes= 'samptype')
+dataCyberSecuritySurvey2021TidyName$instituitionTypes = as.integer(dataCyberSecuritySurvey2021TidyName$instituitionTypes)
+str(dataCyberSecuritySurvey2021TidyName$instituitionTypes)
+## typex is redundant be we already have an indentifies for each type of institution and can be removed
+## same for questtype since this questioner has more redundancy than amazon and google data centers combined
+dataCyberSecuritySurvey2021TidyName = dataCyberSecuritySurvey2021TidyName %>% select(-one_of('typex', 'questtype'))
+## this comment was already dealt by the garbage collector unlike the previous ones
+dataCyberSecuritySurvey2022TidyName = rename(dataCyberSecuritySurvey2022,instituitionTypes= 'samptype')
+dataCyberSecuritySurvey2022TidyName$instituitionTypes = as.integer(dataCyberSecuritySurvey2022TidyName$instituitionTypes)
+str(dataCyberSecuritySurvey2022TidyName$instituitionTypes)
+## questtype is redundant be we already have an indentifies for each type of institution and can be removed
+dataCyberSecuritySurvey2022TidyName = dataCyberSecuritySurvey2022TidyName %>% select(-questtype)
+## now that we have started the data wrangling we will categorize all institutions by size
+## remember that for some wicked reason they use -97 for missing values for anything without a proper missing value code for each question
+## I will start by simply nulling every single -97 so we can see how much is missing and then possibly make a table with custom missing values for each like I did in C (remember to start from -1000 to -1999 like standard ACLs)
+############################################## 2018 ####################################################
+numberOfCycles = length(dataCyberSecuritySurvey2018TidyName$sizea)
+dataCyberSecuritySurvey2018TidyNameSize = dataCyberSecuritySurvey2018TidyName
+##apparently we have to be careful because an already inserted NA on the variable breaks the
+for (i in 1:numberOfCycles) {
+if(dataCyberSecuritySurvey2018TidyNameSize$sizea[i] == -97){
+dataCyberSecuritySurvey2018TidyNameSize$sizea[i] = NA
+}
+if(dataCyberSecuritySurvey2018TidyNameSize$sizeb[i] == -97){
+dataCyberSecuritySurvey2018TidyNameSize$sizeb[i] = NA
+}
+}
+############################################## 2019 ####################################################
+numberOfCycles = length(dataCyberSecuritySurvey2019TidyName$sizea)
+dataCyberSecuritySurvey2019TidyNameSize = dataCyberSecuritySurvey2019TidyName
+##apparently we have to be careful because an already inserted NA on the variable breaks the
+for (i in 1:numberOfCycles) {
+if(dataCyberSecuritySurvey2019TidyNameSize$sizea[i] == -97){
+dataCyberSecuritySurvey2019TidyNameSize$sizea[i] = NA
+}
+if(dataCyberSecuritySurvey2019TidyNameSize$sizeb[i] == -97){
+dataCyberSecuritySurvey2019TidyNameSize$sizeb[i] = NA
+}
+}
+############################################## 2020 ####################################################
+numberOfCycles = length(dataCyberSecuritySurvey2020TidyName$sizea)
+dataCyberSecuritySurvey2020TidyNameSize = dataCyberSecuritySurvey2020TidyName
+##apparently we have to be careful because an already inserted NA on the variable breaks the
+for (i in 1:numberOfCycles) {
+if(dataCyberSecuritySurvey2020TidyNameSize$sizea[i] == -97){
+dataCyberSecuritySurvey2020TidyNameSize$sizea[i] = NA
+}
+if(dataCyberSecuritySurvey2020TidyNameSize$sizeb[i] == -97){
+dataCyberSecuritySurvey2020TidyNameSize$sizeb[i] = NA
+}
+}
+############################################## 2021 ####################################################
+numberOfCycles = length(dataCyberSecuritySurvey2021TidyName$sizea)
+dataCyberSecuritySurvey2021TidyNameSize = dataCyberSecuritySurvey2021TidyName
+##apparently we have to be careful because an already inserted NA on the variable breaks the
+for (i in 1:numberOfCycles) {
+if(dataCyberSecuritySurvey2021TidyNameSize$sizea[i] == -97){
+dataCyberSecuritySurvey2021TidyNameSize$sizea[i] = NA
+}
+if(dataCyberSecuritySurvey2021TidyNameSize$sizeb[i] == -97){
+dataCyberSecuritySurvey2021TidyNameSize$sizeb[i] = NA
+}
+}
+############################################## 2022 ####################################################
+numberOfCycles = length(dataCyberSecuritySurvey2022TidyName$sizea)
+dataCyberSecuritySurvey2022TidyNameSize = dataCyberSecuritySurvey2022TidyName
+##apparently we have to be careful because an already inserted NA on the variable breaks the
+for (i in 1:numberOfCycles) {
+if(dataCyberSecuritySurvey2022TidyNameSize$sizea[i] == -97){
+dataCyberSecuritySurvey2022TidyNameSize$sizea[i] = NA
+}
+if(dataCyberSecuritySurvey2022TidyNameSize$sizeb[i] == -97){
+dataCyberSecuritySurvey2022TidyNameSize$sizeb[i] = NA
+}
+}
