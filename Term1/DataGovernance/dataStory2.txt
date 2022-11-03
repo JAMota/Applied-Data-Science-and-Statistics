@@ -1,0 +1,23 @@
+1 main meaning 
+
+collection of data of apes, to protect apes
+drones are still not technologically advanced enough to always be a better alternative than the ground survey
+There are limitations to the data collection that is not possibly through to collect via drone 
+
+
+2 pros n cons of drones and team surveys
+
+drones pros: are less time consumming, more cost effective, have bigger frequency of operations, cover a bigger area
+drone cons: lack of standardization (camera calibration and different paramenters for calibration)
+
+ground surveys pros: they can collect a more varied type of data, indirect evidence (poacher, plant disiess),
+ familiar with the area and locals
+ground survey cons: relly on indirect evidence for data collection
+
+
+3 implication of the story to datification
+
+data collected trhough ai and machine isn't perfect
+
+
+
