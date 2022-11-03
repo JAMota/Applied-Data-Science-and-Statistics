@@ -26,7 +26,8 @@ Q: I have a question about the quarto pdf exportation, if I wanted to do a table
 R: Hi Joao, no I don’t think it would. I am really talking about 8 pages of text/figures
 
 
+Have a look at how to import the data without labels to R using the read_spps
 
-remember to make the variables as factores instead of numeric because one isn't just bigger than the others
+remember to make the variables as factors (as.factor(var)) instead of numeric because one isn't just bigger than the others
 Instead of making a huge complex variable that computes all the outcomes work with multiple binary that cover most of outcomes
 post effect for comparing (attack types/outcomes) and costs
