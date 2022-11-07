@@ -1,0 +1,55 @@
+use the method of moments ignore the  Rayleigh distribution question 3
+
+question 1 
+
+b) we assume that the wife has blue eyes
+
+c) knowing that the first child has brown eyes, what does that change the probability of 
+aron having blue eyes
+
+Q2
+
+we always have to consider the 359 mps because the 2 candidates will not be voting
+each mp behaves independently 
+
+Remember we never have to make the exact answer we need to do compute those probabilities
+
+c) things can change 14 times (each every day) at the end day 1 there is ratio and then 
+at the end of day 2 there will a different ratio and so on
+
+d) instead of stoppping at the end of day 14 we go till day 60
+
+Q3
+a)
+use the method of moments ignore the Rayleigh distribution question 3
+
+
+e) all you need is that the sample mean is 3.2 and the number of samples is 150
+
+4
+
+find the pdf using it's properties to find the constant k and then the only 
+unkown paramenteris the parameter of the function which we have to find using we have 
+to use a maximum likelihoods
+
+b) we don't have to solve and proceed after the quadratric equantion
+
+c) we have to adjust the code in the hint to proper equation
+
+5 (all in R so we have to write a lot of what we can see, why we did it and other
+explanations and not just the code, don't forget to also show the output)
+(also include all the plots)
+
+b) give explanationa around the model that we have fit
+
+
+
+
+
+
+
+
+
+
+
+
