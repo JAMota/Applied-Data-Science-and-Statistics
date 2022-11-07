@@ -2340,13 +2340,13 @@ dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled = unlabelled(dataCyberSec
 ## I want to cry but at least I have a solution that will just take me a few more hours to implement
 ## we will have to delabbel and then clean all the labels from the 
 
-dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$update = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$update)
+dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$update = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$update)
 
-dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$priority = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$priority)
+dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$priority = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$priority)
 
-dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$sizeb = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$sizeb)
+dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$sizeb = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$sizeb)
 
-dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$typex = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$typex)
+dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$typex = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$typex)
 
 dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$sizea = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$sizea)
 
