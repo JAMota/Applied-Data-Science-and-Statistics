@@ -922,7 +922,7 @@ dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNa
 ##rule 14 - backup the data to another place that isn't the cloud  
 ##rule 15 - storing and moving data/files securely //wasn't used in 2018
 ##rule 16 - 2 factor authentication // only used in 2019
-##rule 17 - policy for strong passwords //not in 2018
+##rule 17 - policy for strong passwords //not til 2020
 ##rule 18 - VPN (virtual private network) //only in 2022
 ##rule 19 - phishing procedure // only in 2022
 ##rule 20 - authentication when accessing the network // only in 2022
@@ -953,19 +953,35 @@ dataCyberSecuritySurvey2018TidyNameSizeCyber$rulesUserControl = 0
 
 for (i in 1:numberOfCycles) {
   
+  
 ## the code is now be faster and other hilarious jokes you can tell yourself
   
   
-    if(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules1[i] == 1 || dataCyberSecuritySurvey2022TidyNameSizeCyber$rules2[i] == 1 || dataCyberSecuritySurvey2022TidyNameSizeCyber$rules13[i] == 1 || dataCyberSecuritySurvey2022TidyNameSizeCyber$rules14[i] == 1  #dataCyberSecuritySurvey2022TidyNameSizeCyber$rules15[i] == 1 
+    if(dataCyberSecuritySurvey2018TidyNameSizeCyber$rules1[i] == 1 || dataCyberSecuritySurvey2018TidyNameSizeCyber$rules2[i] == 1 || dataCyberSecuritySurvey2018TidyNameSizeCyber$rules13[i] == 1 || dataCyberSecuritySurvey2018TidyNameSizeCyber$rules14[i] == 1  #dataCyberSecuritySurvey2018TidyNameSizeCyber$rules15[i] == 1 
        ){ ##either 1,2,13,14 and 15 after 2018
     
-     dataCyberSecuritySurvey2022TidyNameSizeCyber$rulesUpdating[i] = 1
+     dataCyberSecuritySurvey2018TidyNameSizeCyber$rulesUpdating[i] = 1
   
     } 
-      if(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules3[i] == 1 || dataCyberSecuritySurvey2022TidyNameSizeCyber$rules4[i] == 1 || dataCyberSecuritySurvey2022TidyNameSizeCyber$rules9[i] == 1   #dataCyberSecuritySurvey2022TidyNameSizeCyber$rules17[i] == 1 
+      if(dataCyberSecuritySurvey2018TidyNameSizeCyber$rules3[i] == 1 || dataCyberSecuritySurvey2018TidyNameSizeCyber$rules4[i] == 1 || dataCyberSecuritySurvey2018TidyNameSizeCyber$rules9[i] == 1   #dataCyberSecuritySurvey2018TidyNameSizeCyber$rules17[i] == 1 
        ){ ##either 3,4,9 and 17 after 2018
     
-     dataCyberSecuritySurvey2022TidyNameSizeCyber$rulesSecurityConfigs[i] = 1
+     dataCyberSecuritySurvey2018TidyNameSizeCyber$rulesSecurityConfigs[i] = 1
+  
+      }
+  
+        if(dataCyberSecuritySurvey2018TidyNameSizeCyber$rules5[i] == 1 || dataCyberSecuritySurvey2018TidyNameSizeCyber$rules7[i] == 1 || dataCyberSecuritySurvey2018TidyNameSizeCyber$rules8[i] == 1){ ##either 5,7,8
+    
+     dataCyberSecuritySurvey2018TidyNameSizeCyber$rulesUserControl[i] = 1
+  
+        }
+  
+  
+        if(dataCyberSecuritySurvey2018TidyNameSizeCyber$rules10[i] == 1) { 
+    
+     dataCyberSecuritySurvey2018TidyNameSizeCyber$rulesUserControl[i] = NA
+     dataCyberSecuritySurvey2018TidyNameSizeCyber$rulesSecurityConfigs[i] = NA
+     dataCyberSecuritySurvey2018TidyNameSizeCyber$rulesUpdating[i] = NA
   
   }
   
@@ -975,293 +991,194 @@ for (i in 1:numberOfCycles) {
 
 ##################################################### 2019 ###############################################
 
+
+
+
 numberOfCycles = length(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules1)
 
-dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules = 0
+dataCyberSecuritySurvey2019TidyNameSizeCyber$rulesUpdating = 0
+dataCyberSecuritySurvey2019TidyNameSizeCyber$rulesSecurityConfigs = 0
+dataCyberSecuritySurvey2019TidyNameSizeCyber$rulesUserControl = 0
 
-##it was at this moment I realised, I fucked up, like really hard because 
-## I have to change a crap ton of things to collection because I was only receiving the last value from them like an idiot
-##brb = c(1,2,3)
-##
-##brb = append(brb,5)
 
 for (i in 1:numberOfCycles) {
   
-##handing missing data that will be 
-#  dataCyberSecuritySurvey2019TidyNameSizeCyber$rules6[i] = #replace_na(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules6[i], -10004)
-  dataCyberSecuritySurvey2019TidyNameSizeCyber$rules12[i] = replace_na(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules12[i], -10004)
   
-  ## can't make this a switch case because they are all different variables ffs
+## the code is now be faster and other hilarious jokes you can tell yourself
   
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules1[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 1
-  }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules1[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 10
-    }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules3[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 100
-  }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules4[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 1000
-  }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules5[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 10000
-  }
-##yeah we really didn't need this one since it was only present in 2018 my bad
-  #if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules6[i] == 1){
-  #  dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = NA
-  #}
   
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules7[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 1000000
-  }
-    if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules8[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 10000000
-  }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules9[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 100000000
-    }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules10[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = NA
-  }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules11[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 10000000000
-  }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules12[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 100000000000
-  }
-    if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules13[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 1000000000000
-  }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules14[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 10000000000000
-  }
-    if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules15[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] + 100000000000000
-    }
-  ## we don't care about something that was only analyzed during one year
-  #if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules16[i] == 1){
-  #  dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = 16
-  #}
+    if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules1[i] == 1 || dataCyberSecuritySurvey2019TidyNameSizeCyber$rules2[i] == 1 || dataCyberSecuritySurvey2019TidyNameSizeCyber$rules13[i] == 1 || dataCyberSecuritySurvey2019TidyNameSizeCyber$rules14[i] == 1 || dataCyberSecuritySurvey2019TidyNameSizeCyber$rules15[i] == 1 
+       ){ ##either 1,2,13,14 and 15 
+    
+     dataCyberSecuritySurvey2019TidyNameSizeCyber$rulesUpdating[i] = 1
   
-
+    } 
+      if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules3[i] == 1 || dataCyberSecuritySurvey2019TidyNameSizeCyber$rules4[i] == 1 || dataCyberSecuritySurvey2019TidyNameSizeCyber$rules9[i] == 1   #dataCyberSecuritySurvey2019TidyNameSizeCyber$rules17[i] == 1 
+       ){ ##either 3,4,9 and 17 after 2019
+    
+     dataCyberSecuritySurvey2019TidyNameSizeCyber$rulesSecurityConfigs[i] = 1
+  
+      }
+  
+        if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules5[i] == 1 || dataCyberSecuritySurvey2019TidyNameSizeCyber$rules7[i] == 1 || dataCyberSecuritySurvey2019TidyNameSizeCyber$rules8[i] == 1){ ##either 5,7,8
+    
+     dataCyberSecuritySurvey2019TidyNameSizeCyber$rulesUserControl[i] = 1
+  
+        }
+  
+  
+        if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules10[i] == 1) { 
+    
+     dataCyberSecuritySurvey2019TidyNameSizeCyber$rulesUserControl[i] = NA
+     dataCyberSecuritySurvey2019TidyNameSizeCyber$rulesSecurityConfigs[i] = NA
+     dataCyberSecuritySurvey2019TidyNameSizeCyber$rulesUpdating[i] = NA
+  
+  }
+  
   
 }
 
 
+
 ##################################################### 2020 ###############################################
+
+
 
 numberOfCycles = length(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules1)
 
-dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules = 0
-
+dataCyberSecuritySurvey2020TidyNameSizeCyber$rulesUpdating = 0
+dataCyberSecuritySurvey2020TidyNameSizeCyber$rulesSecurityConfigs = 0
+dataCyberSecuritySurvey2020TidyNameSizeCyber$rulesUserControl = 0
 
 
 for (i in 1:numberOfCycles) {
   
-  ## can't make this a switch case because they are all different variables ffs
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$rules12[i] = replace_na(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules12[i], -10004)
   
-  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules1[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] + 1
-  }
-  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules1[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] + 10
-    }
-  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules3[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] + 100
-  }
-  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules4[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] + 1000
-  }
-  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules5[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] + 10000
-  }
-  ##not needed since the code was dropped after 2018, just here to remind me 
-    ## i can't believe I can't read oh great heavens
-  #if(dataCyberSecuritySurvey2018TidyNameSizeCyber$manage6[i] == 1){
-  #  dataCyberSecuritySurvey2018TidyNameSizeCyber$management[i] = NA
-  #}
+## the code is now be faster and other hilarious jokes you can tell yourself
   
-  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules7[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] + 1000000
+  
+    if(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules1[i] == 1 || dataCyberSecuritySurvey2020TidyNameSizeCyber$rules2[i] == 1 || dataCyberSecuritySurvey2020TidyNameSizeCyber$rules13[i] == 1 || dataCyberSecuritySurvey2020TidyNameSizeCyber$rules14[i] == 1 || dataCyberSecuritySurvey2020TidyNameSizeCyber$rules15[i] == 1 
+       ){ ##either 1,2,13,14 and 15 
+    
+     dataCyberSecuritySurvey2020TidyNameSizeCyber$rulesUpdating[i] = 1
+  
+    } 
+      if(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules3[i] == 1 || dataCyberSecuritySurvey2020TidyNameSizeCyber$rules4[i] == 1 || dataCyberSecuritySurvey2020TidyNameSizeCyber$rules9[i] == 1 || dataCyberSecuritySurvey2020TidyNameSizeCyber$rules17[i] == 1 
+       ){ ##either 3,4,9 and 17 
+    
+     dataCyberSecuritySurvey2020TidyNameSizeCyber$rulesSecurityConfigs[i] = 1
+  
+      }
+  
+        if(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules5[i] == 1 || dataCyberSecuritySurvey2020TidyNameSizeCyber$rules7[i] == 1 || dataCyberSecuritySurvey2020TidyNameSizeCyber$rules8[i] == 1){ ##either 5,7,8
+    
+     dataCyberSecuritySurvey2020TidyNameSizeCyber$rulesUserControl[i] = 1
+  
+        }
+  
+  
+        if(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules10[i] == 1) { 
+    
+     dataCyberSecuritySurvey2020TidyNameSizeCyber$rulesUserControl[i] = NA
+     dataCyberSecuritySurvey2020TidyNameSizeCyber$rulesSecurityConfigs[i] = NA
+     dataCyberSecuritySurvey2020TidyNameSizeCyber$rulesUpdating[i] = NA
+  
   }
-    if(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules8[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] + 10000000
-  }
-  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules9[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] + 100000000
-    }
-  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules10[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] = NA
-  }
-  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules11[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] + 10000000000
-  }
-  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules12[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] + 100000000000
-  }
-    if(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules13[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] + 1000000000000
-  }
-  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules14[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] + 1000000000000
-  }
-    if(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules15[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] + 10000000000000
-    }
-  ## we don't care about something that was only analyzed during one year
-  #if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules16[i] == 1){
-  #  dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = 16
-  #}
-  ##I guess we can have a look at the 17th one since we still look at 2020:2022
-    if(dataCyberSecuritySurvey2020TidyNameSizeCyber$rules17[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$internalRules[i] + 1000000000000000
-    }
+  
   
 }
 
 ##################################################### 2021 ###############################################
 
+
 numberOfCycles = length(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules1)
 
-dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules = 0
+dataCyberSecuritySurvey2021TidyNameSizeCyber$rulesUpdating = 0
+dataCyberSecuritySurvey2021TidyNameSizeCyber$rulesSecurityConfigs = 0
+dataCyberSecuritySurvey2021TidyNameSizeCyber$rulesUserControl = 0
+
 
 for (i in 1:numberOfCycles) {
   
-  ## can't make this a switch case because they are all different variables ffs
-      dataCyberSecuritySurvey2021TidyNameSizeCyber$rules12[i] = replace_na(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules12[i], -10004)
   
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules1[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] + 1
-  }
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules1[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] + 10
-    }
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules3[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] + 100
-  }
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules4[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] + 1000
-  }
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules5[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] + 10000
-  }
-  ##not needed since the code was dropped after 2018, just here to remind me 
-  #if(dataCyberSecuritySurvey2018TidyNameSizeCyber$manage6[i] == 1){
-  #  dataCyberSecuritySurvey2018TidyNameSizeCyber$management[i] = NA
-  #}
+## the code is now be faster and other hilarious jokes you can tell yourself
   
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules7[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] + 1000000
+  
+    if(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules1[i] == 1 || dataCyberSecuritySurvey2021TidyNameSizeCyber$rules2[i] == 1 || dataCyberSecuritySurvey2021TidyNameSizeCyber$rules13[i] == 1 || dataCyberSecuritySurvey2021TidyNameSizeCyber$rules14[i] == 1 || dataCyberSecuritySurvey2021TidyNameSizeCyber$rules15[i] == 1 
+       ){ ##either 1,2,13,14 and 15 
+    
+     dataCyberSecuritySurvey2021TidyNameSizeCyber$rulesUpdating[i] = 1
+  
+    } 
+      if(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules3[i] == 1 || dataCyberSecuritySurvey2021TidyNameSizeCyber$rules4[i] == 1 || dataCyberSecuritySurvey2021TidyNameSizeCyber$rules9[i] == 1 || dataCyberSecuritySurvey2021TidyNameSizeCyber$rules17[i] == 1 
+       ){ ##either 3,4,9 and 17 
+    
+     dataCyberSecuritySurvey2021TidyNameSizeCyber$rulesSecurityConfigs[i] = 1
+  
+      }
+  
+        if(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules5[i] == 1 || dataCyberSecuritySurvey2021TidyNameSizeCyber$rules7[i] == 1 || dataCyberSecuritySurvey2021TidyNameSizeCyber$rules8[i] == 1){ ##either 5,7,8
+    
+     dataCyberSecuritySurvey2021TidyNameSizeCyber$rulesUserControl[i] = 1
+  
+        }
+  
+  
+        if(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules10[i] == 1) { 
+    
+     dataCyberSecuritySurvey2021TidyNameSizeCyber$rulesUserControl[i] = NA
+     dataCyberSecuritySurvey2021TidyNameSizeCyber$rulesSecurityConfigs[i] = NA
+     dataCyberSecuritySurvey2021TidyNameSizeCyber$rulesUpdating[i] = NA
+  
   }
-    if(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules8[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] + 10000000
-  }
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules9[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] + 100000000
-    }
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules10[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] = NA
-  }
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules11[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] + 10000000000
-  }
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules12[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] + 100000000000
-  }
-    if(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules13[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] + 1000000000000
-  }
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules14[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] + 10000000000000
-  }
-    if(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules15[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] + 100000000000000
-    }
-  ## we don't care about something that was only analyzed during one year
-  #if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules16[i] == 1){
-  #  dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = 16
-  #}
-  ##I guess we can have a look at the 17th one since we still look at 2020:2022
-    if(dataCyberSecuritySurvey2021TidyNameSizeCyber$rules17[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$internalRules[i] + 10000000000000000
-    }
+  
   
 }
 
-
 ##################################################### 2022 ###############################################
+
 
 numberOfCycles = length(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules1)
 
-dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules = 0
+dataCyberSecuritySurvey2022TidyNameSizeCyber$rulesUpdating = 0
+dataCyberSecuritySurvey2022TidyNameSizeCyber$rulesSecurityConfigs = 0
+dataCyberSecuritySurvey2022TidyNameSizeCyber$rulesUserControl = 0
+
 
 for (i in 1:numberOfCycles) {
   
-  ## can't make this a switch case because they are all different variables ffs
-      dataCyberSecuritySurvey2022TidyNameSizeCyber$rules8[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules8[i], -10004)  
-      dataCyberSecuritySurvey2022TidyNameSizeCyber$rules9[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules9[i], -10004)
-      dataCyberSecuritySurvey2022TidyNameSizeCyber$rules12[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules12[i], -10004)
+  
+## the code is now be faster and other hilarious jokes you can tell yourself
   
   
-  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules1[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] + 1
-  }
-  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules1[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] + 10
-    }
-  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules3[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] + 100
-  }
-  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules4[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] + 1000
-  }
-  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules5[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] + 10000
-  }
-  ##not needed since the code was dropped after 2018, just here to remind me 
-  #if(dataCyberSecuritySurvey2018TidyNameSizeCyber$manage6[i] == 1){
-  #  dataCyberSecuritySurvey2018TidyNameSizeCyber$management[i] = NA
-  #}
+    if(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules1[i] == 1 || dataCyberSecuritySurvey2022TidyNameSizeCyber$rules2[i] == 1 || dataCyberSecuritySurvey2022TidyNameSizeCyber$rules13[i] == 1 || dataCyberSecuritySurvey2022TidyNameSizeCyber$rules14[i] == 1 || dataCyberSecuritySurvey2022TidyNameSizeCyber$rules15[i] == 1 
+       ){ ##either 1,2,13,14 and 15 
+    
+     dataCyberSecuritySurvey2022TidyNameSizeCyber$rulesUpdating[i] = 1
   
-  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules7[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] + 1000000
+    } 
+      if(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules3[i] == 1 || dataCyberSecuritySurvey2022TidyNameSizeCyber$rules4[i] == 1 || dataCyberSecuritySurvey2022TidyNameSizeCyber$rules9[i] == 1 || dataCyberSecuritySurvey2022TidyNameSizeCyber$rules17[i] == 1 
+       ){ ##either 3,4,9 and 17 
+    
+     dataCyberSecuritySurvey2022TidyNameSizeCyber$rulesSecurityConfigs[i] = 1
+  
+      }
+  
+        if(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules5[i] == 1 || dataCyberSecuritySurvey2022TidyNameSizeCyber$rules7[i] == 1 || dataCyberSecuritySurvey2022TidyNameSizeCyber$rules8[i] == 1){ ##either 5,7,8
+    
+     dataCyberSecuritySurvey2022TidyNameSizeCyber$rulesUserControl[i] = 1
+  
+        }
+  
+  
+        if(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules10[i] == 1) { 
+    
+     dataCyberSecuritySurvey2022TidyNameSizeCyber$rulesUserControl[i] = NA
+     dataCyberSecuritySurvey2022TidyNameSizeCyber$rulesSecurityConfigs[i] = NA
+     dataCyberSecuritySurvey2022TidyNameSizeCyber$rulesUpdating[i] = NA
+  
   }
-    if(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules8[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] + 10000000
-  }
-  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules9[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] + 100000000
-    }
-  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules10[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] + 1000000000
-  }
-  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules11[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] + 10000000000
-  }
-  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules12[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] + 100000000000
-  }
-    if(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules13[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] + 1000000000000
-  }
-  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules14[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] + 10000000000000
-  }
-    if(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules15[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] + 100000000000000
-    }
-  ## we don't care about something that was only analyzed during one year
-  #if(dataCyberSecuritySurvey2019TidyNameSizeCyber$rules16[i] == 1){
-  #  dataCyberSecuritySurvey2019TidyNameSizeCyber$internalRules[i] = 16
-  #}
-  ##I guess we can have a look at the 17th one since we still look at 2020:2022
-    if(dataCyberSecuritySurvey2022TidyNameSizeCyber$rules17[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$internalRules[i] + 10000000000000000
-    }
-  ##rules 18,19 and 20 are only for this year so there is no point of having a look at them here
+  
   
 }
 
@@ -1302,9 +1219,13 @@ dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNa
 
 ##################################################### 2018 ###############################################
 
+## at this point I don't know what my code is more, poorlu optimised, spagethi or just straight up cringe
+
 numberOfCycles = length(dataCyberSecuritySurvey2018TidyNameSizeCyber$policy1)
 
 dataCyberSecuritySurvey2018TidyNameSizeCyber$Policies = 0
+
+
 
 for (i in 1:numberOfCycles) {
   
