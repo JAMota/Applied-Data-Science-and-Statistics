@@ -99,7 +99,7 @@ dataCyberSecuritySurvey2020$year = '2020'
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ## loading the forth year of this level of survey data set 
-dataCyberSecuritySurvey2021 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2020/UKDA-8638-spss-CyberSurvey2020/spss/spss25/csbs2020_final_banded_variables_only_180320_public.sav')
+dataCyberSecuritySurvey2021 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2021/UKDA-8825-spss-CyberSurvey2021/spss/spss25/dcms_csbs_2021_banded_data_archive_v9_icu.sav')
 
 ## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey
 dataCyberSecuritySurvey2021$year = '2021'
@@ -2317,16 +2317,24 @@ dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNa
 
 ## we have now finished checking the outcome of these attacks as the last relevant parameter we will analyse so we will now cleanse the dataset of all the other unnecessary data
 
+## the costs have too much in different and missing data, it is better not to use them, no way josé
+# dataCyberSecuritySurvey2018TidyNameSizeCyber = dataCyberSecuritySurvey2018TidyNameSizeCyber %>% select(-(impact1:numb))
+# dataCyberSecuritySurvey2019TidyNameSizeCyber = dataCyberSecuritySurvey2019TidyNameSizeCyber %>% select(-(impact1:numb))
+# dataCyberSecuritySurvey2020TidyNameSizeCyber = dataCyberSecuritySurvey2020TidyNameSizeCyber %>% select(-(impact1:prevent35))
+# dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSizeCyber %>% select(-(impact1:prevent35))
+# dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-(impact1:prevent56))
+
+## removing the costs here as well, not opening another pandora box so close to the deadline
 dataCyberSecuritySurvey2018TidyNameSizeCyber = dataCyberSecuritySurvey2018TidyNameSizeCyber %>% select(-(impact1:weight))
 dataCyberSecuritySurvey2019TidyNameSizeCyber = dataCyberSecuritySurvey2019TidyNameSizeCyber %>% select(-(impact1:weight))
 dataCyberSecuritySurvey2020TidyNameSizeCyber = dataCyberSecuritySurvey2020TidyNameSizeCyber %>% select(-(impact1:weight))
 dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSizeCyber %>% select(-(impact1:weight))
 
 
-dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-(impact1:prevent56))
+dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-(impact1:Sum10Steps))
 
 
-dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-(incidcontent1:weight))
+dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-(halfa:weight))
 
 
 ## we also won't be looking at which country inside the uk the charities belong
@@ -2353,6 +2361,18 @@ dataCyberSecuritySurvey2018TidyNameSizeCyber = dataCyberSecuritySurvey2018TidyNa
 ##removing last year specific
 dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-title)
 
+## hold up why do I bother having typex when any of the others years don't
+#dataCyberSecuritySurvey2022TidyNameSizeCyber$typex = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$typex)
+dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-typex)
+
+##recorded time of death 22:53 9/11/2022, cause :
+## realized I had the 2021 variable pointing to the 2020 file this entire time
+
+dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSizeCyber %>% select(-(title1:title19))
+dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSizeCyber %>% select(-(online12:online13))
+dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSizeCyber %>% select(-(scheme6:outcome13))
+
+
 
 ```
 
@@ -2364,8 +2384,8 @@ dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNa
 missmap(dataCyberSecuritySurvey2018TidyNameSizeCyber)
 missmap(dataCyberSecuritySurvey2019TidyNameSizeCyber)
 missmap(dataCyberSecuritySurvey2020TidyNameSizeCyber)
-missmap(dataCyberSecuritySurvey2020TidyNameSizeCyber)
-missmap(dataCyberSecuritySurvey2020TidyNameSizeCyber)
+missmap(dataCyberSecuritySurvey2021TidyNameSizeCyber)
+missmap(dataCyberSecuritySurvey2022TidyNameSizeCyber)
 
 
 summary(dataCyberSecuritySurvey2018TidyNameSizeCyber)
@@ -2376,36 +2396,89 @@ summary(dataCyberSecuritySurvey2022TidyNameSizeCyber)
 
 
 ## I want to cry but at least I have a solution that will just take me a few more hours to implement
-## we will have to delabbel and then clean all the labels from the 
+## we will have to delabbel and then clean most of the labels from the 
+## maybe I over reacted a bit, maybe
 
-dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled = unlabelled(dataCyberSecuritySurvey2022TidyNameSizeCyber)
 ```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE}
 ## I want to cry but at least I have a solution that will just take me a few more hours to implement
 ## we will have to delabbel and then clean all the labels from the 
 
-dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$update = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$update)
+# dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$update = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$update)
+# 
+# dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$priority = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$priority)
+# 
+# dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$sizeb = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$sizeb)
+# 
+# dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$typex = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$typex)
+# 
+# dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$sizea = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$sizea)
+# 
+# dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$imid = as.character(dataCyberSecuritySurvey2022TidyNameSizeCyber$imid)
+# 
+# dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$damagedirsx_bands = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$damagedirsx_bands)
+# 
+# dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$damagedirlx_bands = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$damagedirlx_bands)
+# 
+# missmap(dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled)
+# 
+# 
+# str(dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled)
 
-dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$priority = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$priority)
+# 
+# dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$priority = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$priority)
+# 
+# dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$sizeb = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$sizeb)
+# 
+# dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$typex = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$typex)
+# 
+# dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$sizea = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$sizea)
+# 
+# dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$imid = as.character(dataCyberSecuritySurvey2022TidyNameSizeCyber$imid)
+# 
+# dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$damagedirsx_bands = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$damagedirsx_bands)
+# 
+# dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$damagedirlx_bands = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$damagedirlx_bands)
+# 
+# missmap(dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled)
+# 
+# 
+# str(dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled)
 
-dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$sizeb = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$sizeb)
+```
 
-dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$typex = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$typex)
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+#
+dataCyberSecuritySurvey2022TidyNameSizeCyber$instituitionTypes = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$instituitionTypes)
 
-dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$sizea = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$sizea)
+dataCyberSecuritySurvey2022TidyNameSizeCyber$sizea = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$sizea)
 
-dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$imid = as.character(dataCyberSecuritySurvey2022TidyNameSizeCyber$imid)
+dataCyberSecuritySurvey2022TidyNameSizeCyber$sizeb = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$sizeb)
 
-dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$damagedirsx_bands = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$damagedirsx_bands)
+dataCyberSecuritySurvey2022TidyNameSizeCyber$priority = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$priority)
 
-dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled$damagedirlx_bands = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$damagedirlx_bands)
+dataCyberSecuritySurvey2022TidyNameSizeCyber$update = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$update)
 
-missmap(dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled)
-
-
-str(dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled)
-
+####I really got to do some renaming because these names are more confusing than dorka's assignment 
+# 
+# ##external payments made during the incident aka ransoms
+# dataCyberSecuritySurvey2022TidyNameSizeCyber$damagedirsx_bands = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$damagedirsx_bands)
+# dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% 
+#   rename_at('damagedirsx_bands', ~'damageCostDuringIncident')
+# 
+# ##external payments made in the aftermath of the incident
+# dataCyberSecuritySurvey2022TidyNameSizeCyber$damagedirlx_bands = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$damagedirlx_bands)
+# dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% 
+#   rename_at('damagedirlx_bands', ~'damageCostAftermathIncident')
+# 
+# ## cost of the staff dealing with the incident
+# dataCyberSecuritySurvey2022TidyNameSizeCyber$damagestaffx_bands = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$damagestaffx_bands)
+# dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% 
+#   rename_at('damagestaffx_bands', ~'damageCostStaffTime')
+# 
+# ##
+# dataCyberSecuritySurvey2022TidyNameSizeCyber$damageindx_bands = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$damageindx_bands)
 
 ```
 
@@ -2431,9 +2504,7 @@ dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled = unlabelled(dataCyberSec
 
 ```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
-```
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 1 + 1
