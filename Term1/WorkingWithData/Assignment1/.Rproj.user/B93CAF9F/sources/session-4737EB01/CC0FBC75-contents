@@ -1670,7 +1670,7 @@ dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNa
 ##attackInfection - ramsomware infection (type 1), spyware, malware and other types (type 2), DDOS (type 3)
 ##attackPhising - hacking online bank accounts (type 4), phising - impersonating organisation (type 5), phising - fraudulent emails or websites (phising 6)
 ##attackBreaching - unauthorized access internal staff (type 7), unauthorized access outsiders (type 8), unauthorized access by students (type 13 only in 2022)
-##remember that type 9 and 12 is missing data
+##remember that type 10 and 12 is missing data
 
 
 ##################################################### 2018 ###############################################
@@ -1684,10 +1684,38 @@ dataCyberSecuritySurvey2018TidyNameSizeCyber$attackBreaching = 0
 for (i in 1:numberOfCycles) {
 
   
-    if(dataCyberSecuritySurvey2018TidyNameSizeCyber$type1[i] == 1 || dataCyberSecuritySurvey2018TidyNameSizeCyber$type2[i] == 1 || dataCyberSecuritySurvey2018TidyNameSizeCyber$type3[i] == 1 ){ ##either 2,3,4
+    if(dataCyberSecuritySurvey2018TidyNameSizeCyber$type1[i] == 1 || dataCyberSecuritySurvey2018TidyNameSizeCyber$type2[i] == 1 || dataCyberSecuritySurvey2018TidyNameSizeCyber$type3[i] == 1 ){ ##either 1,2,3
       
+      dataCyberSecuritySurvey2018TidyNameSizeCyber$attackInfection[i] = 1
       
     }
+  
+      if(dataCyberSecuritySurvey2018TidyNameSizeCyber$type4[i] == 1 || dataCyberSecuritySurvey2018TidyNameSizeCyber$type5[i] == 1 || dataCyberSecuritySurvey2018TidyNameSizeCyber$type6[i] == 1 ){ ##either 5,4,6
+      
+      dataCyberSecuritySurvey2018TidyNameSizeCyber$attackPhising[i] = 1
+      
+      }
+  
+      if(dataCyberSecuritySurvey2018TidyNameSizeCyber$type7[i] == 1 || dataCyberSecuritySurvey2018TidyNameSizeCyber$type8[i] == 1){ 
+        
+      dataCyberSecuritySurvey2018TidyNameSizeCyber$attackBreaching[i] = 1
+      
+      }
+  
+  
+      if(
+        ##dataCyberSecuritySurvey2018TidyNameSizeCyber$type1[i] == 9 ||
+        dataCyberSecuritySurvey2018TidyNameSizeCyber$type10[i] == 1 || dataCyberSecuritySurvey2018TidyNameSizeCyber$type12[i] == 1 ){ ##either 9,10,12
+      
+      dataCyberSecuritySurvey2018TidyNameSizeCyber$attackPhising[i] = NA
+      dataCyberSecuritySurvey2018TidyNameSizeCyber$attackBreaching[i] = NA
+      dataCyberSecuritySurvey2018TidyNameSizeCyber$attackInfection[i] = NA
+      
+      }
+      
+      ## basically if we only know they got other type of attacks (policy 9 then we know the type of attacks we record didn't happen but we don't have any data on those which is ok since we weren't collecting them anyway)
+      
+  
 }
 
 
