@@ -1713,7 +1713,7 @@ for (i in 1:numberOfCycles) {
       
       }
       
-      ## basically if we only know they got other type of attacks (policy 9 then we know the type of attacks we record didn't happen but we don't have any data on those which is ok since we weren't collecting them anyway)
+      ## basically if we only know they got other type of attacks (policy 9 then we know the type of attacks we record didn't happen but we don't have any data on those which is ok since we weren't collecting them anyway) //keep this comment on all or I will garantee I will forget it
       
   
 }
@@ -1721,210 +1721,187 @@ for (i in 1:numberOfCycles) {
 
 ##################################################### 2019 ###############################################
 
+
 numberOfCycles = length(dataCyberSecuritySurvey2019TidyNameSizeCyber$type1)
 
-dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes = 0
+dataCyberSecuritySurvey2019TidyNameSizeCyber$attackInfection = 0
+dataCyberSecuritySurvey2019TidyNameSizeCyber$attackPhising = 0
+dataCyberSecuritySurvey2019TidyNameSizeCyber$attackBreaching = 0
 
 for (i in 1:numberOfCycles) {
+
   
-  ## can't make this a switch case because they are all different variables ffs
+    if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type1[i] == 1 || dataCyberSecuritySurvey2019TidyNameSizeCyber$type2[i] == 1 || dataCyberSecuritySurvey2019TidyNameSizeCyber$type3[i] == 1 ){ ##either 1,2,3
+      
+      dataCyberSecuritySurvey2019TidyNameSizeCyber$attackInfection[i] = 1
+      
+    }
   
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type1[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] + 1
-  }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type2[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] + 10
-  }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type3[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] + 100
-  }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type4[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] + 1000
-  }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type5[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] + 10000
-  }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type6[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] + 100000
-  }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type7[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] + 1000000
-  }
-    if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type8[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] + 10000000
-    }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type9[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] + 100000000
-  }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type10[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] = NA
-  }
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type11[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] + 10000000000
-  }
-    if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type12[i] == 1){
-    dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2019TidyNameSizeCyber$attackTypes[i] + 100000000000
-    }
+      if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type4[i] == 1 || dataCyberSecuritySurvey2019TidyNameSizeCyber$type5[i] == 1 || dataCyberSecuritySurvey2019TidyNameSizeCyber$type6[i] == 1 ){ ##either 5,4,6
+      
+      dataCyberSecuritySurvey2019TidyNameSizeCyber$attackPhising[i] = 1
+      
+      }
+  
+      if(dataCyberSecuritySurvey2019TidyNameSizeCyber$type7[i] == 1 || dataCyberSecuritySurvey2019TidyNameSizeCyber$type8[i] == 1){ 
+        
+      dataCyberSecuritySurvey2019TidyNameSizeCyber$attackBreaching[i] = 1
+      
+      }
+  
+  
+      if(
+        ##dataCyberSecuritySurvey2019TidyNameSizeCyber$type1[i] == 9 ||
+        dataCyberSecuritySurvey2019TidyNameSizeCyber$type10[i] == 1 || dataCyberSecuritySurvey2019TidyNameSizeCyber$type12[i] == 1 ){ ##either 9,10,12
+      
+      dataCyberSecuritySurvey2019TidyNameSizeCyber$attackPhising[i] = NA
+      dataCyberSecuritySurvey2019TidyNameSizeCyber$attackBreaching[i] = NA
+      dataCyberSecuritySurvey2019TidyNameSizeCyber$attackInfection[i] = NA
+      
+      }
+      
+      ## basically if we only know they got other type of attacks (policy 9 then we know the type of attacks we record didn't happen but we don't have any data on those which is ok since we weren't collecting them anyway) //keep this comment on all or I will garantee I will forget it
+      
   
 }
 
 
 ##################################################### 2020 ###############################################
 
+
 numberOfCycles = length(dataCyberSecuritySurvey2020TidyNameSizeCyber$type1)
 
-dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes = 0
+dataCyberSecuritySurvey2020TidyNameSizeCyber$attackInfection = 0
+dataCyberSecuritySurvey2020TidyNameSizeCyber$attackPhising = 0
+dataCyberSecuritySurvey2020TidyNameSizeCyber$attackBreaching = 0
 
 for (i in 1:numberOfCycles) {
+
   
-  ## can't make this a switch case because they are all different variables ffs
+    if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type1[i] == 1 || dataCyberSecuritySurvey2020TidyNameSizeCyber$type2[i] == 1 || dataCyberSecuritySurvey2020TidyNameSizeCyber$type3[i] == 1 ){ ##either 1,2,3
+      
+      dataCyberSecuritySurvey2020TidyNameSizeCyber$attackInfection[i] = 1
+      
+    }
   
-  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type1[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] + 1
-  }
-  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type2[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] + 10
-  }
-  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type3[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] + 100
-  }
-  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type4[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] + 1000
-  }
-  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type5[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] + 10000
-  }
-  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type6[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] + 100000
-  }
-  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type7[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] + 1000000
-  }
-    if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type8[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] + 10000000
-    }
-  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type9[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] + 100000000
-  }
-  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type10[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = NA
-  }
-  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type11[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] + 10000000000
-  }
-    if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type12[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] + 100000000000
-    }
-  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type13[i] == 1){
-    dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2020TidyNameSizeCyber$attackTypes[i] + 1000000
-    }
+      if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type4[i] == 1 || dataCyberSecuritySurvey2020TidyNameSizeCyber$type5[i] == 1 || dataCyberSecuritySurvey2020TidyNameSizeCyber$type6[i] == 1 ){ ##either 5,4,6
+      
+      dataCyberSecuritySurvey2020TidyNameSizeCyber$attackPhising[i] = 1
+      
+      }
+  
+      if(dataCyberSecuritySurvey2020TidyNameSizeCyber$type7[i] == 1 || dataCyberSecuritySurvey2020TidyNameSizeCyber$type8[i] == 1){ 
+        
+      dataCyberSecuritySurvey2020TidyNameSizeCyber$attackBreaching[i] = 1
+      
+      }
+  
+  
+      if(
+        ##dataCyberSecuritySurvey2020TidyNameSizeCyber$type1[i] == 9 ||
+        dataCyberSecuritySurvey2020TidyNameSizeCyber$type10[i] == 1 || dataCyberSecuritySurvey2020TidyNameSizeCyber$type12[i] == 1 ){ ##either 9,10,12
+      
+      dataCyberSecuritySurvey2020TidyNameSizeCyber$attackPhising[i] = NA
+      dataCyberSecuritySurvey2020TidyNameSizeCyber$attackBreaching[i] = NA
+      dataCyberSecuritySurvey2020TidyNameSizeCyber$attackInfection[i] = NA
+      
+      }
+      
+      ## basically if we only know they got other type of attacks (policy 9 then we know the type of attacks we record didn't happen but we don't have any data on those which is ok since we weren't collecting them anyway) //keep this comment on all or I will garantee I will forget it
+      
   
 }
 
 
 ##################################################### 2021 ###############################################
 
+
 numberOfCycles = length(dataCyberSecuritySurvey2021TidyNameSizeCyber$type1)
 
-dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes = 0
+dataCyberSecuritySurvey2021TidyNameSizeCyber$attackInfection = 0
+dataCyberSecuritySurvey2021TidyNameSizeCyber$attackPhising = 0
+dataCyberSecuritySurvey2021TidyNameSizeCyber$attackBreaching = 0
 
 for (i in 1:numberOfCycles) {
+
   
-  ## can't make this a switch case because they are all different variables ffs
+    if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type1[i] == 1 || dataCyberSecuritySurvey2021TidyNameSizeCyber$type2[i] == 1 || dataCyberSecuritySurvey2021TidyNameSizeCyber$type3[i] == 1 ){ ##either 1,2,3
+      
+      dataCyberSecuritySurvey2021TidyNameSizeCyber$attackInfection[i] = 1
+      
+    }
   
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type1[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 1
-  }
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type2[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 10
-  }
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type3[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 100
-  }
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type4[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 1000
-  }
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type5[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 10000
-  }
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type6[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 100000
-  }
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type7[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 1000000
-  }
-    if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type8[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 10000000
-    }
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type9[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 100000000
-  }
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type10[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = NA
-  }
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type11[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 10000000000
-  }
-    if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type12[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 100000000000
-    }
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type13[i] == 1){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2021TidyNameSizeCyber$attackTypes[i] + 1000000
-    }
+      if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type4[i] == 1 || dataCyberSecuritySurvey2021TidyNameSizeCyber$type5[i] == 1 || dataCyberSecuritySurvey2021TidyNameSizeCyber$type6[i] == 1 ){ ##either 5,4,6
+      
+      dataCyberSecuritySurvey2021TidyNameSizeCyber$attackPhising[i] = 1
+      
+      }
+  
+      if(dataCyberSecuritySurvey2021TidyNameSizeCyber$type7[i] == 1 || dataCyberSecuritySurvey2021TidyNameSizeCyber$type8[i] == 1){ 
+        
+      dataCyberSecuritySurvey2021TidyNameSizeCyber$attackBreaching[i] = 1
+      
+      }
+  
+  
+      if(
+        ##dataCyberSecuritySurvey2020TidyNameSizeCyber$type1[i] == 9 ||
+        dataCyberSecuritySurvey2021TidyNameSizeCyber$type10[i] == 1 || dataCyberSecuritySurvey2021TidyNameSizeCyber$type12[i] == 1 ){ ##either 9,10,12
+      
+      dataCyberSecuritySurvey2021TidyNameSizeCyber$attackPhising[i] = NA
+      dataCyberSecuritySurvey2021TidyNameSizeCyber$attackBreaching[i] = NA
+      dataCyberSecuritySurvey2021TidyNameSizeCyber$attackInfection[i] = NA
+      
+      }
+      
+      ## basically if we only know they got other type of attacks (policy 9 then we know the type of attacks we record didn't happen but we don't have any data on those which is ok since we weren't collecting them anyway) //keep this comment on all or I will guarantee I will forget it
+      
   
 }
+
 
 ##################################################### 2022 ###############################################
 
 numberOfCycles = length(dataCyberSecuritySurvey2022TidyNameSizeCyber$type1)
 
-dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes = 0
+dataCyberSecuritySurvey2022TidyNameSizeCyber$attackInfection = 0
+dataCyberSecuritySurvey2022TidyNameSizeCyber$attackPhising = 0
+dataCyberSecuritySurvey2022TidyNameSizeCyber$attackBreaching = 0
 
 for (i in 1:numberOfCycles) {
+
   
-  dataCyberSecuritySurvey2022TidyNameSizeCyber$type13[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$type13[i], -10001)
+    if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type1[i] == 1 || dataCyberSecuritySurvey2022TidyNameSizeCyber$type2[i] == 1 || dataCyberSecuritySurvey2022TidyNameSizeCyber$type3[i] == 1 ){ ##either 1,2,3
+      
+      dataCyberSecuritySurvey2022TidyNameSizeCyber$attackInfection[i] = 1
+      
+    }
   
-  ## can't make this a switch case because they are all different variables ffs
+      if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type4[i] == 1 || dataCyberSecuritySurvey2022TidyNameSizeCyber$type5[i] == 1 || dataCyberSecuritySurvey2022TidyNameSizeCyber$type6[i] == 1 ){ ##either 5,4,6
+      
+      dataCyberSecuritySurvey2022TidyNameSizeCyber$attackPhising[i] = 1
+      
+      }
   
-  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type1[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 1
-  }
-  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type2[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 10
-  }
-  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type3[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 100
-  }
-  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type4[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 1000
-  }
-  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type5[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 10000
-  }
-  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type6[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 100000
-  }
-  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type7[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 1000000
-  }
-    if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type8[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 10000000
-    }
-  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type9[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 100000000
-  }
-  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type10[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = NA
-  }
-  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type11[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 10000000000
-  }
-    if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type12[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 100000000000
-    }
-  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type13[i] == 1){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] = dataCyberSecuritySurvey2022TidyNameSizeCyber$attackTypes[i] + 1000000
-    }
+      if(dataCyberSecuritySurvey2022TidyNameSizeCyber$type7[i] == 1 || dataCyberSecuritySurvey2022TidyNameSizeCyber$type8[i] == 1){ 
+        
+      dataCyberSecuritySurvey2022TidyNameSizeCyber$attackBreaching[i] = 1
+      
+      }
+  
+  
+      if(
+        ##dataCyberSecuritySurvey2020TidyNameSizeCyber$type1[i] == 9 ||
+        dataCyberSecuritySurvey2022TidyNameSizeCyber$type10[i] == 1 || dataCyberSecuritySurvey2022TidyNameSizeCyber$type12[i] == 1 ){ ##either 9,10,12
+      
+      dataCyberSecuritySurvey2022TidyNameSizeCyber$attackPhising[i] = NA
+      dataCyberSecuritySurvey2022TidyNameSizeCyber$attackBreaching[i] = NA
+      dataCyberSecuritySurvey2022TidyNameSizeCyber$attackInfection[i] = NA
+      
+      }
+      
+      ## basically if we only know they got other type of attacks (policy 9 then we know the type of attacks we record didn't happen but we don't have any data on those which is ok since we weren't collecting them anyway) //keep this comment on all or I will guarantee I will forget it
+      
   
 }
 
@@ -2541,6 +2518,10 @@ dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled = unlabelled(dataCyberSec
 ## my last brain cells
 ## also code is finished compiling
 browseURL('https://www.youtube.com/watch?v=M3Keg5XKJO8')
+
+##in case of emergency break this comment
+##browseURL('https://youtu.be/eoV7lw7YBG4?t=6')
+
 ```
 
 ## Quarto
