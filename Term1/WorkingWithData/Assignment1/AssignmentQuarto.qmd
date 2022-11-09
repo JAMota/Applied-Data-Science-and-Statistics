@@ -2050,6 +2050,7 @@ for (i in 1:numberOfCycles) {
     dataCyberSecuritySurvey2019TidyNameSizeCyber$outcome6[i] = replace_na(dataCyberSecuritySurvey2019TidyNameSizeCyber$outcome6[i], -10007)
     dataCyberSecuritySurvey2019TidyNameSizeCyber$outcome7[i] = replace_na(dataCyberSecuritySurvey2019TidyNameSizeCyber$outcome7[i], -10007)
     dataCyberSecuritySurvey2019TidyNameSizeCyber$outcome8[i] = replace_na(dataCyberSecuritySurvey2019TidyNameSizeCyber$outcome8[i], -10007)
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$outcome9[i] = replace_na(dataCyberSecuritySurvey2019TidyNameSizeCyber$outcome9[i], -10007)
     dataCyberSecuritySurvey2019TidyNameSizeCyber$outcome10[i] = replace_na(dataCyberSecuritySurvey2019TidyNameSizeCyber$outcome10[i], -10007)
     
     
