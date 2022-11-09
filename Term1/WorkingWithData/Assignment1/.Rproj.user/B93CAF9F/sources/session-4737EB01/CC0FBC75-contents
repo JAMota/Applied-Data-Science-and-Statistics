@@ -2367,10 +2367,12 @@ dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNa
 
 ##recorded time of death 22:53 9/11/2022, cause :
 ## realized I had the 2021 variable pointing to the 2020 file this entire time
+## this is what we call being dumber than a door #estudasses
 
 dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSizeCyber %>% select(-(title1:title19))
 dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSizeCyber %>% select(-(online12:online13))
 dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSizeCyber %>% select(-(scheme6:outcome13))
+dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNameSizeCyber %>% select(-covpri)
 
 
 
