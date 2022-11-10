@@ -2403,12 +2403,6 @@ dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNa
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ##Now we have all the data wrangled ready we will preparing for it to be imputated
 
-missmap(dataCyberSecuritySurvey2018TidyNameSizeCyber)
-missmap(dataCyberSecuritySurvey2019TidyNameSizeCyber)
-missmap(dataCyberSecuritySurvey2020TidyNameSizeCyber)
-missmap(dataCyberSecuritySurvey2021TidyNameSizeCyber)
-missmap(dataCyberSecuritySurvey2022TidyNameSizeCyber)
-
 
 summary(dataCyberSecuritySurvey2018TidyNameSizeCyber)
 summary(dataCyberSecuritySurvey2019TidyNameSizeCyber)
@@ -2688,19 +2682,42 @@ str(dataCyberSecuritySurvey2018TidyNameSizeCyber)
 ```
 [@AppliedMissingDataAnalysis]
 
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+##as we can see in Rubin's works the larger the number of data sets the larger the error will meaning a finite number of imputations is favorable to an infinite number of imputations
+## RE=1/(1+(FMI/m))
+```
+[@rubin_1975]
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-##due to Rubins works ( Rubin, D. B. 1976. “Inference and Missing Data.” Biometrika 63 (3): 581–90.———. 1987. Multiple Imputation for Nonresponse in Surveys. Wiley. )
-## RE=1/(1+(FMI/m))
-## we will releash the krakens after all the testing and debuggins
-#imp2022 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=100, maxit=21, method="polyreg")
-imp2022 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=10, maxit=21, method="polyreg")
-imp2021 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=10, maxit=21, method="polyreg")
-imp2020 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=10, maxit=21, method="polyreg")
-imp2019 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=10, maxit=21, method="polyreg")
-imp2018 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=10, maxit=21, method="polyreg")
+## in White, Royston, and Wood book “Multiple imputation using chained equations: Issues and guidance for practice" they proposed the rule of equating the number of imputations to the percentage of missing data in each of the data sets which is what I will be using
+```
+[@White2010]
 
-#imp$method
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+missmap(dataCyberSecuritySurvey2018TidyNameSizeCyber) ## 17% missing data
+missmap(dataCyberSecuritySurvey2019TidyNameSizeCyber) ## 17% missing data
+missmap(dataCyberSecuritySurvey2020TidyNameSizeCyber) ## 14% missing data
+missmap(dataCyberSecuritySurvey2021TidyNameSizeCyber) ## 16% missing data
+missmap(dataCyberSecuritySurvey2022TidyNameSizeCyber) ## 15% missing data
+```
+
+## Imputed values here
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+## we will release the krakens after all the testing and debuggins
+#imp2022 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=100, maxit=21)
+
+## we actually don't want to specify the method here because mice will automatically choose between logression and polyregression for the values depending on the R data structure 
+
+imp2022 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=17, maxit=21)
+imp2021 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=17, maxit=21)
+imp2020 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=14, maxit=21)
+imp2019 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=16, maxit=21)
+imp2018 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=15, maxit=21)
+
+#imp2022$method
 
 #imp$loggedEvents
 #view(imp$loggedEvents)
@@ -2726,10 +2743,21 @@ imp2022$predictorMatrix
 ## I might disable the size, priority or updates if needed though but they seemed to be needed since they make the amount missing values depends on these (basically auxiliary variables)
 
 
+## https://stefvanbuuren.name/fimd/workflow.html  // go to 5.1
+## mice documentation is *chef kiss*
+
 #imp$nmis
 
-plot(imp2022)
+##the imputations are done so now we will use the with function from mice to fit the model
+fit2022 = with(imp2022, lm())
 
+##after fitting the model we will use the pooled imputations using the model to make the estimation
+
+
+
+
+
+#plot(imp2022)
 #stripplot(imp2018)
 
 
@@ -2741,9 +2769,7 @@ complete(imp, action = "long", include = TRUE)
 
 
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
-```
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 1 + 1
