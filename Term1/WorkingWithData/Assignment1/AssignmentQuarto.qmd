@@ -2451,7 +2451,10 @@ summary(dataCyberSecuritySurvey2022TidyNameSizeCyber)
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-#
+
+###################################################### 2022 ##########################################
+
+## perfect factorizationa and numeric conversion removing all the problematic labels for imputation 
 dataCyberSecuritySurvey2022TidyNameSizeCyber$instituitionTypes = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$instituitionTypes)
 
 dataCyberSecuritySurvey2022TidyNameSizeCyber$sizea = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$sizea)
@@ -2462,25 +2465,180 @@ dataCyberSecuritySurvey2022TidyNameSizeCyber$priority = as.factor(dataCyberSecur
 
 dataCyberSecuritySurvey2022TidyNameSizeCyber$update = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$update)
 
-####I really got to do some renaming because these names are more confusing than dorka's assignment 
-# 
-# ##external payments made during the incident aka ransoms
-# dataCyberSecuritySurvey2022TidyNameSizeCyber$damagedirsx_bands = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$damagedirsx_bands)
-# dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% 
-#   rename_at('damagedirsx_bands', ~'damageCostDuringIncident')
-# 
-# ##external payments made in the aftermath of the incident
-# dataCyberSecuritySurvey2022TidyNameSizeCyber$damagedirlx_bands = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$damagedirlx_bands)
-# dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% 
-#   rename_at('damagedirlx_bands', ~'damageCostAftermathIncident')
-# 
-# ## cost of the staff dealing with the incident
-# dataCyberSecuritySurvey2022TidyNameSizeCyber$damagestaffx_bands = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$damagestaffx_bands)
-# dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% 
-#   rename_at('damagestaffx_bands', ~'damageCostStaffTime')
-# 
-# ##
-# dataCyberSecuritySurvey2022TidyNameSizeCyber$damageindx_bands = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$damageindx_bands)
+dataCyberSecuritySurvey2022TidyNameSizeCyber$managementContinuity = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$managementContinuity)
+
+dataCyberSecuritySurvey2022TidyNameSizeCyber$managementContinuity = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$managementContinuity)
+
+dataCyberSecuritySurvey2022TidyNameSizeCyber$year = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$year)
+
+dataCyberSecuritySurvey2022TidyNameSizeCyber$managementContinuity = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$managementContinuity)
+dataCyberSecuritySurvey2022TidyNameSizeCyber$managementCyber= as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$managementCyber)
+dataCyberSecuritySurvey2022TidyNameSizeCyber$rulesUpdating= as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$rulesUpdating)
+dataCyberSecuritySurvey2022TidyNameSizeCyber$rulesUserControl= as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$rulesUserControl)
+dataCyberSecuritySurvey2022TidyNameSizeCyber$rulesSecurityConfigs= as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$rulesSecurityConfigs)
+dataCyberSecuritySurvey2022TidyNameSizeCyber$policyStaffAccess= as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$policyStaffAccess)
+dataCyberSecuritySurvey2022TidyNameSizeCyber$policyData= as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$policyData)
+dataCyberSecuritySurvey2022TidyNameSizeCyber$policyPrivate= as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$policyPrivate)
+dataCyberSecuritySurvey2022TidyNameSizeCyber$attackInfection= as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$attackInfection)
+dataCyberSecuritySurvey2022TidyNameSizeCyber$attackPhising= as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$attackPhising)
+dataCyberSecuritySurvey2022TidyNameSizeCyber$attackBreaching= as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$attackBreaching)
+dataCyberSecuritySurvey2022TidyNameSizeCyber$outcomesData= as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$outcomesData)
+dataCyberSecuritySurvey2022TidyNameSizeCyber$ outcomesDDOS= as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$ outcomesDDOS)
+dataCyberSecuritySurvey2022TidyNameSizeCyber$outcomesTheft= as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$outcomesTheft)
+
+
+str(dataCyberSecuritySurvey2022TidyNameSizeCyber)
+
+###################################################### 2021 ##########################################
+
+## perfect factorizationa and numeric conversion removing all the problematic labels for imputation 
+dataCyberSecuritySurvey2021TidyNameSizeCyber$instituitionTypes = as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$instituitionTypes)
+
+dataCyberSecuritySurvey2021TidyNameSizeCyber$sizea = as.numeric(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizea)
+
+dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb = as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb)
+
+dataCyberSecuritySurvey2021TidyNameSizeCyber$priority = as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$priority)
+
+dataCyberSecuritySurvey2021TidyNameSizeCyber$update = as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$update)
+
+dataCyberSecuritySurvey2021TidyNameSizeCyber$managementContinuity = as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$managementContinuity)
+
+dataCyberSecuritySurvey2021TidyNameSizeCyber$managementContinuity = as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$managementContinuity)
+
+dataCyberSecuritySurvey2021TidyNameSizeCyber$year = as.numeric(dataCyberSecuritySurvey2021TidyNameSizeCyber$year)
+
+dataCyberSecuritySurvey2021TidyNameSizeCyber$managementContinuity = as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$managementContinuity)
+dataCyberSecuritySurvey2021TidyNameSizeCyber$managementCyber= as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$managementCyber)
+dataCyberSecuritySurvey2021TidyNameSizeCyber$rulesUpdating= as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$rulesUpdating)
+dataCyberSecuritySurvey2021TidyNameSizeCyber$rulesUserControl= as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$rulesUserControl)
+dataCyberSecuritySurvey2021TidyNameSizeCyber$rulesSecurityConfigs= as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$rulesSecurityConfigs)
+dataCyberSecuritySurvey2021TidyNameSizeCyber$policyStaffAccess= as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$policyStaffAccess)
+dataCyberSecuritySurvey2021TidyNameSizeCyber$policyData= as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$policyData)
+dataCyberSecuritySurvey2021TidyNameSizeCyber$policyPrivate= as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$policyPrivate)
+dataCyberSecuritySurvey2021TidyNameSizeCyber$attackInfection= as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$attackInfection)
+dataCyberSecuritySurvey2021TidyNameSizeCyber$attackPhising= as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$attackPhising)
+dataCyberSecuritySurvey2021TidyNameSizeCyber$attackBreaching= as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$attackBreaching)
+dataCyberSecuritySurvey2021TidyNameSizeCyber$outcomesData= as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$outcomesData)
+dataCyberSecuritySurvey2021TidyNameSizeCyber$ outcomesDDOS= as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$ outcomesDDOS)
+dataCyberSecuritySurvey2021TidyNameSizeCyber$outcomesTheft= as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$outcomesTheft)
+
+
+str(dataCyberSecuritySurvey2021TidyNameSizeCyber)
+
+###################################################### 2020 ##########################################
+
+## perfect factorizationa and numeric conversion removing all the problematic labels for imputation 
+dataCyberSecuritySurvey2020TidyNameSizeCyber$instituitionTypes = as.factor(dataCyberSecuritySurvey2020TidyNameSizeCyber$instituitionTypes)
+
+dataCyberSecuritySurvey2020TidyNameSizeCyber$sizea = as.numeric(dataCyberSecuritySurvey2020TidyNameSizeCyber$sizea)
+
+dataCyberSecuritySurvey2020TidyNameSizeCyber$sizeb = as.factor(dataCyberSecuritySurvey2020TidyNameSizeCyber$sizeb)
+
+dataCyberSecuritySurvey2020TidyNameSizeCyber$priority = as.factor(dataCyberSecuritySurvey2020TidyNameSizeCyber$priority)
+
+dataCyberSecuritySurvey2020TidyNameSizeCyber$update = as.factor(dataCyberSecuritySurvey2020TidyNameSizeCyber$update)
+
+dataCyberSecuritySurvey2020TidyNameSizeCyber$managementContinuity = as.factor(dataCyberSecuritySurvey2020TidyNameSizeCyber$managementContinuity)
+
+dataCyberSecuritySurvey2020TidyNameSizeCyber$managementContinuity = as.factor(dataCyberSecuritySurvey2020TidyNameSizeCyber$managementContinuity)
+
+dataCyberSecuritySurvey2020TidyNameSizeCyber$year = as.numeric(dataCyberSecuritySurvey2020TidyNameSizeCyber$year)
+
+dataCyberSecuritySurvey2020TidyNameSizeCyber$managementContinuity = as.factor(dataCyberSecuritySurvey2020TidyNameSizeCyber$managementContinuity)
+dataCyberSecuritySurvey2020TidyNameSizeCyber$managementCyber= as.factor(dataCyberSecuritySurvey2020TidyNameSizeCyber$managementCyber)
+dataCyberSecuritySurvey2020TidyNameSizeCyber$rulesUpdating= as.factor(dataCyberSecuritySurvey2020TidyNameSizeCyber$rulesUpdating)
+dataCyberSecuritySurvey2020TidyNameSizeCyber$rulesUserControl= as.factor(dataCyberSecuritySurvey2020TidyNameSizeCyber$rulesUserControl)
+dataCyberSecuritySurvey2020TidyNameSizeCyber$rulesSecurityConfigs= as.factor(dataCyberSecuritySurvey2020TidyNameSizeCyber$rulesSecurityConfigs)
+dataCyberSecuritySurvey2020TidyNameSizeCyber$policyStaffAccess= as.factor(dataCyberSecuritySurvey2020TidyNameSizeCyber$policyStaffAccess)
+dataCyberSecuritySurvey2020TidyNameSizeCyber$policyData= as.factor(dataCyberSecuritySurvey2020TidyNameSizeCyber$policyData)
+dataCyberSecuritySurvey2020TidyNameSizeCyber$policyPrivate= as.factor(dataCyberSecuritySurvey2020TidyNameSizeCyber$policyPrivate)
+dataCyberSecuritySurvey2020TidyNameSizeCyber$attackInfection= as.factor(dataCyberSecuritySurvey2020TidyNameSizeCyber$attackInfection)
+dataCyberSecuritySurvey2020TidyNameSizeCyber$attackPhising= as.factor(dataCyberSecuritySurvey2020TidyNameSizeCyber$attackPhising)
+dataCyberSecuritySurvey2020TidyNameSizeCyber$attackBreaching= as.factor(dataCyberSecuritySurvey2020TidyNameSizeCyber$attackBreaching)
+dataCyberSecuritySurvey2020TidyNameSizeCyber$outcomesData= as.factor(dataCyberSecuritySurvey2020TidyNameSizeCyber$outcomesData)
+dataCyberSecuritySurvey2020TidyNameSizeCyber$ outcomesDDOS= as.factor(dataCyberSecuritySurvey2020TidyNameSizeCyber$ outcomesDDOS)
+dataCyberSecuritySurvey2020TidyNameSizeCyber$outcomesTheft= as.factor(dataCyberSecuritySurvey2020TidyNameSizeCyber$outcomesTheft)
+
+
+str(dataCyberSecuritySurvey2020TidyNameSizeCyber)
+
+
+###################################################### 2019 ##########################################
+
+## perfect factorizationa and numeric conversion removing all the problematic labels for imputation 
+dataCyberSecuritySurvey2019TidyNameSizeCyber$instituitionTypes = as.factor(dataCyberSecuritySurvey2019TidyNameSizeCyber$instituitionTypes)
+
+dataCyberSecuritySurvey2019TidyNameSizeCyber$sizea = as.numeric(dataCyberSecuritySurvey2019TidyNameSizeCyber$sizea)
+
+dataCyberSecuritySurvey2019TidyNameSizeCyber$sizeb = as.factor(dataCyberSecuritySurvey2019TidyNameSizeCyber$sizeb)
+
+dataCyberSecuritySurvey2019TidyNameSizeCyber$priority = as.factor(dataCyberSecuritySurvey2019TidyNameSizeCyber$priority)
+
+dataCyberSecuritySurvey2019TidyNameSizeCyber$update = as.factor(dataCyberSecuritySurvey2019TidyNameSizeCyber$update)
+
+dataCyberSecuritySurvey2019TidyNameSizeCyber$managementContinuity = as.factor(dataCyberSecuritySurvey2019TidyNameSizeCyber$managementContinuity)
+
+dataCyberSecuritySurvey2019TidyNameSizeCyber$managementContinuity = as.factor(dataCyberSecuritySurvey2019TidyNameSizeCyber$managementContinuity)
+
+dataCyberSecuritySurvey2019TidyNameSizeCyber$year = as.numeric(dataCyberSecuritySurvey2019TidyNameSizeCyber$year)
+
+dataCyberSecuritySurvey2019TidyNameSizeCyber$managementContinuity = as.factor(dataCyberSecuritySurvey2019TidyNameSizeCyber$managementContinuity)
+dataCyberSecuritySurvey2019TidyNameSizeCyber$managementCyber= as.factor(dataCyberSecuritySurvey2019TidyNameSizeCyber$managementCyber)
+dataCyberSecuritySurvey2019TidyNameSizeCyber$rulesUpdating= as.factor(dataCyberSecuritySurvey2019TidyNameSizeCyber$rulesUpdating)
+dataCyberSecuritySurvey2019TidyNameSizeCyber$rulesUserControl= as.factor(dataCyberSecuritySurvey2019TidyNameSizeCyber$rulesUserControl)
+dataCyberSecuritySurvey2019TidyNameSizeCyber$rulesSecurityConfigs= as.factor(dataCyberSecuritySurvey2019TidyNameSizeCyber$rulesSecurityConfigs)
+dataCyberSecuritySurvey2019TidyNameSizeCyber$policyStaffAccess= as.factor(dataCyberSecuritySurvey2019TidyNameSizeCyber$policyStaffAccess)
+dataCyberSecuritySurvey2019TidyNameSizeCyber$policyData= as.factor(dataCyberSecuritySurvey2019TidyNameSizeCyber$policyData)
+dataCyberSecuritySurvey2019TidyNameSizeCyber$policyPrivate= as.factor(dataCyberSecuritySurvey2019TidyNameSizeCyber$policyPrivate)
+dataCyberSecuritySurvey2019TidyNameSizeCyber$attackInfection= as.factor(dataCyberSecuritySurvey2019TidyNameSizeCyber$attackInfection)
+dataCyberSecuritySurvey2019TidyNameSizeCyber$attackPhising= as.factor(dataCyberSecuritySurvey2019TidyNameSizeCyber$attackPhising)
+dataCyberSecuritySurvey2019TidyNameSizeCyber$attackBreaching= as.factor(dataCyberSecuritySurvey2019TidyNameSizeCyber$attackBreaching)
+dataCyberSecuritySurvey2019TidyNameSizeCyber$outcomesData= as.factor(dataCyberSecuritySurvey2019TidyNameSizeCyber$outcomesData)
+dataCyberSecuritySurvey2019TidyNameSizeCyber$ outcomesDDOS= as.factor(dataCyberSecuritySurvey2019TidyNameSizeCyber$ outcomesDDOS)
+dataCyberSecuritySurvey2019TidyNameSizeCyber$outcomesTheft= as.factor(dataCyberSecuritySurvey2019TidyNameSizeCyber$outcomesTheft)
+
+
+str(dataCyberSecuritySurvey2019TidyNameSizeCyber)
+
+###################################################### 2018 ##########################################
+
+## perfect factorizationa and numeric conversion removing all the problematic labels for imputation 
+dataCyberSecuritySurvey2018TidyNameSizeCyber$instituitionTypes = as.factor(dataCyberSecuritySurvey2018TidyNameSizeCyber$instituitionTypes)
+
+dataCyberSecuritySurvey2018TidyNameSizeCyber$sizea = as.numeric(dataCyberSecuritySurvey2018TidyNameSizeCyber$sizea)
+
+dataCyberSecuritySurvey2018TidyNameSizeCyber$sizeb = as.factor(dataCyberSecuritySurvey2018TidyNameSizeCyber$sizeb)
+
+dataCyberSecuritySurvey2018TidyNameSizeCyber$priority = as.factor(dataCyberSecuritySurvey2018TidyNameSizeCyber$priority)
+
+dataCyberSecuritySurvey2018TidyNameSizeCyber$update = as.factor(dataCyberSecuritySurvey2018TidyNameSizeCyber$update)
+
+dataCyberSecuritySurvey2018TidyNameSizeCyber$managementContinuity = as.factor(dataCyberSecuritySurvey2018TidyNameSizeCyber$managementContinuity)
+
+dataCyberSecuritySurvey2018TidyNameSizeCyber$managementContinuity = as.factor(dataCyberSecuritySurvey2018TidyNameSizeCyber$managementContinuity)
+
+dataCyberSecuritySurvey2018TidyNameSizeCyber$year = as.numeric(dataCyberSecuritySurvey2018TidyNameSizeCyber$year)
+
+dataCyberSecuritySurvey2018TidyNameSizeCyber$managementContinuity = as.factor(dataCyberSecuritySurvey2018TidyNameSizeCyber$managementContinuity)
+dataCyberSecuritySurvey2018TidyNameSizeCyber$managementCyber= as.factor(dataCyberSecuritySurvey2018TidyNameSizeCyber$managementCyber)
+dataCyberSecuritySurvey2018TidyNameSizeCyber$rulesUpdating= as.factor(dataCyberSecuritySurvey2018TidyNameSizeCyber$rulesUpdating)
+dataCyberSecuritySurvey2018TidyNameSizeCyber$rulesUserControl= as.factor(dataCyberSecuritySurvey2018TidyNameSizeCyber$rulesUserControl)
+dataCyberSecuritySurvey2018TidyNameSizeCyber$rulesSecurityConfigs= as.factor(dataCyberSecuritySurvey2018TidyNameSizeCyber$rulesSecurityConfigs)
+dataCyberSecuritySurvey2018TidyNameSizeCyber$policyStaffAccess= as.factor(dataCyberSecuritySurvey2018TidyNameSizeCyber$policyStaffAccess)
+dataCyberSecuritySurvey2018TidyNameSizeCyber$policyData= as.factor(dataCyberSecuritySurvey2018TidyNameSizeCyber$policyData)
+dataCyberSecuritySurvey2018TidyNameSizeCyber$policyPrivate= as.factor(dataCyberSecuritySurvey2018TidyNameSizeCyber$policyPrivate)
+dataCyberSecuritySurvey2018TidyNameSizeCyber$attackInfection= as.factor(dataCyberSecuritySurvey2018TidyNameSizeCyber$attackInfection)
+dataCyberSecuritySurvey2018TidyNameSizeCyber$attackPhising= as.factor(dataCyberSecuritySurvey2018TidyNameSizeCyber$attackPhising)
+dataCyberSecuritySurvey2018TidyNameSizeCyber$attackBreaching= as.factor(dataCyberSecuritySurvey2018TidyNameSizeCyber$attackBreaching)
+dataCyberSecuritySurvey2018TidyNameSizeCyber$outcomesData= as.factor(dataCyberSecuritySurvey2018TidyNameSizeCyber$outcomesData)
+dataCyberSecuritySurvey2018TidyNameSizeCyber$ outcomesDDOS= as.factor(dataCyberSecuritySurvey2018TidyNameSizeCyber$ outcomesDDOS)
+dataCyberSecuritySurvey2018TidyNameSizeCyber$outcomesTheft= as.factor(dataCyberSecuritySurvey2018TidyNameSizeCyber$outcomesTheft)
+
+
+str(dataCyberSecuritySurvey2018TidyNameSizeCyber)
+
+
 
 ```
 
@@ -2489,11 +2647,21 @@ dataCyberSecuritySurvey2022TidyNameSizeCyber$update = as.factor(dataCyberSecurit
 
 #dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled = dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled %>% select(-(management:outcomes))
 
-imp = mice(dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabelled, m=5, maxit=10, method="pmm")
+## m= number of imputations
+## maxit = number of iteractions
+
+## we will releash the krakens after all the testing and debuggins
+#imp2022 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=100, maxit=10, method="pmm")
+imp2022 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=5, maxit=10, method="pmm")
+
+
+
+#imp$loggedEvents
+
 
 ## don't forget https://stats.stackexchange.com/questions/76488/error-system-is-computationally-singular-when-running-a-glm
 
-#view(init$loggedEvents)
+view(imp$loggedEvents)
 
 #str(dataCyberSecuritySurvey2022TidyNameSizeCyber)
 
