@@ -1,4 +1,0 @@
-"0","fit2022Attacks = with(dataCyberSecuritySurvey2022TidyNameSizeCyber, lm(outcomesData ~ attackBreaching ))
-"
-"2","Warning: using type = ""numeric"" with a factor response will be ignored"
-"2","Warning: ‘-’ not meaningful for factors"

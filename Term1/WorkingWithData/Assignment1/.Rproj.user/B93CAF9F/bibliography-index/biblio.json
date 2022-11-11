@@ -1,0 +1,62 @@
+{
+    "sources": [
+        {
+            "DOI": "10.5255/UKDA-SN-8638-1",
+            "URL": "https://beta.ukdataservice.ac.uk/datacatalogue/doi/?id=8638#1",
+            "author": [
+                {
+                    "family": "Department For Digital",
+                    "given": "Culture"
+                }
+            ],
+            "id": "CyberSurvey2020",
+            "issued": {
+                "date-parts": [
+                    [
+                        2020
+                    ]
+                ]
+            },
+            "publisher": "UK Data Service",
+            "title": "Cyber security breaches survey, 2020",
+            "type": ""
+        },
+        {
+            "URL": "https://bookdown.org/mwheymans/bookmi/",
+            "container-title": "Home",
+            "id": "AppliedMissingDataAnalysis",
+            "issued": {
+                "date-parts": [
+                    [
+                        2022,
+                        9
+                    ]
+                ]
+            },
+            "title": "Book_MI.knit",
+            "type": ""
+        },
+        {
+            "author": [
+                {
+                    "family": "Rubin",
+                    "given": "Donald B."
+                }
+            ],
+            "container-title": "Inference and missing data",
+            "id": "rubin_1975",
+            "issued": {
+                "date-parts": [
+                    [
+                        1975
+                    ]
+                ]
+            },
+            "publisher": "Verlag nicht ermittelbar",
+            "title": "Biometrika 63 (3): 581–90",
+            "title-short": "Biometrika 63 (3)",
+            "type": "chapter"
+        }
+    ],
+    "project_biblios": []
+}
