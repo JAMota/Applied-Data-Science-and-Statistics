@@ -1,11 +1,11 @@
 "0","
-numberOfCycles = length(dataCyberSecuritySurvey2019TidyNameSizeCyber$restore)
+numberOfCycles = length(dataCyberSecuritySurvey2022TidyNameSizeCyber$restore)
 
-dataCyberSecuritySurvey2019TidyNameSizeCyber$restoreTime = 0
+dataCyberSecuritySurvey2022TidyNameSizeCyber$restoreTime = 0
 
 for (i in 1:numberOfCycles) {
 
-  dataCyberSecuritySurvey2019TidyNameSizeCyber$restore[i] = replace_na(dataCyberSecuritySurvey2019TidyNameSizeCyber$restore[i], -97)
+  dataCyberSecuritySurvey2022TidyNameSizeCyber$restore[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$restore[i], -97)
   
 
 }
@@ -15,14 +15,14 @@ for (i in 1:numberOfCycles) {
 ## for even the most wicked reasons this only works the second time I do it so I am just going to run a try and catch on this one
 
 try(
-  for (i in 1:nrow(dataCyberSecuritySurvey2019TidyNameSizeCyber)){
+  for (i in 1:nrow(dataCyberSecuritySurvey2022TidyNameSizeCyber)){
 
   
-  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$restore[i] == 6){
+  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$restore[i] == 6){
       
-  print(dataCyberSecuritySurvey2019TidyNameSizeCyber$restore[i])
-  dataCyberSecuritySurvey2019TidyNameSizeCyber = 
-    dataCyberSecuritySurvey2019TidyNameSizeCyber[-c(i), ]
+  print(dataCyberSecuritySurvey2022TidyNameSizeCyber$restore[i])
+  dataCyberSecuritySurvey2022TidyNameSizeCyber = 
+    dataCyberSecuritySurvey2022TidyNameSizeCyber[-c(i), ]
 
   }
   
