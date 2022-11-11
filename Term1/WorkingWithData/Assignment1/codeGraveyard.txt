@@ -463,9 +463,7 @@ for (i in 1:numberOfCycles) {
     
     ?aggr()
     
-    ##from this day on I will pray and offer and caddle to my new god professor Martijn W Heymans https://missingdatasolutions.rbind.io/contact/
-    
-    ##truly a blessing from the lord
+   
     
     ## m = 5 imputed datasets, maxit = to use 10 iterations, ppm = predictive mean matching
     

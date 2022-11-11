@@ -1,6 +1,4 @@
 ---
-title: "WorkingWithDataAssignment"
-author: "João Mota"
 format:
   pdf:
     toc: true
@@ -25,20 +23,20 @@ editor: visual
 ##hipothises 
 How does each type of management, rules, policing and type of attacks affect the damages to an institution
 
-##Introduction
+## Introduction
 
 Multiple institutions have been a target of increasingly more disruptive or destructive cyber attacks over the last few years which has lead to government action.
 The data used in my work was collected yearly by the uk government department for Digital, Culture, Media and Sport (DCMS) with the purpose of helping the government understand the importance cyber security for British institutions and better shape policy regarding cyber security, create schemes to increase awareness for such problems and better protect institutions form cyber security threats.
 As such this analysis will investigate the relationship between how institutions protect themselves from cyber attacks and the affect of said attacks on these institutions in the last 5 years.
 
-##Objectives
+## Objectives
 
 To start the analysis I have requested the uk data service the data sets with information from the Cyber Security Breaches Survey from 2018 to 2022. Due to the untidy state of the data collect via the random probability telephone survey, these data sets containing between 421 to 462 variables have to been clean up into 21 easily comparable variables. 
 The clean up process consisted of computing new variables utilizing the multiple subcategories of answers to the survey questions, grouping them into more flexible options while adjusting missing values to allow for such computation, removing unnecessary data variables that are irrelevant to my hypothesis testing, converting the SPSS labelled data into R data structures to enable imputation of missing values and proper correlations computation and converted the appropriate missing value responses to actual missing data. 
 After finishing to tidy the data I have imputed the missing values using Multiple Imputation by Chained Equations (MICE) on each of the data sets.
 ##TODO
 
-##Data
+## Data
 
 The data collected from the UK institutions contain a detailed report of the cyber security profile of each affected institution during the timer interval of 2018 and 2022.
 Each institutions details their size in terms of number of employees, how priority is cyber security for the institution
@@ -61,15 +59,14 @@ library(haven)
 library(tidyverse)
 library(dplyr)
 library(geometry) 
-#install.packages("Rmpfr")
 library(formatR)
-install.packages("VIM")
-#devtools::install_github("cardiomoon/autoReg")
+#install.packages("VIM")
 library(Amelia)
 library(mice)
 library(VIM)
 library(labelled)
-
+library(GGally)
+library(mgcv)
 
 ```
 ```{r}
@@ -923,7 +920,7 @@ dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNa
 
 ```
 
-##Rules for company policies
+## Rules for company policies
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ## This is where the fun begins with some proper policies
@@ -1229,7 +1226,7 @@ dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNa
 
 ```
 
-##Policies 
+## Policies 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ## we do a little policing but sadly not the one QoS type on cisco servers
@@ -1949,7 +1946,7 @@ dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNa
 
 ```
 
-##Outcomes - we check for each of the attack outcoems and group them
+## Outcomes - we check for each of the attack outcoems and group them
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ##for the frequency of attacks in the last 12 months I am not sure if I am interested in that data
@@ -2398,7 +2395,7 @@ dataCyberSecuritySurvey2021TidyNameSizeCyber = dataCyberSecuritySurvey2021TidyNa
 
 ```
 
-##Labelling Conversion
+## Labelling Conversion
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ##Now we have all the data wrangled ready we will preparing for it to be imputated
@@ -2656,7 +2653,7 @@ str(dataCyberSecuritySurvey2018TidyNameSizeCyber)
 
 ```
 
-##Data Imputation 
+## Data Imputation 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ##remember we must make the imputations before we merge the data of all the years
@@ -2703,7 +2700,7 @@ missmap(dataCyberSecuritySurvey2022TidyNameSizeCyber) ## 15% missing data
 
 ## Imputed values here
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE}
 
 
 ## we will release the krakens after all the testing and debuggins
@@ -2731,9 +2728,9 @@ imp2018 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=15, maxit=21)
 
 ##the imputed data sets are extracted with the function complete. The options action = ”long” and include = TRUE returns a dataframe with imputed datasets  that are stacked with each other imputed datasets plus the original dataset (with missings) on top 
 ```
+## Fitting the model after the imputations
 
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE}
 ##continuing from here because otherwise the reference won't work
 
 
@@ -2749,7 +2746,50 @@ imp2022$predictorMatrix
 #imp$nmis
 
 ##the imputations are done so now we will use the with function from mice to fit the model
-fit2022 = with(imp2022, lm())
+
+##chose the one with the lowest aic and bic
+anova()
+
+##fitting the model to one of the variables of the outcomes, this case I will start with the outcome for Data damages since it is the more commonly flagged one
+
+## this does not work because it is not finding anything meaning between my factors
+fit2022 = with(imp2022, lm(outcomesData ~ attackBreaching + attackPhising + attackInfection + managementCyber + managementCyber))
+
+fit2022Attacks = with(imp2022, lm(outcomesData ~ attackBreaching + attackPhising + attackInfection))
+
+anova(fit2022,fit2022Attacks)
+
+fit2022Attacks = with(dataCyberSecuritySurvey2022TidyNameSizeCyber, lm(outcomesData ~ attackBreaching ))
+
+dataCyberSecuritySurvey2022TidyNameSizeCyber$attackBreaching= as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$attackBreaching)
+
+for (i in 1:length(dataCyberSecuritySurvey2022TidyNameSizeCyber$attackBreaching[i])) {
+  dataCyberSecuritySurvey2022TidyNameSizeCyber$attackBreaching[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$attackBreaching[i], 2)
+  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$attackBreaching[i] == 0.0000001){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackBreaching[i] = 2
+  }
+
+}
+
+str(dataCyberSecuritySurvey2022TidyNameSizeCyber)
+
+dataCyberSecuritySurvey2022TidyNameSizeCyber$attackBreaching= as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$attackBreaching)
+
+fit2022 = with(imp2022, lm(outcomesTheft ~ attackBreaching + attackPhising + attackInfection ))
+
+## No meaningfull correlation moment
+summary(fit2022)
+
+
+##est2022=pool(fit2022)
+
+test = dataCyberSecuritySurvey2022TidyNameSizeCyber
+
+dataCyberSecuritySurvey2022TidyNameSizeCyber 
+
+str(dataCyberSecuritySurvey2022TidyNameSizeCyber)
+dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-year)
+dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-sizea)
 
 ##after fitting the model we will use the pooled imputations using the model to make the estimation
 
@@ -2762,7 +2802,7 @@ fit2022 = with(imp2022, lm())
 
 
 
-complete(imp, action = "long", include = TRUE)
+#complete(imp, action = "long", include = TRUE)
 ```
 
 

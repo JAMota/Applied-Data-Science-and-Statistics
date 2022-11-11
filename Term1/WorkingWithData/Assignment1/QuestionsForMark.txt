@@ -31,3 +31,5 @@ Have a look at how to import the data without labels to R using the read_spps
 remember to make the variables as factors (as.factor(var)) instead of numeric because one isn't just bigger than the others
 Instead of making a huge complex variable that computes all the outcomes work with multiple binary that cover most of outcomes
 post effect for comparing (attack types/outcomes) and costs
+
+the linearity may not be mantained after the como«putation of the values

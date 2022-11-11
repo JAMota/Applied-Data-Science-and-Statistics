@@ -1,25 +1,15 @@
-"0","library(haven)"
-"0","library(tidyverse)"
-"0","library(dplyr)"
-"0","library(geometry) "
-"0","#install.packages(""Rmpfr"")"
-"0","library(formatR)"
-"0","install.packages(""VIM"")"
-"1","Warning in "
-"1",""
-"1","install.packages"
-"1",""
-"1"," :
-  "
-"1",""
-"1","package ‘VIM’ is in use and will not be installed"
-"1",""
-"1","
+"0","library(mgcv)
 "
-"0","#devtools::install_github(""cardiomoon/autoReg"")"
-"0","library(Amelia)"
-"0","library(mice)"
-"0","library(VIM)"
-"0","library(labelled)"
-"0",""
-"0",""
+"2","Loading required package: nlme
+"
+"2","
+Attaching package: ‘nlme’
+
+"
+"2","The following object is masked from ‘package:dplyr’:
+
+    collapse
+
+"
+"2","This is mgcv 1.8-40. For overview type 'help(""mgcv-package"")'.
+"
