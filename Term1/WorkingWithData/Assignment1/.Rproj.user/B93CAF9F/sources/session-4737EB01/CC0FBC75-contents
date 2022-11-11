@@ -25,28 +25,34 @@ editor: visual
 ## Introduction
 
 Multiple institutions have been a target of increasingly more disruptive or destructive cyber attacks over the last few years which has lead to government action.
-The data used in my work was collected yearly by the uk government department for Digital, Culture, Media and Sport (DCMS) with the purpose of helping the government understand the importance cyber security for British institutions and better shape policy regarding cyber security, create schemes to increase awareness for such problems and better protect institutions form cyber security threats.
+The data used in my work was collected yearly by the uk government department for Digital, Culture, Media and Sport (DCMS) with the purpose of helping the government understand the importance cyber security for British institutions, better shape policy regarding cyber security, create schemes to increase awareness for such problems and better protect institutions form cyber security threats.
 As such this analysis will investigate the relationship between how institutions protect themselves from cyber attacks and the affect of said attacks on these institutions in the last 5 years.
 
 ## Objectives
-
-To start the analysis I have requested the uk data service the data sets with information from the Cyber Security Breaches Survey from 2018 to 2022.
 
 Objectives of this report:
   -Creating of a new tidy data set for each of the years including recompiled variables for the management, policing and rules implemented to protect the organisation, the type of attack that affected the institution and its respective outcomes.
   -utilize Multiple Imputation by Chained Equations (Mice), to generate missing values to replace the missing data.
   -Do hypothesis testing on my new fitted models to compare how the protective measures and attack type affect the outcome of the cyber attack on the institution.
-  -Mention the limitations of this analysis
-  -Conclusion with recommendation for future research
+  -Mention the limitations of this analysis.
+  -Conclusion with recommendation for future research.
 
 ## Data
 
-The data collected from the UK institutions contain a detailed report of the cyber security profile of each affected institution during the timer interval of 2018 and 2022.
-Each institutions details their size in terms of number of employees, how priority is cyber security for the institution
+Initial data wrangling:
 
- Due to the untidy state of the data collect via the random probability telephone survey, these data sets containing between 421 to 462 variables have to been clean up into 21 easily comparable variables. 
-The clean up process consisted of computing new variables utilizing the multiple subcategories of answers to the survey questions, grouping them into more flexible options while adjusting missing values to allow for such computation, removing unnecessary data variables that are irrelevant to my hypothesis testing, converting the SPSS labelled data into R data structures to enable imputation of missing values and proper correlations computation and converted the appropriate missing value responses to actual missing data. 
-After finishing to tidy the data I have imputed the missing values using Multiple Imputation by Chained Equations on each of the data sets. 
+Due to the untidy state of the data collect via the random probability telephone survey, these data sets containing between 421 to 462 variables have to been clean up into 21 easily comparable variables. 
+The clean up process consisted of computing new variables utilizing the multiple subcategories of answers to the survey questions, grouping them into more flexible options while adjusting missing values to allow for such computation.
+Removing unnecessary data variables that are irrelevant to my hypothesis testing, converting the SPSS labelled data into R data structures to enable imputation of missing values and proper correlations computation and conversion of the appropriate missing value responses to actual missing data. 
+
+Initial data analysis:
+
+It can be observed a significant degree of missing data on my data sets coming from multiple sources, the main source of missing data is derived from a limitation of the data collected, the lack of 
+
+After finishing to tidy the data I have imputed the missing values using Multiple Imputation by Chained Equations on each of the data sets.
+
+using the a mixture of the methods of logical regression in the majority of the variables due to their dichotomous and binary behavior
+polynomial regression which is more adequate for
 
 ##loreg is for dichotomous missing data //dichotomous two mutuallu exclusive groups
 ##polyreg is for categorical missing data // categorical variable can be one of a limited, and usually fixed number of values aka its discrete 
