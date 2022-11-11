@@ -20,8 +20,7 @@ bibio-style: unsrt
 editor: visual
 ---
 
-##hipothises 
-How does each type of management, rules, policing and type of attacks affect the damages to an institution
+
 
 ## Introduction
 
@@ -31,16 +30,26 @@ As such this analysis will investigate the relationship between how institutions
 
 ## Objectives
 
-To start the analysis I have requested the uk data service the data sets with information from the Cyber Security Breaches Survey from 2018 to 2022. Due to the untidy state of the data collect via the random probability telephone survey, these data sets containing between 421 to 462 variables have to been clean up into 21 easily comparable variables. 
-The clean up process consisted of computing new variables utilizing the multiple subcategories of answers to the survey questions, grouping them into more flexible options while adjusting missing values to allow for such computation, removing unnecessary data variables that are irrelevant to my hypothesis testing, converting the SPSS labelled data into R data structures to enable imputation of missing values and proper correlations computation and converted the appropriate missing value responses to actual missing data. 
-After finishing to tidy the data I have imputed the missing values using Multiple Imputation by Chained Equations (MICE) on each of the data sets.
-##TODO
+To start the analysis I have requested the uk data service the data sets with information from the Cyber Security Breaches Survey from 2018 to 2022.
+
+Objectives of this report:
+  -Creating of a new tidy data set for each of the years including recompiled variables for the management, policing and rules implemented to protect the organisation, the type of attack that affected the institution and its respective outcomes.
+  -utilize Multiple Imputation by Chained Equations (Mice), to generate missing values to replace the missing data.
+  -Do hypothesis testing on my new fitted models to compare how the protective measures and attack type affect the outcome of the cyber attack on the institution.
+  -Mention the limitations of this analysis
+  -Conclusion with recommendation for future research
 
 ## Data
 
 The data collected from the UK institutions contain a detailed report of the cyber security profile of each affected institution during the timer interval of 2018 and 2022.
 Each institutions details their size in terms of number of employees, how priority is cyber security for the institution
 
+ Due to the untidy state of the data collect via the random probability telephone survey, these data sets containing between 421 to 462 variables have to been clean up into 21 easily comparable variables. 
+The clean up process consisted of computing new variables utilizing the multiple subcategories of answers to the survey questions, grouping them into more flexible options while adjusting missing values to allow for such computation, removing unnecessary data variables that are irrelevant to my hypothesis testing, converting the SPSS labelled data into R data structures to enable imputation of missing values and proper correlations computation and converted the appropriate missing value responses to actual missing data. 
+After finishing to tidy the data I have imputed the missing values using Multiple Imputation by Chained Equations on each of the data sets. 
+
+##loreg is for dichotomous missing data //dichotomous two mutuallu exclusive groups
+##polyreg is for categorical missing data // categorical variable can be one of a limited, and usually fixed number of values aka its discrete 
 
 ## Limitations
 
@@ -68,8 +77,9 @@ library(labelled)
 library(GGally)
 library(mgcv)
 
+
 ```
-```{r}
+```{r, echo=FALSE}
 # 
 # A few hours of trial and errors can save you a few minutes of reading
 # the proper documentation :)
@@ -83,6 +93,9 @@ library(mgcv)
 # break the pdf and start generating html also please be smart and read
 # https://quarto.org/docs/reference/formats/pdf.html for the formatting
 ##VIM package is deadly to quarto but I kinda need it
+
+##hipothises 
+##How does each type of management, rules, policing and type of attacks affect the damages to an institution
 
 ```
 
@@ -2714,7 +2727,7 @@ imp2020 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=14, maxit=21)
 imp2019 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=16, maxit=21)
 imp2018 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=15, maxit=21)
 
-#imp2022$method
+imp2022$method
 
 #imp$loggedEvents
 #view(imp$loggedEvents)
