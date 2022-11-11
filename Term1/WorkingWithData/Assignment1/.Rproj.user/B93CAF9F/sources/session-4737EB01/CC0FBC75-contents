@@ -135,7 +135,7 @@ library(VIM)
 library(labelled)
 library(GGally)
 library(mgcv)
-
+library(ggplot2)
 
 ```
 
@@ -2827,7 +2827,74 @@ anova()
 ##fitting the model to one of the variables of the outcomes, this case I will start with the outcome for Data damages since it is the more commonly flagged one
 
 ## this does not work because it is not finding anything meaning between my factors
-fit2022 = with(imp2022, lm(outcomesData ~ attackBreaching + attackPhising + attackInfection + managementCyber + managementCyber))
+fit2021 = with(imp2021, lm(outcomesData ~ attackBreaching + attackPhising + attackInfection + managementCyber + managementCyber + rulesSecurityConfigs + rulesUserControl + rulesUpdating + policyPrivate + policyData + policyStaffAccess))
+
+##testing every single variable for outcome data
+fit2021 = with(imp2021, lm(outcomesData ~ attackBreaching))
+fit2021 = with(imp2021, lm(outcomesData ~ attackPhising))
+fit2021 = with(imp2021, lm(outcomesData ~ attackInfection))
+fit2021 = with(imp2021, lm(outcomesData ~ policyPrivate))
+fit2021 = with(imp2021, lm(outcomesData ~ policyData))
+fit2021 = with(imp2021, lm(outcomesData ~ policyStaffAccess))
+fit2021 = with(imp2021, lm(outcomesData ~ rulesSecurityConfigs))
+fit2021 = with(imp2021, lm(outcomesData ~ rulesUserControl))
+fit2021 = with(imp2021, lm(outcomesData ~ rulesUpdating))
+fit2021 = with(imp2021, lm(outcomesData ~ managementCyber))
+fit2021 = with(imp2021, lm(outcomesData ~ managementContinuity))
+
+##testing for outcomeDDOS
+fit2021 = with(imp2021, lm(outcomesDDOS ~ attackBreaching))
+fit2021 = with(imp2021, lm(outcomesDDOS ~ attackPhising))
+fit2021 = with(imp2021, lm(outcomesDDOS ~ attackInfection))
+fit2021 = with(imp2021, lm(outcomesDDOS ~ policyPrivate))
+fit2021 = with(imp2021, lm(outcomesDDOS ~ policyData))
+fit2021 = with(imp2021, lm(outcomesDDOS ~ policyStaffAccess))
+fit2021 = with(imp2021, lm(outcomesDDOS ~ rulesSecurityConfigs))
+fit2021 = with(imp2021, lm(outcomesDDOS ~ rulesUserControl))
+fit2021 = with(imp2021, lm(outcomesDDOS ~ rulesUpdating))
+fit2021 = with(imp2021, lm(outcomesDDOS ~ managementCyber))
+fit2021 = with(imp2021, lm(outcomesDDOS ~ managementContinuity))
+
+
+##testing for outcomeTheft
+fit2021 = with(imp2021, lm(outcomesTheft ~ attackBreaching))
+fit2021 = with(imp2021, lm(outcomesTheft ~ attackPhising))
+fit2021 = with(imp2021, lm(outcomesTheft ~ attackInfection))
+fit2021 = with(imp2021, lm(outcomesTheft ~ policyPrivate))
+fit2021 = with(imp2021, lm(outcomesTheft ~ policyData))
+fit2021 = with(imp2021, lm(outcomesTheft ~ policyStaffAccess))
+fit2021 = with(imp2021, lm(outcomesTheft ~ rulesSecurityConfigs))
+fit2021 = with(imp2021, lm(outcomesTheft ~ rulesUserControl))
+fit2021 = with(imp2021, lm(outcomesTheft ~ rulesUpdating))
+fit2021 = with(imp2021, lm(outcomesTheft ~ managementCyber))
+fit2021 = with(imp2021, lm(outcomesTheft ~ managementContinuity))
+
+##testing for attacks
+fit2021 = with(imp2021, glm(outcomesTheft ~ attackBreaching))
+fit2021 = with(imp2021, glm(outcomesTheft ~ attackPhising))
+fit2021 = with(imp2021, glm(outcomesTheft ~ attackInfection))
+fit2021 = with(imp2021, glm(outcomesTheft ~ policyPrivate))
+fit2021 = with(imp2021, glm(outcomesTheft ~ policyData))
+fit2021 = with(imp2021, glm(outcomesTheft ~ policyStaffAccess))
+fit2021 = with(imp2021, glm(outcomesTheft ~ rulesSecurityConfigs))
+fit2021 = with(imp2021, lm(outcomesTheft ~ rulesUserControl))
+fit2021 = with(imp2021, lm(outcomesTheft ~ rulesUpdating))
+fit2021 = with(imp2021, lm(outcomesTheft ~ managementCyber))
+fit2021 = with(imp2021, lm(outcomesTheft ~ managementContinuity))
+
+
+## last minute hipifany since i have 3 outcomes maybe try and and use the chmod 777 style of with 1 2 and 4 for the multiple outcomes
+## and maybe after that I can get at least a  Point-Biserial correlation because at this point I am so desperate I will take anything
+
+plot(imp2021)
+
+#ggplot()
+
+imp2021$iteration
+
+ggplot(data=imp2021$)+
+  geom_point(aes(x=outcomesDDOS,y=attackBreaching))
+
 
 fit2022Attacks = with(imp2022, lm(outcomesData ~ attackBreaching + attackPhising + attackInfection))
 
@@ -2835,15 +2902,6 @@ anova(fit2022,fit2022Attacks)
 
 fit2022Attacks = with(dataCyberSecuritySurvey2022TidyNameSizeCyber, lm(outcomesData ~ attackBreaching ))
 
-dataCyberSecuritySurvey2022TidyNameSizeCyber$attackBreaching= as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$attackBreaching)
-
-for (i in 1:length(dataCyberSecuritySurvey2022TidyNameSizeCyber$attackBreaching[i])) {
-  dataCyberSecuritySurvey2022TidyNameSizeCyber$attackBreaching[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$attackBreaching[i], 2)
-  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$attackBreaching[i] == 0.0000001){
-    dataCyberSecuritySurvey2022TidyNameSizeCyber$attackBreaching[i] = 2
-  }
-
-}
 
 str(dataCyberSecuritySurvey2022TidyNameSizeCyber)
 
