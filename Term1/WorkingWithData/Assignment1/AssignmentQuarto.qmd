@@ -25,16 +25,23 @@ editor: visual
 ## Introduction
 
 Multiple institutions have been a target of increasingly more disruptive or destructive cyber attacks over the last few years which has lead to government action.
+
 The data used in my work was collected yearly by the uk government department for Digital, Culture, Media and Sport (DCMS) with the purpose of helping the government understand the importance cyber security for British institutions, better shape policy regarding cyber security, create schemes to increase awareness for such problems and better protect institutions form cyber security threats.
+
 As such this analysis will investigate the relationship between how institutions protect themselves from cyber attacks and the affect of said attacks on these institutions in the last 5 years.
 
 ## Objectives
 
 Objectives of this report:
+
   -Creating of a new tidy data set for each of the years including recompiled variables for the management, policing and rules implemented to protect the organisation, the type of attack that affected the institution and its respective outcomes.
-  -utilize Multiple Imputation by Chained Equations (Mice), to generate missing values to replace the missing data.
+  
+  -Utilizing Multiple Imputation by Chained Equations (Mice), to replace the missing data.
+  
   -Do hypothesis testing on my new fitted models to compare how the protective measures and attack type affect the outcome of the cyber attack on the institution.
+  
   -Mention the limitations of this analysis.
+  
   -Conclusion with recommendation for future research.
 
 ## Data
@@ -42,14 +49,18 @@ Objectives of this report:
 Initial data wrangling:
 
 Due to the untidy state of the data collect via the random probability telephone survey, these data sets containing between 421 to 462 variables have to been clean up into 21 easily comparable variables. 
-The clean up process consisted of computing new variables utilizing the multiple subcategories of answers to the survey questions, grouping them into more flexible options while adjusting missing values to allow for such computation.
-Removing unnecessary data variables that are irrelevant to my hypothesis testing, converting the SPSS labelled data into R data structures to enable imputation of missing values and proper correlations computation and conversion of the appropriate missing value responses to actual missing data. 
 
-Initial data analysis:
+The clean up process consisted of computing new variables utilizing the multiple subcategories of answers to the survey questions, grouping them into more flexible options while adjusting missing values to allow for such computation maintaining the original binary design.
 
-It can be observed a significant degree of missing data on my data sets coming from multiple sources, the main source of missing data is derived from a limitation of the data collected, the lack of 
+Removing unnecessary data variables that are irrelevant to my hypothesis testing, converting the SPSS labelled data into R data structured factors and numerical to enable imputation of missing values and proper correlations computation and conversion of the appropriate missing value responses to actual missing data. 
 
-After finishing to tidy the data I have imputed the missing values using Multiple Imputation by Chained Equations on each of the data sets.
+Initial data analysis plan:
+
+It can be observed a significant degree of missing data on my data sets coming from multiple sources, the main source of missing data is derived from a limitation of the data collected, the lack of reporting channels in institutions leads to the majority of the missing values that lead to direct missing data in the data sets collected and indirect missing data by institutions answering that they do not know the answer to some of the questions in the survey. Lastly there is missing values associated to the type of attacks by institutions refusing to answer the question regarding the type of attack inflicted in their respective institution.
+
+The missing data will have to be imputed using Multiple Imputation by Chained Equations on each of the data sets, for this I will be using the R library MICE created by professor Stef Van Buuren.
+
+After imputing the missing values 
 
 using the a mixture of the methods of logical regression in the majority of the variables due to their dichotomous and binary behavior
 polynomial regression which is more adequate for
@@ -2802,13 +2813,13 @@ summary(fit2022)
 
 ##est2022=pool(fit2022)
 
-test = dataCyberSecuritySurvey2022TidyNameSizeCyber
-
-dataCyberSecuritySurvey2022TidyNameSizeCyber 
-
-str(dataCyberSecuritySurvey2022TidyNameSizeCyber)
-dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-year)
-dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-sizea)
+# test = dataCyberSecuritySurvey2022TidyNameSizeCyber
+# 
+# dataCyberSecuritySurvey2022TidyNameSizeCyber 
+# 
+# str(dataCyberSecuritySurvey2022TidyNameSizeCyber)
+# dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-year)
+# dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-sizea)
 
 ##after fitting the model we will use the pooled imputations using the model to make the estimation
 
@@ -2894,7 +2905,7 @@ dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNa
 1 + 1
 ```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE}
 ## my last brain cells
 ## also code is finished compiling
 browseURL('https://www.youtube.com/watch?v=M3Keg5XKJO8')
