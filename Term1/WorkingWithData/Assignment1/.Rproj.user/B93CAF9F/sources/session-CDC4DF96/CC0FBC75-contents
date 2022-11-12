@@ -3238,6 +3238,7 @@ missmap(dataCyberSecuritySurvey2022TidyNameSizeCyber) ## 15% missing data
 
 ## we actually don't want to specify the method here because mice will automatically choose between logression and polyregression for the values depending on the R data structure and is simpler then doing it manually while giving the same result
 
+##remember mice does not support haven_labell so they all have to be removed and converted to another data structure in native R
 
 imp2022 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=17, maxit=21)
 imp2021 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=17, maxit=22)
@@ -3258,6 +3259,75 @@ imp2022$method
 
 
 ##the imputed data sets are extracted with the function complete. The options action = ”long” and include = TRUE returns a dataframe with imputed datasets  that are stacked with each other imputed datasets plus the original dataset (with missings) on top 
+```
+```{r, echo=FALSE, eval=FALSE}
+
+##fitting the model to one of the variables of the outcomes, this case I will start with the outcome for Data damages since it is the more commonly flagged one
+
+## this does not work because it is not finding anything meaning between my factors
+#fit2021 = with(imp2021, lm(outcomesChmod ~ attackBreaching + attackPhising + attackInfection + managementCyber + managementCyber + rulesSecurityConfigs + rulesUserControl + rulesUpdating + policyPrivate + policyData + policyStaffAccess))
+
+
+##hypothesis how much is invested in cyber security for bigger companies
+#lm(sizea ~  priority, data= dataCyberSecuritySurvey2021TidyNameSizeCyber)
+
+## last minute hipifany since i have 3 outcomes maybe try and and use the chmod 777 style of with 1 2 and 4 for the multiple outcomes
+## and maybe after that I can get at least a  Point-Biserial correlation because at this point I am so desperate I will take anything
+
+
+##miracle 
+# 
+# dataCyberSecuritySurvey2021TidyNameSizeCyber$outcomesChmod
+# 
+# lm(outcomesChmod ~ attackBreaching + attackPhising + attackInfection, data= dataCyberSecuritySurvey2021TidyNameSizeCyber)
+# 
+# 
+# dataCyberSecuritySurvey2021TidyNameSizeCyber$outcomesChmod = as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$outcomesChmod)
+# 
+# str(dataCyberSecuritySurvey2021TidyNameSizeCyber)
+# 
+# ##testing every single variable for outcome data
+# fit2021 = with(imp2021, lm(outcomesChmod ~ attackBreaching))
+# fit2021 = with(imp2021, lm(outcomesData ~ attackPhising))
+# fit2021 = with(imp2021, lm(outcomesData ~ attackInfection))
+# fit2021 = with(imp2021, lm(outcomesData ~ policyPrivate))
+# fit2021 = with(imp2021, lm(outcomesData ~ policyData))
+# fit2021 = with(imp2021, lm(outcomesData ~ policyStaffAccess))
+# fit2021 = with(imp2021, lm(outcomesData ~ rulesSecurityConfigs))
+# fit2021 = with(imp2021, lm(outcomesData ~ rulesUserControl))
+# fit2021 = with(imp2021, lm(outcomesData ~ rulesUpdating))
+# fit2021 = with(imp2021, lm(outcomesData ~ managementCyber))
+# fit2021 = with(imp2021, lm(outcomesData ~ managementContinuity))
+# 
+# ##testing for outcomeDDOS
+# fit2021 = with(imp2021, lm(outcomesDDOS ~ attackBreaching))
+# fit2021 = with(imp2021, lm(outcomesDDOS ~ attackPhising))
+# fit2021 = with(imp2021, lm(outcomesDDOS ~ attackInfection))
+# fit2021 = with(imp2021, lm(outcomesDDOS ~ policyPrivate))
+# fit2021 = with(imp2021, lm(outcomesDDOS ~ policyData))
+# fit2021 = with(imp2021, lm(outcomesDDOS ~ policyStaffAccess))
+# fit2021 = with(imp2021, lm(outcomesDDOS ~ rulesSecurityConfigs))
+# fit2021 = with(imp2021, lm(outcomesDDOS ~ rulesUserControl))
+# fit2021 = with(imp2021, lm(outcomesDDOS ~ rulesUpdating))
+# fit2021 = with(imp2021, lm(outcomesDDOS ~ managementCyber))
+# fit2021 = with(imp2021, lm(outcomesDDOS ~ managementContinuity))
+# 
+# 
+# ##testing for outcomeTheft
+# fit2021 = with(imp2021, lm(outcomesTheft ~ attackBreaching))
+# fit2021 = with(imp2021, lm(outcomesTheft ~ attackPhising))
+# fit2021 = with(imp2021, lm(outcomesTheft ~ attackInfection))
+# fit2021 = with(imp2021, lm(outcomesTheft ~ policyPrivate))
+# fit2021 = with(imp2021, lm(outcomesTheft ~ policyData))
+# fit2021 = with(imp2021, lm(outcomesTheft ~ policyStaffAccess))
+# fit2021 = with(imp2021, lm(outcomesTheft ~ rulesSecurityConfigs))
+# fit2021 = with(imp2021, lm(outcomesTheft ~ rulesUserControl))
+# fit2021 = with(imp2021, lm(outcomesTheft ~ rulesUpdating))
+# fit2021 = with(imp2021, lm(outcomesTheft ~ managementCyber))
+# fit2021 = with(imp2021, lm(outcomesTheft ~ managementContinuity))
+
+
+
 ```
 
 ## Fitting the model after the imputations
@@ -3282,86 +3352,14 @@ imp2022$predictorMatrix
 ##chose the one with the lowest aic and bic
 anova()
 
-##fitting the model to one of the variables of the outcomes, this case I will start with the outcome for Data damages since it is the more commonly flagged one
-
-## this does not work because it is not finding anything meaning between my factors
-fit2021 = with(imp2021, lm(outcomesChmod ~ attackBreaching + attackPhising + attackInfection + managementCyber + managementCyber + rulesSecurityConfigs + rulesUserControl + rulesUpdating + policyPrivate + policyData + policyStaffAccess))
-
-##miracle 
-
-dataCyberSecuritySurvey2021TidyNameSizeCyber$outcomesChmod
-
-lm(outcomesChmod ~ attackBreaching + attackPhising + attackInfection, data= dataCyberSecuritySurvey2021TidyNameSizeCyber)
-
-
-##hypothesis how much is invested in cyber security for bigger companies
-lm(sizea ~  priority, data= dataCyberSecuritySurvey2021TidyNameSizeCyber)
 
 ##hypotheses bigger organisations take longer to recover from cyber attack due to the sheer volume of data in their possession
 lm(sizea ~  restore, data= dataCyberSecuritySurvey2022TidyNameSizeCyber)
 
 
-dataCyberSecuritySurvey2021TidyNameSizeCyber$outcomesChmod = as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$outcomesChmod)
-
-str(dataCyberSecuritySurvey2021TidyNameSizeCyber)
-
-##testing every single variable for outcome data
-fit2021 = with(imp2021, lm(outcomesChmod ~ attackBreaching))
-fit2021 = with(imp2021, lm(outcomesData ~ attackPhising))
-fit2021 = with(imp2021, lm(outcomesData ~ attackInfection))
-fit2021 = with(imp2021, lm(outcomesData ~ policyPrivate))
-fit2021 = with(imp2021, lm(outcomesData ~ policyData))
-fit2021 = with(imp2021, lm(outcomesData ~ policyStaffAccess))
-fit2021 = with(imp2021, lm(outcomesData ~ rulesSecurityConfigs))
-fit2021 = with(imp2021, lm(outcomesData ~ rulesUserControl))
-fit2021 = with(imp2021, lm(outcomesData ~ rulesUpdating))
-fit2021 = with(imp2021, lm(outcomesData ~ managementCyber))
-fit2021 = with(imp2021, lm(outcomesData ~ managementContinuity))
-
-##testing for outcomeDDOS
-fit2021 = with(imp2021, lm(outcomesDDOS ~ attackBreaching))
-fit2021 = with(imp2021, lm(outcomesDDOS ~ attackPhising))
-fit2021 = with(imp2021, lm(outcomesDDOS ~ attackInfection))
-fit2021 = with(imp2021, lm(outcomesDDOS ~ policyPrivate))
-fit2021 = with(imp2021, lm(outcomesDDOS ~ policyData))
-fit2021 = with(imp2021, lm(outcomesDDOS ~ policyStaffAccess))
-fit2021 = with(imp2021, lm(outcomesDDOS ~ rulesSecurityConfigs))
-fit2021 = with(imp2021, lm(outcomesDDOS ~ rulesUserControl))
-fit2021 = with(imp2021, lm(outcomesDDOS ~ rulesUpdating))
-fit2021 = with(imp2021, lm(outcomesDDOS ~ managementCyber))
-fit2021 = with(imp2021, lm(outcomesDDOS ~ managementContinuity))
 
 
-##testing for outcomeTheft
-fit2021 = with(imp2021, lm(outcomesTheft ~ attackBreaching))
-fit2021 = with(imp2021, lm(outcomesTheft ~ attackPhising))
-fit2021 = with(imp2021, lm(outcomesTheft ~ attackInfection))
-fit2021 = with(imp2021, lm(outcomesTheft ~ policyPrivate))
-fit2021 = with(imp2021, lm(outcomesTheft ~ policyData))
-fit2021 = with(imp2021, lm(outcomesTheft ~ policyStaffAccess))
-fit2021 = with(imp2021, lm(outcomesTheft ~ rulesSecurityConfigs))
-fit2021 = with(imp2021, lm(outcomesTheft ~ rulesUserControl))
-fit2021 = with(imp2021, lm(outcomesTheft ~ rulesUpdating))
-fit2021 = with(imp2021, lm(outcomesTheft ~ managementCyber))
-fit2021 = with(imp2021, lm(outcomesTheft ~ managementContinuity))
-
-##testing for attacks
-fit2021 = with(imp2021, glm(outcomesTheft ~ attackBreaching))
-fit2021 = with(imp2021, glm(outcomesTheft ~ attackPhising))
-fit2021 = with(imp2021, glm(outcomesTheft ~ attackInfection))
-fit2021 = with(imp2021, glm(outcomesTheft ~ policyPrivate))
-fit2021 = with(imp2021, glm(outcomesTheft ~ policyData))
-fit2021 = with(imp2021, glm(outcomesTheft ~ policyStaffAccess))
-fit2021 = with(imp2021, glm(outcomesTheft ~ rulesSecurityConfigs))
-fit2021 = with(imp2021, lm(outcomesTheft ~ rulesUserControl))
-fit2021 = with(imp2021, lm(outcomesTheft ~ rulesUpdating))
-fit2021 = with(imp2021, lm(outcomesTheft ~ managementCyber))
-fit2021 = with(imp2021, lm(outcomesTheft ~ managementContinuity))
-
-
-## last minute hipifany since i have 3 outcomes maybe try and and use the chmod 777 style of with 1 2 and 4 for the multiple outcomes
-## and maybe after that I can get at least a  Point-Biserial correlation because at this point I am so desperate I will take anything
-
+plot(imp2022)
 plot(imp2021)
 
 #ggplot()
@@ -3391,13 +3389,6 @@ summary(fit2022)
 
 ##est2022=pool(fit2022)
 
-# test = dataCyberSecuritySurvey2022TidyNameSizeCyber
-# 
-# dataCyberSecuritySurvey2022TidyNameSizeCyber 
-# 
-# str(dataCyberSecuritySurvey2022TidyNameSizeCyber)
-# dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-year)
-# dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNameSizeCyber %>% select(-sizea)
 
 ##after fitting the model we will use the pooled imputations using the model to make the estimation
 
@@ -3405,7 +3396,7 @@ summary(fit2022)
 
 
 
-#plot(imp2022)
+
 #stripplot(imp2018)
 
 

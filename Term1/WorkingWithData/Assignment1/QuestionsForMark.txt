@@ -33,3 +33,4 @@ Instead of making a huge complex variable that computes all the outcomes work wi
 post effect for comparing (attack types/outcomes) and costs
 
 the linearity may not be mantained after the como«putation of the values
+
