@@ -2940,22 +2940,12 @@ summary(dataCyberSecuritySurvey2022TidyNameSizeCyber)
 ###################################################### 2022 ##########################################
 
 ##everyday I am unlabelling 
+ 
+ remove_var_label(dataCyberSecuritySurvey2022TidyNameSizeCyber$restore)
+ remove_val_labels(dataCyberSecuritySurvey2022TidyNameSizeCyber$restore)
 
-dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabbel = dataCyberSecuritySurvey2022TidyNameSizeCyber
 
-remove_var_label(dataCyberSecuritySurvey2022TidyNameSizeCyber$restore)
-remove_val_labels(dataCyberSecuritySurvey2022TidyNameSizeCyber$restore)
-
-str(dataCyberSecuritySurvey2022TidyNameSizeCyber)
-
-##we have to convert to numeric first to make sure we can then use the auxiliary Unlabbel data set to copy the original values to replaced the values that got corrupted when converting from haven_label to numeric and finally factor
-
-dataCyberSecuritySurvey2022TidyNameSizeCyber$restore = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$update)
-
-for (i in 1:nrow(dataCyberSecuritySurvey2022TidyNameSizeCyber)) {
-  dataCyberSecuritySurvey2022TidyNameSizeCyber$restore[i] = dataCyberSecuritySurvey2022TidyNameSizeCyberUnlabbel$restore[i]
-}
-
+dataCyberSecuritySurvey2022TidyNameSizeCyber$restore = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$restore)
 
 
 ## perfect factorizationa and numeric conversion removing all the problematic labels for imputation 
@@ -2977,7 +2967,7 @@ remove_val_labels(dataCyberSecuritySurvey2022TidyNameSizeCyber$restore)
 
 str(dataCyberSecuritySurvey2022TidyNameSizeCyber)
 
-dataCyberSecuritySurvey2022TidyNameSizeCyber$restore = as_factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$update)
+dataCyberSecuritySurvey2022TidyNameSizeCyber$restore = as_factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$restore)
 
 dataCyberSecuritySurvey2022TidyNameSizeCyber$managementContinuity = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$managementContinuity)
 
@@ -3005,6 +2995,14 @@ dataCyberSecuritySurvey2022TidyNameSizeCyber$outcomesTheft= as.factor(dataCyberS
 str(dataCyberSecuritySurvey2022TidyNameSizeCyber)
 
 ###################################################### 2021 ##########################################
+
+##everyday I am unlabelling 
+ 
+remove_var_label(dataCyberSecuritySurvey2021TidyNameSizeCyber$restore)
+remove_val_labels(dataCyberSecuritySurvey2021TidyNameSizeCyber$restore)
+
+dataCyberSecuritySurvey2021TidyNameSizeCyber$restore = as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$restore)
+
 
 ## perfect factorizationa and numeric conversion removing all the problematic labels for imputation 
 dataCyberSecuritySurvey2021TidyNameSizeCyber$instituitionTypes = as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$instituitionTypes)
@@ -3045,6 +3043,14 @@ str(dataCyberSecuritySurvey2021TidyNameSizeCyber)
 
 ###################################################### 2020 ##########################################
 
+##everyday I am unlabelling 
+ 
+remove_var_label(dataCyberSecuritySurvey2020TidyNameSizeCyber$restore)
+remove_val_labels(dataCyberSecuritySurvey2020TidyNameSizeCyber$restore)
+
+dataCyberSecuritySurvey2020TidyNameSizeCyber$restore = as.factor(dataCyberSecuritySurvey2020TidyNameSizeCyber$restore)
+
+
 ## perfect factorizationa and numeric conversion removing all the problematic labels for imputation 
 dataCyberSecuritySurvey2020TidyNameSizeCyber$instituitionTypes = as.factor(dataCyberSecuritySurvey2020TidyNameSizeCyber$instituitionTypes)
 
@@ -3083,6 +3089,13 @@ str(dataCyberSecuritySurvey2020TidyNameSizeCyber)
 
 ###################################################### 2019 ##########################################
 
+##everyday I am unlabelling 
+ 
+remove_var_label(dataCyberSecuritySurvey2019TidyNameSizeCyber$restore)
+remove_val_labels(dataCyberSecuritySurvey2019TidyNameSizeCyber$restore)
+
+dataCyberSecuritySurvey2019TidyNameSizeCyber$restore = as.factor(dataCyberSecuritySurvey2019TidyNameSizeCyber$restore)
+
 ## perfect factorizationa and numeric conversion removing all the problematic labels for imputation 
 dataCyberSecuritySurvey2019TidyNameSizeCyber$instituitionTypes = as.factor(dataCyberSecuritySurvey2019TidyNameSizeCyber$instituitionTypes)
 
@@ -3119,6 +3132,14 @@ dataCyberSecuritySurvey2019TidyNameSizeCyber$outcomesTheft= as.factor(dataCyberS
 str(dataCyberSecuritySurvey2019TidyNameSizeCyber)
 
 ###################################################### 2018 ##########################################
+
+
+##everyday I am unlabelling 
+ 
+remove_var_label(dataCyberSecuritySurvey2018TidyNameSizeCyber$restore)
+remove_val_labels(dataCyberSecuritySurvey2018TidyNameSizeCyber$restore)
+
+dataCyberSecuritySurvey2018TidyNameSizeCyber$restore = as.factor(dataCyberSecuritySurvey2018TidyNameSizeCyber$restore)
 
 ## perfect factorizationa and numeric conversion removing all the problematic labels for imputation 
 dataCyberSecuritySurvey2018TidyNameSizeCyber$instituitionTypes = as.factor(dataCyberSecuritySurvey2018TidyNameSizeCyber$instituitionTypes)
@@ -3276,6 +3297,7 @@ lm(outcomesChmod ~ attackBreaching + attackPhising + attackInfection, data= data
 lm(sizea ~  priority, data= dataCyberSecuritySurvey2021TidyNameSizeCyber)
 
 ##hypotheses bigger organisations take longer to recover from cyber attack due to the sheer volume of data in their possession
+lm(sizea ~  restore, data= dataCyberSecuritySurvey2022TidyNameSizeCyber)
 
 
 dataCyberSecuritySurvey2021TidyNameSizeCyber$outcomesChmod = as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$outcomesChmod)
