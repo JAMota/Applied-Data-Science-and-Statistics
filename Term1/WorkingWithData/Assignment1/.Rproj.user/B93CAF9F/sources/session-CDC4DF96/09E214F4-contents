@@ -1,0 +1,184 @@
+mtcars
+library(tidyr)
+
+mtcars <- mtcars[,c("mpg","cyl","disp","hp","wt","qsec","am")]
+
+mtcars <- mtcars %>% mutate(am=factor(am))
+
+
+## for any modeling process
+## in this case it is linear regression
+
+##exploratory data analysis 
+
+summary(mtcars)
+
+## we should comment in the numerical summary as in
+## making an interpretation and see if the values 
+## make sense by looking at the minimum and maximum
+
+## see if there is any missing values, when that happens
+## summary gives an extra row with the number of missing
+## values
+
+library(GGally)
+
+
+ggpairs(mtcars,
+        lower = list(continuous = "smooth"),
+        diag=list(continuous = "barDiag"),
+        axisLabels= "show")
+
+
+##simple linear regression
+## mpg, wt
+
+ggplot(data=mtcars)+
+  geom_point(aes(x=wt,y=mpg))
+
+
+##Fitting the regression line
+
+## here the relation we are looking to fit
+## mpg ~ wt is a linear model where
+## mpg = beta0 +beta1*wt
+
+lmFunc = lm(formula = mpg ~ wt, data=mtcars)
+
+## if we are really certain is passes through 0
+## mpg ~ wt -1
+## mpg = beta1*wt
+
+
+summary(lmFunc)
+
+##residuals are the values of the differences between
+## the line we made and the observations
+
+## the coefficients are the point estimations
+## intercept is the beta0 and the wt is the beta1
+
+## the PR(>lt) is the same as the confidence interval
+## if it has *** stars is inside the 99,9%
+## ** is inside the 99% confidence interval and
+## * is the standard 95% confidence interval
+
+#Coefficients:
+#  Estimate Std. Error t value Pr(>|t|)    
+#(Intercept)  37.2851     1.8776  19.858  < 2e-16 ***
+#  wt           -5.3445     0.5591  -9.559 1.29e-10 ***
+ 
+##fitted model:
+## mpg = 37.29 - 5.34 * wt
+## this means that a unit increase in wt will result
+## in a decrease in 5.34 decrease in mpg
+
+## it is usually better than to less complex models
+## to see if the extra variables in the model is worth
+## it we have to check the adjusted R-squared and 
+## possibly the p values
+
+##residual checks
+plot(lmFunc, which=c(1,2))
+
+## in a ideal world the residual would follow a 
+## normal distribution, follow constant variance
+## and have 0 mean
+
+## get the two previous plots in a single windows
+par(mfrow=c(1,2))
+plot(lmFunc, which=c(1,2))
+par(mfrow=c(1,1))
+
+
+########### Linear Regression problem #############
+install.packages('car')
+library(car)
+
+Leinhardt
+
+summary(Leinhardt)
+
+ggplot(data=Leinhardt, aes(x=income,y=infant)) +
+  geom_point()
+
+
+##when we don't have a linear mode
+## should we log transform only 1 or the 2 variables
+## the idea of log transformation is to make them
+## have a distribution as a linear distribution
+
+hist(Leinhardt$income)
+hist(Leinhardt$infant)
+
+ggplot(data=Leinhardt, aes(x=log(income),y=log(infant))) +
+  geom_point()
+
+## look at correlation coefficient
+
+lmod = lm(log(infant) ~ log(income), data=Leinhardt)
+
+summary(lmod)
+
+# log(infant) = 7.15 -0.51 * log(income)
+#infant = exp(7.15-0.51 * log(income))
+
+## do some residual checking
+
+#########################################
+
+#response: mpg
+#predictors: cyl, disp, hp, wt,qsec,am I
+
+mod1 = lm(mpg ~ ., data = mtcars)
+
+##the module will predict for each variable
+
+summary(mod1)
+
+## here only 1 variable is significant so we will remove 
+##the insignificant variables one by one
+
+##the eassiest ways to tell the less siginfcant is by going 
+## by the size of the p values, the bigger the p value
+## the less relevant it is (cyl)
+
+mod2 = lm(mpg ~ disp + hp + wt + qsec + am,
+          data = mtcars)
+
+summary(mod2)
+
+
+##removing disp (has higer p value)
+
+
+mod3 = lm(mpg ~ hp + wt + qsec + am,
+          data = mtcars)
+summary(mod3)
+
+##p value is bigger than 0.05 so we will remove
+##p vales > 0.05 mean it is no significant enough
+
+mod4 = lm(mpg ~  wt + qsec + am,
+          data = mtcars)
+
+summary(mod4)
+
+#Rsquared = 0.8336
+
+##when consider a module look at significance (p-values)
+## and ajusted Rsquared values
+
+##in the assigmnent don't use the automatic because dorka
+##wants to see if we can manually do it 
+
+##2 things to look at the residuals vs fitted
+
+## we want a red line that is linear
+## and the spread(var) of the observations the same?
+
+
+
+
+
+
