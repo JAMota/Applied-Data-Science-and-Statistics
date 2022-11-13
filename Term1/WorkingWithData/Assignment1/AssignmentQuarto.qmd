@@ -3743,6 +3743,8 @@ fitModelAll2018 = with(imp2018, lm(sizea ~  restore + attackBreaching + attackPh
 
 [@Collins2001-bo]
 
+## Merging the imputations iteractions
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 ##the mice function automatically detects and removes predictore from the model
@@ -3765,10 +3767,12 @@ summary(est2020)
 summary(est2019) 
 summary(est2018) 
 
-
+##chose the one with the lowest aic and bic for the model
+#anova()
 
 
 ```
+## Creating a new completed imputation to graph
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -3776,6 +3780,8 @@ summary(est2018)
 #completed for graphs
 displayed2022 = complete(imp2022,1)
 
+
+## we have to do this to catch a 1 or two values that doesn't perfectly fit the scale after the imputation for when both sizea and sizeb are missing
 
 for (i in 1:nrow(displayed2022)) {
   
@@ -3801,6 +3807,7 @@ for (i in 1:nrow(displayed2022)) {
 }
 
 ```
+## Graphing the correlation between size and restoring time
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -3818,14 +3825,6 @@ ggplot(displayed2022, aes(x=sizea, y= restore)) + # ggplot with the desired data
   labs(x="size",y="restore") +# Axes labels
   facet_wrap(~sizeb, scale="free_x")
 
-##chose the one with the lowest aic and bic for the model
-#anova()
-
-
-##est2022=pool(fit2022)
-
-
-##after fitting the model we will use the pooled imputations using the model to make the estimation
 
 
 ```
