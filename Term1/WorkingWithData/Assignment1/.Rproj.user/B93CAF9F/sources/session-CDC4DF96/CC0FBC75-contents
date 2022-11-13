@@ -3213,11 +3213,11 @@ str(dataCyberSecuritySurvey2018TidyNameSizeCyber)
 [@White2010]
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-missmap(dataCyberSecuritySurvey2018TidyNameSizeCyber) ## 17% missing data
-missmap(dataCyberSecuritySurvey2019TidyNameSizeCyber) ## 17% missing data
-missmap(dataCyberSecuritySurvey2020TidyNameSizeCyber) ## 14% missing data
-missmap(dataCyberSecuritySurvey2021TidyNameSizeCyber) ## 16% missing data
-missmap(dataCyberSecuritySurvey2022TidyNameSizeCyber) ## 15% missing data
+missmap(dataCyberSecuritySurvey2018TidyNameSizeCyber) ## 18% missing data
+missmap(dataCyberSecuritySurvey2019TidyNameSizeCyber) ## 19% missing data
+missmap(dataCyberSecuritySurvey2020TidyNameSizeCyber) ## 16% missing data
+missmap(dataCyberSecuritySurvey2021TidyNameSizeCyber) ## 15% missing data
+missmap(dataCyberSecuritySurvey2022TidyNameSizeCyber) ## 18% missing data
 ```
 
 ## Imputed values here
@@ -3234,11 +3234,11 @@ missmap(dataCyberSecuritySurvey2022TidyNameSizeCyber) ## 15% missing data
 
 ##first step of the imputation workflow //https://stefvanbuuren.name/fimd/workflow.html
 
-imp2022 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=17, maxit=21)
-imp2021 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=17, maxit=22)
-imp2020 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=14, maxit=21)
-imp2019 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=16, maxit=21)
-imp2018 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=15, maxit=21)
+imp2022 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=18, maxit=21)
+imp2021 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=19, maxit=22)
+imp2020 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=16, maxit=21)
+imp2019 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=15, maxit=21)
+imp2018 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=18, maxit=21)
 
 ##checking all the methods are correct
 imp2022$method
@@ -3361,13 +3361,21 @@ imp2022$predictorMatrix
 
 fitModelBase = with(imp2022, lm(sizea ~  restore))
 
+
 ##now lets test with all the variables
 
 ##the with function has 2 functions, fill the missing value and then do the analysis, this way we avoid having to use complete function to gather all the data and then use the lappy to fit he model 
 ?with
 
-fitModelAll = with(imp2022, lm(sizea ~  restore + attackBreaching + attackPhising + attackInfection + managementCyber + managementCyber + rulesSecurityConfigs + rulesUserControl + rulesUpdating + policyPrivate + policyData + policyStaffAccess))
+fitModelAll2022 = with(imp2022, lm(sizea ~  restore + attackBreaching + attackPhising + attackInfection + managementCyber + managementCyber + rulesSecurityConfigs + rulesUserControl + rulesUpdating + policyPrivate + policyData + policyStaffAccess))
 
+fitModelAll2021 = with(imp2021, lm(sizea ~  restore + attackBreaching + attackPhising + attackInfection + managementCyber + managementCyber + rulesSecurityConfigs + rulesUserControl + rulesUpdating + policyPrivate + policyData + policyStaffAccess))
+
+fitModelAll2020 = with(imp2020, lm(sizea ~  restore + attackBreaching + attackPhising + attackInfection + managementCyber + managementCyber + rulesSecurityConfigs + rulesUserControl + rulesUpdating + policyPrivate + policyData + policyStaffAccess))
+
+fitModelAll2019 = with(imp2019, lm(sizea ~  restore + attackBreaching + attackPhising + attackInfection + managementCyber + managementCyber + rulesSecurityConfigs + rulesUserControl + rulesUpdating + policyPrivate + policyData + policyStaffAccess))
+
+fitModelAll2018 = with(imp2018, lm(sizea ~  restore + attackBreaching + attackPhising + attackInfection + managementCyber + managementCyber + rulesSecurityConfigs + rulesUserControl + rulesUpdating + policyPrivate + policyData + policyStaffAccess))
 
 ## conditioning based on all variables is reasonable on these type of data sets because of the relatively small amount of variables after cleaning.
 ## As a rule of thumb using every available information created imputations with minimal bias and maximum efficiency 
@@ -3381,15 +3389,25 @@ fitModelAll = with(imp2022, lm(sizea ~  restore + attackBreaching + attackPhisin
 ## they are stored in the variable loggedEvents
 
 
-est1 = pool(fitModelAll)
-est0 = pool(fitModelBase)
 
-summary(est1)
-summary(est0)
- 
+#est0 = pool(fitModelBase)
+
+est2022 = pool(fitModelAll2022)
+est2021 = pool(fitModelAll2021)
+est2020 = pool(fitModelAll2020)
+est2019 = pool(fitModelAll2019)
+est2018 = pool(fitModelAll2018)
+
+#summary(est0)
+
+summary(est2022) 
+summary(est2021) 
+summary(est2020) 
+summary(est2019) 
+summary(est2018) 
 
 #completed for modelling 
-completed = complete(imp2022,1)
+#completed = complete(imp2022,1)
 
 
 
