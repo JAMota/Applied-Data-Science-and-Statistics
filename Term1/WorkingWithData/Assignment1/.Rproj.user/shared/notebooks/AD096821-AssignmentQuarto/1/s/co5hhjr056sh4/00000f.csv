@@ -1,0 +1,12 @@
+"0",""
+"0","##adding the scale 5 that is missing"
+"0","for (i in 1:nrow(dataCyberSecuritySurvey2022TidyNameSizeCyber)) {"
+"0","  "
+"0","  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$sizea[i] < 10){"
+"0","    dataCyberSecuritySurvey2022TidyNameSizeCyber$sizeb[i] = 1"
+"0","  }"
+"0","  "
+"0","}"
+"2","Error in if (dataCyberSecuritySurvey2022TidyNameSizeCyber$sizea[i] < 10) { : 
+  missing value where TRUE/FALSE needed
+"

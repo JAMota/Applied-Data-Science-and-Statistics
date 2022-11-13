@@ -762,6 +762,107 @@ dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNa
 
 ```
 
+
+## adjusting the size scales
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+##################################################### 2022 #######################################
+
+##here we are adding the scale 5 that is missing from the questionary and by doing this we will get both better imputations and better scaling for the graphics
+
+dataCyberSecuritySurvey2022TidyNameSizeCyber$sizeb = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$sizeb)
+dataCyberSecuritySurvey2022TidyNameSizeCyber$sizea = as.numeric(dataCyberSecuritySurvey2022TidyNameSizeCyber$sizea)
+
+##
+for (i in 1:nrow(dataCyberSecuritySurvey2022TidyNameSizeCyber)) {
+  
+      dataCyberSecuritySurvey2022TidyNameSizeCyber$sizea[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$sizea[i], -10004)
+      dataCyberSecuritySurvey2022TidyNameSizeCyber$sizeb[i] = replace_na(dataCyberSecuritySurvey2022TidyNameSizeCyber$sizeb[i], -10004)
+  
+  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$sizea[i] > 999){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$sizeb[i] = 5
+  }
+
+      
+  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$sizea[i] == -10004){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$sizea[i] = NA
+  }
+  if(dataCyberSecuritySurvey2022TidyNameSizeCyber$sizeb[i] == -10004){
+    dataCyberSecuritySurvey2022TidyNameSizeCyber$sizeb[i] = NA
+  }
+
+  
+}
+
+dataCyberSecuritySurvey2022TidyNameSizeCyber$sizeb = as.factor(dataCyberSecuritySurvey2022TidyNameSizeCyber$sizeb)
+
+
+##################################################### 2021 #######################################
+
+##here we are adding the scale 5 that is missing from the questionary and by doing this we will get both better imputations and better scaling for the graphics
+
+dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb = as.numeric(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb)
+dataCyberSecuritySurvey2021TidyNameSizeCyber$sizea = as.numeric(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizea)
+
+##
+for (i in 1:nrow(dataCyberSecuritySurvey2021TidyNameSizeCyber)) {
+  
+      dataCyberSecuritySurvey2021TidyNameSizeCyber$sizea[i] = replace_na(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizea[i], -10004)
+      dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb[i] = replace_na(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb[i], -10004)
+  
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizea[i] > 999){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb[i] = 5
+  }
+
+      
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizea[i] == -10004){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$sizea[i] = NA
+  }
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb[i] == -10004){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb[i] = NA
+  }
+
+  
+}
+
+dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb = as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb)
+
+##################################################### 2021 #######################################
+
+##here we are adding the scale 5 that is missing from the questionary and by doing this we will get both better imputations and better scaling for the graphics
+
+dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb = as.numeric(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb)
+dataCyberSecuritySurvey2021TidyNameSizeCyber$sizea = as.numeric(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizea)
+
+##
+for (i in 1:nrow(dataCyberSecuritySurvey2021TidyNameSizeCyber)) {
+  
+      dataCyberSecuritySurvey2021TidyNameSizeCyber$sizea[i] = replace_na(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizea[i], -10004)
+      dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb[i] = replace_na(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb[i], -10004)
+  
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizea[i] > 999){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb[i] = 5
+  }
+
+      
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizea[i] == -10004){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$sizea[i] = NA
+  }
+  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb[i] == -10004){
+    dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb[i] = NA
+  }
+
+  
+}
+
+dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb = as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb)
+
+
+
+  
+``` 
+
 ## Management - now is when the policies and procedures are evaluated
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
@@ -897,7 +998,7 @@ for (i in 1:numberOfCycles) {
 }
 
 
-##################################################### 2021 ##############################################
+##################################################### 2020 ##############################################
 
 
 numberOfCycles = length(dataCyberSecuritySurvey2021TidyNameSizeCyber$manage1)
@@ -3208,6 +3309,8 @@ str(dataCyberSecuritySurvey2018TidyNameSizeCyber)
 
 ```
 
+
+
 ## Data Imputation
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
@@ -3285,7 +3388,7 @@ predictorMatrix2022[ "outcomesDDOS", "sizea"] = 0
 predictorMatrix2022[ "outcomesData", "sizea"] = 0
 predictorMatrix2022["outcomesTheft", "sizea"] = 0
 
-imp2022$predictorMatrix = predictorMatrix2022
+predictorMatrix2022
 
 
 
@@ -3316,7 +3419,7 @@ predictorMatrix2021[ "outcomesDDOS", "sizea"] = 0
 predictorMatrix2021[ "outcomesData", "sizea"] = 0
 predictorMatrix2021["outcomesTheft", "sizea"] = 0
 
-imp2021$predictorMatrix = predictorMatrix2021
+predictorMatrix2021
 
 
 ####################################################### 2021 ###########################################
@@ -3346,7 +3449,7 @@ predictorMatrix2020[ "outcomesDDOS", "sizea"] = 0
 predictorMatrix2020[ "outcomesData", "sizea"] = 0
 predictorMatrix2020["outcomesTheft", "sizea"] = 0
 
-imp2020$predictorMatrix = predictorMatrix2020
+predictorMatrix2020
 
 
 ####################################################### 2019 ###########################################
@@ -3376,7 +3479,7 @@ predictorMatrix2019[ "outcomesDDOS", "sizea"] = 0
 predictorMatrix2019[ "outcomesData", "sizea"] = 0
 predictorMatrix2019["outcomesTheft", "sizea"] = 0
 
-imp2019$predictorMatrix = predictorMatrix2019
+predictorMatrix2019
 
 
 ####################################################### 2018 ###########################################
@@ -3406,7 +3509,7 @@ predictorMatrix2018[ "outcomesDDOS", "sizea"] = 0
 predictorMatrix2018[ "outcomesData", "sizea"] = 0
 predictorMatrix2018["outcomesTheft", "sizea"] = 0
 
-imp2018$predictorMatrix = predictorMatrix2018
+predictorMatrix2018
 
 ```
 
@@ -3424,11 +3527,11 @@ imp2018$predictorMatrix = predictorMatrix2018
 
 ##first step of the imputation workflow //https://stefvanbuuren.name/fimd/workflow.html
 
-imp2022 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=18, maxit=21)
-imp2021 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=19, maxit=22)
-imp2020 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=16, maxit=21)
-imp2019 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=15, maxit=21)
-imp2018 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=18, maxit=21)
+imp2022 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=18, maxit=21, predictorMatrix = predictorMatrix2022)
+imp2021 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=19, maxit=22, predictorMatrix = predictorMatrix2021)
+imp2020 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=16, maxit=21, predictorMatrix = predictorMatrix2020)
+imp2019 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=15, maxit=21, predictorMatrix = predictorMatrix2019)
+imp2018 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=18, maxit=21, predictorMatrix = predictorMatrix2018)
 
 
 ```
@@ -3584,7 +3687,6 @@ fitModelAll2018 = with(imp2018, lm(sizea ~  restore + attackBreaching + attackPh
 ## they are stored in the variable loggedEvents
 
 
-
 #est0 = pool(fitModelBase)
 
 est2022 = pool(fitModelAll2022)
@@ -3603,12 +3705,44 @@ summary(est2018)
 
 
 
+
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+
 #completed for graphs
 displayed2022 = complete(imp2022,1)
+
+
+for (i in 1:nrow(displayed2022)) {
+  
+  if(displayed2022$sizea[i] < 10){
+    displayed2022$sizeb[i] = 1
+  }
+  
+    if(displayed2022$sizea[i] > 9 && displayed2022$sizea[i] < 50){
+    displayed2022$sizeb[i] = 2
+    }
+      if(displayed2022$sizea[i] > 49 && displayed2022$sizea[i] < 250){
+    displayed2022$sizeb[i] = 3
+  }
+    if(displayed2022$sizea[i] > 249){
+    displayed2022$sizeb[i] = 4
+    }
+  
+  print(displayed2022$sizea[i])
+  print(displayed2022$sizeb[i])
+  
+  
+}
+
+``` 
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
 
 
 ##ok so i need to adjust the predictor of sizea so it is only predicted by sizeb

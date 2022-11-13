@@ -1,0 +1,5 @@
+"0","## see questioner documentation start from page 27"
+"0",""
+"0","technicalAnnex2019 = ""https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/950097/Cyber_Security_Breaches_Survey_2019_-_Technical_Annex_V2.pdf"""
+"0","##TODO comment in case of fire or debugging"
+"0","#browseURL(technicalAnnex2019)"
