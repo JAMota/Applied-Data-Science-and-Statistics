@@ -52,7 +52,7 @@ variables have to been clean up into 21 easily comparable variables.
 The clean up process consisted of computing new variables utilizing the
 multiple subcategories of answers to the survey questions, grouping them
 into more flexible options while adjusting missing values to allow for
-such computation maintaining the original binary design.
+such computation maintaining the original binary design and increasing the scale of the size variable to produce better grouping and latter on better imputations due to the data sets didn't had the distinction between the intervals [250, 999] and [1000, ∞] that was present in the survey.
 
 I also had to remove a few results from each year data set because these
 institutions still had their systems down after being attacks and since
@@ -68,9 +68,8 @@ factors and numerical to enable imputation of missing values and proper
 correlations computation and conversion of the appropriate missing value
 responses to actual missing data.
 
-## TODO SHOW MISSING DATA MAPS
 
-![MissingnessMap](MissingnessMap.png)
+![MissingnessMap](MissingnessMap.jpg)
 
 Data analysis:
 

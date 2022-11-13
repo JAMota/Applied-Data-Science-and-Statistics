@@ -68,7 +68,7 @@ variables have to been clean up into 21 easily comparable variables.
 The clean up process consisted of computing new variables utilizing the
 multiple subcategories of answers to the survey questions, grouping them
 into more flexible options while adjusting missing values to allow for
-such computation maintaining the original binary design.
+such computation maintaining the original binary design and increasing the scale of the size variable to produce better grouping and latter on better imputations due to the data sets didn't had the distinction between the intervals [250, 999] and [1000, ∞] that was present in the survey.
 
 I also had to remove a few results from each year data set because these
 institutions still had their systems down after being attacks and since
@@ -84,9 +84,7 @@ factors and numerical to enable imputation of missing values and proper
 correlations computation and conversion of the appropriate missing value
 responses to actual missing data.
 
-## TODO SHOW MISSING DATA MAPS
-
-![MissingnessMap](MissingnessMap.png)
+![MissingnessMap](MissingnessMap.jpg)
 
 Data analysis:
 
@@ -140,6 +138,8 @@ number of values. [@AppliedMissingDataAnalysis]
 ##Missing data
 
 ##Visual analyses
+
+## TODO SHOW NEW GRAPH
 
 ##hypothesis testing
 
@@ -3777,6 +3777,7 @@ summary(est2018)
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 
+
 #completed for graphs
 displayed2022 = complete(imp2022,1)
 
@@ -3803,7 +3804,6 @@ for (i in 1:nrow(displayed2022)) {
     }
   
   
-  
 }
 
 ```
@@ -3819,6 +3819,12 @@ for (i in 1:nrow(displayed2022)) {
 # ggplot(displayed2022, aes(x=sizea, y= restore)) + # ggplot with the desired data
 #   geom_point(colour='red') + # Specifying a scatter plot
 #   labs(x="Size", y="Time of restauration") # Axes labels
+
+ggplot(displayed2022, aes(x=sizea, y= restore)) + # ggplot with the desired data
+  geom_boxplot(fill='lightgreen',colour='black') + # Specifying boxplot
+  labs(x="size",y="restore") +# Axes labels
+  facet_wrap(~sizeb, scale="free_x")
+
 
 ggplot(displayed2022, aes(x=sizea, y= restore)) + # ggplot with the desired data
   geom_boxplot(fill='lightgreen',colour='black') + # Specifying boxplot
