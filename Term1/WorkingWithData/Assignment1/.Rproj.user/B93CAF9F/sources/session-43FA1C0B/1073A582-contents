@@ -3831,8 +3831,6 @@ for (i in 1:nrow(displayed2022)) {
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 
-
-
 ##ok so i need to adjust the predictor of sizea so it is only predicted by sizeb
 
 # ggplot(displayed2022, aes(x=sizea, y= restore)) + # ggplot with the desired data
@@ -3859,9 +3857,16 @@ ggplot(displayed2022, aes(y=sizea, x= restore)) + # ggplot with the desired data
 
 
 ```
+## t testing between each of the scales of company sizes
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
+
+mod = aov(sizea ~ restore, data = displayed2022)
+
+summary(mod)
+## the mean of the
+
+
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}

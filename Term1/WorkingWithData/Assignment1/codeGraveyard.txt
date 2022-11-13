@@ -1477,3 +1477,60 @@ for (i in 1:numberOfCycles) {
     }
   
 }
+
+
+## calculating the mean for t testing my hypothesis
+
+counterScale1 = 0
+counterScale2 = 0
+counterScale3 = 0
+counterScale4 = 0
+counterScale5 = 0
+
+counterEntries1 = 0
+counterEntries2 = 0
+counterEntries3 = 0
+counterEntries4 = 0
+counterEntries5 = 0
+
+displayed2022$restore = as.numeric(displayed2022$restore)
+
+for (i in 1:nrow(displayed2022)) {
+  
+  if(displayed2022$sizeb[i] == 1){
+    counterScale1 = counterScale1 + displayed2022$restore[i]
+    counterEntries1 = counterEntries1 +1
+  }
+  if(displayed2022$sizeb[i] == 2){
+    counterScale2 = counterScale2 + displayed2022$restore[i]
+    counterEntries2 = counterEntries1 +1
+  }
+  if(displayed2022$sizeb[i] == 3){
+    counterScale3 = counterScale3 + displayed2022$restore[i]
+    counterEntries3 = counterEntries1 +1
+  }
+  if(displayed2022$sizeb[i] == 4){
+    counterScale4 = counterScale4 + displayed2022$restore[i]
+    counterEntries4 = counterEntries1 +1
+  }
+  if(displayed2022$sizeb[i] == 5){
+    counterScale5 = counterScale5 + displayed2022$restore[i]
+    counterEntries5 = counterEntries1 +1
+  }
+  
+  
+}
+
+##mean for each scale of the size of the institutions
+Mean1 = counterScale1 / counterEntries1
+Mean2 = counterScale2 / counterEntries2
+Mean3 = counterScale3 / counterEntries3
+Mean4 = counterScale4 / counterEntries4
+Mean5 = counterScale5 / counterEntries5
+
+
+displayed2022$restore = as.factor(displayed2022$restore)
+
+?t.test()
+
+t.test(sizea ~ restore, data = displayed2022)
