@@ -762,7 +762,6 @@ dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNa
 
 ```
 
-
 ## adjusting the size scales
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
@@ -828,40 +827,101 @@ for (i in 1:nrow(dataCyberSecuritySurvey2021TidyNameSizeCyber)) {
 
 dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb = as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb)
 
-##################################################### 2021 #######################################
+##################################################### 2020 #######################################
 
 ##here we are adding the scale 5 that is missing from the questionary and by doing this we will get both better imputations and better scaling for the graphics
 
-dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb = as.numeric(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb)
-dataCyberSecuritySurvey2021TidyNameSizeCyber$sizea = as.numeric(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizea)
+dataCyberSecuritySurvey2020TidyNameSizeCyber$sizeb = as.numeric(dataCyberSecuritySurvey2020TidyNameSizeCyber$sizeb)
+dataCyberSecuritySurvey2020TidyNameSizeCyber$sizea = as.numeric(dataCyberSecuritySurvey2020TidyNameSizeCyber$sizea)
 
 ##
-for (i in 1:nrow(dataCyberSecuritySurvey2021TidyNameSizeCyber)) {
+for (i in 1:nrow(dataCyberSecuritySurvey2020TidyNameSizeCyber)) {
   
-      dataCyberSecuritySurvey2021TidyNameSizeCyber$sizea[i] = replace_na(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizea[i], -10004)
-      dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb[i] = replace_na(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb[i], -10004)
+      dataCyberSecuritySurvey2020TidyNameSizeCyber$sizea[i] = replace_na(dataCyberSecuritySurvey2020TidyNameSizeCyber$sizea[i], -10004)
+      dataCyberSecuritySurvey2020TidyNameSizeCyber$sizeb[i] = replace_na(dataCyberSecuritySurvey2020TidyNameSizeCyber$sizeb[i], -10004)
   
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizea[i] > 999){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb[i] = 5
+  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$sizea[i] > 999){
+    dataCyberSecuritySurvey2020TidyNameSizeCyber$sizeb[i] = 5
   }
 
       
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizea[i] == -10004){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$sizea[i] = NA
+  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$sizea[i] == -10004){
+    dataCyberSecuritySurvey2020TidyNameSizeCyber$sizea[i] = NA
   }
-  if(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb[i] == -10004){
-    dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb[i] = NA
+  if(dataCyberSecuritySurvey2020TidyNameSizeCyber$sizeb[i] == -10004){
+    dataCyberSecuritySurvey2020TidyNameSizeCyber$sizeb[i] = NA
   }
 
   
 }
 
-dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb = as.factor(dataCyberSecuritySurvey2021TidyNameSizeCyber$sizeb)
+dataCyberSecuritySurvey2020TidyNameSizeCyber$sizeb = as.factor(dataCyberSecuritySurvey2020TidyNameSizeCyber$sizeb)
 
+
+##################################################### 2019 #######################################
+
+##here we are adding the scale 5 that is missing from the questionary and by doing this we will get both better imputations and better scaling for the graphics
+
+dataCyberSecuritySurvey2019TidyNameSizeCyber$sizeb = as.numeric(dataCyberSecuritySurvey2019TidyNameSizeCyber$sizeb)
+dataCyberSecuritySurvey2019TidyNameSizeCyber$sizea = as.numeric(dataCyberSecuritySurvey2019TidyNameSizeCyber$sizea)
+
+##
+for (i in 1:nrow(dataCyberSecuritySurvey2019TidyNameSizeCyber)) {
+  
+      dataCyberSecuritySurvey2019TidyNameSizeCyber$sizea[i] = replace_na(dataCyberSecuritySurvey2019TidyNameSizeCyber$sizea[i], -10004)
+      dataCyberSecuritySurvey2019TidyNameSizeCyber$sizeb[i] = replace_na(dataCyberSecuritySurvey2019TidyNameSizeCyber$sizeb[i], -10004)
+  
+  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$sizea[i] > 999){
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$sizeb[i] = 5
+  }
+
+      
+  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$sizea[i] == -10004){
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$sizea[i] = NA
+  }
+  if(dataCyberSecuritySurvey2019TidyNameSizeCyber$sizeb[i] == -10004){
+    dataCyberSecuritySurvey2019TidyNameSizeCyber$sizeb[i] = NA
+  }
+
+  
+}
+
+dataCyberSecuritySurvey2019TidyNameSizeCyber$sizeb = as.factor(dataCyberSecuritySurvey2019TidyNameSizeCyber$sizeb)
+
+
+##################################################### 2018 #######################################
+
+##here we are adding the scale 5 that is missing from the questionary and by doing this we will get both better imputations and better scaling for the graphics
+
+dataCyberSecuritySurvey2018TidyNameSizeCyber$sizeb = as.numeric(dataCyberSecuritySurvey2018TidyNameSizeCyber$sizeb)
+dataCyberSecuritySurvey2018TidyNameSizeCyber$sizea = as.numeric(dataCyberSecuritySurvey2018TidyNameSizeCyber$sizea)
+
+##
+for (i in 1:nrow(dataCyberSecuritySurvey2018TidyNameSizeCyber)) {
+  
+      dataCyberSecuritySurvey2018TidyNameSizeCyber$sizea[i] = replace_na(dataCyberSecuritySurvey2018TidyNameSizeCyber$sizea[i], -10004)
+      dataCyberSecuritySurvey2018TidyNameSizeCyber$sizeb[i] = replace_na(dataCyberSecuritySurvey2018TidyNameSizeCyber$sizeb[i], -10004)
+  
+  if(dataCyberSecuritySurvey2018TidyNameSizeCyber$sizea[i] > 999){
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$sizeb[i] = 5
+  }
+
+      
+  if(dataCyberSecuritySurvey2018TidyNameSizeCyber$sizea[i] == -10004){
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$sizea[i] = NA
+  }
+  if(dataCyberSecuritySurvey2018TidyNameSizeCyber$sizeb[i] == -10004){
+    dataCyberSecuritySurvey2018TidyNameSizeCyber$sizeb[i] = NA
+  }
+
+  
+}
+
+dataCyberSecuritySurvey2018TidyNameSizeCyber$sizeb = as.factor(dataCyberSecuritySurvey2018TidyNameSizeCyber$sizeb)
 
 
   
-``` 
+```
 
 ## Management - now is when the policies and procedures are evaluated
 
@@ -3311,8 +3371,6 @@ str(dataCyberSecuritySurvey2018TidyNameSizeCyber)
 
 
 
-## Data Imputation
-
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ##remember we must make the imputations before we merge the data of all the years
 
@@ -3358,6 +3416,8 @@ missmap(dataCyberSecuritySurvey2020TidyNameSizeCyber) ## 16% missing data
 missmap(dataCyberSecuritySurvey2021TidyNameSizeCyber) ## 15% missing data
 missmap(dataCyberSecuritySurvey2022TidyNameSizeCyber) ## 18% missing data
 ```
+
+##setting up the prediciton Matrix
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE}
 
@@ -3513,7 +3573,7 @@ predictorMatrix2018
 
 ```
 
-## Imputed values here
+## Data Imputation
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -3535,7 +3595,9 @@ imp2018 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=18, maxit=21, pre
 
 
 ```
+
 ## Convergion and method checking
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE}
 
 ##checking all the methods are correct
@@ -3730,15 +3792,15 @@ for (i in 1:nrow(displayed2022)) {
     if(displayed2022$sizea[i] > 249){
     displayed2022$sizeb[i] = 4
     }
+    if(displayed2022$sizea[i] > 999){
+    displayed2022$sizeb[i] = 5
+    }
   
-  print(displayed2022$sizea[i])
-  print(displayed2022$sizeb[i])
   
   
 }
 
-``` 
-
+```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -3752,7 +3814,7 @@ for (i in 1:nrow(displayed2022)) {
 #   labs(x="Size", y="Time of restauration") # Axes labels
 
 ggplot(displayed2022, aes(x=sizea, y= restore)) + # ggplot with the desired data
-  geom_point(fill='lightgreen',colour='black') + # Specifying boxplot
+  geom_boxplot(fill='lightgreen',colour='black') + # Specifying boxplot
   labs(x="size",y="restore") +# Axes labels
   facet_wrap(~sizeb, scale="free_x")
 
