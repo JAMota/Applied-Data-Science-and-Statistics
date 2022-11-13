@@ -56,6 +56,74 @@
             "title": "Biometrika 63 (3): 581–90",
             "title-short": "Biometrika 63 (3)",
             "type": "chapter"
+        },
+        {
+            "DOI": "10.1002/sim.4067",
+            "URL": "https://doi.org/10.1002/sim.4067",
+            "author": [
+                {
+                    "family": "White",
+                    "given": "Ian R."
+                },
+                {
+                    "family": "Royston",
+                    "given": "Patrick"
+                },
+                {
+                    "family": "Wood",
+                    "given": "Angela M."
+                }
+            ],
+            "container-title": "Statistics in Medicine",
+            "id": "White2010",
+            "issue": "4",
+            "issued": {
+                "date-parts": [
+                    [
+                        2010,
+                        11
+                    ]
+                ]
+            },
+            "page": "377-399",
+            "publisher": "Wiley",
+            "title": "Multiple imputation using chained equations: Issues and guidance for practice",
+            "title-short": "Multiple imputation using chained equations",
+            "type": "article-journal",
+            "volume": "30"
+        },
+        {
+            "abstract": "Two classes of modern missing data procedures, maximum likelihood (ML) and multiple imputation (MI), tend to yield similar results when implemented in comparable ways. In either approach, it is possible to include auxiliary variables solely for the purpose of improving the missing data procedure. A simulation was presented to assess the potential costs and benefits of a restrictive strategy, which makes minimal use of auxiliary variables, versus an inclusive strategy, which makes liberal use of such variables. The simulation showed that the inclusive strategy is to be greatly preferred. With an inclusive strategy not only is there a reduced chance of inadvertently omitting an important cause of missingness, there is also the possibility of noticeable gains in terms of increased efficiency and reduced bias, with only minor costs. As implemented in currently available software, the ML approach tends to encourage the use of a restrictive strategy, whereas the MI approach makes it relatively simple to use an inclusive strategy.",
+            "author": [
+                {
+                    "family": "Collins",
+                    "given": "L M"
+                },
+                {
+                    "family": "Schafer",
+                    "given": "J L"
+                },
+                {
+                    "family": "Kam",
+                    "given": "C M"
+                }
+            ],
+            "container-title": "Psychol. Methods",
+            "id": "Collins2001-bo",
+            "issue": "4",
+            "issued": {
+                "date-parts": [
+                    [
+                        2001,
+                        12
+                    ]
+                ]
+            },
+            "page": "330-351",
+            "publisher": "American Psychological Association (APA)",
+            "title": "A comparison of inclusive and restrictive strategies in modern missing data procedures",
+            "type": "article-journal",
+            "volume": "6"
         }
     ],
     "project_biblios": []

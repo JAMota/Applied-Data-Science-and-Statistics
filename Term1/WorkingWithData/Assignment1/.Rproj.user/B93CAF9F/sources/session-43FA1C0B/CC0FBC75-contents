@@ -70,6 +70,14 @@ multiple subcategories of answers to the survey questions, grouping them
 into more flexible options while adjusting missing values to allow for
 such computation maintaining the original binary design.
 
+I also had to remove a few results from each year data set because these
+institutions still had their systems down after being attacks and since
+I don't have the information of the data of the attack and the data of
+the survey for those particular institutions it is impossible for me to
+quantify the time for restoring their systems, creating this way data
+that doesn't give us any possible information about the topic but is not
+missing, so it should not be replaced with missing data for computation.
+
 Removing unnecessary data variables that are irrelevant to my hypothesis
 testing, converting the SPSS labelled data into R data structured
 factors and numerical to enable imputation of missing values and proper
@@ -77,10 +85,10 @@ correlations computation and conversion of the appropriate missing value
 responses to actual missing data.
 
 ## TODO SHOW MISSING DATA MAPS
-![Missmap2018](mismap2018.png){#fig-surus}
 
+![MissingnessMap](MissingnessMap.png)
 
-Initial data analysis plan:
+Data analysis:
 
 It can be observed a significant degree of missing data on my data sets
 coming from multiple sources, the main source of missing data is derived
@@ -96,16 +104,36 @@ The missing data will have to be imputed using Multiple Imputation by
 Chained Equations on each of the data sets, for this I will be using the
 R library mice created by professor Stef Van Buuren.
 
-For the imputation we had the consider the 3 following parameters, number of imputations, number of iterations per imputation and method for imputation.
+For the imputation we had the consider the 3 following parameters,
+number of imputations, number of iterations per imputation and method
+for imputation.
 
-The number of imputations was chosen following two rules, the first one is Relative Efficiency (RE) is lower with a higher number of imputations according to Rubin's formula RE=1/(1+(FMI/m)), where FMI is approximately equal to the percentage of missing data and m the number of missing data. [@rubin_1975]
-The second was a rule of thumb described in the book “Multiple imputation using chained equations: Issues and guidance for practice" where they recommended to equate the number of imputations to the percentage of missing data in each of the data sets which is what I will be using. [@White2010]
+The number of imputations was chosen following two rules, the first one
+is Relative Efficiency (RE) is lower with a higher number of imputations
+according to Rubin's formula RE=1/(1+(FMI/m)), where FMI is
+approximately equal to the percentage of missing data and m the number
+of missing data. [@rubin_1975] The second was a rule of thumb described
+in the book "Multiple imputation using chained equations: Issues and
+guidance for practice" where they recommended to equate the number of
+imputations to the percentage of missing data in each of the data sets
+which is what I will be using. [@White2010]
 
-The number of iterations was chosen based on the convergence, that is when plotting the imputations the variance between the imputation chains is close to the variance of the chained imputations which is an indicator of an healthy convergence, this convergion was achieved after multiple trials with different numbers of iteration. [@AppliedMissingDataAnalysis]
+The number of iterations was chosen based on the convergence, that is
+when plotting the imputations the variance between the imputation chains
+is close to the variance of the chained imputations which is an
+indicator of an healthy convergence, this convergion was achieved after
+multiple trials with different numbers of iteration.
+[@AppliedMissingDataAnalysis]
 
 ## TODO SHOW PLOT GRAPHS
 
-Lastly for the method of imputation I choose not to use the default method ppm which is more appropriate for continuous data, most of the variables were imputed with the method of logical regression "logreg" due to the nature of the majority of the values being dichotomous binary variables, the numerical variable was instead imputed with the method of polynomial regression "polyreg" because size has a discrete finite number of values. [@AppliedMissingDataAnalysis]
+Lastly for the method of imputation I choose not to use the default
+method ppm which is more appropriate for continuous data, most of the
+variables were imputed with the method of logical regression "logreg"
+due to the nature of the majority of the values being dichotomous binary
+variables, the numerical variable was instead imputed with the method of
+polynomial regression "polyreg" because size has a discrete finite
+number of values. [@AppliedMissingDataAnalysis]
 
 ## Results
 
@@ -117,14 +145,18 @@ Lastly for the method of imputation I choose not to use the default method ppm w
 
 ## Limitations
 
-There are multiple limitations to my analysis to be noted. Firstly, the data collected is limited to cyber attacks that were detected, there is variety of attacks that have gone unnoticed and therefore the data has a systematic tendency to underestimate the real level of breach attacks.[@CyberSurvey2020] 
+There are multiple limitations to my analysis to be noted. Firstly, the
+data collected is limited to cyber attacks that were detected, there is
+variety of attacks that have gone unnoticed and therefore the data has a
+systematic tendency to underestimate the real level of breach
+attacks.[@CyberSurvey2020]
 
-Secondly the missing data generated by imputation is biased since not all data is missing completely at random, mainly due to smaller and less staffed institution not having IT professionals and as such they don't have the infrastructure to detect, assess and report cyber attacks.
-
+Secondly the missing data generated by imputation is biased since not
+all data is missing completely at random, mainly due to smaller and less
+staffed institution not having IT professionals and as such they don't
+have the infrastructure to detect, assess and report cyber attacks.
 
 ## Conclusion and recomendations
-
-
 
 ```{r}
 library(haven)
@@ -2455,7 +2487,6 @@ dataCyberSecuritySurvey2022TidyNameSizeCyber = dataCyberSecuritySurvey2022TidyNa
 
 ## Time take for restoring the systems
 
-
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 ##there is already some missing data in the form of -97 so remember to replace the missing data to the -97 code instead 
@@ -2801,6 +2832,7 @@ for (i in 1:numberOfCycles) {
 ```
 
 ## Removing unused variables
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 ## we have now finished checking the outcome of these attacks as the last relevant parameter we will analyse so we will now cleanse the dataset of all the other unnecessary data
@@ -2937,7 +2969,7 @@ summary(dataCyberSecuritySurvey2022TidyNameSizeCyber)
 
 ```
 
-##Proper Labelling
+## R data structures
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -3224,6 +3256,160 @@ missmap(dataCyberSecuritySurvey2021TidyNameSizeCyber) ## 15% missing data
 missmap(dataCyberSecuritySurvey2022TidyNameSizeCyber) ## 18% missing data
 ```
 
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE}
+
+####################################################### 2022 ###########################################
+
+##here we will change the predictor matrix so the only predictor for the sizea, the real size has the scale of sizeb as its only predictor which is already on by default
+
+predictorMatrix2022 = imp2022$predictorMatrix
+
+predictorMatrix2022["imid", "sizea"] = 0
+predictorMatrix2022[ "instituitionTypes", "sizea"] = 0
+predictorMatrix2022["priority", "sizea" ] = 0
+predictorMatrix2022[ "update", "sizea"] = 0
+predictorMatrix2022["restore", "sizea"] = 0
+predictorMatrix2022[ "year", "sizea"] = 0
+predictorMatrix2022["managementContinuity", "sizea"] = 0
+predictorMatrix2022["managementCyber", "sizea"] = 0
+predictorMatrix2022["rulesUpdating", "sizea"] = 0
+predictorMatrix2022["rulesSecurityConfigs", "sizea"] = 0
+predictorMatrix2022["rulesUserControl", "sizea"] = 0
+predictorMatrix2022["policyStaffAccess", "sizea"] = 0
+predictorMatrix2022["policyData", "sizea"] = 0
+predictorMatrix2022["policyPrivate", "sizea"] = 0
+predictorMatrix2022["attackInfection", "sizea"] = 0
+predictorMatrix2022["attackPhising", "sizea"] = 0
+predictorMatrix2022["attackBreaching", "sizea"] = 0
+predictorMatrix2022[ "outcomesDDOS", "sizea"] = 0
+predictorMatrix2022[ "outcomesData", "sizea"] = 0
+predictorMatrix2022["outcomesTheft", "sizea"] = 0
+
+imp2022$predictorMatrix = predictorMatrix2022
+
+
+
+####################################################### 2021 ###########################################
+
+##here we will change the predictor matrix so the only predictor for the sizea, the real size has the scale of sizeb as its only predictor which is already on by default
+
+predictorMatrix2021 = imp2021$predictorMatrix
+
+predictorMatrix2021["imid", "sizea"] = 0
+predictorMatrix2021[ "instituitionTypes", "sizea"] = 0
+predictorMatrix2021["priority", "sizea" ] = 0
+predictorMatrix2021[ "update", "sizea"] = 0
+predictorMatrix2021["restore", "sizea"] = 0
+predictorMatrix2021[ "year", "sizea"] = 0
+predictorMatrix2021["managementContinuity", "sizea"] = 0
+predictorMatrix2021["managementCyber", "sizea"] = 0
+predictorMatrix2021["rulesUpdating", "sizea"] = 0
+predictorMatrix2021["rulesSecurityConfigs", "sizea"] = 0
+predictorMatrix2021["rulesUserControl", "sizea"] = 0
+predictorMatrix2021["policyStaffAccess", "sizea"] = 0
+predictorMatrix2021["policyData", "sizea"] = 0
+predictorMatrix2021["policyPrivate", "sizea"] = 0
+predictorMatrix2021["attackInfection", "sizea"] = 0
+predictorMatrix2021["attackPhising", "sizea"] = 0
+predictorMatrix2021["attackBreaching", "sizea"] = 0
+predictorMatrix2021[ "outcomesDDOS", "sizea"] = 0
+predictorMatrix2021[ "outcomesData", "sizea"] = 0
+predictorMatrix2021["outcomesTheft", "sizea"] = 0
+
+imp2021$predictorMatrix = predictorMatrix2021
+
+
+####################################################### 2021 ###########################################
+
+##here we will change the predictor matrix so the only predictor for the sizea, the real size has the scale of sizeb as its only predictor which is already on by default
+
+predictorMatrix2020 = imp2020$predictorMatrix
+
+predictorMatrix2020["imid", "sizea"] = 0
+predictorMatrix2020[ "instituitionTypes", "sizea"] = 0
+predictorMatrix2020["priority", "sizea" ] = 0
+predictorMatrix2020[ "update", "sizea"] = 0
+predictorMatrix2020["restore", "sizea"] = 0
+predictorMatrix2020[ "year", "sizea"] = 0
+predictorMatrix2020["managementContinuity", "sizea"] = 0
+predictorMatrix2020["managementCyber", "sizea"] = 0
+predictorMatrix2020["rulesUpdating", "sizea"] = 0
+predictorMatrix2020["rulesSecurityConfigs", "sizea"] = 0
+predictorMatrix2020["rulesUserControl", "sizea"] = 0
+predictorMatrix2020["policyStaffAccess", "sizea"] = 0
+predictorMatrix2020["policyData", "sizea"] = 0
+predictorMatrix2020["policyPrivate", "sizea"] = 0
+predictorMatrix2020["attackInfection", "sizea"] = 0
+predictorMatrix2020["attackPhising", "sizea"] = 0
+predictorMatrix2020["attackBreaching", "sizea"] = 0
+predictorMatrix2020[ "outcomesDDOS", "sizea"] = 0
+predictorMatrix2020[ "outcomesData", "sizea"] = 0
+predictorMatrix2020["outcomesTheft", "sizea"] = 0
+
+imp2020$predictorMatrix = predictorMatrix2020
+
+
+####################################################### 2019 ###########################################
+
+##here we will change the predictor matrix so the only predictor for the sizea, the real size has the scale of sizeb as its only predictor which is already on by default
+
+predictorMatrix2019 = imp2019$predictorMatrix
+
+predictorMatrix2019["imid", "sizea"] = 0
+predictorMatrix2019[ "instituitionTypes", "sizea"] = 0
+predictorMatrix2019["priority", "sizea" ] = 0
+predictorMatrix2019[ "update", "sizea"] = 0
+predictorMatrix2019["restore", "sizea"] = 0
+predictorMatrix2019[ "year", "sizea"] = 0
+predictorMatrix2019["managementContinuity", "sizea"] = 0
+predictorMatrix2019["managementCyber", "sizea"] = 0
+predictorMatrix2019["rulesUpdating", "sizea"] = 0
+predictorMatrix2019["rulesSecurityConfigs", "sizea"] = 0
+predictorMatrix2019["rulesUserControl", "sizea"] = 0
+predictorMatrix2019["policyStaffAccess", "sizea"] = 0
+predictorMatrix2019["policyData", "sizea"] = 0
+predictorMatrix2019["policyPrivate", "sizea"] = 0
+predictorMatrix2019["attackInfection", "sizea"] = 0
+predictorMatrix2019["attackPhising", "sizea"] = 0
+predictorMatrix2019["attackBreaching", "sizea"] = 0
+predictorMatrix2019[ "outcomesDDOS", "sizea"] = 0
+predictorMatrix2019[ "outcomesData", "sizea"] = 0
+predictorMatrix2019["outcomesTheft", "sizea"] = 0
+
+imp2019$predictorMatrix = predictorMatrix2019
+
+
+####################################################### 2018 ###########################################
+
+##here we will change the predictor matrix so the only predictor for the sizea, the real size has the scale of sizeb as its only predictor which is already on by default
+
+predictorMatrix2018 = imp2018$predictorMatrix
+
+predictorMatrix2018["imid", "sizea"] = 0
+predictorMatrix2018[ "instituitionTypes", "sizea"] = 0
+predictorMatrix2018["priority", "sizea" ] = 0
+predictorMatrix2018[ "update", "sizea"] = 0
+predictorMatrix2018["restore", "sizea"] = 0
+predictorMatrix2018[ "year", "sizea"] = 0
+predictorMatrix2018["managementContinuity", "sizea"] = 0
+predictorMatrix2018["managementCyber", "sizea"] = 0
+predictorMatrix2018["rulesUpdating", "sizea"] = 0
+predictorMatrix2018["rulesSecurityConfigs", "sizea"] = 0
+predictorMatrix2018["rulesUserControl", "sizea"] = 0
+predictorMatrix2018["policyStaffAccess", "sizea"] = 0
+predictorMatrix2018["policyData", "sizea"] = 0
+predictorMatrix2018["policyPrivate", "sizea"] = 0
+predictorMatrix2018["attackInfection", "sizea"] = 0
+predictorMatrix2018["attackPhising", "sizea"] = 0
+predictorMatrix2018["attackBreaching", "sizea"] = 0
+predictorMatrix2018[ "outcomesDDOS", "sizea"] = 0
+predictorMatrix2018[ "outcomesData", "sizea"] = 0
+predictorMatrix2018["outcomesTheft", "sizea"] = 0
+
+imp2018$predictorMatrix = predictorMatrix2018
+
+```
+
 ## Imputed values here
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
@@ -3243,6 +3429,11 @@ imp2021 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=19, maxit=22)
 imp2020 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=16, maxit=21)
 imp2019 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=15, maxit=21)
 imp2018 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=18, maxit=21)
+
+
+```
+## Convergion and method checking
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE}
 
 ##checking all the methods are correct
 imp2022$method
@@ -3345,9 +3536,8 @@ plot(imp2018)
 
 ## Fitting the model after the imputations
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ##continuing from here because otherwise the reference won't work
-imp2022$predictorMatrix
 
 ## the mice library already turned on the relevant variable for the imputation modelling turning only the imid(unique id) and year variable which is not useful for the imputations done on a year to year basis therefore I don't need to tweak it manually using pred <-imp$predictorMatrix
 
@@ -3385,6 +3575,7 @@ fitModelAll2018 = with(imp2018, lm(sizea ~  restore + attackBreaching + attackPh
 ## As a rule of thumb using every available information created imputations with minimal bias and maximum efficiency 
 
 ```
+
 [@Collins2001-bo]
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
@@ -3410,11 +3601,26 @@ summary(est2020)
 summary(est2019) 
 summary(est2018) 
 
-#completed for modelling 
-#completed = complete(imp2022,1)
 
 
+```
 
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+#completed for graphs
+displayed2022 = complete(imp2022,1)
+
+
+##ok so i need to adjust the predictor of sizea so it is only predicted by sizeb
+# 
+# ggplot(displayed2022, aes(x=sizea, y= restore)) + # ggplot with the desired data
+#   geom_point(colour='red') + # Specifying a scatter plot
+#   labs(x="Size", y="Time of restauration") # Axes labels
+
+ggplot(displayed2022, aes(x=sizea, y= restore)) + # ggplot with the desired data
+  geom_point(fill='lightgreen',colour='black') + # Specifying boxplot
+  labs(x="size",y="restore") +# Axes labels
+  facet_wrap(~sizeb, scale="free_x")
 
 ##chose the one with the lowest aic and bic for the model
 #anova()
@@ -3426,10 +3632,6 @@ summary(est2018)
 ##after fitting the model we will use the pooled imputations using the model to make the estimation
 
 
-
-
-
-#stripplot(imp2018)
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
@@ -3475,11 +3677,6 @@ summary(est2018)
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 1 + 1
 ```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
-```
-
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 1 + 1
