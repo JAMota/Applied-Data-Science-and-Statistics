@@ -174,7 +174,6 @@ multiple trials with different numbers of iteration.
 
 ![Healthy convergence plot](PlotConvergence.jpg)
 
-## specify the size b and a imputations
 The prediction matrix is a matrix which tells mice which variables can be used to predict missingness in the other variables. Mice by default uses the correlation between and the proportion of usable cases. For the prediction of the exact number of employee however prediction based only on the scale of size of the institution to avoid predicting values outside of the already known scale level of the institution when imputing the missing values.
 
 Lastly for the method of imputation I choose not to use the default
@@ -192,10 +191,12 @@ number of values. [@AppliedMissingDataAnalysis]
 After dealing with the missing data and having a complete data set we
 can start our exploratory analysis. This analysis require us to first
 visualize the data to find any obvious patterns or groupings. Given the
-nature of the data a box plot will
+nature of the data a box plot will the most effective at displaying the concentration of occurrences while still effectively displaying outlines.
 
-![The box plot of the institution size compared to restoring
-time](BoxPlots.jpg)
+![Institution size compared to restoringtime in BoxPlot](BoxPlots.jpg)
+
+On figure 3 we can observe that in the first graph representing small to medium institutions there isn't enough variance between the multiple time for restoring business operation choices but on the second graph representing medium to larger institutions we can observe a trend of positive skewness where institutions of bigger scale experience smaller time when restoring their business operations.
+
 
 ## hypothesis testing
 
@@ -244,6 +245,9 @@ size of the institutions by implementing weighting to better represent
 the proportion of the smaller institutions.
 
 ## Conclusion and recommendations
+
+Due to the low correlation of this data 
+
 
 ```{r}
 library(haven)
@@ -3503,9 +3507,21 @@ missmap(dataCyberSecuritySurvey2021TidyNameSizeCyber) ## 15% missing data
 missmap(dataCyberSecuritySurvey2022TidyNameSizeCyber) ## 18% missing data
 ```
 
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+##doing one imp one maxit just so I have access to the predictor matrix for the proper imputation
+
+imp2022 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=1, maxit=1)
+imp2021 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=1, maxit=1)
+imp2020 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=1, maxit=1)
+imp2019 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=1, maxit=1)
+imp2018 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=1, maxit=1)
+
+```
+
 ##setting up the prediciton Matrix
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 ####################################################### 2022 ###########################################
 
@@ -3816,6 +3832,13 @@ plot(imp2018)
 
 ##hypotheses bigger organisations take longer to recover from cyber attack due to the sheer volume of data in their possession
 
+##for model fitting 
+modelled2022 = complete(imp2022,1)
+
+modelBase = lm(sizea ~  restore, data = modelled2022)
+
+modelF
+
 fitModelBase = with(imp2022, lm(sizea ~  restore))
 
 
@@ -3884,10 +3907,10 @@ summary(est2020)
 summary(est2019) 
 summary(est2018) 
 
-tab_model(est2022,
-           title = "Models of each year")
-tab_model(est2021,
-           title = "Models of each year")
+#tab_model(est2022,
+#           title = "Models of each year")
+#tab_model(est2021,
+#           title = "Models of each year")
 
 ##chose the one with the lowest aic and bic for the model
 #anova()
@@ -3943,6 +3966,8 @@ mod = aov(sizea ~ restore, data = displayed2022)
 
 summary(mod)
 
+
+
 ## anova output explains how much variation in the dependable variable (size) can be explained by the independent variable (restore), so how much does the time taken to restore affects the size the of the company
 
 ##the Sum sq (sum of squares) (aka total variation) between the group means and the entire mean of the variable
@@ -3975,7 +4000,7 @@ boxPlot1 = ggplot(displayed2022, aes(y=sizea, x= restore)) + # ggplot with the d
   geom_boxplot(fill='lightgreen',colour='black') + # Specifying boxplot
   #facet_wrap(~sizeb, scale="free_x") +
   ylim(0,100)+ 
-  ggtitle('Restoring time for institutions with size between 100 and 1250') + 
+  ggtitle('Restoring time for institutions with size between 0 and 100') + 
   xlab("time taken to restore operation") +
   ylab("number of employees")   
   
@@ -3991,7 +4016,7 @@ boxPlot2 =ggplot(displayed2022, aes(y=sizea, x= restore)) + # ggplot with the de
 boxPlot2 + theme(panel.background = element_rect(fill = 'lightyellow', color = 'black'),
                  panel.grid.major = element_line(color = 'red', linetype = 'dotted'))+
   ylab("number of employees")+
-  ggtitle('Restoring time for institutions with size between 0 and 100') + 
+  ggtitle('Restoring time for institutions with size between 100 and 1250') + 
   xlab("time taken to restore operation")
 
 
@@ -4002,51 +4027,7 @@ boxPlot2 + theme(panel.background = element_rect(fill = 'lightyellow', color = '
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
-```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE}
@@ -4059,27 +4040,4 @@ browseURL('https://www.youtube.com/watch?v=M3Keg5XKJO8')
 
 ```
 
-## Quarto
-
-Quarto enables you to weave together content and executable code into a
-finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that
-includes both content and the output of embedded code. You can embed
-code like this:
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-1 + 1
-```
-
-You can add options to executable code like this
-
-```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is
-displayed).
+## References
