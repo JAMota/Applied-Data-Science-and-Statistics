@@ -219,6 +219,10 @@ Lastly the p-value is how likely this test to run on the null hypothesis.
 After using the ANOVA statistical test I have observed that the F-value is extremely small at 0.311 showing a very small probability of the variation not being caused by change. The p-value is 0.871 which is considered a huge p-value which suggests that this data is usual if all the assumptions used in the computation of the P value are correct. [@bevans_2022]
 
 
+I can check the pooled imputation to check th
+
+In fact if I check the estimators achieved from the result of the pooled imputed values for the mu
+
 ## TODO TABLE WITH MODEL RESULTS
 
 ## Limitations
@@ -3842,7 +3846,23 @@ modelled2022 = complete(imp2022,1)
 
 modelBase = lm(sizea ~  restore, data = modelled2022)
 
-modelF
+modelFull = lm(sizea ~  restore + attackBreaching + attackPhising + attackInfection + managementCyber + managementCyber + rulesSecurityConfigs + rulesUserControl + rulesUpdating + policyPrivate + policyData + policyStaffAccess, data = modelled2022)
+
+##removed "higher" p values
+modelFirstChopping = lm(sizea ~  restore  + attackPhising + attackInfection + managementCyber, data = modelled2022)
+
+modelSecondChopping = lm(sizea ~  restore  + attackPhising + managementCyber , data = modelled2022)
+
+modelThirdChopping = lm(sizea ~  restore  + attackPhising , data = modelled2022)
+
+
+tab_model(modelBase, modelFull, modelFirstChopping, modelSecondChopping, modelThirdChopping,
+            show.ci= FALSE,
+            title = "Models comparison")
+
+##as we can observe the second to last model is the best because it give us the best p values out of all the other models
+
+
 
 fitModelBase = with(imp2022, lm(sizea ~  restore))
 
@@ -3850,17 +3870,17 @@ fitModelBase = with(imp2022, lm(sizea ~  restore))
 ##now lets test with all the variables
 
 ##the with function has 2 functions, fill the missing value and then do the analysis, this way we avoid having to use complete function to gather all the data and then use the lappy to fit he model 
-?with
+#?with
 
-fitModelAll2022 = with(imp2022, lm(sizea ~  restore + attackBreaching + attackPhising + attackInfection + managementCyber + managementCyber + rulesSecurityConfigs + rulesUserControl + rulesUpdating + policyPrivate + policyData + policyStaffAccess))
+fitModelAll2022 = with(imp2022, lm(sizea ~  restore  + attackPhising))
 
-fitModelAll2021 = with(imp2021, lm(sizea ~  restore + attackBreaching + attackPhising + attackInfection + managementCyber + managementCyber + rulesSecurityConfigs + rulesUserControl + rulesUpdating + policyPrivate + policyData + policyStaffAccess))
+fitModelAll2021 = with(imp2021, lm(sizea ~  restore  + attackPhising + managementCyber))
 
-fitModelAll2020 = with(imp2020, lm(sizea ~  restore + attackBreaching + attackPhising + attackInfection + managementCyber + managementCyber + rulesSecurityConfigs + rulesUserControl + rulesUpdating + policyPrivate + policyData + policyStaffAccess))
+fitModelAll2020 = with(imp2020, lm(sizea ~  restore  + attackPhising + managementCyber))
 
-fitModelAll2019 = with(imp2019, lm(sizea ~  restore + attackBreaching + attackPhising + attackInfection + managementCyber + managementCyber + rulesSecurityConfigs + rulesUserControl + rulesUpdating + policyPrivate + policyData + policyStaffAccess))
+fitModelAll2019 = with(imp2019, lm(sizea ~  restore  + attackPhising + managementCyber))
 
-fitModelAll2018 = with(imp2018, lm(sizea ~  restore + attackBreaching + attackPhising + attackInfection + managementCyber + managementCyber + rulesSecurityConfigs + rulesUserControl + rulesUpdating + policyPrivate + policyData + policyStaffAccess))
+fitModelAll2018 = with(imp2018, lm(sizea ~  restore  + attackPhising + managementCyber))
 
 
 
@@ -3912,10 +3932,26 @@ summary(est2020)
 summary(est2019) 
 summary(est2018) 
 
-#tab_model(est2022,
-#           title = "Models of each year")
-#tab_model(est2021,
-#           title = "Models of each year")
+
+##why do they print the same result a lot of times? no idea but it is always the same values anyway
+# tab_model(est2022,
+#             title = "Estimation 2022")
+# tab_model(est2021,
+#             title = "Estimation 2021")
+# tab_model(est2020,
+#             title = "Estimation 2020")
+# tab_model(est2019,
+#             title = "Estimation 2019")
+# tab_model(est2018,
+#             title = "Estimation 2019")
+
+
+#now everyone together
+tab_model(est2018,est2019, est2020,est2021,est2022,
+          show.ci= FALSE,
+           show.re.var= FALSE,
+           show.obs = FALSE,
+            title = "Estimation from 2018 to 2022")
 
 ##chose the one with the lowest aic and bic for the model
 #anova()

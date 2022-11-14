@@ -1,0 +1,16 @@
+"0","tab_model(est2018,est2019, est2020,est2021,est2022,
+          show.ci= FALSE,
+           show.re.var= FALSE,
+           show.obs = FALSE,
+            title = ""Estimation from 2018 to 2022"")
+"
+"1","[31m'r2()' does not support models of class 'mipo'.
+[39m"
+"1","[31m'r2()' does not support models of class 'mipo'.
+[39m"
+"1","[31m'r2()' does not support models of class 'mipo'.
+[39m"
+"1","[31m'r2()' does not support models of class 'mipo'.
+[39m"
+"1","[31m'r2()' does not support models of class 'mipo'.
+[39m"
