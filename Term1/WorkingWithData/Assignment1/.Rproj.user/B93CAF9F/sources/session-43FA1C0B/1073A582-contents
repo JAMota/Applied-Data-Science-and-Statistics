@@ -135,7 +135,7 @@ the questions in the survey. Lastly there is missing values associated
 to the type of attacks by institutions refusing to answer the question
 regarding the type of attack inflicted in their respective institution.
 
-![MissingnessMap](MissingnessMap.jpg)
+![Missingness Map from 2018 to 2022](MissingnessMap.jpg)
 
 ##missing data from unsatefactory answers or participants
 
@@ -167,7 +167,7 @@ indicator of an healthy convergence, this convergence was achieved after
 multiple trials with different numbers of iteration.
 [@AppliedMissingDataAnalysis]
 
-![convergencePlot](PlotConvergence.jpg)
+![Healthy convergence plot](PlotConvergence.jpg)
 
 Lastly for the method of imputation I choose not to use the default
 method ppm which is more appropriate for continuous data, most of the
@@ -177,22 +177,23 @@ variables, the numerical variable was instead imputed with the method of
 polynomial regression "polyreg" because size has a discrete finite
 number of values. [@AppliedMissingDataAnalysis]
 
-##specify the size b and a imputations
+## specify the size b and a imputations
 
 ## Results
 
-##Missing data
+## Missing data
 
-##Visual analyses
+## Visual analyses
 
 After dealing with the missing data and having a complete data set we
 can start our exploratory analysis. This analysis require us to first
 visualize the data to find any obvious patterns or groupings. Given the
 nature of the data a box plot will
 
-![BoxPlots](BoxPlots.jpg)
+![The box plot of the institution size compared to restoring
+time](BoxPlots.jpg)
 
-##hypothesis testing
+## hypothesis testing
 
 To test my hypothesis I started with a simple mean comparison test
 between the size of the company and each of possible times it took to
@@ -206,7 +207,9 @@ since I am only comparing one one categorical independent variable with
 5 levels that is the restoring time take and one quantitative dependent
 variable, the size of the organisation.
 
-##TODO TABLE WITH ANOVA RESULTS
+ANOVA output explains how much variation in the dependable variable can be explained by the independent variable, so how much does the time taken to restore affects the size the of the company.
+
+## TODO TABLE WITH ANOVA RESULTS
 
 ## Limitations
 
@@ -236,7 +239,7 @@ Lastly it would be possible to compensate for some bias related to the
 size of the institutions by implementing weighting to better represent
 the proportion of the smaller institutions.
 
-## Conclusion and recomendations
+## Conclusion and recommendations
 
 ```{r}
 library(haven)
@@ -253,6 +256,7 @@ library(GGally)
 library(mgcv)
 library(ggplot2)
 library(ggthemes)
+library(sjPlot)
 ```
 
 ```{r, echo=FALSE}
@@ -3826,12 +3830,33 @@ fitModelAll2019 = with(imp2019, lm(sizea ~  restore + attackBreaching + attackPh
 
 fitModelAll2018 = with(imp2018, lm(sizea ~  restore + attackBreaching + attackPhising + attackInfection + managementCyber + managementCyber + rulesSecurityConfigs + rulesUserControl + rulesUpdating + policyPrivate + policyData + policyStaffAccess))
 
+model =  lm(sizea ~  restore, data = displayed2022)
+
+tab_model(est2022,
+           title = "Models of each year")
+
+
+
 ## conditioning based on all variables is reasonable on these type of data sets because of the relatively small amount of variables after cleaning.
 ## As a rule of thumb using every available information created imputations with minimal bias and maximum efficiency 
 
 ```
 
+
 [@Collins2001-bo]
+```{r, echo=FALSE, eval=FALSE}
+# tab_model(model0, model1, model2, model3, model4,
+#           collapse.ci = TRUE,
+#           show.p =FALSE,
+#           show.ci= FALSE,
+#           show.re.var= FALSE,
+#           show.obs = FALSE,
+#           show.ngroups= FALSE,
+#           string.intercept= "Constant",
+#           p.style = "scientific_stars",
+#           title = "Side by Side Table of Hierarchical Models",
+#           dv.labels= c("Model 0", "Model 1", " Model 2", "Model 3", "Model 4" ))
+```
 
 ## Merging the imputations iteractions
 
@@ -3899,15 +3924,26 @@ for (i in 1:nrow(displayed2022)) {
 
 ```
 
-## t testing between each of the scales of company sizes
+## One-way ANOVA testing between each of the scales of company sizes
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-##hypothesis testin
+##https://www.scribbr.com/statistics/one-way-anova/
+
+
+##hypothesis testing
 
 mod = aov(sizea ~ restore, data = displayed2022)
 
 summary(mod)
-## the mean of the
+
+## anova output explains how much variation in the dependable variable (size) can be explained by the independent variable (restore), so how much does the time taken to restore affects the size the of the company
+
+##the Sum sq (sum of squares) (aka total variation) between the group means and the entire mean of the variable
+
+##F-value is the independent variable divided by the mean square of each of the residuals ( the bigger this value the more likely it is that the variation is real and not due to chance)
+
+##p-value is how likely it is for the test to run on the null hypothesis
+
 
 
 

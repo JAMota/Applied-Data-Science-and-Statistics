@@ -1,5 +1,0 @@
-"0","## loading the second year of this level of survey data set "
-"0","dataCyberSecuritySurvey2019 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2019/UKDA-8480-spss-CyberSurvey2019/spss/spss24/csbs_2019_raw_data.sav')"
-"0",""
-"0","## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey"
-"0","dataCyberSecuritySurvey2019$year = '2019'"

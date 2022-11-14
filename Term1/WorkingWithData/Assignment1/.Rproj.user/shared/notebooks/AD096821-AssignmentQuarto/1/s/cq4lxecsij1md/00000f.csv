@@ -1,6 +1,0 @@
-"0","## see questioner documentation start from page 28"
-"0",""
-"0","technicalAnnex2021 = ""https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/977491/20-046099-01_CSBS_2021_quant_technical_annex_v2.4__clean__190321.pdf"""
-"0",""
-"0","##TODO comment in case of fire or debugging"
-"0","#browseURL(technicalAnnex2021)"

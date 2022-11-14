@@ -22,7 +22,8 @@ editor: visual
 
 ## Introduction
 
-##talk about the importance of hacking, percentage of data loss link it with the data collected
+##talk about the importance of hacking, percentage of data loss link it
+with the data collected
 
 ## stats about data breach
 
@@ -37,7 +38,9 @@ British institutions, better shape policy regarding cyber security,
 create schemes to increase awareness for such problems and better
 protect institutions form cyber security threats.
 
-The data collected contains information detailing the attacked institutions, the countermeasures in placed before and after the attack, the type of attack and it's affects on the company.
+The data collected contains information detailing the attacked
+institutions, the countermeasures in placed before and after the attack,
+the type of attack and it's affects on the company.
 
 As such this analysis will investigate the relationship between how
 institutions protect themselves from cyber attacks and the affect of
@@ -53,8 +56,9 @@ institution and its respective outcomes.
 -Utilizing Multiple Imputation by Chained Equations (Mice), to replace
 the missing data.
 
--Do hypothesis testing on my new fitted models to compare how the
-size of an institution will affect the time needed to restore business operations.
+-Do hypothesis testing on my new fitted models to compare how the size
+of an institution will affect the time needed to restore business
+operations.
 
 -Mention the limitations of this analysis.
 
@@ -62,14 +66,29 @@ size of an institution will affect the time needed to restore business operation
 
 ## Report structure
 
-This report will be structure in the following order, firstly I will be describing the data set in more detail and my tidying process, secondly I will talk about my methodology for data analysis, afterwards in my results I will be displaying a visual analysis of the data, test results and it's meaning, afterwards I will discuss the limitations of my data and lastly conclude discussing the implications of my results for future research and the industry.
-
+This report will be structure in the following order, firstly I will be
+describing the data set in more detail and my tidying process, secondly
+I will talk about my methodology for data analysis, afterwards in my
+results I will be displaying a visual analysis of the data, test results
+and it's meaning, afterwards I will discuss the limitations of my data
+and lastly conclude discussing the implications of my results for future
+research and the industry.
 
 ## Data set
 
-The data sets contain the data used for the statistical analysis done by the uk government DCMS department, they were collected and published in the uk data service, however they have not been made completely public and require a request and its approval to obtain access to each of the data sets.
+The data sets contain the data used for the statistical analysis done by
+the uk government DCMS department, they were collected and published in
+the uk data service, however they have not been made completely public
+and require a request and its approval to obtain access to each of the
+data sets.
 
-Each one of these data sets contain the data associated to institutions affected by cyber attack with its multitude of implications for costs, business downtime, reporting and outcome as well as a detailed description of the policies, rules and investment in security measures to counter such security threats and some key parameters to describe the institution such as size, market sector and better contextualize the data.
+Each one of these data sets contain the data associated to institutions
+affected by cyber attack with its multitude of implications for costs,
+business downtime, reporting and outcome as well as a detailed
+description of the policies, rules and investment in security measures
+to counter such security threats and some key parameters to describe the
+institution such as size, market sector and better contextualize the
+data.
 
 Initial data wrangling:
 
@@ -80,7 +99,11 @@ variables have to been clean up into 21 easily comparable variables.
 The clean up process consisted of computing new variables utilizing the
 multiple subcategories of answers to the survey questions, grouping them
 into more flexible options while adjusting missing values to allow for
-such computation maintaining the original binary design and increasing the scale of the size variable to produce better grouping and latter on better imputations due to the data sets didn't had the distinction between the intervals [250, 999] and [1000, ∞] that was present in the survey.
+such computation maintaining the original binary design and increasing
+the scale of the size variable to produce better grouping and latter on
+better imputations due to the data sets didn't had the distinction
+between the intervals \[250, 999\] and \[1000, ∞\] that was present in
+the survey.
 
 I also had to remove a few results from each year data set because these
 institutions still had their systems down after being attacks and since
@@ -90,13 +113,17 @@ quantify the time for restoring their systems, creating this way data
 that doesn't give us any possible information about the topic but is not
 missing, so it should not be replaced with missing data for computation.
 
-There was also a further cleaning of the data sets by removing variables that were unused and not relevant to my my hypothesis and its associated testing
+There was also a further cleaning of the data sets by removing variables
+that were unused and not relevant to my my hypothesis and its associated
+testing
 
-The data sets were previously compiled and run in SPSS which is a statistical software developed by IBM for data analysis, therefore all the data in the data sets were in SPSS data structures that needed to be converted to R structures such as numeric and factor to allow for imputation and model fitting.
+The data sets were previously compiled and run in SPSS which is a
+statistical software developed by IBM for data analysis, therefore all
+the data in the data sets were in SPSS data structures that needed to be
+converted to R structures such as numeric and factor to allow for
+imputation and model fitting.
 
-
-## Methodology 
-
+## Methodology
 
 It can be observed a significant degree of missing data on my data sets
 coming from multiple sources, the main source of missing data is derived
@@ -108,11 +135,12 @@ the questions in the survey. Lastly there is missing values associated
 to the type of attacks by institutions refusing to answer the question
 regarding the type of attack inflicted in their respective institution.
 
-![MissingnessMap](MissingnessMap.jpg)
+![Missingness Map from 2018 to 2022](MissingnessMap.jpg)
 
-##missing data from unsatefactory answers or participants 
+##missing data from unsatefactory answers or participants
 
-##participants withehld imforation as they had the right to do so in data collection
+##participants withehld imforation as they had the right to do so in
+data collection
 
 The missing data will have to be imputed using Multiple Imputation by
 Chained Equations on each of the data sets, for this I will be using the
@@ -139,8 +167,7 @@ indicator of an healthy convergence, this convergence was achieved after
 multiple trials with different numbers of iteration.
 [@AppliedMissingDataAnalysis]
 
-![convergencePlot](PlotConvergence.jpg)
-
+![Healthy convergence plot](PlotConvergence.jpg)
 
 Lastly for the method of imputation I choose not to use the default
 method ppm which is more appropriate for continuous data, most of the
@@ -150,53 +177,69 @@ variables, the numerical variable was instead imputed with the method of
 polynomial regression "polyreg" because size has a discrete finite
 number of values. [@AppliedMissingDataAnalysis]
 
-##specify the size b and a imputations
-
+## specify the size b and a imputations
 
 ## Results
 
-##Missing data
+## Missing data
 
-##Visual analyses
+## Visual analyses
 
-After dealing with the missing data and having a complete data set we can start our exploratory analysis.
-This analysis require us to first visualize the data to find any obvious patterns or groupings. 
-Given the nature of the data a box plot will 
+After dealing with the missing data and having a complete data set we
+can start our exploratory analysis. This analysis require us to first
+visualize the data to find any obvious patterns or groupings. Given the
+nature of the data a box plot will
 
-![BoxPlots](BoxPlots.jpg)
+![The box plot of the institution size compared to restoring
+time](BoxPlots.jpg)
 
+## hypothesis testing
 
-##hypothesis testing
+To test my hypothesis I started with a simple mean comparison test
+between the size of the company and each of possible times it took to
+restore business operations.
 
-To test my hypothesis I started with a simple mean comparison test between the size of the company and each of possible times it took to restore business operations.
+Since the restoring time is recorded in multiple scales I cannot use a
+normal t-test, so I have chosen to use the Analysis of Variance (ANOVA)
+test to prove my hypothesis. Anova is a statistical test that compares
+the mean of multiple groups, in this case I have used one-way ANOVA
+since I am only comparing one one categorical independent variable with
+5 levels that is the restoring time take and one quantitative dependent
+variable, the size of the organisation.
 
-Since the restoring time is recorded in multiple scales I cannot use a normal t-test, so I have chosen to use the Analysis of Variance (ANOVA) test to prove my hypothesis. Anova is a statistical test that compares the mean of multiple groups, in this case I have used one-way ANOVA since I am only comparing one one categorical independent variable with 5 levels that is the restoring time take and one quantitative dependent variable, the size of the organisation.
+ANOVA output explains how much variation in the dependable variable can be explained by the independent variable, so how much does the time taken to restore affects the size the of the company.
 
-##TODO TABLE WITH ANOVA RESULTS
+## TODO TABLE WITH ANOVA RESULTS
 
 ## Limitations
 
 There are multiple limitations to my analysis to be noted. Firstly, the
 data collected is limited to cyber attacks that were detected, there is
 variety of attacks that have gone unnoticed and therefore the data has a
-systematic tendency to underestimate the real level of breach
-attacks, it is highly likely that the amount of cyber attacks is much higher since it is only possible to report the discovered cyber attacks.[@CyberSurvey2020]
+systematic tendency to underestimate the real level of breach attacks,
+it is highly likely that the amount of cyber attacks is much higher
+since it is only possible to report the discovered cyber
+attacks.[@CyberSurvey2020]
 
 Secondly, the missing data generated by imputation is biased since not
 all data is missing completely at random, mainly due to smaller and less
 staffed institution not having IT professionals and as such they don't
 have the infrastructure to detect, assess and report cyber attacks.
-Another source of missing data is from the employees who participates in this survey and exercised their right to not answer some of the questions.
+Another source of missing data is from the employees who participates in
+this survey and exercised their right to not answer some of the
+questions.
 
-Furthermore the amount of missing data in each of the data sets is significant enough that if the imputed values were replaced with the real data the results 
-could be considerably different because imputed data is not real data and does not account for any biased missing data contributing factor.
+Furthermore the amount of missing data in each of the data sets is
+significant enough that if the imputed values were replaced with the
+real data the results could be considerably different because imputed
+data is not real data and does not account for any biased missing data
+contributing factor.
 
-Lastly it would be possible to compensate for some bias related to the size of the institutions by implementing weighting to better represent the proportion of the smaller institutions.
+Lastly it would be possible to compensate for some bias related to the
+size of the institutions by implementing weighting to better represent
+the proportion of the smaller institutions.
 
-
-## Conclusion and recomendations
-
-
+## Conclusion and recommendations
 
 ```{r}
 library(haven)
@@ -213,6 +256,7 @@ library(GGally)
 library(mgcv)
 library(ggplot2)
 library(ggthemes)
+library(sjPlot)
 ```
 
 ```{r, echo=FALSE}
@@ -3409,8 +3453,6 @@ str(dataCyberSecuritySurvey2018TidyNameSizeCyber)
 
 ```
 
-
-
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ##remember we must make the imputations before we merge the data of all the years
 
@@ -3648,8 +3690,7 @@ imp2018 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=3, maxit=21, pred
 
 ```
 
-
-## Convergence  and method checking
+## Convergence and method checking
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -3789,12 +3830,33 @@ fitModelAll2019 = with(imp2019, lm(sizea ~  restore + attackBreaching + attackPh
 
 fitModelAll2018 = with(imp2018, lm(sizea ~  restore + attackBreaching + attackPhising + attackInfection + managementCyber + managementCyber + rulesSecurityConfigs + rulesUserControl + rulesUpdating + policyPrivate + policyData + policyStaffAccess))
 
+model =  lm(sizea ~  restore, data = displayed2022)
+
+tab_model(est2022,
+           title = "Models of each year")
+
+
+
 ## conditioning based on all variables is reasonable on these type of data sets because of the relatively small amount of variables after cleaning.
 ## As a rule of thumb using every available information created imputations with minimal bias and maximum efficiency 
 
 ```
 
+
 [@Collins2001-bo]
+```{r, echo=FALSE, eval=FALSE}
+# tab_model(model0, model1, model2, model3, model4,
+#           collapse.ci = TRUE,
+#           show.p =FALSE,
+#           show.ci= FALSE,
+#           show.re.var= FALSE,
+#           show.obs = FALSE,
+#           show.ngroups= FALSE,
+#           string.intercept= "Constant",
+#           p.style = "scientific_stars",
+#           title = "Side by Side Table of Hierarchical Models",
+#           dv.labels= c("Model 0", "Model 1", " Model 2", "Model 3", "Model 4" ))
+```
 
 ## Merging the imputations iteractions
 
@@ -3825,6 +3887,7 @@ summary(est2018)
 
 
 ```
+
 ## Creating a new completed imputation to graph
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
@@ -3861,15 +3924,26 @@ for (i in 1:nrow(displayed2022)) {
 
 ```
 
-## t testing between each of the scales of company sizes
+## One-way ANOVA testing between each of the scales of company sizes
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-##hypothesis testin
+##https://www.scribbr.com/statistics/one-way-anova/
+
+
+##hypothesis testing
 
 mod = aov(sizea ~ restore, data = displayed2022)
 
 summary(mod)
-## the mean of the
+
+## anova output explains how much variation in the dependable variable (size) can be explained by the independent variable (restore), so how much does the time taken to restore affects the size the of the company
+
+##the Sum sq (sum of squares) (aka total variation) between the group means and the entire mean of the variable
+
+##F-value is the independent variable divided by the mean square of each of the residuals ( the bigger this value the more likely it is that the variation is real and not due to chance)
+
+##p-value is how likely it is for the test to run on the null hypothesis
+
 
 
 

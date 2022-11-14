@@ -1,5 +1,0 @@
-"0","## loading the fifth and final year of this level of survey data set "
-"0","dataCyberSecuritySurvey2022 = read_spss('C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/WorkingWithData/Assignment1/Cyber Security Breaches Survey, 2022/UKDA-8970-spss/spss/spss25/dcms_csbs_2022_banded_cost_data_only_v4_public.sav')"
-"0",""
-"0","## adding the variable year because none of the data sets have any proper way to distinguish between the years of each survey"
-"0","dataCyberSecuritySurvey2022$year = '2022'"
