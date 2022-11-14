@@ -8,6 +8,7 @@ bibliography: references.bib
 
 ---
 
+
 ## Introduction
 
 ##talk about the importance of hacking, percentage of data loss link it
@@ -113,6 +114,15 @@ imputation and model fitting.
 
 ## Methodology
 
+The process of the methodology will be starting with a simpler hypothesis test based on mean comparison to discovers the relationship between size and restoration and how much it varies compared to my null hypothesis. Afterwards I  will check the p-values to understand how likely it is that the relationship described if the null hypothesis of no relationship is true.
+If the test is more likely than the null  hypothesis, I can infer that exists a statistically significant relationship between size and restoration time. 
+If the test however is less likely than the null hypothesis, I can infer that there is no statisitcally significant relationship [@bevans_2022]
+
+
+## Results
+
+## Missing data
+
 It can be observed a significant degree of missing data on my data sets
 coming from multiple sources, the main source of missing data is derived
 from a limitation of the data collected, the lack of reporting channels
@@ -123,12 +133,8 @@ the questions in the survey. Lastly there is missing values associated
 to the type of attacks by institutions refusing to answer the question
 regarding the type of attack inflicted in their respective institution.
 
-![MissingnessMap](MissingnessMap.jpg)
+![Missingness Map from 2018 to 2022](MissingnessMap.jpg)
 
-##missing data from unsatefactory answers or participants
-
-##participants withehld imforation as they had the right to do so in
-data collection
 
 The missing data will have to be imputed using Multiple Imputation by
 Chained Equations on each of the data sets, for this I will be using the
@@ -155,7 +161,10 @@ indicator of an healthy convergence, this convergence was achieved after
 multiple trials with different numbers of iteration.
 [@AppliedMissingDataAnalysis]
 
-![convergencePlot](PlotConvergence.jpg)
+![Healthy convergence plot](PlotConvergence.jpg)
+
+## specify the size b and a imputations
+The prediction matrix is a matrix which tells mice which variables can be used to predict missingness in the other variables. Mice by default uses the correlation between and the proportion of usable cases. For the prediction of the exact number of employee however prediction based only on the scale of size of the institution to avoid predicting values outside of the already known scale level of the institution when imputing the missing values.
 
 Lastly for the method of imputation I choose not to use the default
 method ppm which is more appropriate for continuous data, most of the
@@ -165,22 +174,19 @@ variables, the numerical variable was instead imputed with the method of
 polynomial regression "polyreg" because size has a discrete finite
 number of values. [@AppliedMissingDataAnalysis]
 
-##specify the size b and a imputations
 
-## Results
 
-##Missing data
-
-##Visual analyses
+## Visual analyses
 
 After dealing with the missing data and having a complete data set we
 can start our exploratory analysis. This analysis require us to first
 visualize the data to find any obvious patterns or groupings. Given the
 nature of the data a box plot will
 
-![BoxPlots](BoxPlots.jpg)
+![The box plot of the institution size compared to restoring
+time](BoxPlots.jpg)
 
-##hypothesis testing
+## hypothesis testing
 
 To test my hypothesis I started with a simple mean comparison test
 between the size of the company and each of possible times it took to
@@ -194,7 +200,9 @@ since I am only comparing one one categorical independent variable with
 5 levels that is the restoring time take and one quantitative dependent
 variable, the size of the organisation.
 
-##TODO TABLE WITH ANOVA RESULTS
+ANOVA output explains how much variation in the dependable variable can be explained by the independent variable, so how much does the time taken to restore affects the size the of the company.
+
+## TODO TABLE WITH ANOVA RESULTS
 
 ## Limitations
 
@@ -224,4 +232,4 @@ Lastly it would be possible to compensate for some bias related to the
 size of the institutions by implementing weighting to better represent
 the proportion of the smaller institutions.
 
-## Conclusion and recomendations
+## Conclusion and recommendations
