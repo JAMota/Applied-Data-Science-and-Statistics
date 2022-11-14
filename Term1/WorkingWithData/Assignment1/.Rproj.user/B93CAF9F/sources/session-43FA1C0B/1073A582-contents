@@ -65,7 +65,6 @@ size of an institution will affect the time needed to restore business operation
 This report will be structure in the following order, firstly I will be describing the data set in more detail and my tidying process, secondly I will talk about my methodology for data analysis, afterwards in my results I will be displaying a visual analysis of the data, test results and it's meaning, afterwards I will discuss the limitations of my data and lastly conclude discussing the implications of my results for future research and the industry.
 
 
-
 ## Data set
 
 The data sets contain the data used for the statistical analysis done by the uk government DCMS department, they were collected and published in the uk data service, however they have not been made completely public and require a request and its approval to obtain access to each of the data sets.
@@ -83,9 +82,6 @@ multiple subcategories of answers to the survey questions, grouping them
 into more flexible options while adjusting missing values to allow for
 such computation maintaining the original binary design and increasing the scale of the size variable to produce better grouping and latter on better imputations due to the data sets didn't had the distinction between the intervals [250, 999] and [1000, ∞] that was present in the survey.
 
-
-##specify the size b and a imputations
-
 I also had to remove a few results from each year data set because these
 institutions still had their systems down after being attacks and since
 I don't have the information of the data of the attack and the data of
@@ -94,19 +90,13 @@ quantify the time for restoring their systems, creating this way data
 that doesn't give us any possible information about the topic but is not
 missing, so it should not be replaced with missing data for computation.
 
-## Methodology 
-
-When comparing both the size of an institution and the time it took to restore business operation, since the restoring time is recorded in multiple scales I cannot use a normal t-test I have chosen to use the Analysis of Variance (ANOVA) test to prove my hypothesis. Anova is a statistical test that compares the mean of multiple groups, in this case I have used one-way ANOVA since I am only comparing one one categorical independent variable with 5 levels that is the restoring time take and one quantitative dependent variable, the size of the organisation.
+There was also a further cleaning of the data sets by removing variables that were unused and not relevant to my my hypothesis and its associated testing
 
 The data sets were previously compiled and run in SPSS which is a statistical software developed by IBM for data analysis, therefore all the data in the data sets were in SPSS data structures that needed to be converted to R structures such as numeric and factor to allow for imputation and model fitting.
 
-There was also a further cleaning of the data sets by removing variables that were unused and not relevant to my my hypothesis and its associated testing
 
+## Methodology 
 
-
-![MissingnessMap](MissingnessMap.jpg)
-
-Data analysis:
 
 It can be observed a significant degree of missing data on my data sets
 coming from multiple sources, the main source of missing data is derived
@@ -117,6 +107,8 @@ by institutions answering that they do not know the answer to some of
 the questions in the survey. Lastly there is missing values associated
 to the type of attacks by institutions refusing to answer the question
 regarding the type of attack inflicted in their respective institution.
+
+![MissingnessMap](MissingnessMap.jpg)
 
 ##missing data from unsatefactory answers or participants 
 
@@ -147,7 +139,7 @@ indicator of an healthy convergence, this convergence was achieved after
 multiple trials with different numbers of iteration.
 [@AppliedMissingDataAnalysis]
 
-![convergence  Plot](PlotConvergence.jpg)
+![convergencePlot](PlotConvergence.jpg)
 
 
 Lastly for the method of imputation I choose not to use the default
@@ -157,6 +149,10 @@ due to the nature of the majority of the values being dichotomous binary
 variables, the numerical variable was instead imputed with the method of
 polynomial regression "polyreg" because size has a discrete finite
 number of values. [@AppliedMissingDataAnalysis]
+
+##specify the size b and a imputations
+
+When comparing both the size of an institution and the time it took to restore business operation, since the restoring time is recorded in multiple scales I cannot use a normal t-test I have chosen to use the Analysis of Variance (ANOVA) test to prove my hypothesis. Anova is a statistical test that compares the mean of multiple groups, in this case I have used one-way ANOVA since I am only comparing one one categorical independent variable with 5 levels that is the restoring time take and one quantitative dependent variable, the size of the organisation.
 
 ## Results
 
@@ -174,19 +170,23 @@ There are multiple limitations to my analysis to be noted. Firstly, the
 data collected is limited to cyber attacks that were detected, there is
 variety of attacks that have gone unnoticed and therefore the data has a
 systematic tendency to underestimate the real level of breach
-attacks.[@CyberSurvey2020]
+attacks, it is highly likely that the amount of cyber attacks is much higher since it is only possible to report the discovered cyber attacks.[@CyberSurvey2020]
 
-Secondly the missing data generated by imputation is biased since not
+Secondly, the missing data generated by imputation is biased since not
 all data is missing completely at random, mainly due to smaller and less
 staffed institution not having IT professionals and as such they don't
 have the infrastructure to detect, assess and report cyber attacks.
 Another source of missing data is from the employees who participates in this survey and exercised their right to not answer some of the questions.
 
-Lastly the amount of missing data in each of the data sets is significant enough that if the imputed values were replaced with the real data the results could be considerably different because imputed data is not real data and does not account for any biased missing data contributing factor.
+Furthermore the amount of missing data in each of the data sets is significant enough that if the imputed values were replaced with the real data the results 
+could be considerably different because imputed data is not real data and does not account for any biased missing data contributing factor.
 
+Lastly it would be possible to compensate for some bias related to the size of the institutions by implementing weighting to better represent the proportion of the smaller institutions.
 
 
 ## Conclusion and recomendations
+
+
 
 ```{r}
 library(haven)
