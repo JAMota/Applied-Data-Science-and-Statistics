@@ -152,7 +152,6 @@ number of values. [@AppliedMissingDataAnalysis]
 
 ##specify the size b and a imputations
 
-When comparing both the size of an institution and the time it took to restore business operation, since the restoring time is recorded in multiple scales I cannot use a normal t-test I have chosen to use the Analysis of Variance (ANOVA) test to prove my hypothesis. Anova is a statistical test that compares the mean of multiple groups, in this case I have used one-way ANOVA since I am only comparing one one categorical independent variable with 5 levels that is the restoring time take and one quantitative dependent variable, the size of the organisation.
 
 ## Results
 
@@ -160,9 +159,20 @@ When comparing both the size of an institution and the time it took to restore b
 
 ##Visual analyses
 
-## TODO SHOW NEW GRAPH
+After dealing with the missing data and having a complete data set we can start our exploratory analysis.
+This analysis require us to first visualize the data to find any obvious patterns or groupings. 
+Given the nature of the data a box plot will 
+
+![BoxPlots](BoxPlots.jpg)
+
 
 ##hypothesis testing
+
+To test my hypothesis I started with a simple mean comparison test between the size of the company and each of possible times it took to restore business operations.
+
+Since the restoring time is recorded in multiple scales I cannot use a normal t-test, so I have chosen to use the Analysis of Variance (ANOVA) test to prove my hypothesis. Anova is a statistical test that compares the mean of multiple groups, in this case I have used one-way ANOVA since I am only comparing one one categorical independent variable with 5 levels that is the restoring time take and one quantitative dependent variable, the size of the organisation.
+
+##TODO TABLE WITH ANOVA RESULTS
 
 ## Limitations
 
@@ -202,7 +212,7 @@ library(labelled)
 library(GGally)
 library(mgcv)
 library(ggplot2)
-
+library(ggthemes)
 ```
 
 ```{r, echo=FALSE}
@@ -3865,6 +3875,19 @@ summary(mod)
 
 ```
 
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, eval=FALSE}
+##auxiliary variable naming to improve graphic understanding, not that this could not be added as an variable before imputation because it would not always align during the imputation
+displayed2022$restore = as.factor(displayed2022$restore)
+
+for (i in 1:nrow(displayed2022)) {
+  if(displayed2022$restore[i] == 1){
+    displayed2022$restore[i] = "A few minutes to an hour"
+  }
+}
+
+
+```
+
 ## Graphing the correlation between size and restoring time
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
@@ -3878,17 +3901,30 @@ summary(mod)
 #   #facet_wrap(~sizeb, scale="free_x") +
 #   xlim(0,100)
 
-ggplot(displayed2022, aes(y=sizea, x= restore)) + # ggplot with the desired data
-  geom_boxplot(fill='lightgreen',colour='black') + # Specifying boxplot
-  labs(y="size",x="restore") + # Axes labels
-  #facet_wrap(~sizeb, scale="free_x") +
-  ylim(0,100)
+##new favourite font https://jrnold.github.io/ggthemes/reference/theme_wsj.html
 
-ggplot(displayed2022, aes(y=sizea, x= restore)) + # ggplot with the desired data
+boxPlot1 = ggplot(displayed2022, aes(y=sizea, x= restore)) + # ggplot with the desired data
   geom_boxplot(fill='lightgreen',colour='black') + # Specifying boxplot
-  labs(y="size",x="restore") + # Axes labels
   #facet_wrap(~sizeb, scale="free_x") +
-  ylim(100,1000)
+  ylim(0,100)+ 
+  ggtitle('Restoring time for institutions with size between 100 and 1250') + 
+  xlab("time taken to restore operation") +
+  ylab("number of employees")   
+  
+boxPlot1 + theme(panel.background = element_rect(fill = 'lightyellow', color = 'black'),
+                 panel.grid.major = element_line(color = 'red', linetype = 'dotted'))
+
+
+boxPlot2 =ggplot(displayed2022, aes(y=sizea, x= restore)) + # ggplot with the desired data
+  geom_boxplot(fill='lightgreen',colour='black') + # Specifying boxplot
+  #facet_wrap(~sizeb, scale="free_x") +
+  ylim(100,1200) 
+
+boxPlot2 + theme(panel.background = element_rect(fill = 'lightyellow', color = 'black'),
+                 panel.grid.major = element_line(color = 'red', linetype = 'dotted'))+
+  ylab("number of employees")+
+  ggtitle('Restoring time for institutions with size between 0 and 100') + 
+  xlab("time taken to restore operation")
 
 
 
