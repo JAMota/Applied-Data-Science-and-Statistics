@@ -127,7 +127,7 @@ imputation and model fitting.
 
 The process of the methodology will be starting with a simpler hypothesis test based on mean comparison to discovers the relationship between size and restoration and how much it varies compared to my null hypothesis. Afterwards I  will check the p-values to understand how likely it is that the relationship described if the null hypothesis of no relationship is true.
 If the test is more likely than the null  hypothesis, I can infer that exists a statistically significant relationship between size and restoration time. 
-If the test however is less likely than the null hypothesis, I can infer that there is no statisitcally significant relationship [@bevans_2022]
+If the test however is less likely than the null hypothesis, I can infer that there is no statistically significant relationship [@bevans_2022]
 
 
 ## Results
@@ -213,8 +213,13 @@ since I am only comparing one one categorical independent variable with
 variable, the size of the organisation.
 
 ANOVA output explains how much variation in the dependable variable can be explained by the independent variable, so how much does the time taken to restore affects the size the of the company.
+The sum of squares is the total variation between the group mean and the mean of all the values of that variable. The F-value is the independent variable divided by the mean squared of each of the residuals, where a bigger value indicate a bigger probability that the variation is real and not caused by chance.
+Lastly the p-value is how likely this test to run on the null hypothesis.
 
-## TODO TABLE WITH ANOVA RESULTS
+After using the ANOVA statistical test I have observed that the F-value is extremely small at 0.311 showing a very small probability of the variation not being caused by change. The p-value is 0.871 which is considered a huge p-value which suggests that this data is usual if all the assumptions used in the computation of the P value are correct. [@bevans_2022]
+
+
+## TODO TABLE WITH MODEL RESULTS
 
 ## Limitations
 
@@ -3965,6 +3970,7 @@ for (i in 1:nrow(displayed2022)) {
 mod = aov(sizea ~ restore, data = displayed2022)
 
 summary(mod)
+
 
 
 
