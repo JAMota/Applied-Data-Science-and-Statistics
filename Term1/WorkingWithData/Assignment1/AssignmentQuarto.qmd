@@ -37,6 +37,8 @@ British institutions, better shape policy regarding cyber security,
 create schemes to increase awareness for such problems and better
 protect institutions form cyber security threats.
 
+The data collected contains information detailing the attacked institutions, the countermeasures in placed before and after the attack, the type of attack and it's affects on the company.
+
 As such this analysis will investigate the relationship between how
 institutions protect themselves from cyber attacks and the affect of
 said attacks on these institutions in the last 5 years.
@@ -58,11 +60,17 @@ size of an institution will affect the time needed to restore business operation
 
 -Conclusion with recommendation for future research.
 
+## Report structure
+
+This report will be structure in the following order, firstly I will be describing the data set in more detail and my tidying process, secondly I will talk about my methodology for data analysis, afterwards in my results I will be displaying a visual analysis of the data, test results and it's meaning, afterwards I will discuss the limitations of my data and lastly conclude discussing the implications of my results for future research and the industry.
+
+
+
 ## Data set
 
-The data sets contain the data used for the statistical analysis done by the DCMS, they were collected and published in the uk data service, however they have not been made completely public and require a request and its approval to obtain access to each of the data sets.
+The data sets contain the data used for the statistical analysis done by the uk government DCMS department, they were collected and published in the uk data service, however they have not been made completely public and require a request and its approval to obtain access to each of the data sets.
 
-Each one of these data sets contain the data
+Each one of these data sets contain the data associated to institutions affected by cyber attack with its multitude of implications for costs, business downtime, reporting and outcome as well as a detailed description of the policies, rules and investment in security measures to counter such security threats and some key parameters to describe the institution such as size, market sector and better contextualize the data.
 
 Initial data wrangling:
 
@@ -92,10 +100,9 @@ When comparing both the size of an institution and the time it took to restore b
 
 The data sets were previously compiled and run in SPSS which is a statistical software developed by IBM for data analysis, therefore all the data in the data sets were in SPSS data structures that needed to be converted to R structures such as numeric and factor to allow for imputation and model fitting.
 
-Removing unnecessary data variables that are irrelevant to my hypothesis
-testing
+There was also a further cleaning of the data sets by removing variables that were unused and not relevant to my my hypothesis and its associated testing
 
-##explain spss 
+
 
 ![MissingnessMap](MissingnessMap.jpg)
 
@@ -3598,7 +3605,7 @@ predictorMatrix2018
 
 ## Data Imputation
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE}
 
 ##absolute chad that I am saving https://stats.stackexchange.com/questions/219013/how-do-the-number-of-imputations-the-maximum-iterations-affect-accuracy-in-mul
 
@@ -3619,9 +3626,22 @@ imp2018 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=18, maxit=21, pre
 
 ```
 
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+##just so the rendering of the pdf doesn't take more than 1 hour of imputations alone I will leave 3 imputations here for rendering purposes since if I just turned off that code chunk I wouldn't be able to run the rest and I just couldn't save the load the imputations has a csv
+
+imp2022 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=3, maxit=21, predictorMatrix = predictorMatrix2022)
+imp2021 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=3, maxit=22, predictorMatrix = predictorMatrix2021)
+imp2020 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=3, maxit=21, predictorMatrix = predictorMatrix2020)
+imp2019 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=3, maxit=21, predictorMatrix = predictorMatrix2019)
+imp2018 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=3, maxit=21, predictorMatrix = predictorMatrix2018)
+
+```
+
+
 ## Convergence  and method checking
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 ##checking all the methods are correct
 imp2022$method

@@ -17,3 +17,7 @@
 [1,"running xelatex - 1\n"]
 [1,"  This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex)\n   restricted \\write18 enabled.\n  entering extended mode\n  \nrunning xelatex - 2\n"]
 [1,"  This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex)\n   restricted \\write18 enabled.\n  entering extended mode\n  \n\nOutput created: RenderingTesting.pdf\n\nWatching files for changes\n"]
+[1,"pandoc \n  to: latex\n  output-file: RenderingTesting.tex\n  standalone: true\n  pdf-engine: xelatex\n  variables:\n    graphics: true\n    tables: true\n  default-image-extension: pdf\n  \nmetadata\n  documentclass: scrartcl\n  classoption:\n    - DIV=11\n    - numbers=noendperiod\n  papersize: letter\n  header-includes:\n    - '\\KOMAoption{captions}{tableheading}'\n  block-headings: true\n  title: RenderingTesting\n  editor: visual\n  bibliography:\n    - references.bib\n  \n"]
+[1,"running xelatex - 1\n"]
+[1,"  This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex)\n   restricted \\write18 enabled.\n  entering extended mode\n  \nrunning xelatex - 2\n"]
+[1,"  This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex)\n   restricted \\write18 enabled.\n  entering extended mode\n  \n\nOutput created: RenderingTesting.pdf\n\nWatching files for changes\n"]
