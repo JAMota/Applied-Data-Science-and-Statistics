@@ -22,10 +22,9 @@ editor: visual
 
 ## Introduction
 
-##talk about the importance of hacking, percentage of data loss link it
-with the data collected
-
-## stats about data breach
+The number of data breaches in the U.S.alone has significantly increased
+within the past decade, from a mere 662 in 2010 to more than 1,000 by
+2021 and as of 2019, cyber attacks are considered among the top five risks to global stability. [@department_31_2022] [@worldEconomicForum]
 
 Multiple institutions have been a target of increasingly more disruptive
 or destructive cyber attacks over the last few years which has lead to
@@ -125,12 +124,18 @@ imputation and model fitting.
 
 ## Methodology
 
-The process of the methodology will be starting with a simpler hypothesis test based on mean comparison to discovers the relationship between size and restoration and how much it varies compared to my null hypothesis. Afterwards I  will check the p-values to understand how likely it is that the relationship described if the null hypothesis of no relationship is true.
-If the test is more likely than the null  hypothesis, I can infer that exists a statistically significant relationship between size and restoration time. 
-If the test however is less likely than the null hypothesis, I can infer that there is no statistically significant relationship [@bevans_2022]
+The process of the methodology will be starting with a simpler
+hypothesis test based on mean comparison to discovers the relationship
+between size and restoration and how much it varies compared to my null
+hypothesis. Afterwards I will check the p-values to understand how
+likely it is that the relationship described if the null hypothesis of
+no relationship is true. If the test is more likely than the null
+hypothesis, I can infer that exists a statistically significant
+relationship between size and restoration time. If the test however is
+less likely than the null hypothesis, I can infer that there is no
+statistically significant relationship [@bevans_2022]
 
-
-## Results
+## Results:
 
 ## Missing data
 
@@ -145,7 +150,6 @@ to the type of attacks by institutions refusing to answer the question
 regarding the type of attack inflicted in their respective institution.
 
 ![Missingness Map from 2018 to 2022](MissingnessMap.jpg)
-
 
 The missing data will have to be imputed using Multiple Imputation by
 Chained Equations on each of the data sets, for this I will be using the
@@ -174,7 +178,13 @@ multiple trials with different numbers of iteration.
 
 ![Healthy convergence plot](PlotConvergence.jpg)
 
-The prediction matrix is a matrix which tells mice which variables can be used to predict missingness in the other variables. Mice by default uses the correlation between and the proportion of usable cases. For the prediction of the exact number of employee however prediction based only on the scale of size of the institution to avoid predicting values outside of the already known scale level of the institution when imputing the missing values.
+The prediction matrix is a matrix which tells mice which variables can
+be used to predict missingness in the other variables. Mice by default
+uses the correlation between and the proportion of usable cases. For the
+prediction of the exact number of employee however prediction based only
+on the scale of size of the institution to avoid predicting values
+outside of the already known scale level of the institution when
+imputing the missing values.
 
 Lastly for the method of imputation I choose not to use the default
 method ppm which is more appropriate for continuous data, most of the
@@ -185,18 +195,23 @@ polynomial regression "polyreg" because size has a discrete finite
 number of values. [@AppliedMissingDataAnalysis]
 
 
-
 ## Visual analyses
 
 After dealing with the missing data and having a complete data set we
 can start our exploratory analysis. This analysis require us to first
 visualize the data to find any obvious patterns or groupings. Given the
-nature of the data a box plot will the most effective at displaying the concentration of occurrences while still effectively displaying outlines.
+nature of the data a box plot will the most effective at displaying the
+concentration of occurrences while still effectively displaying
+outlines.
 
 ![Institution size compared to restoringtime in BoxPlot](BoxPlots.jpg)
 
-On figure 3 we can observe that in the first graph representing small to medium institutions there isn't enough variance between the multiple time for restoring business operation choices but on the second graph representing medium to larger institutions we can observe a trend of positive skewness where institutions of bigger scale experience smaller time when restoring their business operations.
-
+On figure 3 we can observe that in the first graph representing small to
+medium institutions there isn't enough variance between the multiple
+time for restoring business operation choices but on the second graph
+representing medium to larger institutions we can observe a trend of
+positive skewness where institutions of bigger scale experience smaller
+time when restoring their business operations.
 
 ## hypothesis testing
 
@@ -212,18 +227,34 @@ since I am only comparing one one categorical independent variable with
 5 levels that is the restoring time take and one quantitative dependent
 variable, the size of the organisation.
 
-ANOVA output explains how much variation in the dependable variable can be explained by the independent variable, so how much does the time taken to restore affects the size the of the company.
-The sum of squares is the total variation between the group mean and the mean of all the values of that variable. The F-value is the independent variable divided by the mean squared of each of the residuals, where a bigger value indicate a bigger probability that the variation is real and not caused by chance.
-Lastly the p-value is how likely this test to run on the null hypothesis.
+ANOVA output explains how much variation in the dependable variable can
+be explained by the independent variable, so how much does the time
+taken to restore affects the size the of the company. The sum of squares
+is the total variation between the group mean and the mean of all the
+values of that variable. The F-value is the independent variable divided
+by the mean squared of each of the residuals, where a bigger value
+indicate a bigger probability that the variation is real and not caused
+by chance. Lastly the p-value is how likely this test to run on the null
+hypothesis.
 
-After using the ANOVA statistical test I have observed that the F-value is extremely small at 0.311 showing a very small probability of the variation not being caused by change. The p-value is 0.871 which is considered a huge p-value which suggests that this data is usual if all the assumptions used in the computation of the P value are correct. [@bevans_2022]
+After using the ANOVA statistical test I have observed that the F-value
+is extremely small at 0.311 showing a very small probability of the
+variation not being caused by change. The p-value is 0.871 which is
+considered a huge p-value which suggests that this data is usual if all
+the assumptions used in the computation of the P value are correct.
+[@bevans_2022]
 
+I can check the pooled imputation to check the p values of my model for
+each of the years using the mice estimator function, this way I will be
+able to the final values for each year and join them in a table.
 
-I can check the pooled imputation to check th
+![Table with the estimators from 2018 to 2022](TableOfEstimators.jpg)
+As seen on the table from figure 4 the p values from all the years are very
+high which again that the null hypothesis is one of the many hypothesis.
+Since the p-value was less than 1 some association must be present on
+the model. [@bevans_2022] However such high levels of p values leads to
+an hypothesis that cannot be proved or refuted.
 
-In fact if I check the estimators achieved from the result of the pooled imputed values for the mu
-
-## TODO TABLE WITH MODEL RESULTS
 
 ## Limitations
 
@@ -251,12 +282,24 @@ contributing factor.
 
 Lastly it would be possible to compensate for some bias related to the
 size of the institutions by implementing weighting to better represent
-the proportion of the smaller institutions.
+the proportion of the smaller institutions, but the majority of the bias comes from unknown and undected cyber attacks, making it impossible to account and compensate for.
 
-## Conclusion and recommendations
+## Conclusion and recommendations for future research
 
-Due to the low correlation of this data 
+The lack of acceptance or refutation means that there it is not certain
+that bigger institutions take more time restoring their business
+operations, a part of this reasoning may be because has institution
+grow, they will be able to hire specialized IT personnel and afford more
+secure cloud computation and storage such as an higher tier cloud
+provider that reduces downtime has one increases from tier 1 to tier 4,
+which can reduce the business downtime from 28,8 hours to 26,3 minutes
+per year, explaining at least partially the trend of reduction in business operation
+restoration has the size of the institution increases.
+[@velimirovic_2022]
 
+This implies that for future research and policy making and government schemes  it is important to focus on all fields and sizes of institutions has it is not been possible to understand which of the scale of institutions will be most affected especially when accounting for the bias on the discovered only cyber attacks since the real values are not possible to predict.
+
+For future statistical analysis I recommend accounting for the distribution of sector and sizes of the institution to be able to construct a representative weighting to greatly reduce the bias on smaller institutions
 
 ```{r}
 library(haven)
@@ -3855,6 +3898,8 @@ modelSecondChopping = lm(sizea ~  restore  + attackPhising + managementCyber , d
 
 modelThirdChopping = lm(sizea ~  restore  + attackPhising , data = modelled2022)
 
+##checking that the 5th is the best model
+anova(modelBase, modelFull, modelFirstChopping, modelSecondChopping, modelThirdChopping)
 
 tab_model(modelBase, modelFull, modelFirstChopping, modelSecondChopping, modelThirdChopping,
             show.ci= FALSE,
@@ -3872,7 +3917,7 @@ fitModelBase = with(imp2022, lm(sizea ~  restore))
 ##the with function has 2 functions, fill the missing value and then do the analysis, this way we avoid having to use complete function to gather all the data and then use the lappy to fit he model 
 #?with
 
-fitModelAll2022 = with(imp2022, lm(sizea ~  restore  + attackPhising))
+fitModelAll2022 = with(imp2022, lm(sizea ~  restore  + attackPhising + managementCyber))
 
 fitModelAll2021 = with(imp2021, lm(sizea ~  restore  + attackPhising + managementCyber))
 
@@ -3892,8 +3937,8 @@ fitModelAll2018 = with(imp2018, lm(sizea ~  restore  + attackPhising + managemen
 
 ```
 
-
 [@Collins2001-bo]
+
 ```{r, echo=FALSE, eval=FALSE}
 # tab_model(model0, model1, model2, model3, model4,
 #           collapse.ci = TRUE,
@@ -3953,8 +3998,6 @@ tab_model(est2018,est2019, est2020,est2021,est2022,
            show.obs = FALSE,
             title = "Estimation from 2018 to 2022")
 
-##chose the one with the lowest aic and bic for the model
-#anova()
 
 
 ```
