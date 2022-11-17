@@ -63,7 +63,7 @@ summary(model)
 ```
 First thing we can observe is the confidence intervals of the 3 variables, both the temperature and wind have confidence intervals of 99,9% as it can be see by the 3 stars next to their respective p-values, radiation is in the 95% confidence interval but is close to the 99% confidence interval.
 
-About the Coefficients, we can observe that radiation is the least impactful of the 3 independent variables, even 
+About the Coefficients, we can observe that radiation is the least impactful of the 3 independent variables, the changes in ozone radiation detected vary between [0.4186,19.9732] from the minimum and maximum values, which compared to the [94.11897,160.16737] minimum and maximum variance from the temperature readings or the [-7.67648,-66.752]
 
 
 radiation      temperature         wind            ozone      
