@@ -1,0 +1,22 @@
+log(ozonei) = β0+β1 log(radiationi)+β2 log(temperaturei)+β3 log(windi)+εi where εi ∼ N (0, σ2)
+
+
+
+which in R is fitted as
+
+model <- lm...
+
+
+distribution 
+
+trends 
+
+slope
+
+how significant the variable
+
+and what it means
+
+this maybe imply that x ....
+
+tell what each independent variable is happening and which is the case

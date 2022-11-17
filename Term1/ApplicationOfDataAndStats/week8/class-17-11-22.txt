@@ -1,0 +1,35 @@
+since pythong and R are designed to analyze complete and tidy data
+don't be afraid to use excel to do some data checking
+
+sometimes the data isn't completly independent
+meaning that linear models will be biased and not properly work
+
+using the flags on glm we can do the auto regression to account for that
+#ficaADica
+
+the residuals are just as important as the model
+if we are analysing covid the residuals give us the seasonality and trends
+
+sine and cosine functions are for reading frequencies 
+(seno e cosseno, os relacionados com as tangentes)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
