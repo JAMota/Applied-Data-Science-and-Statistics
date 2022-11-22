@@ -18,23 +18,33 @@ ozone = read_csv("ozone.csv")
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-set.seed(26041999)
+#set.seed(26041999)
   
-candidateB = 175
-candidateM = 184
+candidateB = 175 ## candidate B initial votes/support
+candidateM = 184 ## candidate M initial votes/support
 
-candidateBAux = 0
 
 for (i in 1:14) {
   
-  #candidateBAuxCalc = 0
-  #candidateMAuxCalc = 0
+  candidateBAuxCalc = 0 ## 
+  candidateMAuxCalc = 0
   
-  candidateB = sum(sample(c(1,0),candidateB,replace=TRUE,prob=c(0.996,0.004)))
+  candidateBAuxCalc = sum(sample(c(1,0),candidateB,replace=TRUE,prob=c(0.996,0.004)))
+  candidateMAuxCalc = sum(sample(c(1,0),candidateM,replace=TRUE,prob=c(0.995,0.005)))
+  
+  votesMovedFromCandidaBToCandidateM = candidateB - candidateBAuxCalc
+  votesMovedFromCandidaMToCandidateB = candidateM - candidateMAuxCalc
+  
+  candidateB = candidateBAuxCalc + votesMovedFromCandidaMToCandidateB
+  candidateM = candidateMAuxCalc + votesMovedFromCandidaBToCandidateM
+  
   
 }
 
-?sample
+candidateB
+candidateM
+
+
 
 ```
 
