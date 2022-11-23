@@ -57,7 +57,62 @@ for (i in 1:14) {
 ##check if the candidate B did win the election by holding the majority of the votes
 if (candidateB > candidateM){
   candidateBWins = candidateBWins + 1
-  print("gosh darnit")
+}
+
+}
+
+##probability estimation of candidate B winning after 14 days of campaign by holding the majority of the votes
+
+probabilityB = candidateBWins / largeNumberOfExtimations
+
+probabilityB
+
+```
+
+##question 2 d)
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+#set.seed(26041999)
+
+candidateBWins = 0
+
+## Here we set the number of times we will estimate 
+largeNumberOfExtimations = 1000000
+
+for (i in 1:largeNumberOfExtimations) {
+  
+
+  
+candidateB = 175 ## candidate B initial votes/support
+candidateM = 184 ## candidate M initial votes/support
+
+## increment for each day from the initial day to the final day, the 60th
+for (i in 1:60) {
+  
+  ## will be used to hold the new value of votes that continue to support the same candidate
+  candidateBAuxCalc = 0 
+  candidateMAuxCalc = 0
+  
+  ##here we will estimate how many candidates still support the same candidate by generating a vector where 1 means they still support the same candidate after the end of each day
+  ## the 0 represent them changing the support and vote from one candidate to another
+  candidateBAuxCalc = sum(sample(c(1,0),candidateB,replace=TRUE,prob=c(0.996,0.004))) 
+  candidateMAuxCalc = sum(sample(c(1,0),candidateM,replace=TRUE,prob=c(0.995,0.005)))
+  
+  ## here we calculate the number of votes that will be exchanged by the candidates, so the votes that are subtracted from what they had previously
+  votesMovedFromCandidaBToCandidateM = candidateB - candidateBAuxCalc
+  votesMovedFromCandidaMToCandidateB = candidateM - candidateMAuxCalc
+  
+  ## here calculate that the new current votes for each candidate by adding the current votes from the mps that still support the same candidate plus the number of votes of the mps that exchanged support for their candidate
+  candidateB = candidateBAuxCalc + votesMovedFromCandidaMToCandidateB
+  candidateM = candidateMAuxCalc + votesMovedFromCandidaBToCandidateM
+  
+  
+}
+##check if the candidate B did win the election by holding the majority of the votes
+if (candidateB > candidateM){
+  candidateBWins = candidateBWins + 1
+  
 }
 
 }
