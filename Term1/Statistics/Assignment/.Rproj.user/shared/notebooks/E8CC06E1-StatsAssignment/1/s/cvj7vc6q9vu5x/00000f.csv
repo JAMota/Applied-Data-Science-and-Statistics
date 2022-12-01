@@ -1,6 +1,0 @@
-"0","    "
-"0",""
-"0","ggpairs(ozone,"
-"0","        lower = list(continuous = ""smooth""),"
-"0","        diag=list(continuous = ""barDiag""),"
-"0","        axisLabels= ""show"")"

@@ -5,7 +5,7 @@ question 1
 b) we assume that the wife has blue eyes
 
 c) knowing that the first child has brown eyes, what does that change the probability of 
-aron having blue eyes
+aron having blue eyes gene
 
 Q2
 

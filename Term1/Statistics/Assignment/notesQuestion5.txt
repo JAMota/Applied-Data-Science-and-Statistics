@@ -19,7 +19,11 @@ and what it means
 
 this maybe imply that x ....
 
-tell what each independent variable is happening and which is the case
+tell what each independent variable is happening and which is the case 
+
+residuals of difference between the linear model (lm)
+
+
 
 
 1st brief
