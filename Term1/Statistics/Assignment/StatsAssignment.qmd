@@ -226,6 +226,19 @@ fyReal
 
 ```
 
+## Question 4 d)
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+#lm = lm(fyReal)
+
+lm = fyReal
+
+plot(lm)
+
+
+```
+
 ## Question 5 a)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
@@ -303,12 +316,12 @@ Significance being p-values \< 0.05.
 We can also see by the value of the R-squared and adjusted R-squared
 that this model around 60% of the variation in ozone levels.
 
-From the estimates we can determine than wind is the variable with the biggest
-impact per unit however when comparing it is also important to compare
-using the minimum and maximum values so we can determine how much each
-of the independent variables have been recorded to affect the ozone
-readings so we will be using the minimum and maximum to determine the
-maximum and minimum variance.
+From the estimates we can determine than wind is the variable with the
+biggest impact per unit however when comparing it is also important to
+compare using the minimum and maximum values so we can determine how
+much each of the independent variables have been recorded to affect the
+ozone readings so we will be using the minimum and maximum to determine
+the maximum and minimum variance.
 
 About the Coefficients, we can observe that radiation is the least
 impactful of the 3 independent variables, the changes in ozone radiation
@@ -318,11 +331,6 @@ variance from the temperature readings which is by far the most
 impactful variable or the \[-7.67648,-66.752\] variance from the minimum
 and maximum values from the wind readings.
 
-Are these findings consistent with your earlier descriptive plots? Also
-include suitable residual plots, commenting as appropriate.
-
-The intercept value is impossible so lets graph what we have and have a
-look
 
 $\beta0 = \beta1$
 
@@ -333,6 +341,7 @@ plot(model)
 ##a residual is the distance between our data points and our regression line
 
 ```
+
 ```{r, echo=FALSE}
 ##https://stats.stackexchange.com/questions/253035/trying-to-understand-the-fitted-vs-residual-plot
 ```
@@ -433,7 +442,12 @@ ggpairs(ozoneLogged,
         diag=list(continuous = "barDiag"),
         axisLabels= "show")
 
+summary(ozoneLogged)
+
+
 ```
+
+In the histograms we can immediately spot that ozone, wind and temperature seem to have a normal distribution without any immediately significant looking skewness, while bith temperature and wind were already with a normal looking distribution this was not the case for the ozone before the log transform. Radiation skewdness seem to have increased even more barely having any values on the skewed left area due to such an high skewness level.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 summary(modelLogFriend)
@@ -454,25 +468,72 @@ We can also see by the value of the R-squared and adjusted R-squared
 that this model around 68% of the variation in ozone levels, being able
 to explain 8% more than the original model.
 
-From the estimates we can observe than wind is no longer the variable with the biggest
-impact per unit. This is now in fact the temperature that becomes by far the most impactful per unit.
-however when comparing it is also important to compare using the minimum and maximum values plus how quickly the increase or decrease the level of ozone we can check that temperature becomes incredibly more capable of altering ozone levels.
+From the estimates we can observe than wind is no longer the variable
+with the biggest impact per unit. This is now in fact the temperature
+that becomes by far the most impactful per unit. however when comparing
+it is also important to compare using the minimum and maximum values
+plus how quickly the increase or decrease the level of ozone we can
+check that temperature becomes incredibly more capable of altering ozone
+levels.
 
-We will be using the minimum and maximum with the correlation to determine how much each
-of the independent variables have been recorded to affect the ozone readings.
+We will be using the minimum and maximum with the correlation to
+determine how much each of the independent variables have been recorded
+to affect the ozone readings.
 
-About the Coefficients, we can observe that radiation is  still the least
-impactful of the 3 independent variables even thought it has significantly increased in ratio for ozone reading compared to the previous linear model.
-We can also determine by the ggpairs graphs with the log transformed variables that most of the radiation are close to increasing the most possible inside our scale with only a few points in the middle of the scale and some outliers farther away.
-, the changes in ozone radiation
-detected vary between \[0.4186,19.9732\] from the minimum and maximum
-values, which compared to the \[94.11897,160.16737\] minimum and maximum
-variance from the temperature readings which is by far the most
-impactful variable or the \[-7.67648,-66.752\] variance from the minimum
-and maximum values from the wind readings.
+About the Coefficients, we can observe that radiation is still the least
+impactful of the 3 independent variables even thought it has
+significantly increased in ratio for ozone reading compared to the
+previous linear model. We can also determine by the ggpairs graphs with
+the log transformed variables that most of the radiation are close to
+increasing the most possible inside our scale with only a few points in
+the middle of the scale and some outliers farther away.
 
-Are these findings consistent with your earlier descriptive plots? Also
-include suitable residual plots, commenting as appropriate.
+The changes in ozone by radiation detected vary between
+\[0.59353,1.772355\] from the minimum and maximum values, which
+increases slightly the minimum and actually increase the relevance of
+the radiation in comparison with the other explanatory variables.
 
-The intercept value is impossible so lets graph what we have and have a
-look
+which compared to the \[12.95692554,14.6618685\] minimum and maximum
+variance from the temperature readings which is still by far the most
+impactful variable has decreased greatly in the interval of captured
+values meaning that while the explanatory variable is still incredibly
+impactful it has now a much lesser degree to how much its values impact
+the level of ozone read.
+
+Finally, the wind, the only variable here that reduces the read ozone
+level from \[0,-3.3974682\] according to the minimum and maximum values
+continues to be relevant with its level of changing negatively the
+number of ozone ppb we have detected.
+
+A very obvious change with the new model is how much closer,
+comparatively to the other variables, has the variance between minimum
+and maximum became, making each of the variables have similar weights with how much they can change ozone readings in comparison to the other variables.
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+##for us to see the difference between the log explanatory variables and the unchanged ozone level
+
+ozoneLogged = ozone
+
+ozoneLogged$radiation = log(ozoneLogged$radiation)
+ozoneLogged$wind = log(ozoneLogged$wind)
+ozoneLogged$temperature = log(ozoneLogged$temperature)
+ozoneLogged$ozone = ozoneLogged$ozone
+
+
+ggpairs(ozoneLogged,
+        lower = list(continuous = "smooth"),
+        diag=list(continuous = "barDiag"),
+        axisLabels= "show")
+
+summary(ozoneLogged)
+
+
+```
+
+Initially we can see that when compared to the log transform model the histograms have not had a significant change with the exception of ozone who has returned to have its initial model distribution.
+
+Each of the individual log transformed values seem to follow a very similar patern when comparing the log transformed and untransformed ozone variable.
+The most significant variance would how radiation has a much less step slope when using the unstransformed scaled compared temperature and wind who slopes seem to remain almost identicals
