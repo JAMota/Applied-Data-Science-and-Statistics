@@ -2,7 +2,7 @@
 title: "Stats"
 editor: visual
 format:
-  pdf:
+  docx:
     toc: true
     number-sections: true
     colorlinks: true
@@ -19,7 +19,7 @@ format:
         wrap: 72
 ---
 
-```{r}
+```{r, echo=FALSE}
 library(tidyr)
 library(tidyverse)
 library(ggplot2)
@@ -28,37 +28,35 @@ library(GGally)
 ozone = read_csv("ozone.csv")
 ```
 
-##Question 1 a)
+## Question 1 a)
 
 ![Exercise 1 a)](1a.jpg)
 
-##Question 1 b)
+## Question 1 b)
 
 ![Exercise 1 b)](1b.jpg)
 
-##Question 1 c)
+## Question 1 c)
 
-Part 1 of exercise 1 c) 
+Part 1 of exercise 1 c)
 
-![Exercise 1 c) part 1](1c-part1.jpg)
+![Exercise 1 c) part 1](1c-part1.jpg){width="4032"}
 
-Part 2 of exercise 1 c) 
+Part 2 of exercise 1 c)
 
 ![Exercise 1 c) part 2](1c-part2.jpg)
 
-##Question 2 a)
+## Question 2 a)
 
-Part 1 of exercise 2 a) 
+Part 1 of exercise 2 a)
 
 ![Exercise 2 a) part 1](2a-part1.jpg)
 
-Part 2 of exercise 2 a) 
+Part 2 of exercise 2 a)
 
 ![Exercise 2 a) part 2](2a-part2.jpg)
 
-
-
-##question 2 C)
+## Question 2 C)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -67,7 +65,10 @@ Part 2 of exercise 2 a)
 candidateBWins = 0
 
 ## Here we set the number of times we will estimate 
-largeNumberOfExtimations = 1000000
+
+##largeNumberOfExtimations = 1000000
+##reducing the number so it doesn't take an hour to compile
+largeNumberOfExtimations = 100000
 
 for (i in 1:largeNumberOfExtimations) {
   
@@ -113,10 +114,10 @@ probabilityB
 
 ```
 
+As we can see the probability of candidate B winning after 14 days is
+approximately 0.35
 
-As we can see the probability of candidate B winning after 14 days is approximately 0.35
-
-##question 2 d)
+## Question 2 d)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -125,7 +126,9 @@ As we can see the probability of candidate B winning after 14 days is approximat
 candidateBWins = 0
 
 ## Here we set the number of times we will estimate 
-largeNumberOfExtimations = 1000000
+##largeNumberOfExtimations = 1000000
+##reducing the number so it doesn't take an hour to compile
+largeNumberOfExtimations = 100000
 
 for (i in 1:largeNumberOfExtimations) {
   
@@ -172,10 +175,26 @@ probabilityB
 
 ```
 
+As we can see the probability of candidate B winning after 60 days is
+approximately 0.77
 
-As we can see the probability of candidate B winning after 60 days is approximately 0.77
+## Question 3 a)
 
-##question 4 c)
+![Exercise 3 a)](3a.jpg)
+
+## Question 3 b)
+
+![Exercise 3 b)](3b.jpg)
+
+## Question 3 c)
+
+![Exercise 3 c)](3c.jpg)
+
+## Question 3 d)
+
+![Exercise 3 d)](3d.jpg)
+
+## Question 4 c)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 vectorY = c(0.573, 0.770, 0.652, 0.827, 0.821, 0.789, 
@@ -215,27 +234,27 @@ significant positive skewness and is possibly normally distributed. It
 also noticeable from the ozone histogram that it resembles a normal
 distribution with positive skewness.
 
-We can also observe that ozone have a good correlation with temperature
-with only a small amount of variance overall with the exception of a few
-points between the 3rd quartile and the maximum, we can also see that
-there is a a positive slope meaning that as temperature increases the
-amount of ozone detected increases as well.
+We can also observe that temperature have a positive and strong linear
+correlation with ozone with only a small amount of variance overall with
+the exception of a few points between the 3rd quartile and the maximum,
+we can also see that there is a a positive slope meaning that as
+temperature increases the amount of ozone detected increases as well.
 
-Furthermore, radiation has a correlation with a positive slope with
-ozone so radiation has a positive effect on ozone. The variance is more
-extreme between the 2nd quartile and maximum but maintaining a
-relatively low variance between the minimum and the 2nd quartile.
+Furthermore, radiation has a positive correlation with ozone so
+radiation has a positive effect on ozone. The variance is more extreme
+between the 2nd quartile and maximum but maintaining a relatively low
+variance between the minimum and the 2nd quartile.
 
-Lastly, Wind's correlation with ozone has a negative slope, meaning that
-has wind increases the less ozone is detected. Most of the variance
-below the line of best fit, is between the first and third quartile
-while the values that are more on the extreme, between the the minimum
-and 1st quartile and the 3rd quartile and the maximum are almost all
-above the line of best fit. The wind histogram also displays what looks
-to be a normal distribution with close to zero skewness with some
-irregularities near the 15 bin.
+Lastly, Wind's has a negative correlation with ozone, meaning that has
+wind increases the less ozone is detected. Most of the variance below
+the line of best fit, is between the first and third quartile while the
+values that are more on the extreme, between the the minimum and 1st
+quartile and the 3rd quartile and the maximum are almost all above the
+line of best fit. The wind histogram also displays what looks to be a
+normal distribution with close to zero skewness with some irregularities
+near the 15 bin.
 
-##question 5 b)
+## Question 5 b)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
     
@@ -258,7 +277,12 @@ First thing we can observe is the confidence intervals of the 3
 variables, both the temperature and wind have confidence intervals of
 99,9% as it can be see by the 3 stars next to their respective p-values,
 radiation is in the 95% confidence interval but is close to the 99%
-confidence interval.
+confidence interval, meaning all 3 variables have a significant
+association and and are a meaningful addiction to our model.
+Significance being p-values \< 0.05.
+
+We can also see by the value of the R-squared and adjusted R-squared
+that this model around 60% of the variation in ozone levels.
 
 From the estimates we can than wind is the variable with the biggest
 impact per unit however when comparing it is also important to compare
@@ -306,7 +330,7 @@ plot(model)
 
 As observed here on Residuals vs Fitted graph
 
-##question 5 c)
+## Question 5 c)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ## log(ozone) =  β0+β1 log(radiation)+β2 log(temperature)+β3 log(wind)+εi where εi ∼ N (0, σ2)   
