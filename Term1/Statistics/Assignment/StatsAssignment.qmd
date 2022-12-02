@@ -303,7 +303,7 @@ Significance being p-values \< 0.05.
 We can also see by the value of the R-squared and adjusted R-squared
 that this model around 60% of the variation in ozone levels.
 
-From the estimates we can than wind is the variable with the biggest
+From the estimates we can determine than wind is the variable with the biggest
 impact per unit however when comparing it is also important to compare
 using the minimum and maximum values so we can determine how much each
 of the independent variables have been recorded to affect the ozone
@@ -321,21 +321,8 @@ and maximum values from the wind readings.
 Are these findings consistent with your earlier descriptive plots? Also
 include suitable residual plots, commenting as appropriate.
 
-The intercept value is impossible so lets grpah what we have and have a look
-
-Coefficients: Estimate Std. Error t value Pr(\>\|t\|)\
-(Intercept) -64.23208 23.04204 -2.788 0.00628 \*\* radiation 0.05980
-0.02318 2.580 0.01124 \*\
-temperature 1.65121 0.25341 6.516 2.43e-09 ***wind -3.33760 0.65384
--5.105 1.45e-06***
-
-radiation temperature wind ozone\
-Min. : 7.0 Min. :57.00 Min. : 2.300 Min. : 1.0\
-1st Qu.:113.5 1st Qu.:71.00 1st Qu.: 7.400 1st Qu.: 18.0\
-Median :207.0 Median :79.00 Median : 9.700 Median : 31.0\
-Mean :184.8 Mean :77.79 Mean : 9.939 Mean : 42.1\
-3rd Qu.:255.5 3rd Qu.:84.50 3rd Qu.:11.500 3rd Qu.: 62.0\
-Max. :334.0 Max. :97.00 Max. :20.700 Max. :168.0
+The intercept value is impossible so lets graph what we have and have a
+look
 
 $\beta0 = \beta1$
 
@@ -345,25 +332,43 @@ plot(model)
 
 ##a residual is the distance between our data points and our regression line
 
-
+```
+```{r, echo=FALSE}
 ##https://stats.stackexchange.com/questions/253035/trying-to-understand-the-fitted-vs-residual-plot
 ```
 
+A good Residuals vs Fitted graph main characteristic should be that the
+residuals bounce randomly around the 0 line, that would suggest the
+linear is reasonable, in this case we can observe that the residuals
+follow a clear trend of an almost quadratic function.
 
+Another Residuals vs Fitted graph main characteristic is the formation
+of an horizontal trend around 0, that would suggest the variance of
+errors would be equal. Since our graph does not exactly follow this
+trend we know that is noise introduced systematically to induce these
+changes in errors
 
-A good Residuals vs Fitted graph main characteristic should be that the residuals bounce randomly around the 0 line, that would suggest the linear is reasonable, in this case we can observe that the residuals follow a clear trend of an almost quadratic function.
+The third characteristic of a Residuals vs Fitted graph should be no
+residuals stands out from the graph, meaning there are no outliers. As
+we can see this is not the case with 3 specific points, number 23, 34
+and 77 even being labelled as outliers.
 
-Another Residuals vs Fitted graph main characteristic is the formation of an horizontal trend around 0, that would suggest the variance of errors would be equal. Since our graph does not exactly follow this trend we know that is noise introduced systematically to induce these changes in errors
+This means that the linear model is not exactly the best fit for this
+data and that maybe we should try a log transform to convert this data
+into a more linear fit.
 
-The third characteristic of a Residuals vs Fitted graph should be no residuals stands out from the graph, meaning there are no outliers. As we can see this is not the case with 3 specific points, number 23, 34 and 77 even being labelled as outliers. 
+The Q-Q plot or Quantile-Quantile plot compares 2 probability
+distributions by comparing them against each other. Varshney, P. (2020)
+Q-Q plots explained, Medium. Towards Data Science. Available at:
+https://towardsdatascience.com/q-q-plots-explained-5aa8495426c0
+(Accessed: December 2, 2022).
 
-This means that the linear model is not exactly the best fit for this data and that maybe we should try a log transform to convert this data into a more linear fit.
-
-The Q-Q plot or Quantile-Quantile plot compares 2 probability distributions by comparing them against each other.
-Varshney, P. (2020) Q-Q plots explained, Medium. Towards Data Science. Available at: https://towardsdatascience.com/q-q-plots-explained-5aa8495426c0 (Accessed: December 2, 2022). 
-
-When the plotted points create a straight line then we can identify this distribution as a normally distribution because it is aligned with the standard normal, that is what we can identify on a  Q-Q plot. As we can see our values follow very closely the fitted line with the exception of the extreme where it has a slight but systematic deviation from the standard line and a few outliers again labeled 23, 34 and 77.
-
+When the plotted points create a straight line then we can identify this
+distribution as a normally distribution because it is aligned with the
+standard normal, that is what we can identify on a Q-Q plot. As we can
+see our values follow very closely the fitted line with the exception of
+the extreme where it has a slight but systematic deviation from the
+standard line and a few outliers again labeled 23, 34 and 77.
 
 ## Question 5 c)
 
@@ -378,23 +383,96 @@ plot(modelLogFriend)
 
 ```
 
+A good Residuals vs Fitted graph main characteristic should be that the
+residuals bounce randomly around the 0 line, that would suggest the
+linear is reasonable, in this case we can observe that the residuals
+don't follow any clear trend and look mostly randomly scattered.
 
-A good Residuals vs Fitted graph main characteristic should be that the residuals bounce randomly around the 0 line, that would suggest the linear is reasonable, in this case we can observe that the residuals don't follow any clear trend and look mostly randomly scattered.
+Another Residuals vs Fitted graph main characteristic is the formation
+of an horizontal trend around 0, that would suggest the variance of
+errors would be equal. Since our graph does not exactly follow this
+trend we know that is noise introduced systematically to induce these
+changes in errors
 
-Another Residuals vs Fitted graph main characteristic is the formation of an horizontal trend around 0, that would suggest the variance of errors would be equal. Since our graph does not exactly follow this trend we know that is noise introduced systematically to induce these changes in errors
+The third characteristic of a Residuals vs Fitted graph should be no
+residuals stands out from the graph, meaning there are no outliers. As
+we can see this is not the case with especially number 17 even being
+labelled as outliers with many others scattered very far away from the
+main concentration of points.
 
-The third characteristic of a Residuals vs Fitted graph should be no residuals stands out from the graph, meaning there are no outliers. As we can see this is not the case with especially number 17 even being labelled as outliers with many others scattered very far away from the main concentration of points. 
+This means that the linear model is not exactly the best fit for this
+data and that maybe we should try a log transform to convert this data
+into a more linear fit.
 
-This means that the linear model is not exactly the best fit for this data and that maybe we should try a log transform to convert this data into a more linear fit.
+The Q-Q plot or Quantile-Quantile plot compares 2 probability
+distributions by comparing them against each other. Varshney, P. (2020)
+Q-Q plots explained, Medium. Towards Data Science. Available at:
+https://towardsdatascience.com/q-q-plots-explained-5aa8495426c0
+(Accessed: December 2, 2022).
 
-The Q-Q plot or Quantile-Quantile plot compares 2 probability distributions by comparing them against each other.
-Varshney, P. (2020) Q-Q plots explained, Medium. Towards Data Science. Available at: https://towardsdatascience.com/q-q-plots-explained-5aa8495426c0 (Accessed: December 2, 2022). 
-
-When the plotted points create a straight line then we can identify this distribution as a normally distribution because it is aligned with the standard normal, that is what we can identify on a  Q-Q plot. As we can see our values follow with extreme precision the fitted line meaning we have normalised the distribution by log transforming the parameters.
+When the plotted points create a straight line then we can identify this
+distribution as a normally distribution because it is aligned with the
+standard normal, that is what we can identify on a Q-Q plot. As we can
+see our values follow with extreme precision the fitted line meaning we
+have normalized the distribution by log transforming the parameters.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+##so we can better see the new log transformed data I will make a new log transformed data set and then apply ggpairs to it
+
+ozoneLogged = ozone
+
+ozoneLogged$radiation = log(ozoneLogged$radiation)
+ozoneLogged$wind = log(ozoneLogged$wind)
+ozoneLogged$temperature = log(ozoneLogged$temperature)
+ozoneLogged$ozone = log(ozoneLogged$ozone)
+
+
+ggpairs(ozoneLogged,
+        lower = list(continuous = "smooth"),
+        diag=list(continuous = "barDiag"),
+        axisLabels= "show")
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 summary(modelLogFriend)
 #summary(model)
 
 ```
+
+First thing we can observe is the confidence intervals of the 3
+variables, all the 3 variables have confidence intervals of 99,9% as it
+can be see by the 3 stars next to their respective p-values, meaning all
+3 variables have a significant association and and are a meaningful
+addiction to our model. Significance being p-values \< 0.05. As such
+there is an increase in significance of the variables compared to the
+previous model although the changes in Confidence Interval are not
+significant enough to be very impactful.
+
+We can also see by the value of the R-squared and adjusted R-squared
+that this model around 68% of the variation in ozone levels, being able
+to explain 8% more than the original model.
+
+From the estimates we can observe than wind is no longer the variable with the biggest
+impact per unit. This is now in fact the temperature that becomes by far the most impactful per unit.
+however when comparing it is also important to compare using the minimum and maximum values plus how quickly the increase or decrease the level of ozone we can check that temperature becomes incredibly more capable of altering ozone levels.
+
+We will be using the minimum and maximum with the correlation to determine how much each
+of the independent variables have been recorded to affect the ozone readings.
+
+About the Coefficients, we can observe that radiation is  still the least
+impactful of the 3 independent variables even thought it has significantly increased in ratio for ozone reading compared to the previous linear model.
+We can also determine by the ggpairs graphs with the log transformed variables that most of the radiation are close to increasing the most possible inside our scale with only a few points in the middle of the scale and some outliers farther away.
+, the changes in ozone radiation
+detected vary between \[0.4186,19.9732\] from the minimum and maximum
+values, which compared to the \[94.11897,160.16737\] minimum and maximum
+variance from the temperature readings which is by far the most
+impactful variable or the \[-7.67648,-66.752\] variance from the minimum
+and maximum values from the wind readings.
+
+Are these findings consistent with your earlier descriptive plots? Also
+include suitable residual plots, commenting as appropriate.
+
+The intercept value is impossible so lets graph what we have and have a
+look
