@@ -194,6 +194,14 @@ approximately 0.77
 
 ![Exercise 3 d)](3d.jpg)
 
+## Question 3 e)
+
+![Exercise 3 e)](3e.jpg)
+
+## Question 4 a)
+
+![Exercise 4 a)](4a.jpg)
+
 ## Question 4 c)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
