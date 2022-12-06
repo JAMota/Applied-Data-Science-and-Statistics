@@ -1,0 +1,10 @@
+Notes for reviewing 501
+
+what is the right interpretation of p-values 
+
+why there was no need fpr the convergence plot
+
+how to approach the multi year analysis?
+
+What is the best approach when we don't find any significance on the data?
+

@@ -124,6 +124,122 @@
             "title": "A comparison of inclusive and restrictive strategies in modern missing data procedures",
             "type": "article-journal",
             "volume": "6"
+        },
+        {
+            "URL": "https://www.scribbr.com/statistics/statistical-tests/",
+            "author": [
+                {
+                    "family": "Bevans",
+                    "given": "Rebecca"
+                }
+            ],
+            "container-title": "Scribbr",
+            "id": "bevans_2022",
+            "issued": {
+                "date-parts": [
+                    [
+                        2022,
+                        7
+                    ]
+                ]
+            },
+            "title": "Choosing the right statistical test: Types &amp; examples",
+            "title-short": "Choosing the right statistical test",
+            "type": ""
+        },
+        {
+            "abstract": "The Commission on Higher Education is committed to developing competency-based learning standards that comply with existing international standards which is evident with the release of CMO No. 46 s. 2012 and CMO No. 74 s. 2017. This study aims to investigate if the graduates of the BEEd program of Bataan Peninsula State University Dinalupihan Campus have met the expectations provided in CMO No. 74 series of 2017. This study uses an explanatory-sequential design which is a two-phase approach, where quantitative results of the study, from collected quantitative data using a survey questionnaire in phase 1 were followed up and supported by qualitative data collected in phase 2 to further explain the findings. The results of the study indicate that significant difference is evident in the competency of the respondents based on the expected competencies as stated at CMO No. 74, series of 2017 in terms of in-depth understanding of learners; pedagogical content knowledge; assessment and evaluation; communication, higher order thinking, and technology; attributes of model teacher; personal and professional development; when respondents have grouped accordingly, as provided by the p-values which are statistically lesser than the alpha of .05. In general, graduates confidently believes that they possess the competencies stated and describe in CMO No. 74 s. 2017, their Cooperating Teachers and Coordinators, however, based on their qualitative responses, pointed out that there are still areas of competencies that are needed to be developed among the graduates. The result of the study indicates that the institution should revisit the program implementation of CMO No. 46 s. 2012, focusing on competencies stated in CMO No. 74 s. 2017. Keywords: Competencies, Guidelines, Policies, Standards",
+            "author": [
+                {
+                    "family": "S. Punla",
+                    "given": "Candida"
+                },
+                {
+                    "literal": "https://orcid.org/ 0000-0002-1094-0018, cspunla@bpsu.edu.ph"
+                },
+                {
+                    "family": "C. Farro",
+                    "given": "Rosemarie"
+                },
+                {
+                    "literal": "https://orcid.org/0000-0002-3571-2716, rcfarro@bpsu.edu.ph"
+                },
+                {
+                    "literal": "Bataan Peninsula State University Dinalupihan, Bataan, Philippines"
+                }
+            ],
+            "container-title": "International Multidisciplinary Research Journal",
+            "id": "S_Punla2022-td",
+            "issue": "3",
+            "issued": {
+                "date-parts": [
+                    [
+                        2022,
+                        9
+                    ]
+                ]
+            },
+            "page": "50-59",
+            "publisher": "International Organization of Educators; Researchers Inc.",
+            "title": "Are we there yet?: An analysis of the competencies of BEED graduates of BPSU-DC",
+            "title-short": "Are we there yet?",
+            "type": "article-journal",
+            "volume": "4"
+        },
+        {
+            "URL": "https://phoenixnap.com/blog/data-center-tiers-classification",
+            "author": [
+                {
+                    "family": "Velimirovic",
+                    "given": "Andreja"
+                }
+            ],
+            "container-title": "phoenixNAP Blog",
+            "id": "velimirovic_2022",
+            "issued": {
+                "date-parts": [
+                    [
+                        2022,
+                        10
+                    ]
+                ]
+            },
+            "title": "Data center tiers classification explained: (Tier 1, 2, 3, 4)",
+            "title-short": "Data center tiers classification explained",
+            "type": ""
+        },
+        {
+            "URL": "https://www.statista.com/statistics/273550/data-breaches-recorded-in-the-united-states-by-number-of-breaches-and-records-exposed/",
+            "author": [
+                {
+                    "dropping-particle": "by",
+                    "family": "Statista Research Department",
+                    "given": "Published"
+                },
+                {
+                    "family": "31",
+                    "given": "Aug"
+                }
+            ],
+            "container-title": "Statista",
+            "id": "department_31_2022",
+            "issued": {
+                "date-parts": [
+                    [
+                        2022,
+                        8
+                    ]
+                ]
+            },
+            "title": "Data breaches and individuals impacted u.s. 2022",
+            "type": ""
+        },
+        {
+            "URL": "https://www.weforum.org/agenda/2019/01/biggest-global-risks-facing-our-world/",
+            "container-title": "World Economic Forum",
+            "id": "worldEconomicForum",
+            "title": "These are the biggest global risks for this year",
+            "type": ""
         }
     ],
     "project_biblios": []

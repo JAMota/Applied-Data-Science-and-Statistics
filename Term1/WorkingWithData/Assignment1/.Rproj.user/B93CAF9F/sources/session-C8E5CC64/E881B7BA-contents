@@ -3738,7 +3738,7 @@ predictorMatrix2018
 
 ## Data Imputation
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE}
 
 ##absolute chad that I am saving https://stats.stackexchange.com/questions/219013/how-do-the-number-of-imputations-the-maximum-iterations-affect-accuracy-in-mul
 
@@ -3759,7 +3759,7 @@ imp2018 = mice(dataCyberSecuritySurvey2022TidyNameSizeCyber, m=18, maxit=21, pre
 
 ```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 ##just so the rendering of the pdf doesn't take more than 1 hour of imputations alone I will leave 3 imputations here for rendering purposes since if I just turned off that code chunk I wouldn't be able to run the rest and I just couldn't save the load the imputations has a csv
 

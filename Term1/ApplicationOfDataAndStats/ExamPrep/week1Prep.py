@@ -530,13 +530,40 @@ mylist[-1]
 
 # What are the main differences between a list and a numpy array?
 
+##lists can have any type of object while numpy arrays will make sure all the values have
+## the same type in the array, also multiplication and addition operations work differently
+## between lists and numpy arrays
 
 
+# Advanced
+
+# 99 Bottles: Write a python program that generates the song lyrics to “99 bottles”, i.e.
+
+#     99 bottles of beer on the wall, 99 bottles of beer. If one of those bottles should happen to fall, 98 bottles of beer on the wall.
+
+#     98 bottles of beer on the wall, 98 bottles of beer. If ...
+
+#     ...
+
+#     2 bottles of beer on the wall, 2 bottles of beer. If one of those bottles should happen to fall, 1 bottle of beer on the wall.
+
+#     1 bottle of beer on the wall, 1 bottle of beer. If one of those bottles should happen to fall, no bottles of beer on the wall.
+
+i = 99
+while i != -1:
+    print(i, " bottles of beer on the wall, ", i,
+          "  bottles of beer. If one of those bottles should happen to fall, ",
+          i-1 , " bottles of beer on the wall.")
+    i = i-1
 
 
+# Write a function to calculate the median of a list of numbers?
+
+def medianFunc(list):
+    return np.median(list)
 
 
-
+medianFunc(listBilha)
 
 
 
