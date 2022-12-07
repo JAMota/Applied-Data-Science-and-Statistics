@@ -90,6 +90,8 @@ myDictionary['last']
 ## accessing the hotel
 myDictionary['hotel?']
 
+
+
 myDictionary['smoking']
 
 
@@ -448,9 +450,9 @@ listaExemplo + listaExemplo1[0:20]
 ##number of times a certain value appears on the list
 
 ##see the number of times
-listaExemplo.count(5)
+listaExemplo.count(3)
 ##check the index of first occurance of that value in the list, and first if it exists
-listaExemplo.index(5)
+listaExemplo.index(3)
 
 # How do you extract the keys from a dictionary?
 
@@ -597,18 +599,50 @@ dataFrameLatLong = dataFrame[['Latitude','Longitude']].copy
 ##check type of each variable/collum in the data frame
 dataFrame.dtypes
 
+#dataFrame['Date'] = dataFrame['Date'].astype(datetime)
+dataFrame['Date'] = pd.to_datetime(dataFrame['Date'], format="%d/%m/%Y")
 
 
+# Permanently remove the columns Accident_Index, Location_Easting_OSGR,
+# Location_Northing_OSGR from accidents.
 
-# Permanently remove the columns Accident_Index, Location_Easting_OSGR, Location_Northing_OSGR from accidents.
+del dataFrame['Accident_Index']
+del dataFrame['Location_Easting_OSGR']
+del dataFrame['Location_Northing_OSGR']
 
 # Reorder the rows of the data frame by increasing Date and Time.
 
+dataFrame.sort_values(['Date','Time'])
+
 # Add an index column with increasing integer values 1,2,3,...
 
+dataFrame['index'] = range(1, len(dataFrame)+1)
 
 
+# Advanced problems
 
+# Add a column hour with values 0,1,2,. . . ,23 corresponding to the time of day.
+
+dataFrame['hour'] = 0
+i = 0
+for i in range(len(dataFrame)):
+    aux = dataFrame['Time'][i]
+    aux = str(aux).split(":")[0] ## we have to stringify here or else we get problems 
+    dataFrame['hour'][i] = aux
+    i = i +1
+    
+
+# Add a column weekend which is True for accidents that happened on the weekend, and False otherwise.
+
+# Create a new data frame with columns Date (in format ‘YYYY-MM-DD’), Accidents (total number of accidents per day) and Casualties (total number of casualties per day).
+
+# Verify that Casualties is always greater than or equal to Accidents.
+
+# Create a time series plot showing the number of accidents per day.
+
+# Summarise and plot the number of accidents for each weekday.
+
+# What was the day of the week of the 10 days with the highest number of casualties?
 
 
 

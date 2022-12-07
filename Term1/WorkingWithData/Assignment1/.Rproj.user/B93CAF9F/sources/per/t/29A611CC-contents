@@ -227,7 +227,6 @@ fyReal
 ```
 
 ## Question 4 d)
-
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 
@@ -331,6 +330,7 @@ values, which compared to the \[94.11897,160.16737\] minimum and maximum
 variance from the temperature readings which is by far the most
 impactful variable or the \[-7.67648,-66.752\] variance from the minimum
 and maximum values from the wind readings.
+
 
 $\beta0 = \beta1$
 
@@ -447,13 +447,7 @@ summary(ozoneLogged)
 
 ```
 
-In the histograms we can immediately spot that ozone, wind and
-temperature seem to have a normal distribution without any immediately
-significant looking skewness, while bith temperature and wind were
-already with a normal looking distribution this was not the case for the
-ozone before the log transform. Radiation skewdness seem to have
-increased even more barely having any values on the skewed left area due
-to such an high skewness level.
+In the histograms we can immediately spot that ozone, wind and temperature seem to have a normal distribution without any immediately significant looking skewness, while bith temperature and wind were already with a normal looking distribution this was not the case for the ozone before the log transform. Radiation skewdness seem to have increased even more barely having any values on the skewed left area due to such an high skewness level.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 summary(modelLogFriend)
@@ -513,9 +507,9 @@ number of ozone ppb we have detected.
 
 A very obvious change with the new model is how much closer,
 comparatively to the other variables, has the variance between minimum
-and maximum became, making each of the variables have similar weights
-with how much they can change ozone readings in comparison to the other
-variables.
+and maximum became, making each of the variables have similar weights with how much they can change ozone readings in comparison to the other variables.
+
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -539,12 +533,7 @@ summary(ozoneLogged)
 
 ```
 
-Initially we can see that when compared to the log transform model the
-histograms have not had a significant change with the exception of ozone
-who has returned to have its initial model distribution.
+Initially we can see that when compared to the log transform model the histograms have not had a significant change with the exception of ozone who has returned to have its initial model distribution.
 
-Each of the individual log transformed values seem to follow a very
-similar patern when comparing the log transformed and untransformed
-ozone variable. The most significant variance would how radiation has a
-much less step slope when using the unstransformed scaled compared
-temperature and wind who slopes seem to remain almost identicals
+Each of the individual log transformed values seem to follow a very similar patern when comparing the log transformed and untransformed ozone variable.
+The most significant variance would how radiation has a much less step slope when using the unstransformed scaled compared temperature and wind who slopes seem to remain almost identicals
