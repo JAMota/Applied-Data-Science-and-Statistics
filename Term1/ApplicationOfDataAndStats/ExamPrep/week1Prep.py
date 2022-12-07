@@ -729,18 +729,21 @@ dataFrameAccidentsSums = dataFrameAccidentsSums.groupby(['Date']).sum()
 
 dataFrameAccidentsDayOfWeek = dataFrame[['Date','Day_of_Week']]
 
+##removes all duplicate rows
+dataFrameAccidentsDayOfWeek = dataFrameAccidentsDayOfWeek.drop_duplicates()
+
 dataFrameAccidentsSumsWeek = \
-    pd.merge(left=dataFrameAccidentsSums, right=dataFrameAccidentsDayOfWeek, on='Date')
+    pd.merge(left=dataFrameAccidentsSums, right=dataFrameAccidentsDayOfWeek,how='inner', on='Date')
 
 ## we have it ordered by ascending order 
-dataFrameAccidentsSums.sort_values(['Number_of_Casualties'], ascending=[True])
+dataFrameAccidentsSumsWeek.sort_values(['Number_of_Casualties'], ascending=[True])
 
 ##so now we will orderby descending
 
-dataFrameAccidentsSums = dataFrameAccidentsSums.sort_values(['Number_of_Casualties'], ascending=[False])
+dataFrameAccidentsSumsWeek = dataFrameAccidentsSumsWeek.sort_values(['Number_of_Casualties'], ascending=[False])
 
-dataFrameAccidentsSums.head(n=10)
-print(dataFrameAccidentsSums.head(n=10))
+dataFrameAccidentsSumsWeek.head(n=10)
+print(dataFrameAccidentsSumsWeek.head(n=10))
 
 
 
