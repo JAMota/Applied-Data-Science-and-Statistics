@@ -372,7 +372,7 @@ np.vstack([a,b])
 
 ## generating random numbers
 
-np.random?
+#np.random?
 ## here we can see all the distrivutions we can use to generate numbers
 
 ##generated 5 numbers with the 2 entry values of the normal distribution
@@ -502,11 +502,12 @@ plt.show()
 def funcIsPalindrome(argsPalindrome):
     aux = len(argsPalindrome)
     if aux % 2 == 0:
-        return
+        return argsPalindrome
     if aux % 2 != 0:
-        return
+        return argsPalindrome
+
         
- def is_palindrome(inp):
+def is_palindrome(inp):
     inp = list(inp)
     rev = list(inp)[::-1]
     return inp == rev    
@@ -566,9 +567,37 @@ def medianFunc(list):
 medianFunc(listBilha)
 
 
+###################################### week 1 traffic problems ############################
+
+# Set up
+
+# Download and unzip the csv file “Road Safety Data - Accidents 2019” from the module ELE page.
+
+# Read the csv file into a pandas DataFrame named accidents using the function pd.read_csv (consult the help page for that function to see what options there are.)
+# Warm-up problems
+
+import pandas as pd
+
+a = "C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/ApplicationOfDataAndStats/week7/accidents2019.csv"
+
+dataFrame = pd.read_csv(a)
+
+# How many rows and columns does accidents have?
+
+#[117536 rows x 32 columns]
+dataFrame.count
+
+# Create a new data frame locations that only consists of the Latitude and Longitude column of accidents.
 
 
 
+# Transform the Date column to the data type datetime. Be careful to check that the dates have been parsed correctly (which depends on the format of the date in the raw dataset).
+
+# Permanently remove the columns Accident_Index, Location_Easting_OSGR, Location_Northing_OSGR from accidents.
+
+# Reorder the rows of the data frame by increasing Date and Time.
+
+# Add an index column with increasing integer values 1,2,3,...
 
 
 
