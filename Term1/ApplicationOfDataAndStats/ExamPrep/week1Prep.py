@@ -746,9 +746,103 @@ dataFrameAccidentsSumsWeek.head(n=10)
 print(dataFrameAccidentsSumsWeek.head(n=10))
 
 
+#%%
+################################################ week 2 ####################################
+################################################ week 2 ####################################
+################################################ week 2 ####################################
+################################################ week 2 ####################################
+################################################ week 2 ####################################
 
 
 
+
+
+
+# Load the gapminder.csv data using pandas.
+
+a = "C:\AppliedDataScienceAndStatistics\Applied-Data-Science-and-Statistics\Term1\ApplicationOfDataAndStats\week8\gapminder.csv"
+
+dataFrameGapMinder = pd.read_csv(a)
+
+
+# Examine the first 10 rows of your dataset.
+## first 10 top rows
+dataFrameGapMinder.head(n=10)
+
+# Using Matplotlib, plot life expectancy over time for the United Kingdom.
+
+##Select Rows of pandas DataFrame by Condition
+## getting the rows with the value we want
+
+dataFrameUnitedKingdom = \
+    dataFrameGapMinder.loc[dataFrameGapMinder['country'] == "United Kingdom"]
+
+plt.plot(dataFrameUnitedKingdom["year"], dataFrameUnitedKingdom["lifeExp"])
+##or //same thing
+## this has to be executed at the same time in the same block dingus #ficaADica
+plt.plot(dataFrameUnitedKingdom.year, dataFrameUnitedKingdom.lifeExp, label='UK')
+plt.xlabel("year")
+plt.ylabel("life expectancy, years")
+plt.legend() ## to show the labels
+plt.show()
+
+# Again, using Matplotlib, overlay on the same plot, life expectancy plots for the UK 
+#and Burkina Faso. Add a legend which indicates which plot corresponds to which country.
+
+dataFrameBurkinaFaso = \
+    dataFrameGapMinder.loc[dataFrameGapMinder['country'] == "Burkina Faso"]
+    
+plt.plot(dataFrameBurkinaFaso.year, dataFrameBurkinaFaso.lifeExp, label='UK')
+plt.plot(dataFrameUnitedKingdom.year, dataFrameUnitedKingdom.lifeExp, label='Burkina Faso')
+plt.xlabel("year")
+plt.ylabel("life expectancy, years")
+plt.legend()  ## to show the labels
+plt.show()
+
+# Now, we are going to use plotnine's ggplot function to produce the same plot: life expectancy over time for both the UK and Burkina Faso. First create a data frame that keeps only those rows for the UK and Burkina Faso.
+
+# Next run the following code to plot the life expectancies over time:
+
+# (ggplot(df_uk_bf, aes(x='year', y='lifeExp', colour='country')) +
+# geom_line())
+
+# Now change geom_line to geom_point and examine how that changes the plot.
+
+# We can also layer geoms. Now add back in + geom_line() in addition to geom_point(). What does this plot look like?
+
+# Suppose we want to add linear regression lines to data from each country. We can do this by adding + geom_smooth(method="lm") to the end of our plot command.
+
+# We can remove the uncertainty intervals from the plots by changing + geom_smooth(method="lm") to + geom_smooth(method="lm", se=False). Try this.
+
+# Suppose instead of plotting two regression lines, we want a single regression line representing the trends across both countries. To do this, we can run the following code:
+
+# (ggplot(df_uk_bf, aes(x='year', y='lifeExp')) +
+# geom_point(aes(colour='country')) +
+# geom_smooth(method="lm", se=False))
+
+# Why has the above plotted a single regression line?
+
+# It's because whilst we use a colour aesthetic, the colour aesthetic is used only by geom_point and not inherited by geom_smooth. Whereas in the former case the colour aesthetic is stated in the ggplot section which means it is inherited by downstream geoms, including geom_smooth meaning it creates two regression lines — one for each colour.
+
+# Now use to ggplot to create a similar plot except plotting all countries in the Americas.
+
+# We can also change our straight regression line into a curvy line using a locally weighted regression (known as a loess line). To do this, change from:
+
+# geom_smooth(method="lm", se=False) to geom_smooth()
+
+# Try this.
+
+# We can also use ggplot to plot life expectancy over time for each continent in a given panel. To do so, run the following code:
+
+# (ggplot(df, aes(x='year', y='lifeExp')) +
+# geom_point() +
+# facet_wrap('continent'))
+
+# Add a loess regression line to each of the panels above. Colour all of the regression lines orange.
+
+
+
+#%%
 
 
 
