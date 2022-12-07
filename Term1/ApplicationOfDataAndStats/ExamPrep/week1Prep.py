@@ -192,7 +192,7 @@ listBilha[25::5]
 
 listBilha[:25:5]
 
-
+#%%
 ######################################### boolean gaming ##################################
 
 x = 23
@@ -218,7 +218,7 @@ x in [23,43]
 ##we are no in the can't be bothered this is too basic mode
 ##if you are reading and you aren't me sounds like a u problem to me #estudasses
 
-
+#%%
 ############################################## loops ########################################
 
 for i in range(0,10):
@@ -248,7 +248,7 @@ while True:
     if i > 9:
         break
         
-        
+#%%     
 ########################################## functions ######################################
 
 def myFunction():
@@ -269,7 +269,7 @@ def add(x,y):
 
 add(1,2)
 
-
+#%%
 ######################################## numpy ###########################################
 
 import numpy as np
@@ -399,7 +399,7 @@ matrix1 = np.matrix([[1,2],
 ## couldn't be bothered to look this one up
 np.linalg.eig(matrix1)
 
-
+#%%
 ############################################ week 2 ########################################
 ############################################ week 2 ########################################
 ############################################ week 2 ########################################
@@ -470,6 +470,8 @@ myDictionaryLec['Stats']
 # How do you write comments in python code?
 ##like this lmao
 
+
+#%%
 # Intermediate
 
 # Fizzbuzz: Write out the numbers from 1 to 100, and replace every number that is
@@ -568,7 +570,7 @@ def medianFunc(list):
 
 medianFunc(listBilha)
 
-
+#%%
 ###################################### week 1 traffic problems ############################
 
 # Set up
@@ -612,7 +614,7 @@ del dataFrame['Location_Northing_OSGR']
 
 # Reorder the rows of the data frame by increasing Date and Time.
 
-dataFrame.sort_values(['Date','Time'])
+dataFrame.sort_values(['Date','Time'], ascending=[True])
 
 # Add an index column with increasing integer values 1,2,3,...
 
@@ -632,24 +634,113 @@ for i in range(len(dataFrame)):
     i = i +1
     
 
-# Add a column weekend which is True for accidents that happened on the weekend, and False otherwise.
+# Add a column weekend which is True for accidents that happened on the weekend,
+# and False otherwise.
 
-# Create a new data frame with columns Date (in format ‘YYYY-MM-DD’), Accidents (total number of accidents per day) and Casualties (total number of casualties per day).
+## since monday is day 2 the weekend is day 1 and 7
+dataFrame['isWeekend'] = False
+i = 0
+for i in range(len(dataFrame)):
+    if dataFrame['Day_of_Week'][i] == 1 or dataFrame['Day_of_Week'][i] == 7:
+        dataFrame['isWeekend'][i] = True
+    i = i +1
+    
+##check of much of each value
+dataFrame.value_counts(['isWeekend'])
+
+
+# Create a new data frame with columns Date (in format ‘YYYY-MM-DD’),
+# Accidents (total number of accidents per day) and Casualties (total number of casualties
+# per day).
+
+dataFrameAccidents = dataFrame
+
+dataFrameAccidents = dataFrameAccidents[['Date','Number_of_Casualties']]   
+
+
+i = 0
+for i in range(len(dataFrameAccidents)):
+    
+    auxString = dataFrame['Date'][i]
+    auxYear = str(auxString).split("-")[0]
+    auxMonth = str(auxString).split("-")[1]
+    auxDay = str(auxString).split("-")[2]
+    auxDay = str(auxDay).split(" ")[0]
+    
+    dataFrameAccidents['Date'][i] =  auxYear + '-' + auxMonth + '-' + auxDay
+        
+    i = i +1
+
+## just like in SQL    
+
+
+numberOfAcidents = dataFrameAccidents.groupby(['Date'])['Number_of_Casualties'].count()
+ 
+numberOfCasualties = dataFrameAccidents.groupby(['Date'])['Number_of_Casualties'].sum()
+
+##merging / joining two different data frames
+dataFrameDaily = pd.merge(left=numberOfAcidents, right=numberOfCasualties, on='Date') 
+##or
+dataFrameDaily = pd.concat([numberOfAcidents, numberOfCasualties], axis=1, join='inner')
+
 
 # Verify that Casualties is always greater than or equal to Accidents.
 
+i= 0
+for i in range(len(dataFrameAccidents.groupby(['Date'])['Number_of_Casualties'].count())):
+    numberOfAcidents = dataFrameAccidents.groupby(['Date'])['Number_of_Casualties'].count()[i]
+     
+    numberOfCasualties = \
+        dataFrameAccidents.groupby(['Date'])['Number_of_Casualties'].sum()[i]
+    
+    if numberOfAcidents >= numberOfCasualties:
+        print(" you have fucked up")
+    
+    i = i +1
+
 # Create a time series plot showing the number of accidents per day.
 
+
+dataFrameDaily.plot() ## this is auto plot from pandas
+plt.plot('Number_of_Casualties_y', data=dataFrameDaily)
+plt.show()
+
 # Summarise and plot the number of accidents for each weekday.
+
+dataFrameAccidentsWeekday = dataFrame[['Date','Number_of_Casualties','Day_of_Week']]
+
+#gringo1 = dataFrameAccidentsWeekday.groupby(['Date'])['Day_of_Week'].count()  
+
+weekdayAccidents = dataFrameAccidentsWeekday.groupby(['Day_of_Week']).count()  
+
+weekdayAccidents.plot()
+
+plt.figure(figsize=[8,4])
+plt.bar(weekdayAccidents.index, weekdayAccidents.Number_of_Casualties)
+
+
 
 # What was the day of the week of the 10 days with the highest number of casualties?
 
 
+dataFrameAccidentsSums = dataFrame[['Date','Number_of_Casualties']]
+dataFrameAccidentsSums = dataFrameAccidentsSums.groupby(['Date']).sum()
 
 
+dataFrameAccidentsDayOfWeek = dataFrame[['Date','Day_of_Week']]
 
+dataFrameAccidentsSumsWeek = \
+    pd.merge(left=dataFrameAccidentsSums, right=dataFrameAccidentsDayOfWeek, on='Date')
 
+## we have it ordered by ascending order 
+dataFrameAccidentsSums.sort_values(['Number_of_Casualties'], ascending=[True])
 
+##so now we will orderby descending
+
+dataFrameAccidentsSums = dataFrameAccidentsSums.sort_values(['Number_of_Casualties'], ascending=[False])
+
+dataFrameAccidentsSums.head(n=10)
+print(dataFrameAccidentsSums.head(n=10))
 
 
 
