@@ -589,9 +589,16 @@ dataFrame.count
 
 # Create a new data frame locations that only consists of the Latitude and Longitude column of accidents.
 
+dataFrameLatLong = dataFrame[['Latitude','Longitude']].copy
+
+# Transform the Date column to the data type datetime. Be careful to check that the dates
+# have been parsed correctly (which depends on the format of the date in the raw dataset).
+
+##check type of each variable/collum in the data frame
+dataFrame.dtypes
 
 
-# Transform the Date column to the data type datetime. Be careful to check that the dates have been parsed correctly (which depends on the format of the date in the raw dataset).
+
 
 # Permanently remove the columns Accident_Index, Location_Easting_OSGR, Location_Northing_OSGR from accidents.
 

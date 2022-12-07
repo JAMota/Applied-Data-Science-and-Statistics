@@ -2,7 +2,7 @@ Notes for reviewing 501
 
 what is the right interpretation of p-values 
 
-why there was no need fpr the convergence plot
+why there was no need for the convergence plot
 
 how to approach the multi year analysis?
 
