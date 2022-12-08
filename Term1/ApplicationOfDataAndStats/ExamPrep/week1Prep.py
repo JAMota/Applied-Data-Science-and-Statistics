@@ -1075,7 +1075,157 @@ dfFermonBridge.dtypes
 #Now let's aggregate the data to be daily.
 ## now we will group by day
 
-dfFermonBridgePerDay = dfFermonBridge.groupby(['date'])['fremont bridge west sidewalk'].sum()
+dfFermonBridgePerDay = dfFermonBridge.groupby(['date']).sum()
+
+dfSeattleWeather
+
+#And combine both datasets by merging. Note, that the datasets are merged according
+# to common keys in both: here, date is a column in both datasets, so is what the
+# datasets are merged on
+
+dfSeattleBikeWeatherDaily = \
+    pd.merge(left=dfFermonBridgePerDay, right=dfSeattleWeather, on='date') 
+
+#Before we do any modelling, we need to understand our data. Always the most powerful
+# way to understand a dataset is to visualise it. So, that's what we'll do now.
+
+dfSeattleBikeWeatherDaily['traffic'] = dfSeattleBikeWeatherDaily['fremont bridge total']
+dfSeattleBikeWeatherDaily['temperature'] = dfSeattleBikeWeatherDaily['tavg']
+dfSeattleBikeWeatherDaily['precipitation'] = dfSeattleBikeWeatherDaily['prcp']
+
+##removing these old variables
+dfSeattleBikeWeatherDaily.pop("fremont bridge total")
+dfSeattleBikeWeatherDaily.pop("tavg")
+dfSeattleBikeWeatherDaily.pop("prcp")
+
+#Let's now visualise: traffic and the two temperature variables. To do so, we 
+#first convert the dataset into long format.
+dfVisualAux = \
+    dfSeattleBikeWeatherDaily[['date','traffic','temperature','precipitation']].melt('date')
+
+#Then we can plot these using ggplot.
+
+(ggplot(dfVisualAux)+
+ aes(x='date', y='value')+
+ geom_line()+
+ facet_wrap('variable', scales='free'))
+
+(ggplot(dfSeattleBikeWeatherDaily)+
+ aes(x='date', y='traffic')+
+ geom_line())
+
+#The above plot illustrates seasonal patterns in bike traffic. Which makes sense,
+# since people likely decide which mode of transport to take based on a range of factors;
+# one of these is likely the weather, which varies seasonally.
+
+# An alternative way to visualise the above data is to look at each year separately,
+# which we do now.
+
+## if the variable is a date type we can get only the year like this or any day or any month
+## instead depending on what we need
+dfSeattleBikeWeatherDaily['date'].dt.year
+
+dfSeattleBikeWeatherDaily['year'] = dfSeattleBikeWeatherDaily['date'].dt.year
+
+(ggplot(dfSeattleBikeWeatherDaily)+
+ aes(x='date', y='traffic')+
+ geom_line()+
+ facet_wrap('year'))
+
+## to make a better scale
+(ggplot(dfSeattleBikeWeatherDaily)+
+ aes(x='date', y='traffic')+
+ geom_line()+
+ facet_wrap('year', scales='free')+
+ theme(figure_size=(20, 10)))
+
+## if we remove 2012 and 2022 since that data doesn't give us a lot of seasonality trends
+
+##querying to look for specific rows
+dfSeattleBikeWeatherDaily = \
+    dfSeattleBikeWeatherDaily.query('year > 2012 & year< 2020')
+
+(ggplot(dfSeattleBikeWeatherDaily)+
+ aes(x='date', y='traffic')+
+ geom_line()+
+ facet_wrap('year', scales='free')+
+ theme(figure_size=(20, 10)))
+
+## there is clearly some seasonality along the years  as we can some obvious peaks on the
+## summer and some lows on the winter
+
+# Based on the above plots, there is clearly a degree of common seasonality across years.
+# One way to model this seasonality is not to model it by proxy; assuming that the time 
+#of year effectively represents the whole gamut of other factors (such as weather, national
+# holidays and so forth) that vary intra-annually.
+
+# The first model we fit to the data is a very simple one: a sine wave of a single 
+#frequency of the form:
+
+# 𝑦(𝑡)=𝑎+𝑏sin(2𝜋𝑡365.25+𝜙)
+
+# We can expand out the sin using the double angle type formula:
+
+# sin(𝑥+𝑧)=sin(𝑥)cos(𝑧)+sin(𝑧)cos(𝑥)
+
+# which means our model becomes:
+
+# 𝑦(𝑡)=𝑎+𝑏sin(2𝜋𝑡365.25)cos(𝜙)+𝑏sin(𝜙)cos(2𝜋𝑡365.25),
+
+# which can be written as:
+
+# 𝑦(𝑡)=𝑎+𝑏1sin(2𝜋𝑡365.25)+𝑏2cos(2𝜋𝑡365.25).
+
+# This is just a linear regression with two covariates:  sin(2𝜋𝑡365.25) and cos(2𝜋𝑡365.25), 
+#and we will now attempt to fit this model to the traffic data. To do so, we 
+#need first to create our sine and cosine variables.    
+
+## np.arange is to create a list from start to stop number with increment step 1 by default
+dfSeattleBikeWeatherDaily['t'] = np.arange(len(dfSeattleBikeWeatherDaily))
+
+## getting the values to calculate y(t)
+dfSeattleBikeWeatherDaily['sin_t'] = \
+    np.sin(2 * np.pi * dfSeattleBikeWeatherDaily['t'] / 365.25)
+
+dfSeattleBikeWeatherDaily['cos_t'] = \
+    np.cos(2 * np.pi * dfSeattleBikeWeatherDaily['t'] / 365.25)
+
+## with these variables non linear variables we will use to fit a  linear model
+
+lm = LinearRegression()
+x = dfSeattleBikeWeatherDaily[['sin_t','cos_t']]
+
+lm.fit(x, dfSeattleBikeWeatherDaily['traffic'])
+
+# Let's now look at the coefficients estimated.
+
+# First, the intercept, 𝑎, in the model above. This represents the average bike
+# traffic across the whole year.
+
+## we can see the interprecept of our model with 0
+lm.intercept_
+
+## we can see the coeficients of our model
+lm.coef_
+
+#On their own, these regression coefficients aren't too informative. 
+#To try to understand how the model works, let's now make a prediction and visualise 
+#the model's performance vs the data.
+
+## contains the prediction for all the values
+dfSeattleBikeWeatherDaily['trafficPredict'] = lm.predict(x)
+
+dfPredict = dfSeattleBikeWeatherDaily[['date','traffic','trafficPredict']].melt('date')
+
+(ggplot(dfPredict) + 
+ aes(x='date',y='value')+
+ geom_line(aes(colour='variable')))
+
+
+
+
+
+
 
 
 
