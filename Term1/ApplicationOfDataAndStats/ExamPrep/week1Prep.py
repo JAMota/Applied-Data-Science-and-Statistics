@@ -1221,6 +1221,112 @@ dfPredict = dfSeattleBikeWeatherDaily[['date','traffic','trafficPredict']].melt(
  aes(x='date',y='value')+
  geom_line(aes(colour='variable')))
 
+# On first glances, the model appears to quite nicely represent the seasonality 
+# that is present in the data. However, let's examine this assumption by calculating
+# the residuals.
+
+dfSeattleBikeWeatherDaily['residuals'] = \
+    dfSeattleBikeWeatherDaily['traffic'] - dfSeattleBikeWeatherDaily['trafficPredict']
+
+##lets plot the residuals to see how much our prediction failed
+
+dfSeattleBikeWeatherDaily['residuals'].plot()
+##it this quite hard to see so lets see a month to month basis
+
+dfSeattleBikeWeatherDaily['year'] = dfSeattleBikeWeatherDaily['date'].dt.year
+dfSeattleBikeWeatherDaily['month'] = dfSeattleBikeWeatherDaily['date'].dt.month
+
+## it summed up all the residuals and applied it over each month 
+##basically a month and year group by with residual
+dfResiduals = \
+    dfSeattleBikeWeatherDaily.groupby(['year','month'], as_index=False).apply(lambda x: pd.Series({'resid': np.mean(x.residuals)}))
+
+## to observe the concentration of residuals values we will be using a boxplot
+
+(
+    ggplot(dfResiduals, aes(x='month', y='resid', group='month')) +
+    geom_boxplot() +
+    geom_jitter(width=0.1)
+)
+
+#It looks like our model is mischaracterising the winter period and, to some extent, 
+# the summer. Let's look at our model predictions for a single year: here, we 
+# arbitrarily pick 2015.
+
+## creating the only 2015 data frame
+dfSeattleBikeWeatherDaily["year"] = dfSeattleBikeWeatherDaily["date"].dt.year
+dfResiduals2015 = dfSeattleBikeWeatherDaily.query("year == 2015")
+dfResiduals2015 = (
+    dfResiduals2015[["date", "traffic", "trafficPredict"]].melt("date"))
+
+
+## ploting the traffic and traffic prediction on 2015
+## as we can see the wave is not exactly right, especially on march and
+## end/start of the year
+(
+    ggplot(dfResiduals2015, aes(x='date', y='value')) +
+    geom_line(aes(colour='variable')) +
+    geom_smooth(data=dfResiduals2015.query("variable == 'traffic'"))
+)
+
+
+#Ok, so the sine wave is not quite right. That's hardly surprising: why should seasonal
+# trends follow a simple sine curve? Life is likely more complicated than this.
+
+#An alternative approach is to devise a model with weekly dummy variables, which 
+# capture at a more finescaled level the intra-annual variation.
+
+#Let's try to fit this model. To do so, we create dummy variables for each week of 
+# the year then refit this model.
+
+## gets a dummy variable for each week, basically a binnary vector for our categorical data
+## https://datagy.io/pandas-get-dummies/
+dfDummies = pd.get_dummies(dfSeattleBikeWeatherDaily["date"].dt.week)
+
+## drops all the variables that had variable 1 aka the ones where the row correspond to
+## the column header (dropping all the hot codded values)
+## In machine learning, one-hot encoding is a frequently used method to deal with 
+##categorical data. Because many machine learning models need their input variables to be 
+##numeric, categorical variables need to be transformed in the pre-processing part.
+dfDummies.drop(1, inplace=True, axis=1)
+
+
+## creating a new linear model
+lm = LinearRegression()
+
+## fitting this new model with the dummy variables
+lm.fit(dfDummies, dfSeattleBikeWeatherDaily["traffic"])
+
+## adding the weekly predictor to the dataframe
+dfSeattleBikeWeatherDaily["traffic_pred_weekly"] = lm.predict(dfDummies)
+
+
+dfPredictWeekly = (
+    dfSeattleBikeWeatherDaily[["date", "traffic", "trafficPredict", "traffic_pred_weekly"]].
+    melt("date")
+)
+
+
+(ggplot(dfPredictWeekly, aes(x= 'date', y='value'))+
+ geom_line(aes(colour='variable')))
+
+
+#The above compares the weekly predictions with the pure sine curve. 
+# Actually, looking at this, it doesn't seem like the sine curve is as bad as it might 
+# first appear. But, the weekly dummy variables do pick up a few more crucial pieces of
+# information: first and foremost, that the winter holidays appear to have substantially
+# lower levels of bike traffic.
+
+# There are pros and cons of this model: it shows us that there are some dynamics in
+# traffic that are not captured by a smooth curve: namely those around the winter holidays.
+# It does, however, fit a somewhat jagged curve and is a more complex model than the pure
+# sine curve model.
+
+# The residual series do look much better now, however: we are not persistently
+# mischaracterising traffic flows throughout the year.
+
+
+
 
 
 
