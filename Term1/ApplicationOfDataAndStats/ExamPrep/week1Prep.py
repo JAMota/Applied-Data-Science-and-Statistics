@@ -625,11 +625,12 @@ dataFrame['index'] = range(1, len(dataFrame)+1)
 
 # Add a column hour with values 0,1,2,. . . ,23 corresponding to the time of day.
 
+
 dataFrame['hour'] = 0
 i = 0
 for i in range(len(dataFrame)):
     aux = dataFrame['Time'][i]
-    aux = str(aux).split(":")[0] ## we have to stringify here or else we get problems 
+    aux = str(aux).split(":")[0] ##we have to stringify here or else we get problems parsing
     dataFrame['hour'][i] = aux
     i = i +1
     
@@ -657,7 +658,7 @@ dataFrameAccidents = dataFrame
 
 dataFrameAccidents = dataFrameAccidents[['Date','Number_of_Casualties']]   
 
-
+## we got to parse all the dates here to get what we want
 i = 0
 for i in range(len(dataFrameAccidents)):
     
@@ -954,10 +955,133 @@ geom_smooth(colour='orange'))
 
 #%%
 
+#Implementing simple linear regression with numpy and with scikit-learn on simulated data
+
+# Linear regression from scratch with numpy
+# Simulate inputs
+
+# Simulate inputs 𝑥1,…,𝑥𝑛
+# from standard Normal distribution as a column vector, i.e. a matrix with 1 column
+# and 𝑛 rows:
+
+np.random.seed(123) # make it reproducible
+n = 20 # sample size    
+x = np.random.normal(size=(1,n))
+
+
+# Simulate outputs as
+# 𝑦𝑖=1+0.5𝑥𝑖+𝜖𝑖
+# where 𝜖𝑖 has a Normal distribution with mean zero and standard deviation 0.2:
+
+# loc = mean , scale = standard deviation, 
+e = np.random.normal(loc=0,scale=0.2,size=x.shape)
+
+y = 1 + 0.5 * x + e
+
+## you need to put the 'o' to get the points
+plt.plot(x,y,'o')
+plt.xlabel('input x')
+plt.ylabel('output y')
+plt.show()
 
 
 
 
+
+
+
+
+
+
+
+
+
+#%%
+
+# Predicting bicycle traffic by linear regression
+
+# This is my (i.e. Ben Lambert's) attempt to create a predictive model of bicycle traffic 
+#in Seattle. Crucially, it is not an attempt to answer the problem questions; rather, it 
+#is supposed to illustrate an overall approach to modelling data. It is also not supposed 
+#to be definitive: many different models can often provide an adequate explanation of the 
+#data.
+
+# Whenever you model data, you should take a critical approach to modelling. Always 
+#remember that a model is a simplified version of the world, so you need to ask whether 
+#the various simplifications are justified. As such, you need to take a proactive approach
+# to searching for flaws in your models. Usually, the best way to elucidate these flaws
+# is to visualise the data and model predictions, and I hope to demonstrate this approach
+# here.
+
+# First, we load necessary packages and data.
+
+import datetime
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+
+a = "C:\AppliedDataScienceAndStatistics\Applied-Data-Science-and-Statistics\Term1\ApplicationOfDataAndStats\week9\FremontBridge.csv"
+b = "C:\AppliedDataScienceAndStatistics\Applied-Data-Science-and-Statistics\Term1\ApplicationOfDataAndStats\week9\SeattleWeather.csv"
+
+
+dfFermonBridge = pd.read_csv(a)
+dfSeattleWeather = pd.read_csv(b)
+
+##convert all names of collumns to lower case
+
+dfFermonBridge.columns = map(str.lower, dfFermonBridge.columns)
+dfSeattleWeather.columns = map(str.lower, dfSeattleWeather.columns)
+
+##renaming a collum
+dfSeattleWeather.rename(columns={'tavg': 'tavgr'}, inplace=True)
+dfSeattleWeather.rename(columns={'tavgr': 'tavg'}, inplace=True)
+
+dfSeattleWeather.dtypes
+dfFermonBridge.dtypes
+## as we can see here both date collums don't have the correct date type
+
+## %m is month
+## %d is day
+## %Y is year
+## %H is hour
+## %M is minutes
+## %S is second
+## %p is am or pm
+## don't forget that we got to put it in the exact same other with the right characters
+## that break the values between each other like / or : 
+dfFermonBridge["date"] = \
+    pd.to_datetime(dfFermonBridge['date'], format="%m/%d/%Y %H:%M:%S %p")
+dfSeattleWeather['date'] = pd.to_datetime(dfSeattleWeather['date'], format= "%Y-%m-%d")
+
+## The bike data is hourly; the weather data is daily. So we want to aggregate the former.
+
+## there are 2 ways to strip the hour of the date 
+
+dfFermonBridge['date'] = \
+    pd.to_datetime(dfFermonBridge["date"].dt.strftime('%Y-%m-%d'), format="%Y-%m-%d")
+
+##or 
+i = 0
+for i in range(len(dfFermonBridge)):
+    
+    auxString = dfFermonBridge['date'][i]
+    auxDate = str(auxString).split(" ")[0]
+    
+    dfFermonBridge['date'][i] =  auxDate
+        
+    i = i +1
+
+dfFermonBridge.dtypes
+
+#Now let's aggregate the data to be daily.
+## now we will group by day
+
+dfFermonBridgePerDay = dfFermonBridge.groupby(['date'])['fremont bridge west sidewalk'].sum()
+
+
+
+
+
+#%%
 
 
 
