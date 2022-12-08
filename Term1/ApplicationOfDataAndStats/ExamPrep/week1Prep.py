@@ -614,7 +614,7 @@ del dataFrame['Location_Northing_OSGR']
 
 # Reorder the rows of the data frame by increasing Date and Time.
 
-dataFrame.sort_values(['Date','Time'], ascending=[True])
+dataFrame.sort_values(['Date','Time'])
 
 # Add an index column with increasing integer values 1,2,3,...
 
@@ -799,47 +799,157 @@ plt.ylabel("life expectancy, years")
 plt.legend()  ## to show the labels
 plt.show()
 
-# Now, we are going to use plotnine's ggplot function to produce the same plot: life expectancy over time for both the UK and Burkina Faso. First create a data frame that keeps only those rows for the UK and Burkina Faso.
+# Now, we are going to use plotnine's ggplot function to produce the same plot:
+# life expectancy over time for both the UK and Burkina Faso. First create a data 
+#frame that keeps only those rows for the UK and Burkina Faso.
+
+dataFrameBurkinaFaso
+dataFrameUnitedKingdom
+
+## append still works but now to add one data frame to the other we should use concat
+dataFrameUKBF = dataFrameUnitedKingdom.append(dataFrameBurkinaFaso)
+## the new proper way to concatenate data frames
+dataFrameUKBF = pd.concat([dataFrameBurkinaFaso, dataFrameUnitedKingdom])
+
+from plotnine import *
+import matplotlib.pyplot as plt
 
 # Next run the following code to plot the life expectancies over time:
 
 # (ggplot(df_uk_bf, aes(x='year', y='lifeExp', colour='country')) +
 # geom_line())
 
+##ggplot with line func
+(ggplot(dataFrameUKBF) +
+aes(x='year', y='lifeExp', colour='country') +
+geom_line() )
+
 # Now change geom_line to geom_point and examine how that changes the plot.
+
+##ggplot with point graph
+(ggplot(dataFrameUKBF) +
+aes(x='year', y='lifeExp', colour='country') +
+geom_point() )
+
 
 # We can also layer geoms. Now add back in + geom_line() in addition to geom_point(). What does this plot look like?
 
-# Suppose we want to add linear regression lines to data from each country. We can do this by adding + geom_smooth(method="lm") to the end of our plot command.
+## we have both the points of occurences and the lines formed from them
+(ggplot(dataFrameUKBF) +
+aes(x='year', y='lifeExp', colour='country') +
+geom_point() +
+geom_line())
 
-# We can remove the uncertainty intervals from the plots by changing + geom_smooth(method="lm") to + geom_smooth(method="lm", se=False). Try this.
+# Suppose we want to add linear regression lines to data from each country. We can do 
+#this by adding + geom_smooth(method="lm") to the end of our plot command.
 
-# Suppose instead of plotting two regression lines, we want a single regression line representing the trends across both countries. To do this, we can run the following code:
+##adding a straing geom_smooth regression line using the basic lm method
+(ggplot(dataFrameUKBF) +
+aes(x='year', y='lifeExp', colour='country') +
+geom_point() +
+geom_line()+
+geom_smooth(method="lm"))
+
+# We can remove the uncertainty intervals from the plots by changing + 
+#geom_smooth(method="lm") to + geom_smooth(method="lm", se=False). Try this.
+
+##removing the standard error to the regression lines
+(ggplot(dataFrameUKBF) +
+aes(x='year', y='lifeExp', colour='country') +
+geom_point() +
+geom_line()+
+geom_smooth(method="lm", se=False))
+
+# Suppose instead of plotting two regression lines, we want a single regression line 
+#representing the trends across both countries. To do this, we can run the following code:
+
+(ggplot(dataFrameUKBF, aes(x='year', y='lifeExp')) +
+geom_point(aes(colour='country')) +
+geom_smooth(method="lm", se=False))
 
 # (ggplot(df_uk_bf, aes(x='year', y='lifeExp')) +
 # geom_point(aes(colour='country')) +
 # geom_smooth(method="lm", se=False))
 
+
 # Why has the above plotted a single regression line?
 
-# It's because whilst we use a colour aesthetic, the colour aesthetic is used only by geom_point and not inherited by geom_smooth. Whereas in the former case the colour aesthetic is stated in the ggplot section which means it is inherited by downstream geoms, including geom_smooth meaning it creates two regression lines — one for each colour.
+##Because this way ggplot is not passing down the aestetics in a way that will be inherited
+
+##It's because whilst we use a colour aesthetic, the colour aesthetic is used only 
+##by geom_point and not inherited by geom_smooth. Whereas in the former case the colour 
+##aesthetic is stated in the ggplot section which means it is inherited by downstream geoms,
+## including geom_smooth meaning it creates two regression lines — one for each colour.
+
 
 # Now use to ggplot to create a similar plot except plotting all countries in the Americas.
 
-# We can also change our straight regression line into a curvy line using a locally weighted regression (known as a loess line). To do this, change from:
+dataFrameAmericas= \
+    dataFrameGapMinder.loc[dataFrameGapMinder['continent'] == "Americas"]
+    
+(ggplot(dataFrameAmericas) +
+ aes(x='year', y='lifeExp', colour='country')+
+ geom_point() +
+ geom_line())
 
+## this one has the regression line of all the Americas
+(ggplot(dataFrameAmericas, aes(x='year', y='lifeExp')) +
+geom_point(aes(colour='country')) +
+geom_smooth(method="lm", se=False))
+
+
+# We can also change our straight regression line into a curvy line using a locally 
+#weighted regression (known as a loess line). To do this, change from:
+
+##the loess, weighted regression is the defaut of geom_smooth() so we just need to have
+## geom_smooth() empty like this
 # geom_smooth(method="lm", se=False) to geom_smooth()
 
-# Try this.
+(ggplot(dataFrameAmericas) +
+ aes(x='year', y='lifeExp', colour='country')+
+ geom_point() +
+ geom_smooth())   
 
-# We can also use ggplot to plot life expectancy over time for each continent in a given panel. To do so, run the following code:
+(ggplot(dataFrameAmericas, aes(x='year', y='lifeExp')) +
+geom_point(aes(colour='country')) +
+geom_smooth()) 
+
+
+# We can also use ggplot to plot life expectancy over time for each continent in a 
+#given panel. To do so, run the following code:
+
+(ggplot(dataFrameGapMinder, aes(x='year', y='lifeExp')) +
+geom_point() +
+facet_wrap('continent')) ##facet_wrap makes a different plot for each continent
+    
 
 # (ggplot(df, aes(x='year', y='lifeExp')) +
 # geom_point() +
 # facet_wrap('continent'))
 
-# Add a loess regression line to each of the panels above. Colour all of the regression lines orange.
+# Add a loess regression line to each of the panels above. 
+#Colour all of the regression lines orange.
 
+(ggplot(dataFrameGapMinder, aes(x='year', y='lifeExp')) +
+geom_point() +
+geom_smooth(colour='orange')+
+facet_wrap('continent'))
+
+# Open ended question
+
+# Using visualisations, assess the following statement:
+
+# "Increases in gdp per capita are associated with increases in life expectancy."
+
+
+(ggplot(dataFrameGapMinder, aes(x='gdpPercap', y='lifeExp')) +
+geom_point() +
+geom_smooth(colour='orange')+
+facet_wrap('continent'))
+
+(ggplot(dataFrameGapMinder, aes(x='gdpPercap', y='lifeExp')) +
+geom_point() +
+geom_smooth(colour='orange'))
 
 
 #%%
