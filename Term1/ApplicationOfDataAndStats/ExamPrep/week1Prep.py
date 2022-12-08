@@ -1048,7 +1048,7 @@ dfFermonBridge.dtypes
 ## %p is am or pm
 ## don't forget that we got to put it in the exact same other with the right characters
 ## that break the values between each other like / or : 
-dfFermonBridge["date"] = \
+dfFermonBridge['date'] = \
     pd.to_datetime(dfFermonBridge['date'], format="%m/%d/%Y %H:%M:%S %p")
 dfSeattleWeather['date'] = pd.to_datetime(dfSeattleWeather['date'], format= "%Y-%m-%d")
 
