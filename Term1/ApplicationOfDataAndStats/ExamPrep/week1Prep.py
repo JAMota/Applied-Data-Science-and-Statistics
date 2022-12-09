@@ -1326,14 +1326,113 @@ dfPredictWeekly = (
 # mischaracterising traffic flows throughout the year.
 
 
+############## EXAM 
+
+
+####### ex1
+
+dataFrame.head(n=10)
+
+dataFrame.iloc[9]
+
+########## ex2
+
+a = "C:\AppliedDataScienceAndStatistics\Applied-Data-Science-and-Statistics\Term1\ApplicationOfDataAndStats\ExamPrep\insurance.csv"
+
+insuranceDataFrame = pd.read_csv(a)
+
+np.median(insuranceDataFrame, 'region')
+
+insuranceDataFrame.agg(np.median)
+
+insuranceDataFrame.groupby('region').agg(np.median)
+
+[np.median(insuranceDataFrame.age[insuranceDataFrame.region==reg]) for reg in insuranceDataFrame['region']]
+
+############### ex 3
+
+insuranceDataFrame['bmi'].min(axis=0)
+
+dataFrameUnitedKingdom = \
+    dataFrameGapMinder.loc[dataFrameGapMinder['country'] == "United Kingdom"]
+
+insuranceDataFrameNorthWest = \
+    insuranceDataFrame.loc[insuranceDataFrame['region'] == 'northwest']
+
+
+minNW = insuranceDataFrameNorthWest['bmi'].min(axis=0)
+
+maxNW =insuranceDataFrameNorthWest['bmi'].max(axis=0)
+
+maxNW - minNW
+
+
+insuranceDataFrameNorthEast = \
+    insuranceDataFrame.loc[insuranceDataFrame['region'] == 'northeast']
+
+
+minNE = insuranceDataFrameNorthEast['bmi'].min(axis=0)
+
+maxNE =insuranceDataFrameNorthEast['bmi'].max(axis=0)
+
+maxNE - minNE
+
+
+insuranceDataFrameSouthEast = \
+    insuranceDataFrame.loc[insuranceDataFrame['region'] == 'southeast']
+
+
+minSE = insuranceDataFrameSouthEast['bmi'].min(axis=0)
+
+maxSE =insuranceDataFrameSouthEast['bmi'].max(axis=0)
+
+maxSE - minSE
 
 
 
+insuranceDataFrameSouthWest = \
+    insuranceDataFrame.loc[insuranceDataFrame['region'] == 'southwest']
 
 
+minSW = insuranceDataFrameSouthWest['bmi'].min(axis=0)
+
+maxSW =insuranceDataFrameSouthWest['bmi'].max(axis=0)
+
+maxSW - minSW
 
 
+(ggplot(insuranceDataFrame) +
+aes(x='children', y='bmi', colour='region') +
+geom_point() +
+geom_smooth())
 
+(ggplot(insuranceDataFrame) +
+aes(x='children', y='bmi') +
+geom_point() +
+geom_smooth())
+
+
+########## ex 5
+
+insuranceDataFrameMale = \
+    insuranceDataFrame.loc[insuranceDataFrame['sex'] == 'male']
+
+insuranceDataFrameMaleSmoker = \
+    insuranceDataFrameMale.loc[insuranceDataFrameMale['smoker'] == 'yes']
+    
+insuranceDataFrameMaleSmokerAge30To45 = \
+    insuranceDataFrameMaleSmoker.query('age > 29 & age< 46')
+    
+
+
+# southEastInsuranceDataFrameMaleSmokerAge30To45 = \
+#     insuranceDataFrameMaleSmokerAge30To45.loc[insuranceDataFrame['region'] == 'southeast']
+    
+
+# southEastInsuranceDataFrameMaleSmokerAge30To45 = \
+#     insuranceDataFrameMaleSmokerAge30To45.loc[insuranceDataFrame['region'] == 'southwest']
+
+insuranceDataFrameMaleSmokerAge30To45.groupby('region').agg(np.median)
 
 
 
