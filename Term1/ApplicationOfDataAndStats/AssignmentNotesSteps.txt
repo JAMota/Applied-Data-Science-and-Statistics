@@ -1,0 +1,13 @@
+step 1 graph
+
+step 2 model
+
+step 3 diagnotic
+
+step 4 refine model
+
+step 5 diagnostic on the new model
+
+step 6 refine model again until we have a good balance
+
+each of the sentence explaining what and why you are each step

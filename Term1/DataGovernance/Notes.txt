@@ -1,0 +1,15 @@
+first indentificy the use case / scandal of cambridge analytics in 2014
+
+get the theory 
+
+
+GDPR notes:
+
+gdpr lays down the rules for data protection with regard to procession personal data
+
+article 2 material scope: automated, partially automated and manually processed data with the scope 
+	inside the EU
+
+article 3 territorial scope:  applies to the processing of personal data of data subjects who are in 
+	the Union by a controller or processor not established in the Union processing activities are
+	 related to services, goods, monitoring behavior as far as their behaviour is in the EU
