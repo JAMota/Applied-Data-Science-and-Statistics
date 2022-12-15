@@ -11,3 +11,11 @@ step 5 diagnostic on the new model
 step 6 refine model again until we have a good balance
 
 each of the sentence explaining what and why you are each step
+
+Regression Analysis
+1. Graph (Sentences, Explain what it tells u)
+    * Optimization
+2. Fit your model
+3. Diagnolstic (QQ plot, Residual plot)
+4. Refine the model
+5. Intrepretation
