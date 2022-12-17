@@ -19,3 +19,7 @@ Regression Analysis
 3. Diagnolstic (QQ plot, Residual plot)
 4. Refine the model
 5. Intrepretation
+
+how we have arrived to our solution, how we have justified that choice
+
+
