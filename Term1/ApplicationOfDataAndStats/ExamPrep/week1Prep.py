@@ -1438,5 +1438,3 @@ insuranceDataFrameMaleSmokerAge30To45.groupby('region').agg(np.median)
 
 #%%
 
-
-
