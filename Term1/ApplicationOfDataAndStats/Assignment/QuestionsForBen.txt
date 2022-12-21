@@ -1,0 +1,8 @@
+Questions for Ben:
+
+- to which degree should I comment my code
+- what is his prefered way of leaving out the answer? should I leave it in a print, should I just let the 
+answer be there or should I type it out in a comment or in markdown text?
+- is there a problem if I just overengineered some of questions by fully automating it?
+- how much of the though process and more importantly how much of output when doing certain tasks that, 
+does not get automatically previwed should I show from my steps (Exercise A (2.iii) for reference)
