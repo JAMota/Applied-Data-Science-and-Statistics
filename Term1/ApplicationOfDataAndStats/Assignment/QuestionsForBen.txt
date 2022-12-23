@@ -6,3 +6,7 @@ answer be there or should I type it out in a comment or in markdown text?
 - is there a problem if I just overengineered some of questions by fully automating it?
 - how much of the though process and more importantly how much of output when doing certain tasks that, 
 does not get automatically previwed should I show from my steps (Exercise A (2.iii) for reference)
+
+
+Comment to explain why you are doing something rather than what you are doing. So, do not say, "This is a for loop..."; rather "Finding the house with the highest price". Better still, replace the comment with a function called finding_lowest_price_house(...) that contains the for loop.
+You should spend a great deal of time trying to ensure that you present outputs that are nicely formatted and easy to understand. 
