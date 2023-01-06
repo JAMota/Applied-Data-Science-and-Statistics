@@ -1,0 +1,103 @@
+---
+title: "ExerciseB"
+format: pdf
+editor: visual
+---
+
+## Exercise B
+
+We start by loading the data from the csv 
+
+```{r, echo=FALSE}
+library(haven)
+library(tidyverse)
+library(dplyr)
+library(geometry) 
+library(formatR)
+library(Amelia)
+library(mice)
+library(VIM)
+library(labelled)
+library(GGally)
+library(ggplot2)
+library(ggthemes)
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+dataWeightHeight = read_csv("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/ApplicationOfDataAndStats/Assignment/datasets-20221221/weight_height.csv")
+  
+
+```
+
+## Initial exploratory data analysis.
+
+Before we build our initial graph we will check if all the collums have the right data structure
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+str(dataWeightHeight)  
+
+```
+
+As suspected, they don't as the gender collum is loaded as a numerical, which does not make sense as a male is not bigger or smaller than a female.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+dataWeightHeight$male = as.factor(dataWeightHeight$male)  
+
+# Change column name of the male column to become more explicit while we are at it
+colnames(dataWeightHeight)[colnames(dataWeightHeight) == "male"] <- "isMale"
+
+str(dataWeightHeight) 
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+ggpairs(dataWeightHeight,
+        lower = list(continuous = "smooth"),
+        diag=list(continuous = "barDiag"),
+        axisLabels= "show")
+
+```
+
+Looking at the height histogram it seems that height follows a normal distribution that is very heavily skewed to the left.
+The weight seem to follow a bimodal distribution, a distribution that is a mixture of two distinct distributions with same variance but different mean, of two normal distributions.
+Age seems to follow a slowly decreasing exponential distribution with a very high outlier in the middle.
+As for gender we can see there is slightly more female entries then male entries.
+More importantly comparing the other values with weight:
+Height follows a curvilinear increase that appears to increase almost exponentially.
+Age on the first half of the value range seems to follow a pretty linear relationship with weight till around age 30 where it has a pretty sharp increase in standard error compared to the average of the values.
+Lastly males follows the a very similar bimodal relationship to females but the males right distribution is more tilted to the right than the female one.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE}
+
+# ggplot(data = dataWeightHeight , aes(x=isMale, y=weight))+
+#   geom_point(aes(x=isMale,y=weight)
+#              
+ggplot(data = dataWeightHeight, aes(x=isMale,y=weight)) +
+  # ggplot with the desired data
+  geom_line(aes(x=isMale,y=weight))             
+```
+
+We will now start by creating a simple linear model and run some checks to find out how much explanatory power does that model have
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+model = lm(weight ~ height + age + isMale, data = dataWeightHeight)
+
+summary(model)
+
+summary(dataWeightHeight)
+
+
+```
+As we can see from the R-squared value and adjusted R-squared a simple linear model already explains approximately 89% of the variance that influence a person's weight.
+As we can see from the independent variables, height is the biggest factor when determining the weight of a data subject, although it does not have the highest factor, the range of the height values go from [53.98, 179.07] which compared to the age and gender ranges makes it obvious of how much more of impact does weight have compare to age with the  [0,88] range and gender which is binary.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+##logging the exponential age variable
+
+```
+
+The `echo: false` option disables the printing of code (only output is
+displayed).
