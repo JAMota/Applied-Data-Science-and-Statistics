@@ -6,26 +6,55 @@ editor: visual
 
 ## Exercise C
 
+```{r, echo=FALSE}
+library(haven)
+library(tidyverse)
+library(dplyr)
+library(geometry) 
+library(formatR)
+library(Amelia)
+library(mice)
+library(VIM)
+library(labelled)
+library(GGally)
+library(ggplot2)
+library(ggthemes)
+```
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+##loading all the R workspace data
+
 load("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/ApplicationOfDataAndStats/Assignment/datasets-20221221/January_2013.RData")
 load("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/ApplicationOfDataAndStats/Assignment/datasets-20221221/January_2014.RData")
 load("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/ApplicationOfDataAndStats/Assignment/datasets-20221221/January_2015.RData")
 load("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/ApplicationOfDataAndStats/Assignment/datasets-20221221/new_substations.RData")
+dataCharacteristics = read_csv("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/ApplicationOfDataAndStats/Assignment/datasets-20221221/Characteristics.csv")
 ```
 
 
+## Exercise C 1.i
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+summary(dataCharacteristics)
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+## to visualise the distributions of the percentage of industrial and commercial costumer, transformer ratings and transformer types 
+## we will plot a histogram of each of these variables
+
+ggplot(dataCharacteristics, aes(Percentage_IC)) + 
+  geom_histogram(bins = 30, fill = "blue", color = "black") +
+  ggtitle("A Histogram of the percentage of commercial and industrial costumers (from fully commercial to fully industrial") +
+  xlab("Percentage of commerical to industrial costumers") +
+  ylab("Number of occurences")
 
 ```
+
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
