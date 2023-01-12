@@ -116,22 +116,38 @@ ggplot(data = dataCharacteristics, aes(x = TRANSFORMER_TYPE, y = TOTAL_CUSTOMERS
 As we can clearly observe the type of transformer is a strong indicator of the number of costumers as pole mounted substations values from the minimum third quantile values equal or approximate to zero comparing to ground mounted substations, these already have a number of costumers superior to 0 on the first quartile and the entire interquartile range holds values only present on the top quartile of the pole mounted substations.
 
 
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+modelTransTypeNCostumer = lm(TOTAL_CUSTOMERS ~ TRANSFORMER_TYPE, data = dataCharacteristics)
+
+summary(modelTransTypeNCostumer)
+
+```
+As we can see from the summary of the linear model, a substation being pole mounted largely decreases the number of costumers in such substation.
+It is also important to notice the the multiple R-squared and adjusted R-squared values as they signify that the type of transformer mounted only explains explains ≈ 21% of the variation in the number of costumers.
+
+Now we will proceed to analyse the comparison of transformer type and transformer rating.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+ggplot(data = dataCharacteristics, aes(x = TRANSFORMER_TYPE, y = Transformer_RATING, fill = TRANSFORMER_TYPE)) + 
+  geom_boxplot() +
+  ggtitle("Box plot of transformer type and power delivered by substation") +
+  xlab("Type of transformer") +
+  ylab("Power delivered by substation")
+
 
 ```
+We can observe again that the type of transformer is a strong indicator of the power delivered by the substation, as with exception of 2 outliers the pole mounted entire range of power delivered is smaller then the first quartile of power delivered by ground mounted substations. As such it is clear how impactful are the type of transformer in the power delivered to the substations.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+modelTransTypePowerDelivery = lm(Transformer_RATING ~ TRANSFORMER_TYPE, data = dataCharacteristics)
+
+summary(modelTransTypePowerDelivery)
 
 ```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-
-
-```
-
+As we can see from the summary of the model the type of transformer has a massive impact determining the amount of energy supplied to the substation and 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
