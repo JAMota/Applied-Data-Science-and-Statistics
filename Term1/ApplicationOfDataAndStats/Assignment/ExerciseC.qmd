@@ -83,10 +83,38 @@ ggplot(dataCharacteristics, aes(TRANSFORMER_TYPE)) +
 ```
 As we can see the number of ground mounted substations is almost 3 times bigger than the pole mounted substations.
 
+
+## Exercise C 1.ii
+
+There are several ways to describe the relationships between different characteristics:
+
+ - Correlation: This measures the strength and direction of the relationship between two variables. A positive correlation means that as one variable increases, the other variable also increases. A negative correlation means that as one variable increases, the other variable decreases.
+  - Regression: This is a statistical method used to find the relationship between a dependent variable and one or more independent variables. It can be used to predict the value of the dependent variable based on the values of the independent variables.
+  - Clustering: This is a method used to group similar observations together based on their characteristics. Clustering can be used to identify patterns or relationships in the data.
+  - Dimensionality reduction: This is a technique used to reduce the number of variables in a dataset while preserving as much information as possible. This can be useful for visualizing and understanding relationships between variables.
+  - Visualization: This is a way of representing data graphically, such as with charts, plots, and maps. Visualization can help to identify patterns and relationships in the data.
+  
+We have already have resorted to visualization of the distributions on the previous question so now I will be visualising and correlation each of the variables against each other.
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+## variables to compare: transformer type, number of customers, rating, percentage of I&C customers and number of feeders
+## these are: TRANSFORMER_TYPE, TOTAL_CUSTOMERS , Transformer_RATING , Percentage_IC and LV_FEEDER_COUNT
+
+## lets start with transformer type comparison against all other variable
+## the first one will be comparing it with total customers
+
+ggplot(data = dataCharacteristics, aes(x = TRANSFORMER_TYPE, y = TOTAL_CUSTOMERS, fill = TRANSFORMER_TYPE)) + 
+  geom_boxplot() +
+  ggtitle("Box plot of transformer type and number of costumers") +
+  xlab("Type of transformer") +
+  ylab("Number of costumers")
+
+
 
 
 ```
+As we can clearly observe the type of transformer is a strong indicator of the number of costumers as pole mounted substations values from the minimum third quantile values equal or approximate to zero comparing to ground mounted substations, these already have a number of costumers superior to 0 on the first quartile and the entire interquartile range holds values only present on the top quartile of the pole mounted substations.
+
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
