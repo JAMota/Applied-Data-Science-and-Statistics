@@ -48,13 +48,26 @@ summary(dataCharacteristics)
 
 ggplot(dataCharacteristics, aes(Percentage_IC)) + 
   geom_histogram(bins = 30, fill = "blue", color = "black") +
+  ggtitle("A Histogram of the percentage of industrial costumers ") +
+  xlab("Ratio of commerical to industrial costumers") +
+  ylab("Number of occurences")
+
+```
+The histogram here the number of occurrences cluster around fully commercial costumers and fully industrial costumers where both these values have a much higher number of occurrences than any other percentage ratio of costumers.
+As the number of industrial costumers increase, the number of occurrences slowly decreases until it reach it's lowest near the 50 percentile, barely increasing again around the 80 percentile until reaching another high peak on 100% industrial costumers.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## to visualise the distributions of the percentage of industrial and commercial costumer, transformer ratings and transformer types 
+## we will plot a histogram of each of these variables
+
+ggplot(dataCharacteristics, aes(Percentage_IC)) + 
+  geom_histogram(bins = 30, fill = "blue", color = "black") +
   ggtitle("A Histogram of the percentage of commercial and industrial costumers (from fully commercial to fully industrial") +
   xlab("Percentage of commerical to industrial costumers") +
   ylab("Number of occurences")
 
 ```
-
-
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
