@@ -41,10 +41,10 @@ summary(dataCharacteristics)
 
 ```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+To visualise the distributions of the percentage of industrial and commercial costumer, transformer ratings and transformer types 
+We will plot a histogram of each of these variables
 
-## to visualise the distributions of the percentage of industrial and commercial costumer, transformer ratings and transformer types 
-## we will plot a histogram of each of these variables
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 ggplot(dataCharacteristics, aes(Percentage_IC)) + 
   geom_histogram(bins = 30, fill = "blue", color = "black") +
@@ -54,23 +54,58 @@ ggplot(dataCharacteristics, aes(Percentage_IC)) +
 
 ```
 The histogram here the number of occurrences cluster around fully commercial costumers and fully industrial costumers where both these values have a much higher number of occurrences than any other percentage ratio of costumers.
-As the number of industrial costumers increase, the number of occurrences slowly decreases until it reach it's lowest near the 50 percentile, barely increasing again around the 80 percentile until reaching another high peak on 100% industrial costumers.
+As the number of industrial costumers increase, the number of occurrences slowly decreases until it reach it's lowest near the 50 percentile, barely increasing again around the 80 percentile until reaching another high peak on 100% industrial costumers, following what it seems to be a very steep u-shaped distribution also called u-quadratic distribution.
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-## to visualise the distributions of the percentage of industrial and commercial costumer, transformer ratings and transformer types 
-## we will plot a histogram of each of these variables
-
-ggplot(dataCharacteristics, aes(Percentage_IC)) + 
+ggplot(dataCharacteristics, aes(Transformer_RATING)) + 
   geom_histogram(bins = 30, fill = "blue", color = "black") +
-  ggtitle("A Histogram of the percentage of commercial and industrial costumers (from fully commercial to fully industrial") +
-  xlab("Percentage of commerical to industrial costumers") +
+  ggtitle("A Histogram of the power delivered by the substations") +
+  xlab("Power delivered by the substation") +
   ylab("Number of occurences")
 
 ```
 
+As we can see in the histogram above the amount of power being delivered to the substations is the highest around 500 and second highest around 300.
+It is also evident that there is a large gap around amounts of power being delivered to the substation.
+We can also see that with the exception to 0 or near 0 power delivered and two other values that can possible be outliers the number of occurrences increase as we get closer to 500 power delivered by the substations, following what would resemble a normal distribution.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+ggplot(dataCharacteristics, aes(TRANSFORMER_TYPE)) + 
+  geom_bar(fill = "blue", color = "black") +
+  ggtitle("Occurences count per type of tranformer implemented in a substation") +
+  xlab("Type of transformer: Ground mounted and Pole mounted") +
+  ylab("Number of occurences")
+
+```
+As we can see the number of ground mounted substations is almost 3 times bigger than the pole mounted substations.
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 
 ```
-.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
