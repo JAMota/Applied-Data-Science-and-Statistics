@@ -231,19 +231,26 @@ As we can see from the R-squared the relationship between total customers and po
 
 ggplot(data = dataCharacteristics, aes(y = TOTAL_CUSTOMERS, x = Percentage_IC)) + 
   geom_point() +
-  #geom_smooth(method = "lm", se = FALSE) +
+  geom_smooth(method = "lm", se = FALSE) +
   ggtitle("Scatter plot of industrial costumers percentage per total costumers") +
-  xlab("Ratio of industrial workers") +
+  xlab("Ratio of industrial costumers") +
   ylab("Total costumers")
 
 ```
 
-As we can see from the scatter plot we can see too values with a very high concentration of occurrences around 
+As we can see from the scatter plot we can see too values with a very high concentration of occurrences around fully business costumers and fully industrial costumers. Around the 0% industrial costumers marks is where the largest concentration of total costumers per substation are located and we can see a clear decreasing trend on the number of total costumers as the percentage of industrial costumers increase. However there does not seem to be any other clear trend between the high concentration of occurrences between none and exclusively industrial costumers.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+modelRatioIndustrialNcostumers = lm(TOTAL_CUSTOMERS ~ Percentage_IC , data = dataCharacteristics)
+
+summary(modelRatioIndustrialNcostumers)
+
 
 ```
+
+First thing to note is that how big of a difference is the number of total costumers for a fully industrial costumer substation compared to the intersect, so a fully business substation.
+Second thing to note is our quite low R-squared values of 12,9% meaning our model capability of explaining the number of costumers of one substation through the percentage of industrial costumers is incredibly small as these two variables are not linearly correlated enough to explain a significant proportion of the variation in the dependent variable.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
