@@ -147,7 +147,62 @@ modelTransTypePowerDelivery = lm(Transformer_RATING ~ TRANSFORMER_TYPE, data = d
 summary(modelTransTypePowerDelivery)
 
 ```
-As we can see from the summary of the model the type of transformer has a massive impact determining the amount of energy supplied to the substation and 
+As we can see from the summary of the model the type of transformer has a massive impact determining the amount of energy supplied to the substation and as observed from the R-squared value the type of mounted substation can explain almost half of the variation in power supplied to the substations
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+ggplot(data = dataCharacteristics, aes(x = TRANSFORMER_TYPE, y = Percentage_IC, fill = TRANSFORMER_TYPE)) + 
+  geom_boxplot() +
+  ggtitle("Box plot of transformer type and ratio of industrial costumers") +
+  xlab("Type of transformer") +
+  ylab("Ratio of industrialised costumers")
+
+
+```
+
+In the bar graph we can see that half of the pole mounted substation have only business costumers and therefore no industrial costumers. We can also observe that pole mounted substations have in general considerably bigger ratio of business costumers has more pole mounted substations 3rd quartile is approximately 15% lower on industrial costumers ratio than the ground mounted 3rd quartile. It should also be noted that the 1st quartile of the ground mounted substations is above 0 meaning the large majority of ground mounted substations have some degree of industrial costumers.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+modelTransTypeRatioIndustrialCostumers = lm(Percentage_IC ~ TRANSFORMER_TYPE, data = dataCharacteristics)
+
+summary(modelTransTypeRatioIndustrialCostumers)
+
+
+```
+As we can see from the summary of our model having a pole mounted substation as opposed to a ground mounted substation decreases the number the expected percentage of industrial costumers by approximately 11.7%.
+As observed by the R-squared value the type of transformer is capable of 40% of the variation of ratio of industrial costumers meaning we can really in our model to some degree but we shouldn't overly rely on it.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+ggplot(data = dataCharacteristics, aes(x = TRANSFORMER_TYPE, y = LV_FEEDER_COUNT, fill = TRANSFORMER_TYPE)) + 
+  geom_boxplot() +
+  ggtitle("Box plot of transformer type and number of feeders") +
+  xlab("Type of transformer") +
+  ylab("Number of feeders coming from the substation")
+
+
+```
+
+The most apparent difference between ground mounted and pole mounted substations is how the 1st and 3rd quartile coincide on only 1 feeder for the pole mounted substations with no apparent whiskers with only 3 values marked as outliers, meaning almost all pole mounted substations have the same number of feeders. Ground mounted substations not only can have a considerably higher number of feeders, as the first quartile of the box is over the 3rd quartile of the pole mounted substations, the approximatly 75% of ground mounted  substations have at least double the amount of feeders than pole mounted substations.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+modelTransTypeFeederCount = lm(LV_FEEDER_COUNT ~ TRANSFORMER_TYPE, data = dataCharacteristics)
+
+summary(modelTransTypeFeederCount)
+
+
+```
+Immediately we can see that the type of transformer isn't the best indicator of feeder count as the R-squared value is only 0,286 meaning it will only account for 28,6% of the variation on the number of feeders. It should still be noted that a pole mounted substation estimated value is very approximate to 1.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
