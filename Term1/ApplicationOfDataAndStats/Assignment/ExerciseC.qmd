@@ -201,8 +201,66 @@ Immediately we can see that the type of transformer isn't the best indicator of 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+## these are: TRANSFORMER_TYPE, TOTAL_CUSTOMERS , Transformer_RATING , Percentage_IC and LV_FEEDER_COUNT
+
+ggplot(data = dataCharacteristics, aes(y = TOTAL_CUSTOMERS, x = Transformer_RATING)) + 
+  geom_point() +
+  #geom_smooth(method = "lm", se = FALSE) +
+  ggtitle("Scatter plot of power provided by substation per total costumers") +
+  xlab("Power provided per substation") +
+  ylab("Total costumers")
 
 ```
+
+The relationship between power provided and total costumers seem to follow a normal distribution without noticeable skewness.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+modelPowerNcostumers = lm(Transformer_RATING ~ TOTAL_CUSTOMERS, data = dataCharacteristics)
+
+summary(modelPowerNcostumers)
+
+
+```
+As we can see from the R-squared the relationship between total customers and power provided per substation being only approximately 5% means these two variables can barely explain the variation between each other. This could mean that the independent variable in the model is not relevant, or that there are other factors that are not included in the model that are affecting the dependent variable.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## these are: TRANSFORMER_TYPE, TOTAL_CUSTOMERS , Transformer_RATING , Percentage_IC and LV_FEEDER_COUNT
+
+ggplot(data = dataCharacteristics, aes(y = TOTAL_CUSTOMERS, x = Percentage_IC)) + 
+  geom_point() +
+  #geom_smooth(method = "lm", se = FALSE) +
+  ggtitle("Scatter plot of industrial costumers percentage per total costumers") +
+  xlab("Ratio of industrial workers") +
+  ylab("Total costumers")
+
+```
+
+As we can see from the scatter plot we can see too values with a very high concentration of occurrences around 
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
