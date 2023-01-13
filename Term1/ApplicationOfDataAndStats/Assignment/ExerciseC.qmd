@@ -254,6 +254,44 @@ Second thing to note is our quite low R-squared values of 12,9% meaning our mode
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+## these are: TRANSFORMER_TYPE, TOTAL_CUSTOMERS , Transformer_RATING , Percentage_IC and LV_FEEDER_COUNT
+
+ggplot(data = dataCharacteristics, aes(y = TOTAL_CUSTOMERS, x = LV_FEEDER_COUNT)) + 
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  ggtitle("Scatter plot of number of feeders per total costumers") +
+  xlab("Feeder coming to the substation") +
+  ylab("Total costumers")
+
+```
+
+As we can clearly see as the number of feeders increase so does the number of costumers, following a very sharp increase in the first 5 feeders and a gradual increase in the remaining number of feeders.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+modelNFeederslNcostumers = lm(TOTAL_CUSTOMERS ~ LV_FEEDER_COUNT , data = dataCharacteristics)
+
+summary(modelNFeederslNcostumers)
+
+
+```
+While just one singular linear model will not be as precise for the first 5 feeders, this model alone can explain more than half of the variation of the number of costumers of each substation.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## these are: TRANSFORMER_TYPE, TOTAL_CUSTOMERS , Transformer_RATING , Percentage_IC and LV_FEEDER_COUNT
+
+ggplot(data = dataCharacteristics, aes(y = TOTAL_CUSTOMERS, x = LV_FEEDER_COUNT)) + 
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  ggtitle("Scatter plot of number of feeders per total costumers") +
+  xlab("Feeder coming to the substation") +
+  ylab("Total costumers")
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
 
 ```
 
