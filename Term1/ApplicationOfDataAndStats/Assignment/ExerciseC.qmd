@@ -281,14 +281,52 @@ While just one singular linear model will not be as precise for the first 5 feed
 
 ## these are: TRANSFORMER_TYPE, TOTAL_CUSTOMERS , Transformer_RATING , Percentage_IC and LV_FEEDER_COUNT
 
-ggplot(data = dataCharacteristics, aes(y = TOTAL_CUSTOMERS, x = LV_FEEDER_COUNT)) + 
+ggplot(data = dataCharacteristics, aes(x = Transformer_RATING, y = Percentage_IC)) + 
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
-  ggtitle("Scatter plot of number of feeders per total costumers") +
-  xlab("Feeder coming to the substation") +
-  ylab("Total costumers")
+  ggtitle("Scatter plot of power feed to substations per ratio of of indutrial costumers") +
+  xlab("Power provided to the station") +
+  ylab("Ratio of industrial costumers")
 
 ```
+
+From this graph we can see that substation with a bigger percentage of business costumers are more likely to provide less power than substations with a bigger industrial costumers base.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+modelNFeederslNcostumers = lm(Percentage_IC ~ Transformer_RATING , data = dataCharacteristics)
+
+summary(modelNFeederslNcostumers)
+
+
+```
+As we can see from the model, the power provided to the substations does explain approximately 11% of the changes in percentage of industrial costumer per substation which is a extremely low level of explanatory power. Therefore we should not really on the power provided to substation to predict the ratio industrial costumers.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## these are: TRANSFORMER_TYPE, TOTAL_CUSTOMERS , Transformer_RATING , Percentage_IC and LV_FEEDER_COUNT
+
+ggplot(data = dataCharacteristics, aes(x = LV_FEEDER_COUNT, y = Percentage_IC)) + 
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  ggtitle("Scatter plot ofnumber of feeders per substations per ratio of of indutrial costumers") +
+  xlab("Number of feeders per substation") +
+  ylab("Ratio of industrial costumers")
+
+```
+
+From the plot we can see that there is a tendency for the ratio of industrials costumers to decrease as the number of feeder increases per substation. It appears that the jump from when there are no feeders to the fist feeder might be an actual increase on the ratio industrial costumers but it is not going to be properly represented with a singular linear model. 
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+modelNFeederslNcostumers = lm(Percentage_IC ~ LV_FEEDER_COUNT , data = dataCharacteristics)
+
+summary(modelNFeederslNcostumers)
+
+
+```
+As we can see form the minuscule Multiple R-squared value this model simply is not an adequate and cannot bring any meaningful correlation between these two variables.
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
