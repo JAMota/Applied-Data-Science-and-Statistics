@@ -332,34 +332,50 @@ As we can see form the minuscule Multiple R-squared value this model simply is n
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ## as data from 0:00 to 7:50
 
-tenMinuteMaximum = January_2013
+tenMinuteMaximum = January_2013[,-c(1:2)]
 
 ## first we need to the maximum power output of the day i
 
 maxVal = 0
+January_2013$max = 0
+
 
 for (i in 1:nrow(tenMinuteMaximum)) {
   
-  maxVal = tenMinuteMaximum$`00:00`[i]
+
   
   ##  the apply() function is used with the MARGIN parameter set to 1, which applies the function to all rows of the dataframe. Inside the function, we are checking if the row name is not equal to substation as the substation number is also bigger than the power measured in the interval of 10 mins
   
-  maxVal <- apply(df, 1, function(x) {if(!(rownames(df) %in% c("2","3"))) max(x)})
+maxVal = apply(tenMinuteMaximum[i,], 1, max)
 
-  
-  
+#tenMinuteMaximum
+
+January_2013$max[i] = maxVal  
+
+
 }
 
-## afterwards we devide every 10 minute interval by that maximum value
+January_2013[,3:146] = January_2013[,3:146]/January_2013$max
+  
 
-isBigger = apply(tenMinuteMaximum[1,], 1, max)
+January_2013
 
 ```
+
+## Exercise C 2.ii
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+## group by substation and get the mean of each time interval 0:00, 0:10, 0:20 etc.
+
+January_2013Grouped  = January_2013 %>%  group_by(Substation) %>% summarise( )
+  
 
 ```
+
+
+## Exercise C 2.iii
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
