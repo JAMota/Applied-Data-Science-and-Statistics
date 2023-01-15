@@ -97,6 +97,15 @@ As we can see from the independent variables, height is the biggest factor when 
 
 ##logging the exponential age variable
 
+dataWeightHeight$ageLogged = log(dataWeightHeight$age)
+
+
+model = lm(weight ~ height + ageLogged + isMale, data = dataWeightHeight)
+
+summary(model)
+
+summary(dataWeightHeight)
+
 ```
 
 The `echo: false` option disables the printing of code (only output is
