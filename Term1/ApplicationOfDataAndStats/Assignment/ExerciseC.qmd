@@ -369,22 +369,71 @@ January_2013
 
 ## group by substation and get the mean of each time interval 0:00, 0:10, 0:20 etc.
 
-January_2013Grouped  = January_2013 %>%  group_by(Substation) %>% summarise( )
+January_2013Grouped  = January_2013 %>%  group_by(Substation) %>% summarise_all(mean)
+
+January_2013Grouped = January_2013Grouped[,-c(2)]
   
+January_2013Grouped
 
 ```
-
 
 ## Exercise C 2.iii
 
+Manhattan distance (also known as L1 distance) is a measure of the absolute differences between the coordinates of two points in a multi-dimensional space.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+January_2013Grouped = January_2013Grouped[,-c(1)]
+
+distance_matrix <- dist(January_2013Grouped, method = "manhattan")
+
+cluster = hclust(distance_matrix)
+
+#plot(cluster, xlab="", sub="")
+
+plot(cluster, labels=FALSE, hang = -1)
+
+```
+
+
+
+
+
+## Exercise C 2.iv    
+
+Using the visualization method to decide the number of clusters we can observe from the dendrogram the natural breaks, where it branches into multiple clusters and we will be deciding if they should be a new cluster by comparing the height difference of the breaks.
+The initial data set is first divided into 2 with one of the subdivision containing most of the occurrences.
+Comparing the height between the second division of leafs and any possible further down divisions we can see that there is still a significant height difference. However if we want to make any further divisions we can see that
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# Compute WSS for different number of clusters
+wss <- sapply(2:15, function(k) {
+  cutree(cluster, k)
+  sum(split(January_2013Grouped, cutree(cluster, k))[[1]])
+})
+
+# Plot the WSS against the number of clusters
+plot(2:15, wss, type = "b", xlab = "Number of clusters", ylab = "Within groups sum of squares")
+
+
+#calculate gap statistic for each number of clusters (up to 10 clusters)
+gap_stat <- clusGap(df, FUN = hcut, nstart = 25, K.max = 10, B = 50)
+
+#produce plot of clusters vs. gap statistic
+fviz_gap_stat(gap_stat)
 
 ```
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+#calculate gap statistic for each number of clusters (up to 10 clusters)
+gap_stat <- clusGap(df, FUN = hcut, nstart = 25, K.max = 10, B = 50)
+
+#produce plot of clusters vs. gap statistic
+fviz_gap_stat(gap_stat)
 
 ```
