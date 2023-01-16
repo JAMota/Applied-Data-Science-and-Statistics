@@ -19,12 +19,13 @@ library(ggthemes)
 
 library(data.table)
 
-#install.packages("chron")
-
-library(chron)
+#install.packages("chron") have another solution now
+#library(chron)
 
 library(factoextra)
 
+#install.packages("compareGroups")
+library(compareGroups)
 ```
 
 
@@ -588,28 +589,62 @@ ggplot() +
 table(groups)
 
 ```
+There are several ways to compare the characteristics data for each of the clusters in R.
+Firstly we will be comparing characteristics through the visualization of the graph and table of clusters.
+
 As we can see from the number of substations in each cluster, cluster 4 has the highest number of substations. This means that these 349 substations are all relatively similar. We can also infer from the previously displayed dendrogram as that the height on any other potential new leaf would be significantly smaller than the already cut cluster leaves. 
 
-As the cluster 4 is the most numerous by far it can be considered the baseline for daily power demand of the "common" substation seeing as it represents approximately 65% of all substations. 
+As the cluster 4 is the most numerous by far it can be considered the baseline for daily power demand of the "common" substation seeing as it represents approximately 65% of all substations. This cluster is also obviously the one that runs with the lowest average demand during the day, running significantly lower in power demand than the other clusters. A possible explanation for this lower level of power demand and high level of substations is that this cluster could be representing a majority of business serving substations, that usually have less power in comparison the industries. A high level of business costumers would also help explaining the significantly less power usage during the night as business are less likely to have nocturnal working hours than industries. Therefore I belive we should give cluster 4 the name of baseline_business.
 
-There are several ways to compare the characteristics data for each of the clusters in R.
+Next we analyse cluster 2 visualization has the pair of cluster 4. From the graph we can see that cluster 2 is the top or close to the top on the average demand during the night time, having a earlier morning increase than the the other clusters
+
 We can use the tapply() function to calculate summary statistics (e.g mean, median, standard deviation) for each cluster.
+Summary statistics such as mean, median, and standard deviation are important to compare each cluster because they provide a quantitative measure of the central tendency and spread of the characteristic variable within each cluster.
+The mean is a measure of central tendency that represents the average value of the characteristic variable within a cluster. It is useful to compare the mean value of the characteristic variable across different clusters to see if there are any significant differences.
+The median is another measure of central tendency that represents the middle value of the characteristic variable within a cluster when the data is sorted. It is useful to compare the median value of the characteristic variable across different clusters to see if there are any significant differences.
+The standard deviation is a measure of spread that represents the amount of variation or dispersion of the characteristic variable within a cluster. It is useful to compare the standard deviation of the characteristic variable across different clusters to see if there are any significant differences.
+By comparing these statistics across clusters, we can gain insights into the underlying structure of the data and identify patterns or trends that might not be immediately apparent from visual inspection.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-## we will have to use a alternative version of the first grouping made on the clusters so we can group by cluster again
+## we will know get the summary for each cluster
+Cluster1_summary <- January_2013GroupedClusterAverageVertical %>%
+  summarize(mean = mean(Cluster1),
+            median = median(Cluster1),
+            sd = sd(Cluster1))
 
-January_2013Analyses = January_2013 %>%  group_by(Substation) %>% summarise_all(mean)
-January_2013Analyses = cbind(January_2013Analyses, cluster = groups)
+Cluster2_summary <- January_2013GroupedClusterAverageVertical %>%
+  summarize(mean = mean(Cluster2),
+            median = median(Cluster2),
+            sd = sd(Cluster2))
 
-#with this we now have the corresponding cluster, the date and the substation
+Cluster3_summary <- January_2013GroupedClusterAverageVertical %>%
+  summarize(mean = mean(Cluster3),
+            median = median(Cluster3),
+            sd = sd(Cluster3))
 
-# cluster_summary <- January_2013GroupedClusterAverageVertical %>%
-#   group_by(cluster) %>%
-#   summarize(mean = mean(characteristic),
-#             median = median(characteristic),
-#             sd = sd(characteristic))
+Cluster4_summary <- January_2013GroupedClusterAverageVertical %>%
+  summarize(mean = mean(Cluster4),
+            median = median(Cluster4),
+            sd = sd(Cluster4))
 
+
+Cluster1_summary
+Cluster2_summary
+Cluster3_summary
+Cluster4_summary
+
+
+```
+
+As we can observe by the summary statistics 
+
+
+
+Here we actually change the name of all the clusteres to the suggested ones.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+colnames(January_2013GroupedClusterAverageVertical)[4] = "baseline_business"
 
 ```
 
