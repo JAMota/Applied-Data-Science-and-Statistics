@@ -390,7 +390,8 @@ Manhattan distance (also known as L1 distance) is a measure of the absolute diff
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-January_2013Grouped = January_2013Grouped[,-c(1)]
+## TODO REMOVE THE LAST ONE 
+January_2013Grouped = January_2013Grouped[,-c(146)]
 
 distance_matrix <- dist(January_2013Grouped, method = "manhattan")
 
@@ -489,6 +490,12 @@ January_2013GroupedClusterAverageVertical = January_2013GroupedClusterAverageVer
 
 ```
 
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, output=FALSE}
+
+January_2013GroupedClusterAverageVertical = January_2013GroupedClusterAverageVertical[-c(1),]
+
+``` 
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE}
 # # hour & 10 minute intervals ## https://datacornering.com/how-to-generate-time-intervals-or-date-sequence-in-r/ ## depois não dá para fazer grafico
 # hm = merge(0:23, seq(0, 50, by = 10))
@@ -505,7 +512,7 @@ January_2013GroupedClusterAverageVertical = January_2013GroupedClusterAverageVer
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-time_interval <- seq(from = as.numeric(as.POSIXlt("0000", format = "%H%M")), to = as.numeric(as.POSIXlt("2350", format = "%H%M")), by = 10*60)
+time_interval <- seq(from = as.numeric(as.POSIXlt("0000", format = "%H%M")), to = as.numeric(as.POSIXlt("2340", format = "%H%M")), by = 10*60)
 time_interval <- format(as.POSIXlt(time_interval, origin="1970-01-01"), format = "%H:%M")
 
 January_2013GroupedClusterAverageVertical$timeIntervals = time_interval
@@ -520,7 +527,11 @@ January_2013GroupedClusterAverageVertical$Cluster3 = as.double(January_2013Group
 January_2013GroupedClusterAverageVertical$Cluster4 = as.double(January_2013GroupedClusterAverageVertical$Cluster4)
 
 ```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, output=FALSE}
 
+#January_2013GroupedClusterAverageVertical = January_2013GroupedClusterAverageVertical[-c(1),]
+
+``` 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -592,9 +603,11 @@ table(groups)
 There are several ways to compare the characteristics data for each of the clusters in R.
 Firstly we will be comparing characteristics through the visualization of the graph and table of clusters.
 
-As we can see from the number of substations in each cluster, cluster 4 has the highest number of substations. This means that these 349 substations are all relatively similar. We can also infer from the previously displayed dendrogram as that the height on any other potential new leaf would be significantly smaller than the already cut cluster leaves. 
+As we can see from the tables all of the cluster have a very similarly distributed number of values, with cluster 2 and 3 having slightly less than cluster 1 and 4.
 
-As the cluster 4 is the most numerous by far it can be considered the baseline for daily power demand of the "common" substation seeing as it represents approximately 65% of all substations. This cluster is also obviously the one that runs with the lowest average demand during the day, running significantly lower in power demand than the other clusters. A possible explanation for this lower level of power demand and high level of substations is that this cluster could be representing a majority of business serving substations, that usually have less power in comparison the industries. A high level of business costumers would also help explaining the significantly less power usage during the night as business are less likely to have nocturnal working hours than industries. Therefore I belive we should give cluster 4 the name of baseline_business.
+As the cluster 3 is also obviously the one that runs with the lowest average demand during the day, running significantly lower in power demand than the other clusters. A possible explanation for this lower level of power demand and high level of substations is that this cluster could be representing a majority of business serving substations, that usually have less power in comparison the industries. A high level of business costumers would also help explaining the significantly less power usage during the night as business are less likely to have nocturnal working hours than industries. Another possible explanation would be that this cluster has a large amount of pole mounted substations as these also didn't have a large percentage of industrial costumers and the power delivered was significantly lower than its ground counterpart. Therefore I believe we should give cluster 3 the name of poleMounted_business.
+
+Cluster 1 seems to be the one to have on average the approximately power demand as it has a very significantly higher power demand after midnight, that although its lead is reduced during the early morning hours it is maintained until approximately 16:30. After its decrease in demand around 18:00 it maintains demand power levels similar to cluster 2 and 4. Such high power demand could be attributed to high power demand, highly industrialised substations, as it is more likely for an industry to have high power demand outside of working hours, due to the constant production and manufacturing of some industries compared to businesses. It is also possible that the majority of these substations are ground mounted has these were the ones to register significantly higher power levels. Therefore I suggest the name of groundMounted_industries
 
 Next we analyse cluster 2 visualization has the pair of cluster 4. From the graph we can see that cluster 2 is the top or close to the top on the average demand during the night time, having a earlier morning increase than the the other clusters
 
@@ -641,11 +654,11 @@ As we can observe by the summary statistics
 
 
 
-Here we actually change the name of all the clusteres to the suggested ones.
+Here we actually change the name of all the clusters to the suggested ones.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-colnames(January_2013GroupedClusterAverageVertical)[4] = "baseline_business"
-
+colnames(January_2013GroupedClusterAverageVertical)[3] = "poleMounted_business"  
+colnames(January_2013GroupedClusterAverageVertical)[1] = "groundMounted_industries"
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
