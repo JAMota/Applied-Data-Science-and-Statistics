@@ -21,6 +21,19 @@ library(labelled)
 library(GGally)
 library(ggplot2)
 library(ggthemes)
+
+#library(caret)
+library(splines)
+#install.packages("caTools")
+library(caTools)
+library(lme4)
+
+install.packages("MASS")
+library(Metrics)
+library(MASS)
+
+
+
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
@@ -69,7 +82,7 @@ Height follows a curvilinear increase that appears to increase almost exponentia
 Age on the first half of the value range seems to follow a pretty linear relationship with weight till around age 30 where it has a pretty sharp increase in standard error compared to the average of the values.
 Furthermore, males follows the a very similar bimodal relationship to females but the males right distribution is more tilted to the right than the female one.
 Comparing the independent variables with weight, height seems to have a exponential relationship with weight as the increase was initially minimal but it gradually increases. 
-Lastly, age after 40 years of age seems to a very big variance on its relationship with weight.
+Lastly, age after 30 years of age seems to a very big variance on its relationship with weight making is a much less reliable weight predictor.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE}
 
@@ -79,6 +92,49 @@ Lastly, age after 40 years of age seems to a very big variance on its relationsh
 ggplot(data = dataWeightHeight, aes(x=isMale,y=weight)) +
   # ggplot with the desired data
   geom_line(aes(x=isMale,y=weight))             
+```
+
+##Data separation prior to modeling
+
+Before starting to compute our models we will first separate the data into training and testing data sets, using the caTools library
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+#make this example reproducible
+set.seed(1)
+
+#use 80% of dataset as training set and 20% as test set
+sample <-  sample.split(dataWeightHeight$weight, SplitRatio = 0.8) 
+##note that the column selected above can be any column.
+train  <- dataWeightHeight[sample, ]
+test   <- dataWeightHeight[!sample, ]
+          
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE}
+
+# Fit the model
+model1 <- lm(weight ~ height + age + isMale, data = train)
+# Make predictions
+predictions <- model1 %>% predict(test)
+# Model performance
+model1_performance <- data.frame(
+RMSE = RMSE(predictions, test$weight),
+R2 = R2(predictions, test$weight)
+)
+
+rmse(train$weight, test$weight)
+
+summary(model1)
+model1_performance
+
+
+# plot the predictions
+ggplot(train.data, aes(lstat, medv) ) +
+geom_point() +
+stat_smooth(method = lm, formula = y ~ x)
+          
 ```
 
 We will now start by creating a simple linear model and run some checks to find out how much explanatory power does that model have
