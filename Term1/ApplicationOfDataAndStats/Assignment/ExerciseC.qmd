@@ -457,6 +457,9 @@ groups <- cutree(cluster, k=4)
 #find number of observations in each cluster
 table(groups)
 
+table2013 = table(groups)
+
+
 ##now I will have to get an average of the entire cluster to plot
 
 January_2013GroupedCluster = cbind(January_2013Grouped, cluster = groups)
@@ -784,6 +787,9 @@ groups <- cutree(cluster, k=4)
 #find number of observations in each cluster
 table(groups)
 
+table2014 = table(groups)
+
+
 ##now I will have to get an average of the entire cluster to plot
 
 January_2014GroupedCluster = cbind(January_2014Grouped, cluster = groups)
@@ -912,6 +918,9 @@ groups <- cutree(cluster, k=4)
 #find number of observations in each cluster
 table(groups)
 
+table2015 = table(groups)
+
+
 ##now I will have to get an average of the entire cluster to plot
 
 January_2015GroupedCluster = cbind(January_2015Grouped, cluster = groups)
@@ -973,6 +982,21 @@ January_2015GroupedClusterAverageVertical$Cluster4 = as.double(January_2015Group
 
 
 Now that we have the 3 years lets start by doing a visual analyses and comparing the 3 graphs of the clusters
+
+## Report for this question
+
+This report presents the results of an analysis of power demand clusters by year. The goal of this analysis was to explore whether there were any differences in the membership of clusters between years. Three different clustering methods were used to group the substations into clusters based on their power demand patterns, and the results of these analyses were visualized using graphs.
+
+For the initial analysis I have wrangled the data of each year to obtain the average power demand of each 10 minute time interval for the entire day using the maximum value of power for each substation.
+
+I have use the following clustering methodology for each year:
+
+  Clustering Method 1: Utilizing the Manhattan distance function, I have created a distance matrix of the data previously wrangled.
+  Clustering Method 2: Furthermore I have built an hierarchy with my matrix, allowing me cluster my data points based on their similarity with each other and analysing them as such.
+  Clustering Method 3: I have created an dendrogram to visually identify how many significantly distinct groups where in the data and therefore how many should we separate them into, cutting this groups from the initial leaf and creating them as clusters.
+  Clustering Method 4: I have confirmed my initial cluster choice by utilising a second already cut dendrogram to illustrate how my choice of number of cluster would not leave any significant height differences for any future branches, guaranteeing this way that much choice would be optimal compared to any other number of clusters.
+  Clustering Method 5: With the data already distributed through my 4 cluster I did some extra wranglying on the data to be able to plot each cluster power demand 
+
 
 
 Here we have the graph for 2013
@@ -1041,17 +1065,27 @@ ggplot() +
 
 ```
 
+Immediately form the graphs we can see that the main patterns of each cluster has been maintained over the years analyses, meaning the substation costumers didn't change significantly enough to cause substations to change in the clusters branching. With significant enough changes it is possible for substations to change their characteristics enough as to become more similar to substations of another cluster.
 
+
+This can also be observed by the table of number of substations per cluster that the numbers has been kept constant, further confirming that the changes over these 3 years did not affected significantly the power demanded of most of the substations.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-
+table2013
+table2014
+table2015
 
 ```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+Results:
+
+    Graph 1: [insert a brief description of what the graph represents and the key findings from the analysis]
+    Graph 2: [insert a brief description of what the graph represents and the key findings from the analysis]
+    Graph 3: [insert a brief description of what the graph represents and the key findings from the analysis]
 
 
-```
+
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
