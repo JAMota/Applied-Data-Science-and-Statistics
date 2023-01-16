@@ -484,35 +484,26 @@ January_2013GroupedClusterAverageVertical = January_2013GroupedClusterAverageVer
 
 ## we will also be dropping the last row as we no longer need the max values and these will interfere with the plotting as well
 
-#January_2013GroupedClusterAverageVertical = tail(January_2013GroupedClusterAverageVertical, -1)
+January_2013GroupedClusterAverageVertical = January_2013GroupedClusterAverageVertical[-nrow(January_2013GroupedClusterAverageVertical), ]
 
 ```
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-
-
-## I will have to add the time intervals as a column
-
-January_2013GroupedClusterAverageVertical$timeIntervals = "0:00"
-
-# hour & 15 minute intervals
+# hour & 10 minute intervals
 hm = merge(0:23, seq(0, 50, by = 10))
-
+ 
 chron(time = paste(hm$x, ':', hm$y, ':', 0))
 
-## I created this data frame with the time intervals because it is easier for me mentaly to then add them to the dataframe for plotting 
-interval_15min <- data.frame('INTERVAL' = chron(time = paste(hm$x, ':', hm$y, ':', 0)))
-interval_15min <- data.frame('INTERVAL' = interval_15min[order(interval_15min$INTERVAL), ])
+interval_10min <- data.frame('INTERVAL' = chron(time = paste(hm$x, ':', hm$y, ':', 0)))
+interval_10min <- data.frame('INTERVAL' = interval_10min[order(interval_10min$INTERVAL), ])
+
+## I will have to add the time intervals as a column
+January_2013GroupedClusterAverageVertical$timeIntervals <- data.frame('INTERVAL' = chron(time = paste(hm$x, ':', hm$y, ':', 0)))
+January_2013GroupedClusterAverageVertical$timeIntervals <- data.frame('INTERVAL' = interval_10min[order(interval_10min$INTERVAL), ])
 
 
-
-for (i in 1:nrow(January_2013GroupedClusterAverageVertical)) {
-  
-  January_2013GroupedClusterAverageVertical$timeIntervals[i] = 1
-  
-}
 
 #ggplot(data = January_2013GroupedClusterAverageVertical, aes(x = id , y = cluster1) +
 #         geom_line()
