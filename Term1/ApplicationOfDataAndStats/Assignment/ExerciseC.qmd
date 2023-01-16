@@ -488,40 +488,57 @@ January_2013GroupedClusterAverageVertical = January_2013GroupedClusterAverageVer
 
 ```
 
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE}
+# # hour & 10 minute intervals ## https://datacornering.com/how-to-generate-time-intervals-or-date-sequence-in-r/ ## depois não dá para fazer grafico
+# hm = merge(0:23, seq(0, 50, by = 10))
+#  
+# chron(time = paste(hm$x, ':', hm$y, ':', 0))
+# 
+# interval_10min <- data.frame('INTERVAL' = chron(time = paste(hm$x, ':', hm$y, ':', 0)))
+# interval_10min <- data.frame('INTERVAL' = interval_10min[order(interval_10min$INTERVAL), ])
+# 
+# ## I will have to add the time intervals as a column
+# January_2013GroupedClusterAverageVertical$timeIntervals <- data.frame('INTERVAL' = chron(time = paste(hm$x, ':', hm$y, ':', 0)))
+# January_2013GroupedClusterAverageVertical$timeIntervals <- data.frame('INTERVAL' = interval_10min[order(interval_10min$INTERVAL), ])
+```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-# hour & 10 minute intervals
-hm = merge(0:23, seq(0, 50, by = 10))
- 
-chron(time = paste(hm$x, ':', hm$y, ':', 0))
+time_interval <- seq(from = as.numeric(as.POSIXlt("0000", format = "%H%M")), to = as.numeric(as.POSIXlt("2350", format = "%H%M")), by = 10*60)
+time_interval <- format(as.POSIXlt(time_interval, origin="1970-01-01"), format = "%H:%M")
 
-interval_10min <- data.frame('INTERVAL' = chron(time = paste(hm$x, ':', hm$y, ':', 0)))
-interval_10min <- data.frame('INTERVAL' = interval_10min[order(interval_10min$INTERVAL), ])
+January_2013GroupedClusterAverageVertical$timeIntervals = time_interval
 
-## I will have to add the time intervals as a column
-January_2013GroupedClusterAverageVertical$timeIntervals <- data.frame('INTERVAL' = chron(time = paste(hm$x, ':', hm$y, ':', 0)))
-January_2013GroupedClusterAverageVertical$timeIntervals <- data.frame('INTERVAL' = interval_10min[order(interval_10min$INTERVAL), ])
+str(January_2013GroupedClusterAverageVertical)
 
+## it seems we will have to convert the values of the clusters to float
 
-
-#ggplot(data = January_2013GroupedClusterAverageVertical, aes(x = id , y = cluster1) +
-#         geom_line()
-#       )
-
-# ggplot(data = dataCharacteristics, aes(x = LV_FEEDER_COUNT, y = Percentage_IC)) + 
-#   geom_point() +
-#   geom_smooth(method = "lm", se = FALSE) +
-#   ggtitle("Scatter plot ofnumber of feeders per substations per ratio of of indutrial costumers") +
-#   xlab("Number of feeders per substation") +
-#   ylab("Ratio of industrial costumers")
-
-January_2013GroupedClusterAverageVertical
+January_2013GroupedClusterAverageVertical$Cluster1 = as.double(January_2013GroupedClusterAverageVertical$Cluster1)
+January_2013GroupedClusterAverageVertical$Cluster2 = as.double(January_2013GroupedClusterAverageVertical$Cluster2)
+January_2013GroupedClusterAverageVertical$Cluster3 = as.double(January_2013GroupedClusterAverageVertical$Cluster3)
+January_2013GroupedClusterAverageVertical$Cluster4 = as.double(January_2013GroupedClusterAverageVertical$Cluster4)
 
 ```
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+ggplot() +
+  geom_point(data = January_2013GroupedClusterAverageVertical, aes(x = timeIntervals, y = Cluster1, color = "Cluster 1")) +
+  geom_point(data = January_2013GroupedClusterAverageVertical, aes(x = timeIntervals, y = Cluster2, color = "Cluster 2")) +
+  geom_point(data = January_2013GroupedClusterAverageVertical, aes(x = timeIntervals, y = Cluster3, color = "Cluster 3")) +
+  geom_point(data = January_2013GroupedClusterAverageVertical, aes(x = timeIntervals, y = Cluster4, color = "Cluster 4")) +
+
+  ggtitle("Scatter plot of the Average demand of each cluster") +
+  xlab("Time of the day") +
+  ylab("Average demand profiles") + 
+  theme(axis.text.x = element_text(angle = 90)) + 
+  scale_x_discrete(breaks = c("00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00",
+                              "12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00",
+                              "00:30","01:30","02:30","03:30","04:30","05:30","06:30","07:30","08:30","09:30","10:30","11:30",
+                              "12:30","13:30","14:30","15:30","16:30","17:30","18:30","19:30","20:30","21:30","22:30","23:30"))
+
+
 
 
 ```
