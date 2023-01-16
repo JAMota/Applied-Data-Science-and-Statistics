@@ -26,6 +26,10 @@ library(factoextra)
 
 #install.packages("compareGroups")
 library(compareGroups)
+
+#install.packages("lubridate")
+#library(lubridate)
+#library(timeDate)
 ```
 
 
@@ -399,7 +403,7 @@ cluster = hclust(distance_matrix)
 
 #plot(cluster, xlab="", sub="")
 
-plot(cluster, labels=FALSE, hang = -1)
+plot(cluster, main="Dendogram 2013", labels=FALSE, hang = -1)
 
 ```
 
@@ -576,6 +580,9 @@ for (i in 1:nrow(January_2013Weekdays)) {
 
 ## then I will group by weekday and substation? TODO figure out
 
+
+January_2013WeekdaysGrouped = January_2013Weekdays %>%  group_by(isWeekDay, Substation) %>% summarise_all(mean)
+
 ```
 
 ## Exercise C 2.vii
@@ -681,10 +688,21 @@ load("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Ter
 
 ## Now we got to check which days are week days and which days are weekends
 
-## making the opposite to get if its is a weekday or not
-new_substations$isWeekDay = !is.weekend(new_substations$Date)
+## making the opposite to get if its is a weekday or not, it does not work with markdown, since it does not render even though it compiles
+#new_substations$isWeekDay = !is.weekend(new_substations$Date)
 
-new_substations = new_substations %>%  group_by(Substation) %>% summarise_all(mean)
+new_substations$isWeekDay = 1
+new_substations$Date = as.Date(new_substations$Date , format = "%Y-%m-%d")
+for (i in 1:nrow(new_substations)) {
+  if( weekdays(new_substations$Date[i]) == "Saturday"){
+    new_substations$isWeekDay[i] = 0
+  }
+    if( weekdays(new_substations$Date[i]) == "Sunday"){
+    new_substations$isWeekDay[i] = 0
+  }
+}
+
+new_substationsGroupedWeek = new_substations %>%  group_by(isWeekDay, Substation) %>% summarise_all(mean)
 
 ```
 
@@ -694,3 +712,348 @@ new_substations = new_substations %>%  group_by(Substation) %>% summarise_all(me
 
 ```
 
+## Exercise C 4 
+
+Here we will cluster years 2013 and 2014 to be able to compare how much the number of substations in each cluster change using the function table(groups)
+
+
+## Starting with 2014
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), output=FALSE}
+
+## as data from 0:00 to 7:50
+
+tenMinuteMaximum = January_2014[,-c(1:2)]
+
+## first we need to the maximum power output of the day i
+
+maxVal = 0
+January_2014$max = 0
+
+
+for (i in 1:nrow(tenMinuteMaximum)) {
+  
+
+  
+  ##  the apply() function is used with the MARGIN parameter set to 1, which applies the function to all rows of the dataframe. Inside the function, we are checking if the row name is not equal to substation as the substation number is also bigger than the power measured in the interval of 10 mins
+  
+maxVal = apply(tenMinuteMaximum[i,], 1, max)
+
+#tenMinuteMaximum
+
+January_2014$max[i] = maxVal  
+
+
+}
+
+January_2014[,3:146] = January_2014[,3:146]/January_2014$max
+
+
+January_2014Grouped  = January_2014 %>%  group_by(Substation) %>% summarise_all(mean)
+
+January_2014Grouped = January_2014Grouped[,-c(2)]
+
+
+##REMOVE THE LAST ONE 
+January_2014Grouped = January_2014Grouped[,-c(146)]
+
+distance_matrix <- dist(January_2014Grouped, method = "manhattan")
+
+cluster = hclust(distance_matrix)
+
+#plot(cluster, xlab="", sub="")
+
+plot(cluster, main="Dendrogram 2014", labels=FALSE, hang = -1)
+
+```
+
+As we can see the dendrogram is pretty similar to the previous year
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), output=FALSE}
+
+## here we can see the the dendogram with the proper clusters already cut has mentioned above, using the factoextra library
+fviz_dend(cluster, k = 4, rect = TRUE, show_labels = TRUE)
+
+
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+#cut the dendrogram into 4 clusters
+groups <- cutree(cluster, k=4)
+
+#find number of observations in each cluster
+table(groups)
+
+##now I will have to get an average of the entire cluster to plot
+
+January_2014GroupedCluster = cbind(January_2014Grouped, cluster = groups)
+
+## we will have to convert it to factor
+
+January_2014GroupedCluster$cluster = as.factor(January_2014GroupedCluster$cluster)
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## now we will be grouping by cluster to be able to have the average of each time interval
+
+January_2014GroupedClusterAverage =January_2014GroupedCluster %>% group_by(cluster)  %>% summarise_all(mean)
+
+
+## we got to transform this into vertical data so we can have a colum of time and the power percent to plot
+
+January_2014GroupedClusterAverageVertical = transpose(January_2014GroupedClusterAverage)
+
+
+# Change colnames of all columns
+colnames(January_2014GroupedClusterAverageVertical) <- c("Cluster1", "Cluster2", "Cluster3", "Cluster4")
+
+## we will also be dropping the first row as we no longer need the cluster variables and these will interfere with the plotting
+January_2014GroupedClusterAverageVertical = January_2014GroupedClusterAverageVertical[-1,]
+
+## we will also be dropping the last row as we no longer need the max values and these will interfere with the plotting as well
+
+January_2014GroupedClusterAverageVertical = January_2014GroupedClusterAverageVertical[-nrow(January_2014GroupedClusterAverageVertical), ]
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, output=FALSE}
+
+January_2014GroupedClusterAverageVertical = January_2014GroupedClusterAverageVertical[-c(1),]
+
+``` 
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+time_interval <- seq(from = as.numeric(as.POSIXlt("0000", format = "%H%M")), to = as.numeric(as.POSIXlt("2340", format = "%H%M")), by = 10*60)
+time_interval <- format(as.POSIXlt(time_interval, origin="1970-01-01"), format = "%H:%M")
+
+January_2014GroupedClusterAverageVertical$timeIntervals = time_interval
+
+str(January_2014GroupedClusterAverageVertical)
+
+## it seems we will have to convert the values of the clusters to float
+
+January_2014GroupedClusterAverageVertical$Cluster1 = as.double(January_2014GroupedClusterAverageVertical$Cluster1)
+January_2014GroupedClusterAverageVertical$Cluster2 = as.double(January_2014GroupedClusterAverageVertical$Cluster2)
+January_2014GroupedClusterAverageVertical$Cluster3 = as.double(January_2014GroupedClusterAverageVertical$Cluster3)
+January_2014GroupedClusterAverageVertical$Cluster4 = as.double(January_2014GroupedClusterAverageVertical$Cluster4)
+
+```
+
+Now that we have year 2014 we just need to do the same again for year 2015
+
+## year 2015 version
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), output=FALSE}
+
+## as data from 0:00 to 7:50
+
+tenMinuteMaximum = January_2015[,-c(1:2)]
+
+## first we need to the maximum power output of the day i
+
+maxVal = 0
+January_2015$max = 0
+
+
+for (i in 1:nrow(tenMinuteMaximum)) {
+  
+
+  
+  ##  the apply() function is used with the MARGIN parameter set to 1, which applies the function to all rows of the dataframe. Inside the function, we are checking if the row name is not equal to substation as the substation number is also bigger than the power measured in the interval of 10 mins
+  
+maxVal = apply(tenMinuteMaximum[i,], 1, max)
+
+#tenMinuteMaximum
+
+January_2015$max[i] = maxVal  
+
+
+}
+
+January_2015[,3:146] = January_2015[,3:146]/January_2015$max
+
+
+January_2015Grouped  = January_2015 %>%  group_by(Substation) %>% summarise_all(mean)
+
+January_2015Grouped = January_2015Grouped[,-c(2)]
+
+
+##REMOVE THE LAST ONE 
+January_2015Grouped = January_2015Grouped[,-c(146)]
+
+distance_matrix <- dist(January_2015Grouped, method = "manhattan")
+
+cluster = hclust(distance_matrix)
+
+#plot(cluster, xlab="", sub="")
+
+plot(cluster, main="Dendrogram 2015",  labels=FALSE, hang = -1)
+
+```
+
+As we can see the dendrogram is pretty similar to the previous year
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), output=FALSE}
+
+## here we can see the the dendogram with the proper clusters already cut has mentioned above, using the factoextra library
+fviz_dend(cluster, k = 4, rect = TRUE, show_labels = TRUE)
+
+
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+#cut the dendrogram into 4 clusters
+groups <- cutree(cluster, k=4)
+
+#find number of observations in each cluster
+table(groups)
+
+##now I will have to get an average of the entire cluster to plot
+
+January_2015GroupedCluster = cbind(January_2015Grouped, cluster = groups)
+
+## we will have to convert it to factor
+
+January_2015GroupedCluster$cluster = as.factor(January_2015GroupedCluster$cluster)
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## now we will be grouping by cluster to be able to have the average of each time interval
+
+January_2015GroupedClusterAverage =January_2015GroupedCluster %>% group_by(cluster)  %>% summarise_all(mean)
+
+
+## we got to transform this into vertical data so we can have a colum of time and the power percent to plot
+
+January_2015GroupedClusterAverageVertical = transpose(January_2015GroupedClusterAverage)
+
+
+# Change colnames of all columns
+colnames(January_2015GroupedClusterAverageVertical) <- c("Cluster1", "Cluster2", "Cluster3", "Cluster4")
+
+## we will also be dropping the first row as we no longer need the cluster variables and these will interfere with the plotting
+January_2015GroupedClusterAverageVertical = January_2015GroupedClusterAverageVertical[-1,]
+
+## we will also be dropping the last row as we no longer need the max values and these will interfere with the plotting as well
+
+January_2015GroupedClusterAverageVertical = January_2015GroupedClusterAverageVertical[-nrow(January_2015GroupedClusterAverageVertical), ]
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, output=FALSE}
+
+January_2015GroupedClusterAverageVertical = January_2015GroupedClusterAverageVertical[-c(1),]
+
+``` 
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+time_interval <- seq(from = as.numeric(as.POSIXlt("0000", format = "%H%M")), to = as.numeric(as.POSIXlt("2340", format = "%H%M")), by = 10*60)
+time_interval <- format(as.POSIXlt(time_interval, origin="1970-01-01"), format = "%H:%M")
+
+January_2015GroupedClusterAverageVertical$timeIntervals = time_interval
+
+str(January_2015GroupedClusterAverageVertical)
+
+## it seems we will have to convert the values of the clusters to float
+
+January_2015GroupedClusterAverageVertical$Cluster1 = as.double(January_2015GroupedClusterAverageVertical$Cluster1)
+January_2015GroupedClusterAverageVertical$Cluster2 = as.double(January_2015GroupedClusterAverageVertical$Cluster2)
+January_2015GroupedClusterAverageVertical$Cluster3 = as.double(January_2015GroupedClusterAverageVertical$Cluster3)
+January_2015GroupedClusterAverageVertical$Cluster4 = as.double(January_2015GroupedClusterAverageVertical$Cluster4)
+
+```
+
+
+Now that we have the 3 years lets start by doing a visual analyses and comparing the 3 graphs of the clusters
+
+
+Here we have the graph for 2013
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# colnames(January_2013GroupedClusterAverageVertical)[3] = "poleMounted_business"  
+# colnames(January_2013GroupedClusterAverageVertical)[1] = "groundMounted_industries" 
+# colnames(January_2013GroupedClusterAverageVertical)[4] = "goodsServices_business" 
+# colnames(January_2013GroupedClusterAverageVertical)[2] = "averageCharacteristics"
+
+
+ggplot() +
+  geom_point(data = January_2013GroupedClusterAverageVertical, aes(x = timeIntervals, y = poleMounted_business, color = "Cluster 1")) +
+  geom_point(data = January_2013GroupedClusterAverageVertical, aes(x = timeIntervals, y = groundMounted_industries, color = "Cluster 2")) +
+  geom_point(data = January_2013GroupedClusterAverageVertical, aes(x = timeIntervals, y = goodsServices_business, color = "Cluster 3")) +
+  geom_point(data = January_2013GroupedClusterAverageVertical, aes(x = timeIntervals, y = averageCharacteristics, color = "Cluster 4")) +
+  ggtitle(" Average demand of each cluster 2013") +
+  xlab("Time of the day") +
+  ylab("Average demand profiles") + 
+  theme(axis.text.x = element_text(angle = 90)) + 
+  scale_x_discrete(breaks = c("00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00",
+                              "12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00",
+                              "00:30","01:30","02:30","03:30","04:30","05:30","06:30","07:30","08:30","09:30","10:30","11:30",
+                              "12:30","13:30","14:30","15:30","16:30","17:30","18:30","19:30","20:30","21:30","22:30","23:30"))
+
+```
+
+Here we have the graph for 2014
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+ggplot() +
+  geom_point(data = January_2014GroupedClusterAverageVertical, aes(x = timeIntervals, y = Cluster1, color = "Cluster 1")) +
+  geom_point(data = January_2014GroupedClusterAverageVertical, aes(x = timeIntervals, y = Cluster2, color = "Cluster 2")) +
+  geom_point(data = January_2014GroupedClusterAverageVertical, aes(x = timeIntervals, y = Cluster3, color = "Cluster 3")) +
+  geom_point(data = January_2014GroupedClusterAverageVertical, aes(x = timeIntervals, y = Cluster4, color = "Cluster 4")) +
+  ggtitle("Scatter plot of the Average demand 2014") +
+  xlab("Time of the day") +
+  ylab("Average demand profiles") + 
+  theme(axis.text.x = element_text(angle = 90)) + 
+  scale_x_discrete(breaks = c("00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00",
+                              "12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00",
+                              "00:30","01:30","02:30","03:30","04:30","05:30","06:30","07:30","08:30","09:30","10:30","11:30",
+                              "12:30","13:30","14:30","15:30","16:30","17:30","18:30","19:30","20:30","21:30","22:30","23:30"))
+
+```
+
+Here we have the graph for 2015
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+ggplot() +
+  geom_point(data = January_2015GroupedClusterAverageVertical, aes(x = timeIntervals, y = Cluster1, color = "Cluster 1")) +
+  geom_point(data = January_2015GroupedClusterAverageVertical, aes(x = timeIntervals, y = Cluster2, color = "Cluster 2")) +
+  geom_point(data = January_2015GroupedClusterAverageVertical, aes(x = timeIntervals, y = Cluster3, color = "Cluster 3")) +
+  geom_point(data = January_2015GroupedClusterAverageVertical, aes(x = timeIntervals, y = Cluster4, color = "Cluster 4")) +
+  ggtitle("Scatter plot of the Average demand 2015") +
+  xlab("Time of the day") +
+  ylab("Average demand profiles") + 
+  theme(axis.text.x = element_text(angle = 90)) + 
+  scale_x_discrete(breaks = c("00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00",
+                              "12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00",
+                              "00:30","01:30","02:30","03:30","04:30","05:30","06:30","07:30","08:30","09:30","10:30","11:30",
+                              "12:30","13:30","14:30","15:30","16:30","17:30","18:30","19:30","20:30","21:30","22:30","23:30"))
+
+```
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
