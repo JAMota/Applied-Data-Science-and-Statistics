@@ -609,7 +609,9 @@ As the cluster 3 is also obviously the one that runs with the lowest average dem
 
 Cluster 1 seems to be the one to have on average the approximately power demand as it has a very significantly higher power demand after midnight, that although its lead is reduced during the early morning hours it is maintained until approximately 16:30. After its decrease in demand around 18:00 it maintains demand power levels similar to cluster 2 and 4. Such high power demand could be attributed to high power demand, highly industrialised substations, as it is more likely for an industry to have high power demand outside of working hours, due to the constant production and manufacturing of some industries compared to businesses. It is also possible that the majority of these substations are ground mounted has these were the ones to register significantly higher power levels. Therefore I suggest the name of groundMounted_industries
 
-Next we analyse cluster 2 visualization has the pair of cluster 4. From the graph we can see that cluster 2 is the top or close to the top on the average demand during the night time, having a earlier morning increase than the the other clusters
+Next we analyse cluster 4 visualization, this cluster is the one with the least power demand between midnight and the early hours of the morning where power consumption begin to increase. Due to this, this cluster is the one to have the biggest increase in power demand during the day falling shortly behind cluster 1 and 3. It is in the later part of the afternoon that this cluster achieves its last demand increasing surpassing both cluster 1 and 3, becoming the one with the highest percentage of power demand until 21:00. Such high level of power demand during the evening and low power consumption during the early hours of the day could potentially be attribute to business that provide services such as food or entertainment that are highly sought after during the middle of the day and after working hours. Therefore I suggest referring to this cluster as the goodsServices_business
+
+Lastly cluster 2 who seems to be a a mixture of some of the characteristics of the other clusters, as this cluster never becomes the biggest or lowest power consumer, always maintaining itself as an average of these other clusters. Therefore i suggest naming this cluster as averageCharacteristics.
 
 We can use the tapply() function to calculate summary statistics (e.g mean, median, standard deviation) for each cluster.
 Summary statistics such as mean, median, and standard deviation are important to compare each cluster because they provide a quantitative measure of the central tendency and spread of the characteristic variable within each cluster.
@@ -650,15 +652,17 @@ Cluster4_summary
 
 ```
 
-As we can observe by the summary statistics 
+As we can observe by the summary statistics cluster 3 has significantly less power demand than the other clusters being 5% of the second lower power consuming cluster, cluster 4, with the highest power consuming cluster being cluster 1. It is also notorious that cluster 1 is the one the lowest standard deviation, meaning this is the cluster whose substations are the most similar to each other. In comparison cluster 4 has almost 50% higher standard deviation meaning that the substations in cluster 4 are that much less similar to each other than the ones from cluster 1. Since clustering is done based on the similarity of the occurences this could indicate that if the number of clusters increased, cluster 4 would be the one to be most likely branched.
 
 
 
-Here we actually change the name of all the clusters to the suggested ones.
+Here we now changing the name of all the clusters to the suggested ones.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 colnames(January_2013GroupedClusterAverageVertical)[3] = "poleMounted_business"  
-colnames(January_2013GroupedClusterAverageVertical)[1] = "groundMounted_industries"
+colnames(January_2013GroupedClusterAverageVertical)[1] = "groundMounted_industries" 
+colnames(January_2013GroupedClusterAverageVertical)[4] = "goodsServices_business" 
+colnames(January_2013GroupedClusterAverageVertical)[2] = "averageCharacteristics"
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
