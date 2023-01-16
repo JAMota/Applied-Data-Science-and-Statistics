@@ -665,13 +665,26 @@ colnames(January_2013GroupedClusterAverageVertical)[4] = "goodsServices_business
 colnames(January_2013GroupedClusterAverageVertical)[2] = "averageCharacteristics"
 ```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+## Exercise C 3 i
 
-#fviz_dend(cluster, k = 4, rect = TRUE, show_labels = TRUE)
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+load("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/ApplicationOfDataAndStats/Assignment/datasets-20221221/new_substations.RData")
+
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+## is weekend
+#new_substations = new_substations %>%  group_by(Substation) %>% summarise_all(mean)
+#new_substations = cbind(new_substations, cluster = groups)
+
+## Now we got to check which days are week days and which days are weekends
+
+## making the opposite to get if its is a weekday or not
+new_substations$isWeekDay = !is.weekend(new_substations$Date)
+
+new_substations = new_substations %>%  group_by(Substation) %>% summarise_all(mean)
 
 ```
 
