@@ -1,0 +1,41 @@
+These flutuations can be explained by the difference in population.
+
+Police force does not seem to have any significant influence that we can observe from the graph.
+
+
+There seems to be no variance in casualties from special conditions on site has with all non zero conditions the casualties seem to remain the same with a notorious increase in casualties for zero special conditions.
+
+
+The time does not seem to have apparent correlation with the number of casualties.
+
+
+Local Authority in district does not seem to have significant correlation with the number of casualties.
+
+Local Authority in highways does not seem to have significant correlation with the number of casualties.
+
+The 1st road number does not appear to have a strong correlation with casualties with only a few outliers have more casualties then the remaining values.
+
+
+Lasttly the 2nd road number does not seem to have any strong correlation with the number of casualties has all the numbers with the expection of 0 have very closely distributed values.
+
+
+also predictors of number of casualties since higher longitude values lead to more casualties per accident and the lower the latitude the higher the number of casualties as well.
+
+Accident severity level 1 and 3 seem to have the same amount of casualties but accident severely level 2 seem to have significantly more accident casualties than the other 2 values.
+
+The number of vechiles has a negative relationship to the number of casualties except the jump from only 1 vechicle accidents to two vechicles. This is likely due to 
+
+The  number of pedestrians does not seem to have a strong correlation with number of casualties as the numbers are of casualties are not too different in our limited range with the expection of 0 pedestrians.
+
+Light condition seems to have a negative correlation with the number of casualties as the smaller the light conditions are the bigger the ammount of casualties.
+
+
+
+
+
+
+
+
+
+
+

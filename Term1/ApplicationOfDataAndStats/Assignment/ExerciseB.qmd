@@ -67,7 +67,9 @@ As for gender we can see there is slightly more female entries then male entries
 More importantly comparing the other values with weight:
 Height follows a curvilinear increase that appears to increase almost exponentially.
 Age on the first half of the value range seems to follow a pretty linear relationship with weight till around age 30 where it has a pretty sharp increase in standard error compared to the average of the values.
-Lastly males follows the a very similar bimodal relationship to females but the males right distribution is more tilted to the right than the female one.
+Furthermore, males follows the a very similar bimodal relationship to females but the males right distribution is more tilted to the right than the female one.
+Comparing the independent variables with weight, height seems to have a exponential relationship with weight as the increase was initially minimal but it gradually increases. 
+Lastly, age after 40 years of age seems to a very big variance on its relationship with weight.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE}
 
@@ -90,23 +92,61 @@ summary(dataWeightHeight)
 
 
 ```
-As we can see from the R-squared value and adjusted R-squared a simple linear model already explains approximately 89% of the variance that influence a person's weight.
+As we can see from the multiple R-squared value and adjusted R-squared a simple linear model already explains approximately 88,8% of the variance that influence a person's weight.
 As we can see from the independent variables, height is the biggest factor when determining the weight of a data subject, although it does not have the highest factor, the range of the height values go from [53.98, 179.07] which compared to the age and gender ranges makes it obvious of how much more of impact does weight have compare to age with the  [0,88] range and gender which is binary.
 
+
+Next we will try to improve the predictive power of our model by changing the relationship between height and weight from a simple linear regression to better represent the exponential increase height to weight. 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-##logging the exponential age variable
+##logging the exponential height and weight variables 
 
-dataWeightHeight$ageLogged = log(dataWeightHeight$age)
+dataWeightHeight$heightLogged = log(dataWeightHeight$height)
+dataWeightHeight$weighttLogged = log(dataWeightHeight$weight)
 
 
-model = lm(weight ~ height + ageLogged + isMale, data = dataWeightHeight)
+modelLoggingHeightWeight = lm(weighttLogged ~ heightLogged  + age + isMale , data = dataWeightHeight)
 
-summary(model)
+summary(modelLoggingHeightWeight)
 
-summary(dataWeightHeight)
 
 ```
 
-The `echo: false` option disables the printing of code (only output is
-displayed).
+do residuals vs fit? qq 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
