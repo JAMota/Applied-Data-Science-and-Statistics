@@ -543,13 +543,93 @@ ggplot() +
 
 ```
 
+## Exercise C 2.vi
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+January_2013Weekdays = January_2013 %>%  group_by(Substation) %>% summarise_all(mean)
+January_2013Weekdays = cbind(January_2013Weekdays, cluster = groups)
+  
+January_2013Weekdays
+
+## Now we got to check which days are week days and which days are weekends
+
+January_2013Weekdays$isWeekDay = 1
+
+for (i in 1:nrow(January_2013Weekdays)) {
+  if( weekdays(January_2013Weekdays$Date[i]) == "Saturday"){
+    January_2013Weekdays$isWeekDay[i] = 0
+  }
+    if( weekdays(January_2013Weekdays$Date[i]) == "Sunday"){
+    January_2013Weekdays$isWeekDay[i] = 0
+  }
+}
+
+## then I will group by weekday and substation? TODO figure out
+
+```
+
+## Exercise C 2.vii
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+ggplot() +
+  geom_point(data = January_2013GroupedClusterAverageVertical, aes(x = timeIntervals, y = Cluster1, color = "Cluster 1")) +
+  geom_point(data = January_2013GroupedClusterAverageVertical, aes(x = timeIntervals, y = Cluster2, color = "Cluster 2")) +
+  geom_point(data = January_2013GroupedClusterAverageVertical, aes(x = timeIntervals, y = Cluster3, color = "Cluster 3")) +
+  geom_point(data = January_2013GroupedClusterAverageVertical, aes(x = timeIntervals, y = Cluster4, color = "Cluster 4")) +
+
+  ggtitle("Scatter plot of the Average demand of each cluster") +
+  xlab("Time of the day") +
+  ylab("Average demand profiles") + 
+  theme(axis.text.x = element_text(angle = 90)) + 
+  scale_x_discrete(breaks = c("00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00",
+                              "12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00",
+                              "00:30","01:30","02:30","03:30","04:30","05:30","06:30","07:30","08:30","09:30","10:30","11:30",
+                              "12:30","13:30","14:30","15:30","16:30","17:30","18:30","19:30","20:30","21:30","22:30","23:30"))
+
+
+table(groups)
+
+```
+As we can see from the number of substations in each cluster, cluster 4 has the highest number of substations. This means that these 349 substations are all relatively similar. We can also infer from the previously displayed dendrogram as that the height on any other potential new leaf would be significantly smaller than the already cut cluster leaves. 
+
+As the cluster 4 is the most numerous by far it can be considered the baseline for daily power demand of the "common" substation seeing as it represents approximately 65% of all substations. 
+
+There are several ways to compare the characteristics data for each of the clusters in R.
+We can use the tapply() function to calculate summary statistics (e.g mean, median, standard deviation) for each cluster.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## we will have to use a alternative version of the first grouping made on the clusters so we can group by cluster again
+
+January_2013Analyses = January_2013 %>%  group_by(Substation) %>% summarise_all(mean)
+January_2013Analyses = cbind(January_2013Analyses, cluster = groups)
+
+#with this we now have the corresponding cluster, the date and the substation
+
+# cluster_summary <- January_2013GroupedClusterAverageVertical %>%
+#   group_by(cluster) %>%
+#   summarize(mean = mean(characteristic),
+#             median = median(characteristic),
+#             sd = sd(characteristic))
 
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+#fviz_dend(cluster, k = 4, rect = TRUE, show_labels = TRUE)
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
 
 ```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+
