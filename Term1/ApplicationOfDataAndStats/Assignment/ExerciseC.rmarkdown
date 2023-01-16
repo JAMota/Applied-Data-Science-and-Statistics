@@ -1,0 +1,554 @@
+---
+title: "Exercise C"
+format:
+  pdf:
+    toc: true
+editor: visual
+---
+
+
+## Exercise C
+
+
+```{r, echo=FALSE, output=FALSE}
+library(haven)
+library(tidyverse)
+library(dplyr)
+library(formatR)
+library(GGally)
+library(ggplot2)
+library(ggthemes)
+
+#install.packages("factoextra")
+
+library(factoextra)
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) , output=FALSE }
+##loading all the R workspace data
+
+load("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/ApplicationOfDataAndStats/Assignment/datasets-20221221/January_2013.RData")
+load("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/ApplicationOfDataAndStats/Assignment/datasets-20221221/January_2014.RData")
+load("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/ApplicationOfDataAndStats/Assignment/datasets-20221221/January_2015.RData")
+load("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/ApplicationOfDataAndStats/Assignment/datasets-20221221/new_substations.RData")
+dataCharacteristics = read_csv("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/ApplicationOfDataAndStats/Assignment/datasets-20221221/Characteristics.csv")
+```
+
+
+
+## Exercise C 1.i
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+summary(dataCharacteristics)
+
+```
+
+
+To visualise the distributions of the percentage of industrial and commercial costumer, transformer ratings and transformer types 
+We will plot a histogram of each of these variables
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+ggplot(dataCharacteristics, aes(Percentage_IC)) + 
+  geom_histogram(bins = 30, fill = "blue", color = "black") +
+  ggtitle("A Histogram of the percentage of industrial costumers ") +
+  xlab("Ratio of commerical to industrial costumers") +
+  ylab("Number of occurences")
+
+```
+
+The histogram here the number of occurrences cluster around fully commercial costumers and fully industrial costumers where both these values have a much higher number of occurrences than any other percentage ratio of costumers.
+As the number of industrial costumers increase, the number of occurrences slowly decreases until it reach it's lowest near the 50 percentile, barely increasing again around the 80 percentile until reaching another high peak on 100% industrial costumers, following what it seems to be a very steep u-shaped distribution also called u-quadratic distribution.
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+ggplot(dataCharacteristics, aes(Transformer_RATING)) + 
+  geom_histogram(bins = 30, fill = "blue", color = "black") +
+  ggtitle("A Histogram of the power delivered by the substations") +
+  xlab("Power delivered by the substation") +
+  ylab("Number of occurences")
+
+```
+
+
+As we can see in the histogram above the amount of power being delivered to the substations is the highest around 500 and second highest around 300.
+It is also evident that there is a large gap around amounts of power being delivered to the substation.
+We can also see that with the exception to 0 or near 0 power delivered and two other values that can possible be outliers the number of occurrences increase as we get closer to 500 power delivered by the substations, following what would resemble a normal distribution.
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+ggplot(dataCharacteristics, aes(TRANSFORMER_TYPE)) + 
+  geom_bar(fill = "blue", color = "black") +
+  ggtitle("Occurences count per type of tranformer implemented in a substation") +
+  xlab("Type of transformer: Ground mounted and Pole mounted") +
+  ylab("Number of occurences")
+
+```
+
+As we can see the number of ground mounted substations is almost 3 times bigger than the pole mounted substations.
+
+
+## Exercise C 1.ii
+
+There are several ways to describe the relationships between different characteristics:
+
+ - Correlation: This measures the strength and direction of the relationship between two variables. A positive correlation means that as one variable increases, the other variable also increases. A negative correlation means that as one variable increases, the other variable decreases.
+  - Regression: This is a statistical method used to find the relationship between a dependent variable and one or more independent variables. It can be used to predict the value of the dependent variable based on the values of the independent variables.
+  - Clustering: This is a method used to group similar observations together based on their characteristics. Clustering can be used to identify patterns or relationships in the data.
+  - Dimensionality reduction: This is a technique used to reduce the number of variables in a dataset while preserving as much information as possible. This can be useful for visualizing and understanding relationships between variables.
+  - Visualization: This is a way of representing data graphically, such as with charts, plots, and maps. Visualization can help to identify patterns and relationships in the data.
+  
+We have already have resorted to visualization of the distributions on the previous question so now I will be visualising and correlation each of the variables against each other.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+## variables to compare: transformer type, number of customers, rating, percentage of I&C customers and number of feeders
+## these are: TRANSFORMER_TYPE, TOTAL_CUSTOMERS , Transformer_RATING , Percentage_IC and LV_FEEDER_COUNT
+
+## lets start with transformer type comparison against all other variable
+## the first one will be comparing it with total customers
+
+ggplot(data = dataCharacteristics, aes(x = TRANSFORMER_TYPE, y = TOTAL_CUSTOMERS, fill = TRANSFORMER_TYPE)) + 
+  geom_boxplot() +
+  ggtitle("Box plot of transformer type and number of costumers") +
+  xlab("Type of transformer") +
+  ylab("Number of costumers")
+
+
+
+
+```
+
+As we can clearly observe the type of transformer is a strong indicator of the number of costumers as pole mounted substations values from the minimum third quantile values equal or approximate to zero comparing to ground mounted substations, these already have a number of costumers superior to 0 on the first quartile and the entire interquartile range holds values only present on the top quartile of the pole mounted substations.
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+modelTransTypeNCostumer = lm(TOTAL_CUSTOMERS ~ TRANSFORMER_TYPE, data = dataCharacteristics)
+
+summary(modelTransTypeNCostumer)
+
+```
+
+As we can see from the summary of the linear model, a substation being pole mounted largely decreases the number of costumers in such substation.
+It is also important to notice the the multiple R-squared and adjusted R-squared values as they signify that the type of transformer mounted only explains explains ≈ 21% of the variation in the number of costumers.
+
+Now we will proceed to analyse the comparison of transformer type and transformer rating.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+ggplot(data = dataCharacteristics, aes(x = TRANSFORMER_TYPE, y = Transformer_RATING, fill = TRANSFORMER_TYPE)) + 
+  geom_boxplot() +
+  ggtitle("Box plot of transformer type and power delivered by substation") +
+  xlab("Type of transformer") +
+  ylab("Power delivered by substation")
+
+
+```
+
+We can observe again that the type of transformer is a strong indicator of the power delivered by the substation, as with exception of 2 outliers the pole mounted entire range of power delivered is smaller then the first quartile of power delivered by ground mounted substations. As such it is clear how impactful are the type of transformer in the power delivered to the substations.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+modelTransTypePowerDelivery = lm(Transformer_RATING ~ TRANSFORMER_TYPE, data = dataCharacteristics)
+
+summary(modelTransTypePowerDelivery)
+
+```
+
+As we can see from the summary of the model the type of transformer has a massive impact determining the amount of energy supplied to the substation and as observed from the R-squared value the type of mounted substation can explain almost half of the variation in power supplied to the substations
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+ggplot(data = dataCharacteristics, aes(x = TRANSFORMER_TYPE, y = Percentage_IC, fill = TRANSFORMER_TYPE)) + 
+  geom_boxplot() +
+  ggtitle("Box plot of transformer type and ratio of industrial costumers") +
+  xlab("Type of transformer") +
+  ylab("Ratio of industrialised costumers")
+
+
+```
+
+
+In the bar graph we can see that half of the pole mounted substation have only business costumers and therefore no industrial costumers. We can also observe that pole mounted substations have in general considerably bigger ratio of business costumers has more pole mounted substations 3rd quartile is approximately 15% lower on industrial costumers ratio than the ground mounted 3rd quartile. It should also be noted that the 1st quartile of the ground mounted substations is above 0 meaning the large majority of ground mounted substations have some degree of industrial costumers.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+modelTransTypeRatioIndustrialCostumers = lm(Percentage_IC ~ TRANSFORMER_TYPE, data = dataCharacteristics)
+
+summary(modelTransTypeRatioIndustrialCostumers)
+
+
+```
+
+As we can see from the summary of our model having a pole mounted substation as opposed to a ground mounted substation decreases the number the expected percentage of industrial costumers by approximately 11.7%.
+As observed by the R-squared value the type of transformer is capable of 40% of the variation of ratio of industrial costumers meaning we can really in our model to some degree but we shouldn't overly rely on it.
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+ggplot(data = dataCharacteristics, aes(x = TRANSFORMER_TYPE, y = LV_FEEDER_COUNT, fill = TRANSFORMER_TYPE)) + 
+  geom_boxplot() +
+  ggtitle("Box plot of transformer type and number of feeders") +
+  xlab("Type of transformer") +
+  ylab("Number of feeders coming from the substation")
+
+
+```
+
+
+The most apparent difference between ground mounted and pole mounted substations is how the 1st and 3rd quartile coincide on only 1 feeder for the pole mounted substations with no apparent whiskers with only 3 values marked as outliers, meaning almost all pole mounted substations have the same number of feeders. Ground mounted substations not only can have a considerably higher number of feeders, as the first quartile of the box is over the 3rd quartile of the pole mounted substations, the approximatly 75% of ground mounted  substations have at least double the amount of feeders than pole mounted substations.
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+modelTransTypeFeederCount = lm(LV_FEEDER_COUNT ~ TRANSFORMER_TYPE, data = dataCharacteristics)
+
+summary(modelTransTypeFeederCount)
+
+
+```
+
+Immediately we can see that the type of transformer isn't the best indicator of feeder count as the R-squared value is only 0,286 meaning it will only account for 28,6% of the variation on the number of feeders. It should still be noted that a pole mounted substation estimated value is very approximate to 1.
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## these are: TRANSFORMER_TYPE, TOTAL_CUSTOMERS , Transformer_RATING , Percentage_IC and LV_FEEDER_COUNT
+
+ggplot(data = dataCharacteristics, aes(y = TOTAL_CUSTOMERS, x = Transformer_RATING)) + 
+  geom_point() +
+  #geom_smooth(method = "lm", se = FALSE) +
+  ggtitle("Scatter plot of power provided by substation per total costumers") +
+  xlab("Power provided per substation") +
+  ylab("Total costumers")
+
+```
+
+
+The relationship between power provided and total costumers seem to follow a normal distribution without noticeable skewness.
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+modelPowerNcostumers = lm(Transformer_RATING ~ TOTAL_CUSTOMERS, data = dataCharacteristics)
+
+summary(modelPowerNcostumers)
+
+
+```
+
+As we can see from the R-squared the relationship between total customers and power provided per substation being only approximately 5% means these two variables can barely explain the variation between each other. This could mean that the independent variable in the model is not relevant, or that there are other factors that are not included in the model that are affecting the dependent variable.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## these are: TRANSFORMER_TYPE, TOTAL_CUSTOMERS , Transformer_RATING , Percentage_IC and LV_FEEDER_COUNT
+
+ggplot(data = dataCharacteristics, aes(y = TOTAL_CUSTOMERS, x = Percentage_IC)) + 
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  ggtitle("Scatter plot of industrial costumers percentage per total costumers") +
+  xlab("Ratio of industrial costumers") +
+  ylab("Total costumers")
+
+```
+
+
+As we can see from the scatter plot we can see too values with a very high concentration of occurrences around fully business costumers and fully industrial costumers. Around the 0% industrial costumers marks is where the largest concentration of total costumers per substation are located and we can see a clear decreasing trend on the number of total costumers as the percentage of industrial costumers increase. However there does not seem to be any other clear trend between the high concentration of occurrences between none and exclusively industrial costumers.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+modelRatioIndustrialNcostumers = lm(TOTAL_CUSTOMERS ~ Percentage_IC , data = dataCharacteristics)
+
+summary(modelRatioIndustrialNcostumers)
+
+
+```
+
+
+First thing to note is that how big of a difference is the number of total costumers for a fully industrial costumer substation compared to the intersect, so a fully business substation.
+Second thing to note is our quite low R-squared values of 12,9% meaning our model capability of explaining the number of costumers of one substation through the percentage of industrial costumers is incredibly small as these two variables are not linearly correlated enough to explain a significant proportion of the variation in the dependent variable.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## these are: TRANSFORMER_TYPE, TOTAL_CUSTOMERS , Transformer_RATING , Percentage_IC and LV_FEEDER_COUNT
+
+ggplot(data = dataCharacteristics, aes(y = TOTAL_CUSTOMERS, x = LV_FEEDER_COUNT)) + 
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  ggtitle("Scatter plot of number of feeders per total costumers") +
+  xlab("Feeder coming to the substation") +
+  ylab("Total costumers")
+
+```
+
+
+As we can clearly see as the number of feeders increase so does the number of costumers, following a very sharp increase in the first 5 feeders and a gradual increase in the remaining number of feeders.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+modelNFeederslNcostumers = lm(TOTAL_CUSTOMERS ~ LV_FEEDER_COUNT , data = dataCharacteristics)
+
+summary(modelNFeederslNcostumers)
+
+
+```
+
+While just one singular linear model will not be as precise for the first 5 feeders, this model alone can explain more than half of the variation of the number of costumers of each substation.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## these are: TRANSFORMER_TYPE, TOTAL_CUSTOMERS , Transformer_RATING , Percentage_IC and LV_FEEDER_COUNT
+
+ggplot(data = dataCharacteristics, aes(x = Transformer_RATING, y = Percentage_IC)) + 
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  ggtitle("Scatter plot of power feed to substations per ratio of of indutrial costumers") +
+  xlab("Power provided to the station") +
+  ylab("Ratio of industrial costumers")
+
+```
+
+
+From this graph we can see that substation with a bigger percentage of business costumers are more likely to provide less power than substations with a bigger industrial costumers base.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+modelNFeederslNcostumers = lm(Percentage_IC ~ Transformer_RATING , data = dataCharacteristics)
+
+summary(modelNFeederslNcostumers)
+
+
+```
+
+As we can see from the model, the power provided to the substations does explain approximately 11% of the changes in percentage of industrial costumer per substation which is a extremely low level of explanatory power. Therefore we should not really on the power provided to substation to predict the ratio industrial costumers.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## these are: TRANSFORMER_TYPE, TOTAL_CUSTOMERS , Transformer_RATING , Percentage_IC and LV_FEEDER_COUNT
+
+ggplot(data = dataCharacteristics, aes(x = LV_FEEDER_COUNT, y = Percentage_IC)) + 
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  ggtitle("Scatter plot ofnumber of feeders per substations per ratio of of indutrial costumers") +
+  xlab("Number of feeders per substation") +
+  ylab("Ratio of industrial costumers")
+
+```
+
+
+From the plot we can see that there is a tendency for the ratio of industrials costumers to decrease as the number of feeder increases per substation. It appears that the jump from when there are no feeders to the fist feeder might be an actual increase on the ratio industrial costumers but it is not going to be properly represented with a singular linear model. 
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+modelNFeederslNcostumers = lm(Percentage_IC ~ LV_FEEDER_COUNT , data = dataCharacteristics)
+
+summary(modelNFeederslNcostumers)
+
+
+```
+
+As we can see form the minuscule Multiple R-squared value this model simply is not an adequate and cannot bring any meaningful correlation between these two variables.
+
+## Exercise C 2.i
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+## as data from 0:00 to 7:50
+
+tenMinuteMaximum = January_2013[,-c(1:2)]
+
+## first we need to the maximum power output of the day i
+
+maxVal = 0
+January_2013$max = 0
+
+
+for (i in 1:nrow(tenMinuteMaximum)) {
+  
+
+  
+  ##  the apply() function is used with the MARGIN parameter set to 1, which applies the function to all rows of the dataframe. Inside the function, we are checking if the row name is not equal to substation as the substation number is also bigger than the power measured in the interval of 10 mins
+  
+maxVal = apply(tenMinuteMaximum[i,], 1, max)
+
+#tenMinuteMaximum
+
+January_2013$max[i] = maxVal  
+
+
+}
+
+January_2013[,3:146] = January_2013[,3:146]/January_2013$max
+  
+
+January_2013
+
+```
+
+
+## Exercise C 2.ii
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## group by substation and get the mean of each time interval 0:00, 0:10, 0:20 etc.
+
+January_2013Grouped  = January_2013 %>%  group_by(Substation) %>% summarise_all(mean)
+
+January_2013Grouped = January_2013Grouped[,-c(2)]
+  
+January_2013Grouped
+
+```
+
+
+## Exercise C 2.iii
+
+Manhattan distance (also known as L1 distance) is a measure of the absolute differences between the coordinates of two points in a multi-dimensional space.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+January_2013Grouped = January_2013Grouped[,-c(1)]
+
+distance_matrix <- dist(January_2013Grouped, method = "manhattan")
+
+cluster = hclust(distance_matrix)
+
+#plot(cluster, xlab="", sub="")
+
+plot(cluster, labels=FALSE, hang = -1)
+
+```
+
+
+
+
+
+
+## Exercise C 2.iv    
+
+Using the visualization method to decide the number of clusters we can observe from the dendrogram the natural breaks, where it branches into multiple clusters and we will be deciding if they should be a new cluster by comparing the height difference of the breaks.
+The initial data set is first divided into 2 with one of the subdivision containing most of the occurrences.
+Comparing the height between the second division of leafs and any possible further down divisions we can see that there is still a significant height difference. 
+So we can go down a level and reaching the 3 divisions, into 3 clusters.
+If we further analyse any other branches with the same heigh as the 3 previous clusters we can see there is still 1 more with similar height on the very left side, making it possible to have 4 clusters without decreasing the height difference between branches.
+However if we want to make any further divisions we can see that there will be significantly smaller heights for any other possible clusters, meaning we would be sacrificing the similarity or distance between the clusters that are joined at this point.
+
+
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE}
+
+# # Compute WSS for different number of clusters
+# wss <- sapply(2:15, function(k) {
+#   cutree(cluster, k)
+#   sum(split(January_2013Grouped, cutree(cluster, k))[[1]])
+# })
+# 
+# # Plot the WSS against the number of clusters
+# plot(2:15, wss, type = "b", xlab = "Number of clusters", ylab = "Within groups sum of squares")
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## here we can see the the dendogram with the proper clusters already cut has mentioned above, using the factoextra library
+fviz_dend(cluster, k = 4, rect = TRUE, show_labels = TRUE)
+
+
+```
+
+
+
+## Exercise C 2.v
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+#cut the dendrogram into 4 clusters
+groups <- cutree(cluster, k=4)
+
+#find number of observations in each cluster
+table(groups)
+
+##now I will have to get an average of the entire cluster to plot
+
+January_2013GroupedCluster = cbind(January_2013Grouped, cluster = groups)
+
+## we will have to convert it to factor
+
+January_2013GroupedCluster$cluster = as.factor(January_2013GroupedCluster$cluster)
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## now we will be grouping by cluster to be able to have the average of each time interval
+
+January_2013GroupedClusterAverage =January_2013GroupedCluster %>% group_by(cluster)  %>% summarise_all(mean)
+
+#ggplot(data = January_2013GroupedClusterAverage, aes(x =  , y = cluster) +
+#         geom_line()
+#       )
+
+# ggplot(data = dataCharacteristics, aes(x = LV_FEEDER_COUNT, y = Percentage_IC)) + 
+#   geom_point() +
+#   geom_smooth(method = "lm", se = FALSE) +
+#   ggtitle("Scatter plot ofnumber of feeders per substations per ratio of of indutrial costumers") +
+#   xlab("Number of feeders per substation") +
+#   ylab("Ratio of industrial costumers")
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+

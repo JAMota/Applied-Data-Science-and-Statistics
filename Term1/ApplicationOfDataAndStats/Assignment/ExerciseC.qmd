@@ -1,28 +1,30 @@
 ---
 title: "Exercise C"
-format: pdf
+format:
+  pdf:
+    toc: true
 editor: visual
 ---
 
 ## Exercise C
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, output=FALSE}
 library(haven)
 library(tidyverse)
 library(dplyr)
-library(geometry) 
 library(formatR)
-library(Amelia)
-library(mice)
-library(VIM)
-library(labelled)
 library(GGally)
 library(ggplot2)
 library(ggthemes)
+
+#install.packages("factoextra")
+
+library(factoextra)
+
 ```
 
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) , output=FALSE }
 ##loading all the R workspace data
 
 load("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/ApplicationOfDataAndStats/Assignment/datasets-20221221/January_2013.RData")
@@ -403,37 +405,100 @@ plot(cluster, labels=FALSE, hang = -1)
 
 Using the visualization method to decide the number of clusters we can observe from the dendrogram the natural breaks, where it branches into multiple clusters and we will be deciding if they should be a new cluster by comparing the height difference of the breaks.
 The initial data set is first divided into 2 with one of the subdivision containing most of the occurrences.
-Comparing the height between the second division of leafs and any possible further down divisions we can see that there is still a significant height difference. However if we want to make any further divisions we can see that
+Comparing the height between the second division of leafs and any possible further down divisions we can see that there is still a significant height difference. 
+So we can go down a level and reaching the 3 divisions, into 3 clusters.
+If we further analyse any other branches with the same heigh as the 3 previous clusters we can see there is still 1 more with similar height on the very left side, making it possible to have 4 clusters without decreasing the height difference between branches.
+However if we want to make any further divisions we can see that there will be significantly smaller heights for any other possible clusters, meaning we would be sacrificing the similarity or distance between the clusters that are joined at this point.
 
 
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-# Compute WSS for different number of clusters
-wss <- sapply(2:15, function(k) {
-  cutree(cluster, k)
-  sum(split(January_2013Grouped, cutree(cluster, k))[[1]])
-})
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE}
 
-# Plot the WSS against the number of clusters
-plot(2:15, wss, type = "b", xlab = "Number of clusters", ylab = "Within groups sum of squares")
-
-
-#calculate gap statistic for each number of clusters (up to 10 clusters)
-gap_stat <- clusGap(df, FUN = hcut, nstart = 25, K.max = 10, B = 50)
-
-#produce plot of clusters vs. gap statistic
-fviz_gap_stat(gap_stat)
+# # Compute WSS for different number of clusters
+# wss <- sapply(2:15, function(k) {
+#   cutree(cluster, k)
+#   sum(split(January_2013Grouped, cutree(cluster, k))[[1]])
+# })
+# 
+# # Plot the WSS against the number of clusters
+# plot(2:15, wss, type = "b", xlab = "Number of clusters", ylab = "Within groups sum of squares")
 
 ```
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-#calculate gap statistic for each number of clusters (up to 10 clusters)
-gap_stat <- clusGap(df, FUN = hcut, nstart = 25, K.max = 10, B = 50)
+## here we can see the the dendogram with the proper clusters already cut has mentioned above, using the factoextra library
+fviz_dend(cluster, k = 4, rect = TRUE, show_labels = TRUE)
 
-#produce plot of clusters vs. gap statistic
-fviz_gap_stat(gap_stat)
+
+```
+
+
+## Exercise C 2.v
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+#cut the dendrogram into 4 clusters
+groups <- cutree(cluster, k=4)
+
+#find number of observations in each cluster
+table(groups)
+
+##now I will have to get an average of the entire cluster to plot
+
+January_2013GroupedCluster = cbind(January_2013Grouped, cluster = groups)
+
+## we will have to convert it to factor
+
+January_2013GroupedCluster$cluster = as.factor(January_2013GroupedCluster$cluster)
+
+
+```
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## now we will be grouping by cluster to be able to have the average of each time interval
+
+January_2013GroupedClusterAverage =January_2013GroupedCluster %>% group_by(cluster)  %>% summarise_all(mean)
+
+#ggplot(data = January_2013GroupedClusterAverage, aes(x =  , y = cluster) +
+#         geom_line()
+#       )
+
+# ggplot(data = dataCharacteristics, aes(x = LV_FEEDER_COUNT, y = Percentage_IC)) + 
+#   geom_point() +
+#   geom_smooth(method = "lm", se = FALSE) +
+#   ggtitle("Scatter plot ofnumber of feeders per substations per ratio of of indutrial costumers") +
+#   xlab("Number of feeders per substation") +
+#   ylab("Ratio of industrial costumers")
+
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
 
 ```

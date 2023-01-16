@@ -1,6 +1,8 @@
 ---
 title: "ExerciseB"
-format: pdf
+format:
+  pdf:
+    toc: true
 editor: visual
 ---
 
@@ -8,7 +10,9 @@ editor: visual
 
 We start by loading the data from the csv 
 
-```{r, echo=FALSE}
+```{r, output=FALSE , echo=FALSE}
+
+#| warning: false
 
 #install.packages("vctrs")
 
@@ -35,7 +39,7 @@ library(MASS)
 
 ```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), output=FALSE }
 dataWeightHeight = read_csv("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term1/ApplicationOfDataAndStats/Assignment/datasets-20221221/weight_height.csv")
   
 
@@ -84,7 +88,7 @@ Comparing the independent variables with weight, height seems to have a exponent
 Lastly, age after 30 years of age seems to a very big variance on its relationship with weight making is a much less reliable weight predictor.
 
 
-##Data separation prior to modeling
+## Data separation prior to modeling
 
 Before starting to compute our models we will first separate the data into training and testing data sets, using the caTools library
 
@@ -128,7 +132,7 @@ Also from the p-values we can see that the gender is not as significant as the o
 
 
 
-Next we will try to improve the predictive power of our model by changing the relationship between height and weight from a simple linear regression to better represent the exponential increase height to weight. 
+Next we will try to improve the predictive power of our model by changing the relationship between height and weight from a simple linear regression to a Logarithmic Regression to better represent the exponential increase in height to weight relationship we had observed in the previous graph. 
 
 ## Improved model
 
@@ -159,12 +163,25 @@ model2_performance
 As we can immediately see is that we have managed to increase the R-squared value from 89,6% to 96,5% which is a significant upgrade.
 The RMSE value has also been massively improved, reducing the average error from 4.849264 to a mere 0.1086593 meaning our model has very little prediction error now.
 
+Now let us plot the Residuals vs fitted values and qq plots to comfirm that the second model is in fact better. 
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+plot(model1)
 
 ```
 
-do residuals vs fit? qq 
+The residuals vs fitted plot is a graphical representation of the residuals (the difference between the observed value and the predicted value) of a regression model as a function of the fitted (predicted) values. As such the closer the residuals are from the horizontal line y = 0 the better the fit is the model, has its predictions are closers to the real values.
 
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+plot(model2)
+
+
+```
+
+As we can see  from the residuas vs fitted values we have a significantly better residuals as the distance from the y = 0 is incredibly small and therefore the model has excellent prediction power with very minimal prediction error on all stages. We can also see how much more concentrated around y = 0 at the end of the second model compared to the first one which greatly exemplifies how much more accurate this model is with its reduced heteroscedasticity (non-constant variance of the errors), especially considering that the simplicity has been mantained in terms of model construction.
 
 
 
