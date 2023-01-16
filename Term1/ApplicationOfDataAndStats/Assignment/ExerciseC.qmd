@@ -528,7 +528,6 @@ ggplot() +
   geom_point(data = January_2013GroupedClusterAverageVertical, aes(x = timeIntervals, y = Cluster2, color = "Cluster 2")) +
   geom_point(data = January_2013GroupedClusterAverageVertical, aes(x = timeIntervals, y = Cluster3, color = "Cluster 3")) +
   geom_point(data = January_2013GroupedClusterAverageVertical, aes(x = timeIntervals, y = Cluster4, color = "Cluster 4")) +
-
   ggtitle("Scatter plot of the Average demand of each cluster") +
   xlab("Time of the day") +
   ylab("Average demand profiles") + 
@@ -549,8 +548,6 @@ ggplot() +
 
 January_2013Weekdays = January_2013 %>%  group_by(Substation) %>% summarise_all(mean)
 January_2013Weekdays = cbind(January_2013Weekdays, cluster = groups)
-  
-January_2013Weekdays
 
 ## Now we got to check which days are week days and which days are weekends
 
@@ -578,7 +575,6 @@ ggplot() +
   geom_point(data = January_2013GroupedClusterAverageVertical, aes(x = timeIntervals, y = Cluster2, color = "Cluster 2")) +
   geom_point(data = January_2013GroupedClusterAverageVertical, aes(x = timeIntervals, y = Cluster3, color = "Cluster 3")) +
   geom_point(data = January_2013GroupedClusterAverageVertical, aes(x = timeIntervals, y = Cluster4, color = "Cluster 4")) +
-
   ggtitle("Scatter plot of the Average demand of each cluster") +
   xlab("Time of the day") +
   ylab("Average demand profiles") + 
