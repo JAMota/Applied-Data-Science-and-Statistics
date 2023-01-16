@@ -995,8 +995,7 @@ I have use the following clustering methodology for each year:
   Clustering Method 2: Furthermore I have built an hierarchy with my matrix, allowing me cluster my data points based on their similarity with each other and analysing them as such.
   Clustering Method 3: I have created an dendrogram to visually identify how many significantly distinct groups where in the data and therefore how many should we separate them into, cutting this groups from the initial leaf and creating them as clusters.
   Clustering Method 4: I have confirmed my initial cluster choice by utilising a second already cut dendrogram to illustrate how my choice of number of cluster would not leave any significant height differences for any future branches, guaranteeing this way that much choice would be optimal compared to any other number of clusters.
-  Clustering Method 5: With the data already distributed through my 4 cluster I did some extra wranglying on the data to be able to plot each cluster power demand 
-
+  Clustering Method 5: With the data already distributed through my 4 cluster I did some extra wrangling on the data to be able to plot each cluster power demand throughout the day against each other. These graphs will be shown bellow along with their interpretation.
 
 
 Here we have the graph for 2013
@@ -1065,6 +1064,15 @@ ggplot() +
 
 ```
 
+Results:
+
+  Graph 1: As it can be observed on the first graph The most common feature of all clusters is their peak in energy demand around 17:30 each day and the trough reaches its lowest at approximately 4:30. Besides these common points, cluster 1 has consistently been the cluster with the lowest power demand, which is exacerbated between 7:30 and 16:30 still continuing to be the lowest power demanding cluster through the day. Cluster 2 has also been consistently the one with the highest power demanding cluster during most of the day and with a very significantly higher demand than any other cluster between midnight and 7:00. Lastly cluster 3 has the the lowest power consumption during the night but during the biggest peak of the day it becomes the most power demanding cluster for approximately 3 hours until it crashes back to 3rd most power demanding cluster.
+  Graph 2: The most obvious observation is that in 2014 the previous year main patterns remained the same. However the clusters has now decreases its consumption during the night, with cluster 4 now reaching values below 30% and cluster 1 values bellow 40% on the trough. It seems that these trend has also affected cluster 3 during the peak of energy demand as the maximum demand has decrease by approximately 2,5% while remaining constant on the other clusters during the peak. Lastly cluster 3 had a significant reduction in demand between 7:30 and 15:00, aggravating the difference in power demand with the other clusters.
+  Graph 3: In 2015 there doesn't seem to have been any global change that affected all or the majority of the clusters, in fact this year the results have been considerably more stable then the 2014 ones. Cluster 3 has once again decreased in power between 7:30 and 15:00, aggravating the difference in power demand with the other clusters once again. Cluster 4 has a slight increase around the minor peak in demand at noon. All the other clusters seem to have remaint constant without any noticevae changes in power demand through the day.
+
+
+Discussion:
+
 Immediately form the graphs we can see that the main patterns of each cluster has been maintained over the years analyses, meaning the substation costumers didn't change significantly enough to cause substations to change in the clusters branching. With significant enough changes it is possible for substations to change their characteristics enough as to become more similar to substations of another cluster.
 
 
@@ -1077,11 +1085,7 @@ table2015
 
 ```
 
-Results:
 
-    Graph 1: [insert a brief description of what the graph represents and the key findings from the analysis]
-    Graph 2: [insert a brief description of what the graph represents and the key findings from the analysis]
-    Graph 3: [insert a brief description of what the graph represents and the key findings from the analysis]
 
 
 
