@@ -17,7 +17,11 @@ library(GGally)
 library(ggplot2)
 library(ggthemes)
 
-#install.packages("factoextra")
+library(data.table)
+
+#install.packages("chron")
+
+library(chron)
 
 library(factoextra)
 
@@ -466,7 +470,51 @@ January_2013GroupedCluster$cluster = as.factor(January_2013GroupedCluster$cluste
 
 January_2013GroupedClusterAverage =January_2013GroupedCluster %>% group_by(cluster)  %>% summarise_all(mean)
 
-#ggplot(data = January_2013GroupedClusterAverage, aes(x =  , y = cluster) +
+
+## we got to transform this into vertical data so we can have a colum of time and the power percent to plot
+
+January_2013GroupedClusterAverageVertical = transpose(January_2013GroupedClusterAverage)
+
+
+# Change colnames of all columns
+colnames(January_2013GroupedClusterAverageVertical) <- c("Cluster1", "Cluster2", "Cluster3", "Cluster4")
+
+## we will also be dropping the first row as we no longer need the cluster variables and these will interfere with the plotting
+January_2013GroupedClusterAverageVertical = January_2013GroupedClusterAverageVertical[-1,]
+
+## we will also be dropping the last row as we no longer need the max values and these will interfere with the plotting as well
+
+#January_2013GroupedClusterAverageVertical = tail(January_2013GroupedClusterAverageVertical, -1)
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+## I will have to add the time intervals as a column
+
+January_2013GroupedClusterAverageVertical$timeIntervals = "0:00"
+
+# hour & 15 minute intervals
+hm = merge(0:23, seq(0, 50, by = 10))
+
+chron(time = paste(hm$x, ':', hm$y, ':', 0))
+
+## I created this data frame with the time intervals because it is easier for me mentaly to then add them to the dataframe for plotting 
+interval_15min <- data.frame('INTERVAL' = chron(time = paste(hm$x, ':', hm$y, ':', 0)))
+interval_15min <- data.frame('INTERVAL' = interval_15min[order(interval_15min$INTERVAL), ])
+
+
+
+for (i in 1:nrow(January_2013GroupedClusterAverageVertical)) {
+  
+  January_2013GroupedClusterAverageVertical$timeIntervals[i] = 1
+  
+}
+
+#ggplot(data = January_2013GroupedClusterAverageVertical, aes(x = id , y = cluster1) +
 #         geom_line()
 #       )
 
@@ -477,12 +525,7 @@ January_2013GroupedClusterAverage =January_2013GroupedCluster %>% group_by(clust
 #   xlab("Number of feeders per substation") +
 #   ylab("Ratio of industrial costumers")
 
-
-```
-
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-
+January_2013GroupedClusterAverageVertical
 
 ```
 
