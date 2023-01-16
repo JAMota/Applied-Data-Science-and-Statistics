@@ -9,29 +9,28 @@ editor: visual
 We start by loading the data from the csv 
 
 ```{r, echo=FALSE}
-library(haven)
+
+#install.packages("vctrs")
+
+library(caret)
 library(tidyverse)
 library(dplyr)
-library(geometry) 
-library(formatR)
-library(Amelia)
-library(mice)
-library(VIM)
 library(labelled)
 library(GGally)
 library(ggplot2)
 library(ggthemes)
 
-#library(caret)
+#install.packages("caret", dependencies = TRUE) 
+
 library(splines)
-#install.packages("caTools")
 library(caTools)
 library(lme4)
 
-install.packages("MASS")
-library(Metrics)
+#install.packages("MASS")
+#library(Metrics)
 library(MASS)
 
+##https://stackoverflow.com/questions/60451908/tidyverse-not-loaded-it-says-namespace-vctrs-0-2-0-is-already-loaded-but
 
 
 ```
@@ -84,15 +83,6 @@ Furthermore, males follows the a very similar bimodal relationship to females bu
 Comparing the independent variables with weight, height seems to have a exponential relationship with weight as the increase was initially minimal but it gradually increases. 
 Lastly, age after 30 years of age seems to a very big variance on its relationship with weight making is a much less reliable weight predictor.
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE}
-
-# ggplot(data = dataWeightHeight , aes(x=isMale, y=weight))+
-#   geom_point(aes(x=isMale,y=weight)
-#              
-ggplot(data = dataWeightHeight, aes(x=isMale,y=weight)) +
-  # ggplot with the desired data
-  geom_line(aes(x=isMale,y=weight))             
-```
 
 ##Data separation prior to modeling
 
@@ -111,7 +101,7 @@ test   <- dataWeightHeight[!sample, ]
           
 ```
 
-
+## Linear model
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE}
 
 # Fit the model
@@ -124,47 +114,52 @@ RMSE = RMSE(predictions, test$weight),
 R2 = R2(predictions, test$weight)
 )
 
-rmse(train$weight, test$weight)
 
 summary(model1)
 model1_performance
 
 
-# plot the predictions
-ggplot(train.data, aes(lstat, medv) ) +
-geom_point() +
-stat_smooth(method = lm, formula = y ~ x)
           
 ```
 
-We will now start by creating a simple linear model and run some checks to find out how much explanatory power does that model have
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+As we can see from the  R-squared a simple linear model already explains approximately 89,6% of the variance that influence a person's weight.
+According to our RMSE this model will on average have a prediction error of 4.849264.
+Also from the p-values we can see that the gender is not as significant as the other values and therefore I will be removing it on the next model
 
-model = lm(weight ~ height + age + isMale, data = dataWeightHeight)
-
-summary(model)
-
-summary(dataWeightHeight)
-
-
-```
-As we can see from the multiple R-squared value and adjusted R-squared a simple linear model already explains approximately 88,8% of the variance that influence a person's weight.
-As we can see from the independent variables, height is the biggest factor when determining the weight of a data subject, although it does not have the highest factor, the range of the height values go from [53.98, 179.07] which compared to the age and gender ranges makes it obvious of how much more of impact does weight have compare to age with the  [0,88] range and gender which is binary.
 
 
 Next we will try to improve the predictive power of our model by changing the relationship between height and weight from a simple linear regression to better represent the exponential increase height to weight. 
+
+## Improved model
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE}
+
+#dataWeightHeight$heightLogged = log(dataWeightHeight$height)
+#dataWeightHeight$weighttLogged = log(dataWeightHeight$weight)
+
+
+# Fit the model
+model2 <- lm( log(weight) ~ log(height) + age, data = train)
+# Make predictions
+predictions <- model2 %>% predict(test)
+# Model performance
+model2_performance <- data.frame(
+RMSE = RMSE(predictions, log(test$weight)),
+R2 = R2(predictions, log(test$weight))
+)
+
+
+summary(model2)
+model2_performance
+
+
+          
+```
+
+As we can immediately see is that we have managed to increase the R-squared value from 89,6% to 96,5% which is a significant upgrade.
+The RMSE value has also been massively improved, reducing the average error from 4.849264 to a mere 0.1086593 meaning our model has very little prediction error now.
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-
-##logging the exponential height and weight variables 
-
-dataWeightHeight$heightLogged = log(dataWeightHeight$height)
-dataWeightHeight$weighttLogged = log(dataWeightHeight$weight)
-
-
-modelLoggingHeightWeight = lm(weighttLogged ~ heightLogged  + age + isMale , data = dataWeightHeight)
-
-summary(modelLoggingHeightWeight)
-
 
 ```
 
