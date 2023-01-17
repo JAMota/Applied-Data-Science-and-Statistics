@@ -1085,7 +1085,8 @@ table2015
 
 ```
 
-
+Conclusion:
+This analysis provides an in-depth look at the power demand clusters by year. It has been found that cluster 3 has a tendency to decrease over the years, the peak demand hours is at 17:30 and the trough is at 4:30, furthermore other clusters seem to have remained stable on the last year. These results can be used by power company to make informed decisions about the power demand management.
 
 
 
