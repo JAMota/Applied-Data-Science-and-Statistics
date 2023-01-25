@@ -1,0 +1,220 @@
+---
+title: "Class1StatsTopics"
+format:
+  pdf:
+    toc: true
+editor: visual
+---
+
+## Quarto
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+# install.packages('R2jags', dependencies = TRUE) # installs coda too
+# # install.packages('coda', dependencies = TRUE)
+# install.packages('lattice',dependencies = TRUE)
+# install.packages('MCMCvis', dependencies = TRUE)
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+library(R2jags); library(MCMCvis); library(coda); library(lattice)
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+#creating a sample o n size to fit out posterior distribution
+#sample(x, size,...)
+
+```
+
+## Coin example
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# model definition
+jags.mod.coin <- function(){
+Y ~ dbin(0.5,10) # our data model
+P8 <- ifelse(Y>7,1,0) # the probability of interest, aka 8 or higher out of 10
+## the ifelse gives the first value if the statement is true and the second value if the statement is false.
+## we are not forced to use the binary 1 and 0, we can use any value
+}
+## jag has 2 syntaxes
+## the first one is a stochastic dependence ~
+## the second one is a logical dependence <-
+
+##in the jag binom we use the mu parameter and the tau parameter
+## the tau parameter is called the precision and is 1/ sigma(σ) ^2
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+jags.mod.fit.coin <- jags(data = list(), model.file = jags.mod.coin,
+parameters.to.save = c('Y','P8'),n.chains=1,
+DIC=FALSE, n.burnin=0,n.iter = 100)
+
+```
+To get the numerical summary of the above model run we use the print function
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+print(jags.mod.fit.coin)
+
+```
+We can also plot the simulated samples using the traceplot function
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+traceplot(jags.mod.fit.coin)
+
+```
+For more diagnostics and visualisation tools we can convert the output of the jags function into an MCMC
+object. Using the MCMC object we can look at numerical summaries, traceplots and density plots.
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# convert into MCMC object
+jagsfit.mcmc.coin <- as.mcmc(jags.mod.fit.coin)
+# get numerical summary
+summary(jagsfit.mcmc.coin)
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# get traceplots
+xyplot(jagsfit.mcmc.coin)
+# get density estimate
+densityplot(jagsfit.mcmc.coin)
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+MCMCtrace(jagsfit.mcmc.coin,
+params = 'Y', # parameter of interest
+type = 'density', # density plot
+ind = TRUE, # separate density lines for each chain
+pdf = FALSE) # plots are NOT exported into a pdf
+
+
+MCMCtrace(jagsfit.mcmc.coin,
+params = 'P8',
+type = 'trace',
+ind = TRUE,
+pdf = FALSE)
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+jags.mod.fit.coin$BUGSoutput$summary[,1] # mean
+jags.mod.fit.coin$BUGSoutput$summary[,3] # 2.5 percentile
+jags.mod.fit.coin$BUGSoutput$summary[,7] # 97.5 percentile
+
+```
+## Exercise 1
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+##increasing the number of iterations
+## the mean estimate is much closer to the truth, more reliable estimates
+jags.mod.fit.coin <- jags(data = list(), model.file = jags.mod.coin,
+parameters.to.save = c('Y','P8'),n.chains=1,
+DIC=FALSE, n.burnin=0,n.iter = 100000)
+
+
+print(jags.mod.fit.coin)
+
+
+```
+## Exercise 2
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+##number of chains, how much times does jags runs the simulation independently of each other
+
+jags.mod.fit.coin <- jags(data = list(), model.file = jags.mod.coin,
+parameters.to.save = c('Y','P8'),n.chains=3,
+DIC=FALSE, n.burnin=0,n.iter = 50)
+
+
+# convert into MCMC object
+jagsfit.mcmc.coin <- as.mcmc(jags.mod.fit.coin)
+# get numerical summary
+summary(jagsfit.mcmc.coin)
+
+# get trace plots
+xyplot(jagsfit.mcmc.coin)
+# get density estimate
+densityplot(jagsfit.mcmc.coin)
+
+```
+## Exercise 3
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+#model definition
+jags.mod.coin <- function(){
+Y ~ dbin(0.5,10) # our data model
+P8 <- ifelse(Y>7,1,0) # the probability of interest, aka 8 or higher out of 10
+}
+
+```
+
+## Exercise 4
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+#model definition with var 1 and sd 2
+jags.norm3 <- function(){
+Y ~ dnorm(1,1/4) # 1/var=1 1/sd^2= 1/4
+x = Y^3
+}
+
+
+jags.mod.fit.coin <- jags(data = list(), model.file = jags.norm3,
+parameters.to.save = c('Y','P8'),n.chains=2,
+DIC=FALSE, n.burnin=0,n.iter = 5000)
+
+# convert into MCMC object
+jagsfit.mcmc.coin <- as.mcmc(jags.mod.fit.coin)
+# get numerical summary
+#summary(jagsfit.mcmc.coin)
+
+##need to change the entry variable
+# get trace plots
+xyplot(jagsfit.mcmc.coin)
+# get density estimate
+densityplot(jagsfit.mcmc.coin)
+
+
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```

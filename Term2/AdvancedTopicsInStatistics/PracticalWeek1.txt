@@ -1,0 +1,10 @@
+When we have a problem where we know the distribution, the number of cases, number of positive results and 
+unkown probability this unknown probability (theta) can be considered a random variable with its own
+distribution.
+
+We will be using simulations to build up distributions to approximate posteriority distribution.
+
+steps: 
+1 data model, making the distribution Y ~ Binom(10, 0.5)
+2 ()
+3 quantities of interest P(Y >= 8)

@@ -1,0 +1,108 @@
+---
+title: "StatsDataModeling"
+format: html
+editor: visual
+---
+
+
+```{r}
+# Loading datasets required
+setwd("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term2")
+load("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term2/StatisticalDataModeling/datasets.RData")
+```
+
+The first model we consider is the Linear Model (LM). Formally we write the LM through a random variable Yi. We need to decide a distribution that will respect the nature of the data. However a LM does not always allows it as it forces it to follow a normal(Gaussian) distribution.
+
+Yi ∼ N (μi, σ2), Yi independent.
+
+The normal distribution is specified through the mean μi and standard deviation σ
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# x values
+x <- seq(-5, 5, by = 0.1)
+# Getting probability density function
+y <- dnorm(x, mean = 0, sd = 1) ## standard normal distribution
+# Plotting normal distribution
+plot(x, y, type = 'l', xlab = 'x', ylab = 'Density', lwd = 2)
+
+```
+The mu(μ) tell us how high is the peak and the variance tell us the spread of the distribution
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+# Creates a pair plot, aka it allows showing 2 different plots at the same time.
+par(mfrow=c(1,2))
+# x values
+x <- seq(-10, 10, by = 0.1)
+# Getting probability density function
+y1 <- dnorm(x, mean = 0, sd = 1)
+y2 <- dnorm(x, mean = 4, sd = 1)
+y3 <- dnorm(x, mean = -4, sd = 1)
+# Plotting normal distributions with different means (they are more shifted to the right or left)
+plot(x, y1, type = 'l', xlab = 'x', ylab = 'Density', lwd = 2)
+lines(x, y2, col = 'blue', lwd = 2)
+lines(x, y3, col = 'red', lwd = 2)
+# Getting probability density function
+y1 <- dnorm(x, mean = 0, sd = 1)
+y2 <- dnorm(x, mean = 0, sd = 2)
+y3 <- dnorm(x, mean = 0, sd = 3)
+# Plotting normal distributions with different standard variantion (they have different peaks and spreads)
+plot(x, y1, type = 'l', xlab = 'x', ylab = 'Density', lwd = 2)
+lines(x, y2, col = 'blue', lwd = 2)
+lines(x, y3, col = 'red', lwd = 2)
+
+```
+LM assumes the variance is constant and the mean is a function of the covariants
+
+Yi ∼ N (μi, σ2), Yi indep.
+μi = β0 + β1xi
+
+The mean assumes a linear function in beta
+
+The mean is then assumes a linear function (in beta). Consider an example when yi is temperature and xi is
+continuous, say wind speed, then the above is a model that says temperature is normally distributed with a
+mean that depends (in a linear way) on wind speed. You would end up with a straight line, which signifies
+the mean.
+The for each value of x we have a distribution that is centered on the mean but has variability around that
+mean. For example if x = 25, then y = 25 − 0.3 × 25 = 17.5 so
+Y ∼ N (17.5, 2) when x = 25
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```

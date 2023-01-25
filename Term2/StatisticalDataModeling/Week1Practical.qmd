@@ -1,0 +1,178 @@
+---
+title: "Week1Practical"
+format: html
+editor: visual
+---
+
+```{r}
+# Loading datasets required
+
+load("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term2/StatisticalDataModeling/datasets.RData")
+
+#install.packages("plot3D")
+library(plot3D)
+```
+
+## Ex 1
+
+Show that the log-likelihood for this model (shown in the notes) is
+
+Yi ∼ Bin(Ni, πi) Yi indep.
+
+log( πi/(1 − πi()) = β0 + β1xi
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# N rows
+nrow(fish)
+
+# Summary
+summary(fish)
+
+# Top 12 rows
+head(fish, 12)
+```
+
+You can add options to executable code like this
+
+```{r}
+# Getting proportions
+fish$prop <- fish$escape/fish$total
+# Plotting proportion as a function of length
+plot(fish$length, fish$prop, pch = 20, xlab = 'Length (in cm)', ylab = 'Proportion escaping')
+```
+
+
+
+
+
+
+
+
+
+
+
+
+# Maximum Likelihood
+
+We have Ni, that is the number of fish,
+yi the number of fish that escaped and
+πi is the percentage of escaped fish, so yi / Ni
+
+Now what we need ti make it so πi is a function of fish length so it varies based on fish length.
+In Lm we equated it to the mean through a linear function πi = B0 +B1*xi
+
+Since πi is a fraction bounded between 0 and 1 it would be very hard to get a B0 and B1 that would guarantee that the πi is between 0 and 1.
+
+However using the logit (logarithm) function, we can stretch that interval from -infinity to 0
+
+(we had a 1 on the lower fraction part to garantee we never divide by 0)
+so we go from πi = e^(B0 +B1xi)/ 1 + e^(B0 +B1xi)
+by simplifying it with log (the log is removing it from the exponential)
+log(πi/1-πi) = B0 +B1xi
+
+
+```{r}
+# Inverse logit function with covariates
+inv_logit <- function(x,b0,b1){ exp(b0+b1*x)/(1+exp(b0+b1*x)) } ## here are are log transforming the fraction with the e^(LM)
+# Sequences of
+x <- seq(20,90,len=200)
+# Plotting output of inverse logit function for different betas
+plot(x,inv_logit(x, b0 = 20, b1 = -0.6), type = "l",lwd = 2,
+ylim = c(0, 1), ylab = "inv_logit(b0+b1x)")
+lines(x,inv_logit(x, b0 = 1, b1 = 0), lwd = 4,col = "red")
+lines(x,inv_logit(x, b0 = -20, b1 = 0.35), lwd = 4, col = "blue")
+
+```
+# Maximum Likelihood Estimation
+
+is a technique to estimate models
+
+```{r}
+fish.likelihood <- function (like_look = c(15, 25, -1, -0.4)){
+### Create a function to evaluate minus the log-likelihood
+likelihood <- function(beta){
+result <- sum(lchoose(fish$total, fish$escape)) + sum(fish$escape *
+(beta[1] + beta[2] * fish$length)) - sum(fish$total *
+log(1 + exp(beta[1] + beta[2] * fish$length)))
+return(result)
+}
+### Plot the likelihood surface
+## Create sequences of length 25 for beta0 and beta1 values to be used for plotting
+beta0grid <- seq(like_look[1], like_look[2], len = 25)
+beta1grid <- seq(like_look[3], like_look[4], len = 25)
+## Create a grid from those sequences (grid size is 25x25=625)
+grid <- expand.grid(beta0grid, beta1grid)
+## Create empty vector to store the value of the log-likelihood at each grid point
+like <- rep(0, 625)
+## For loop to calculate the likelihood at each gridpoint
+for (i in 1:625){
+like[i] = likelihood(as.numeric(grid[i, ]))
+}
+## Put the likelihood values into a matrix to use with the persp3D command
+like <- matrix(like, 25, 25)
+## Plot the 3D surface
+persp3D(beta0grid, beta1grid, like, theta = 240, phi = 20,
+ticktype = "detailed", xlab = "beta0", ylab = "beta1",
+zlab = "log likelihood", expand = 2/3, shade = 0.5)
+}
+
+# run the function
+fish.likelihood()
+
+```
+
+This plot has a surface for varying B0 and B1 values. According to the MLE we should take the values of B0 and B1 that maximise the surface (3d curve "plano curvilieno")
+
+
+
+```{r}
+
+
+```
+
+
+
+```{r}
+
+
+```
+
+```{r}
+
+
+```
+
+```{r}
+
+
+```
+
+```{r}
+
+
+```
+
+```{r}
+
+
+```
+
+```{r}
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
