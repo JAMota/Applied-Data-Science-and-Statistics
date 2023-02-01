@@ -131,6 +131,7 @@ DIC=FALSE, n.burnin=0,n.iter = 100000)
 
 print(jags.mod.fit.coin)
 
+## it becomes more accurate as we can see that the mean is closer to the expected real value of 5
 
 ```
 ## Exercise 2
@@ -153,16 +154,27 @@ xyplot(jagsfit.mcmc.coin)
 # get density estimate
 densityplot(jagsfit.mcmc.coin)
 
+## the outputs are somewhat close for 2 chains but the third one seems to not have converged
+
+
 ```
 ## Exercise 3
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 #model definition
-jags.mod.coin <- function(){
-Y ~ dbin(0.5,10) # our data model
-P8 <- ifelse(Y>7,1,0) # the probability of interest, aka 8 or higher out of 10
+jags.mod.clinicalTrial <- function(){
+Y ~ dbin(0.7,30) # our data model of prob 0.7 and 30 number of trials
+P15 <- ifelse(Y<15,1,0) # the probability of interest, aka 15 or less positive responses out of 30
 }
+
+jags.mod.fit.clinicalTrial <- jags(data = list(), model.file = jags.mod.clinicalTrial,
+parameters.to.save = c('Y','P15'),n.chains=3,
+DIC=FALSE, n.burnin=2000,n.iter = 10000) ## here we make DICE=False because our code does not contain the likelihood
+
+print(jags.mod.fit.clinicalTrial)
+
+# the probability of 15 or less trials is on average 0.006
 
 ```
 
@@ -170,27 +182,29 @@ P8 <- ifelse(Y>7,1,0) # the probability of interest, aka 8 or higher out of 10
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 #model definition with var 1 and sd 2
-jags.norm3 <- function(){
+jags.norm3 <- function(){ ## attention to how normal functions parameters are different in JAGS compared to R
 Y ~ dnorm(1,1/4) # 1/var=1 1/sd^2= 1/4
 x = Y^3
 }
 
 
-jags.mod.fit.coin <- jags(data = list(), model.file = jags.norm3,
-parameters.to.save = c('Y','P8'),n.chains=2,
+jags.mod.fit.norm3 <- jags(data = list(), model.file = jags.norm3,
+parameters.to.save = c('Y','X'),n.chains=3,
 DIC=FALSE, n.burnin=0,n.iter = 5000)
 
 # convert into MCMC object
-jagsfit.mcmc.coin <- as.mcmc(jags.mod.fit.coin)
+jagsfit.mcmc.norm3 <- as.mcmc(jags.mod.fit.norm3)
 # get numerical summary
-#summary(jagsfit.mcmc.coin)
+#summary(jagsfit.mcmc.norm3)
 
 ##need to change the entry variable
 # get trace plots
-xyplot(jagsfit.mcmc.coin)
+xyplot(jagsfit.mcmc.norm3)
 # get density estimate
-densityplot(jagsfit.mcmc.coin)
+densityplot(jagsfit.mcmc.norm3)
 
+
+summary(jagsfit.mcmc.norm3)
 
 
 ```
