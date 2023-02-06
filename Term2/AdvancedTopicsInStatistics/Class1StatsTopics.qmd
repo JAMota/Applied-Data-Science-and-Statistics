@@ -184,14 +184,21 @@ print(jags.mod.fit.clinicalTrial)
 #model definition with var 1 and sd 2
 jags.norm3 <- function(){ ## attention to how normal functions parameters are different in JAGS compared to R
 Y ~ dnorm(1,1/4) # 1/var=1 1/sd^2= 1/4
-x = Y^3
+X = Y^3
 }
 
 
 jags.mod.fit.norm3 <- jags(data = list(), model.file = jags.norm3,
-parameters.to.save = c('Y','X'),n.chains=3,
+parameters.to.save = c('X'),n.chains=3,
 DIC=FALSE, n.burnin=0,n.iter = 5000)
 
+# jags.mod.fit <- jags(data = list(), model.file = jags.mod.normal3,
+# parameters.to.save = c('x'),n.chains=1,
+# DIC=FALSE, n.burnin=0,n.iter = 10000)
+# print(jags.mod.fit[drop=F]) # look at mean of x
+
+
+############ all of these bellow are unecessary but there is not harm in checking the plots
 # convert into MCMC object
 jagsfit.mcmc.norm3 <- as.mcmc(jags.mod.fit.norm3)
 # get numerical summary
@@ -206,12 +213,38 @@ densityplot(jagsfit.mcmc.norm3)
 
 summary(jagsfit.mcmc.norm3)
 
+print(jags.mod.fit.norm3[drop=F])
+
+
+
 
 ```
+
+```{r, echo=FALSE, eval=FALSE}
+
+## DORKA solutions for ex 4
+jags.mod.normal3 <- function(){
+y ~ dnorm(1,1/4) # our data model
+x <- y^3
+}
+jags.mod.fit <- jags(data = list(), model.file = jags.mod.normal3,
+parameters.to.save = c('x'),n.chains=1,
+DIC=FALSE, n.burnin=0,n.iter = 10000)
+print(jags.mod.fit[drop=F]) # look at mean of x
+```
+## Trace plot note
 We need to check both the trace plots and the coefficients to check for the scale reduction factor, sometimes the factor will be good but we have no conversion.
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+## Drug trial exercise without data
 
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+### Drug example in JAGS
+# model
+jags.mod.drug <- function(){
+theta ~ dbeta(9.2,13.8) # prior for the unknown parameter
+y ~ dbin(theta,20) # the data model, since it is a positive or negative we use the binomail for the 20 trials
+P.crit <- ifelse(y>=15,1,0) # quantity of interest, we want to know how the probability of at least 15 positives
+}
 
 
 ```
