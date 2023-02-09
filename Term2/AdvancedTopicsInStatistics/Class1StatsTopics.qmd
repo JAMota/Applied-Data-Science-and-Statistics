@@ -251,8 +251,14 @@ P.crit <- ifelse(y>=15,1,0) # quantity of interest, we want to know how the prob
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+##Even though we don’t have any available data, monitoring the parameters y and P.crit will allow us to
+##plot the predictive distribution of y, and get a point estimate for the predictive probability that 15 or more
+##patients will experience a positive response.
 
 
+jags.mod.fit.drug <- jags(data = list(), n.iter = 100000, DIC=FALSE, ## large ammount of iterations
+parameters.to.save = c('theta','y','P.crit'),
+model.file = jags.mod.drug,n.chains=1)
 
 ```
 

@@ -1,0 +1,51 @@
+---
+title: "506CourseWork"
+format: html
+editor: visual
+---
+
+## For the love of god don't forget
+
+Do not display too much raw R output (e.g. don’t display the full output of
+‘summary(model)’), but edit this down to the essentials. Ensure to include justification for each step of your
+analyses, providing comments alongside your R code to explain what you are doing and add appropriate titles
+and labelled axes to your plots.
+
+
+## Question 1
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE}
+
+load("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term2/StatisticalDataModeling/datasets_exercises_Assessment.RData")
+
+## https://upyesp.org/posts/makrdown-vscode-math-notation/ // cheat worksheet
+```
+
+We have the model: 
+
+$Yi$ ~ $N(\frac{\theta1xi}{\theta2 + xi}$, $\sigma^2)$
+
+## Question 1 a)
+
+Due to the visible non-linearity of the model, we would be required to significantly transform our data to get a linear model that would have an acceptable fit of the data. We can also see that the response data seems to be only positive while a normal distribution goes from ]-$\infty$,$\infty$[ . Such arbitrary transformation increases the complexity of the model, making it less interpretable and not respect the nature of the data.
+
+//should I talk about the increase in variance or is it only topic 2?
+
+
+
+## Question 1 b)
+
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is
+displayed).
