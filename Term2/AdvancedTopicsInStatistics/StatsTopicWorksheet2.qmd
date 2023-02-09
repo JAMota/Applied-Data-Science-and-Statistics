@@ -1,0 +1,378 @@
+---
+title: "StatsTopicWorksheet2"
+format: html
+editor: visual
+---
+
+## Quarto
+
+Udeni ∼ N (μi, σ2)
+μi = b0 + b1(LeftGi − LeftG) + b2(LabFi − LabF) + b3(IndCi − IndC)
+with vague priors
+1/σ2 ∼ Gamma(0.001, 0.001)
+b0 ∼ N (0, 100000)
+b1 ∼ N (0, 100000)
+b2 ∼ N (0, 100000)
+b3 ∼ N (0, 100000)
+
+
+```{r, echo=FALSE}
+library(R2jags)
+library(coda)
+library(lattice)
+library(MCMCvis)
+library(tidyverse)
+```
+
+
+
+
+```{r}
+jags.mod <- function(){
+for(i in 1:20){
+Uden[i]~dnorm(mu[i],tau) # normal likelihood
+# linear predictor with centred covariates
+mu[i] <- b0+b[1]*(LeftG[i]-mean(LeftG[]))+
+b[2]*(LabF[i]-mean(LabF[]))+b[3]*(IndC[i]-mean(IndC[])) ## here we are setting the coefficients as coefficient vectors so when setting up the prior we don't need a new line for each predictor
+}
+# prior on residual error variance
+tau ~ dgamma(0.001,0.001)
+sigma2 <- 1/tau # residual error variance, we are making JAGS compute the variance
+# vagues priors on regression coefficients
+b0 ~ dnorm(0,0.00001)
+for(k in 1:3){
+b[k] ~ dnorm(0,0.00001)
+}
+}
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# data the data matrix
+dat <- c(82.4,8.28,111.84,1.55,80.0,6.90,73.17,1.71,
+74.2,4.39,17.25,2.06,73.3,7.62,59.33,1.56,
+71.9,8.12,43.25,1.52,69.8,7.71,90.24,1.52,
+68.1,6.79,0.00,1.75,65.6,7.81,48.67,1.53,
+59.4,6.96,60.00,1.64,58.9,7.41,83.08,1.58,
+51.4,8.60,33.74,1.37,50.6,9.67,0.00,0.86,
+48.0,10.16,43.67,1.13,39.6,10.04,35.33,0.92,
+37.7,8.41,31.50,1.25,35.4,7.81,11.87,1.68,
+31.2,9.26,0.00,1.35,31.0,10.59,1.92,1.11,
+28.2,9.84,8.67,0.95,24.5,11.44,0.00,1.00)
+
+dat <-matrix(dat,nrow=20,ncol=4,byrow=TRUE)
+
+Uden <- dat[,1]
+LabF <- dat[,2]
+LeftG <- dat[,3]
+IndC <- dat[,4]
+
+# define the list that JAGS needs
+jags.data <- list('Uden','LabF','LeftG','IndC')
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# Parameters we want to monitor
+jags.param <- c('b0','b') ## we shoudl also monitor , 'tau', 'mu'
+
+# Specify initial values
+inits1 <- list('tau' = 100, 'b0' = 20, 'b'=c(10,-5,-25))
+inits2 <- list('tau'=100000,'b0'=-100,'b'=c(-100,100,500)) ## 2 chains so we can check for convergence and remember that the values have to be different between the chains
+jags.inits <- list(inits1, inits2)
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# Fit the JAGS model
+jags.mod.fit <- jags(data = jags.data, inits = jags.inits,
+parameters.to.save = jags.param, n.chains = 2, n.iter = 6000,
+n.burnin = 500,n.thin=1,model.file = jags.mod,DIC=FALSE)
+
+##1 traceplots
+jagsfit.mcmc <- as.mcmc(jags.mod.fit)
+MCMCtrace(jagsfit.mcmc,type = 'trace',ind = TRUE, pdf = FALSE)
+
+
+##2 scale reduction
+gelman.diag(jagsfit.mcmc)
+
+##if there hasn't been convergence yet we can add more iterations without having to start from scratch
+jags.mod.fit.upd <- update(jags.mod.fit, n.iter=10000)
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# summary statistics:
+print(jags.mod.fit)
+## or if the samples have been updated:
+# print(jags.mod.fit.upd)
+
+summary(jagsfit.mcmc)
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## we can include a specific amount of parameters for the density in a vector  which is very useful when there are 50 plus parameters traceplots
+# posterior density
+MCMCtrace(jagsfit.mcmc,
+params=c('b\\[2\\]'),
+type = 'density',
+ind = TRUE, ISB = FALSE,
+exact=FALSE,pdf = FALSE)
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## the moment we extra the relevant information we can have more options for visualization
+# boxplot
+beta <- as.data.frame(jags.mod.fit$BUGSoutput$sims.list$b)
+colnames(beta) <- c("b1","b2","b3")
+boxplot(beta,outline=FALSE)
+
+```
+## Exercise 2
+
+it does not change anything because JAGS will centre automatically to boost convergence
+
+
+## Exercise 3 
+
+When we want to set up different priors we have to set them manually and cannot use the foor loop
+
+```{r}
+jags.mod <- function(){
+for(i in 1:20){
+Uden[i]~dnorm(mu[i],tau) # normal likelihood
+# linear predictor with centred covariates
+mu[i] <- b0+b[1]*(LeftG[i]-mean(LeftG[]))+
+b[2]*(LabF[i]-mean(LabF[]))+b[3]*(IndC[i]-mean(IndC[])) ## here we are setting the coefficients as coefficient vectors so when setting up the prior we don't need a new line for each predictor
+}
+# prior on residual error variance
+tau ~ dgamma(0.001,0.001)
+sigma2 <- 1/tau # residual error variance, we are making JAGS compute the variance
+# vagues priors on regression coefficients
+b0 ~ dnorm(0,0.00001)
+
+b[1] ~ dnorm(0.3,1/0.15^2)
+b[2] ~ dnorm(-5,1/2.5^2)
+b[3] ~ dnorm(0,0.00001)
+
+}
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# data the data matrix
+dat <- c(82.4,8.28,111.84,1.55,80.0,6.90,73.17,1.71,
+74.2,4.39,17.25,2.06,73.3,7.62,59.33,1.56,
+71.9,8.12,43.25,1.52,69.8,7.71,90.24,1.52,
+68.1,6.79,0.00,1.75,65.6,7.81,48.67,1.53,
+59.4,6.96,60.00,1.64,58.9,7.41,83.08,1.58,
+51.4,8.60,33.74,1.37,50.6,9.67,0.00,0.86,
+48.0,10.16,43.67,1.13,39.6,10.04,35.33,0.92,
+37.7,8.41,31.50,1.25,35.4,7.81,11.87,1.68,
+31.2,9.26,0.00,1.35,31.0,10.59,1.92,1.11,
+28.2,9.84,8.67,0.95,24.5,11.44,0.00,1.00)
+
+dat <-matrix(dat,nrow=20,ncol=4,byrow=TRUE)
+
+Uden <- dat[,1]
+LabF <- dat[,2]
+LeftG <- dat[,3]
+IndC <- dat[,4]
+
+# define the list that JAGS needs
+jags.data <- list('Uden','LabF','LeftG','IndC')
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# Parameters we want to monitor
+jags.param <- c('b0','b') ## we shoudl also monitor , 'tau', 'mu'
+
+# Specify initial values
+inits1 <- list('tau' = 100, 'b0' = 20, 'b'=c(10,-5,-25))
+inits2 <- list('tau'=100000,'b0'=-100,'b'=c(-100,100,500)) ## 2 chains so we can check for convergence and remember that the values have to be different between the chains
+jags.inits <- list(inits1, inits2)
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# Fit the JAGS model
+jags.mod.fit <- jags(data = jags.data, inits = jags.inits,
+parameters.to.save = jags.param, n.chains = 2, n.iter = 6000,
+n.burnin = 500,n.thin=1,model.file = jags.mod,DIC=FALSE)
+
+##1 traceplots
+jagsfit.mcmc <- as.mcmc(jags.mod.fit)
+MCMCtrace(jagsfit.mcmc,type = 'trace',ind = TRUE, pdf = FALSE)
+
+
+##2 scale reduction
+gelman.diag(jagsfit.mcmc)
+
+##if there hasn't been convergence yet we can add more iterations without having to start from scratch
+jags.mod.fit.upd <- update(jags.mod.fit, n.iter=10000)
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# summary statistics:
+print(jags.mod.fit)
+## or if the samples have been updated:
+# print(jags.mod.fit.upd)
+
+summary(jagsfit.mcmc)
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## we can include a specific amount of parameters for the density in a vector  which is very useful when there are 50 plus parameters traceplots
+# posterior density
+MCMCtrace(jagsfit.mcmc,
+params=c('b\\[2\\]'),
+type = 'density',
+ind = TRUE, ISB = FALSE,
+exact=FALSE,pdf = FALSE)
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## the moment we extra the relevant information we can have more options for visualization
+# boxplot
+beta <- as.data.frame(jags.mod.fit$BUGSoutput$sims.list$b)
+colnames(beta) <- c("b1","b2","b3")
+boxplot(beta,outline=FALSE)
+
+```
+
+## Exercise 4
+
+
+
+
+
+
+
+
+
+##################################################### DUGONGS ###########################################
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# age of dugongs
+x <- c( 1.0, 1.5, 1.5, 1.5, 2.5, 4.0, 5.0, 5.0, 7.0,
+8.0, 8.5, 9.0, 9.5, 9.5, 10.0, 12.0, 12.0, 13.0,
+13.0, 14.5, 15.5, 15.5, 16.5, 17.0, 22.5, 29.0, 31.5)
+# length of dugongs
+Y = c(1.80, 1.85, 1.87, 1.77, 2.02, 2.27, 2.15, 2.26, 2.47,
+2.19, 2.26, 2.40, 2.39, 2.41, 2.50, 2.32, 2.32, 2.43,
+2.47, 2.56, 2.65, 2.47, 2.64, 2.56, 2.70, 2.72, 2.57)
+# number of measurements
+N = 27
+# add above to a list for JAGS
+jags.data <- list("x","Y", "N")
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+jags.mod <- function(){
+for (i in 1 : N) {
+Y[i] ~ dnorm(mu[i],tau)
+mu[i] <- alpha-beta*gammaˆx[i]
+}
+# priors
+alpha ~ dunif(0,100)
+beta ~ dunif(0,100)
+gamma ~ dunif(0,1.0)
+tau ~ dgamma(0.001,0.001)
+sigma <- 1/sqrt(tau)
+}
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# parameters we want to monitor
+jags.param <- c("mu","alpha","beta","gamma","sigma")
+# mu is essentially the fitted model
+# alpha, beta, gamma and sigma are parameters
+# Initial values for the parameters
+inits1 <- list(alpha = 1, beta = 1, tau=1, gamma = 0.9)
+inits2 <- list(alpha = 10, beta = 3, tau=5, gamma = 0.1)
+jags.inits <- list(inits1, inits2)
+# Fit JAGS
+jags.mod.fit <- jags(data = jags.data, inits = jags.inits,
+parameters.to.save = jags.param, n.chains = 2, n.iter = 10000,
+n.burnin = 1000,n.thin=1,model.file = jags.mod)
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# convert into MCMC object
+jagsfit.mcmc <- as.mcmc(jags.mod.fit)
+# produce traceplots
+MCMCtrace(jagsfit.mcmc,type = 'trace',ind = TRUE, pdf = FALSE)
+# GR diagnostics
+gelman.diag(jagsfit.mcmc,multivariate = FALSE)
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# summary statistics
+print(jags.mod.fit)
+# extract position of the mu parameters
+# (check which rownames start with mu)
+pos <- substr(rownames(jags.mod.fit$BUGSoutput$summary),1,2)=='mu'
+# extract posterior mean for mu
+mu <- jags.mod.fit$BUGSoutput$summary[pos,1]
+# extract 2.5 percentile of the posterior
+lcr <- jags.mod.fit$BUGSoutput$summary[pos,3]
+# extract 97.5 percentile of the posterior
+ucr <- jags.mod.fit$BUGSoutput$summary[pos,7]
+
+# add these to a dataframe (note that x and Y are our data)
+df <- data.frame(x=x,y=Y,mu=mu,lower=lcr,upper=ucr)
+# finally plot the output
+ggplot(data=df) +
+geom_point(aes(x=x,y=y))+
+geom_line(aes(x=x,y=mu))+
+geom_line(aes(x=x,y=lower),linetype = "dashed",colour="red")+
+geom_line(aes(x=x,y=upper),linetype = "dashed",colour="red")
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```

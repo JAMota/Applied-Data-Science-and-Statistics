@@ -36,6 +36,20 @@ Due to the visible non-linearity of the model, we would be required to significa
 ## Question 1 b)
 
 
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
 ```{r}
 1 + 1
 ```

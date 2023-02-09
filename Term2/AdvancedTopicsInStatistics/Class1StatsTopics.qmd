@@ -269,11 +269,51 @@ model.file = jags.mod.drug,n.chains=1)
 
 ```
 
+## Fying bombs
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+## the gamma distribution is good for when we need a vague prior with only positives values on the real line (IR)
+
+##model
+
+jags.mod.bomb <- function(){
+
+##likelihood
+for (i in 1:N) {
+  y[i] ~ dpois(lambda) ## the likelihood is only to set up what distribution our data follows
+}
+
+##prior
+
+lambda ~ dgamma(0.001,0.001)
+
+} ## ends the model definition
+
+y <- c(rep(0,229),rep(1,211),rep(2,93),rep(3,35),rep(4,7),rep(7,1)) ## definite our dataset/occurrences
+N <- length(y)
+bomb.data <- list('N','y')
+
+# initial values (for 2 chains)
+
+## since the values we got from the occurrences we can see that the values are very low
+bomb.inits1 <- list('lambda'=0.8)
+bomb.inits2 <- list('lambda'=1)
+bomb.inits <- list(bomb.inits1,bomb.inits2)
+
+# parameters to monitor
+jags.param <- c('lambda')
+
+# model fit
+jags.mod.fit.bomb <- jags(data = bomb.data, inits = bomb.inits,
+  parameters.to.save = jags.param, n.chains = 2,
+  n.iter = 10000, model.file = jags.mod.bomb) ## if we don't set our burning and thinning parameters JAGS will chose these for us automatically and they may not always be the best values
 
 
+# look at numerical summary
+print(jags.mod.fit.bomb)
+# point estimate for the parameter is 0.933                   
+                   
 ```
 
 
