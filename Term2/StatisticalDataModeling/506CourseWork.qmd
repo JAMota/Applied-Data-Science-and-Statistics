@@ -27,7 +27,15 @@ $Yi$ ~ $N(\frac{\theta1xi}{\theta2 + xi}$, $\sigma^2)$
 
 ## Question 1 a)
 
-Due to the visible non-linearity of the model, we would be required to significantly transform our data to get a linear model that would have an acceptable fit of the data. We can also see that the response data seems to be only positive while a normal distribution goes from ]-$\infty$,$\infty$[ . Such arbitrary transformation increases the complexity of the model, making it less interpretable and not respect the nature of the data.
+##Due to the visible non-linearity of the model, we would be required to significantly transform our data to get a linear model that would have an acceptable fit of the data. We can also see that the response data seems to be only positive while a normal distribution goes from ]-$\infty$,$\infty$[ . Such arbitrary transformation increases the complexity of the model, making it less interpretable and not respect the nature of the data.
+
+
+Linear regression models are based on the assumption that the relationship between the independent and dependent variables is linear. If the relationship between the variables is non-linear, a linear regression model may not be appropriate to use. In such cases, transforming the data to make the relationship linear may not result in an accurate representation of the true relationship, and can lead to overfitting or underfitting. Additionally, transforming the data can result in a loss of interpretability of the results, as it can be difficult to understand the meaning of the transformed variables.
+
+Another issue with using a linear regression model for non-linear data is that the residuals, which represent the difference between the observed and predicted values, may not be normally distributed, which is another assumption of linear regression models. This can lead to biased or incorrect results.
+
+In conclusion, when the data is non-linear, a linear regression model may not be the best choice for modeling the relationship between the variables, and alternative methods need to be considered.
+
 
 //should I talk about the increase in variance or is it only topic 2?
 
