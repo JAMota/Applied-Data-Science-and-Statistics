@@ -27,7 +27,7 @@ $Yi$ ~ $N(\frac{\theta1xi}{\theta2 + xi}$, $\sigma^2)$
 
 ## Question 1 a)
 
-##Due to the visible non-linearity of the model, we would be required to significantly transform our data to get a linear model that would have an acceptable fit of the data. We can also see that the response data seems to be only positive while a normal distribution goes from ]-$\infty$,$\infty$[ . Such arbitrary transformation increases the complexity of the model, making it less interpretable and not respect the nature of the data.
+Due to the visible non-linearity of the model, we would be required to significantly transform our data to get a linear model that would have an acceptable fit of the data. We can also see that the response data seems to be only positive while a normal distribution goes from ]-$\infty$,$\infty$[ . Such arbitrary transformation increases the complexity of the model, making it less interpretable and not respect the nature of the data.
 
 
 Linear regression models are based on the assumption that the relationship between the independent and dependent variables is linear. If the relationship between the variables is non-linear, a linear regression model may not be appropriate to use. In such cases, transforming the data to make the relationship linear may not result in an accurate representation of the true relationship, and can lead to overfitting or underfitting. Additionally, transforming the data can result in a loss of interpretability of the results, as it can be difficult to understand the meaning of the transformed variables.
@@ -51,6 +51,8 @@ In conclusion, when the data is non-linear, a linear regression model may not be
 
 ```
 
+## Question 1 c)
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -58,16 +60,53 @@ In conclusion, when the data is non-linear, a linear regression model may not be
 
 ```
 
-```{r}
-1 + 1
+## Question 1 d)
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
 ```
 
-You can add options to executable code like this
 
-```{r}
-#| echo: false
-2 * 2
+## Question 2 
+
+Model 1:
+
+$Yi$ ~ $Pois(\lambda i)$
+
+$log(\lambda i) = \beta0 + \beta1 xi$
+
+Model 2:
+
+$Yi$ ~ $N(\mu i,\sigma^2)$
+
+$log(\mu i) = \gamma0 +\gamma1 xi$
+
+## Question 2 a)
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
 ```
 
-The `echo: false` option disables the printing of code (only output is
-displayed).
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
