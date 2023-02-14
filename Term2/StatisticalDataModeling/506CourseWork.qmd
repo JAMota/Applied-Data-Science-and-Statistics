@@ -34,7 +34,7 @@ Linear regression models are based on the assumption that the relationship betwe
 
 Another issue with using a linear regression model for non-linear data is that the residuals, which represent the difference between the observed and predicted values, may not be normally distributed, which is another assumption of linear regression models. This can lead to biased or incorrect results.
 
-In conclusion, when the data is non-linear, a linear regression model may not be the best choice for modeling the relationship between the variables, and alternative methods need to be considered.
+In conclusion, when the data is non-linear, a linear regression model may not be the best choice for modelling the relationship between the variables, and alternative methods need to be considered.
 
 
 //should I talk about the increase in variance or is it only topic 2?
@@ -86,10 +86,28 @@ $log(\mu i) = \gamma0 +\gamma1 xi$
 
 ## Question 2 a)
 
+As we can from the graph and what we can determine from the nature of the data represented in such graph the recorded number of AIDS cases is a count variable and the counts are non-negative integers.
+
+The first model, a Poisson distribution, would be a more appropriate choice. The Poisson distribution is a discrete distribution that models count data which respects the nature of the data 
+
+The second model, a Normal distribution, would not be the best fit since its range is from ]-$\infty$,$\infty$[ and expects continuous values, not respecting the nature of the data.
+
+The log-link function in both models ensures that the predicted values are always positive. // redo this pls
+
+
+## Question 2 b)
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-
+# Getting log(cells)
+dicentric$logcells <- log(dicentric$cells)
+# Fit the model
+pois.model <- glm(ca ~ offset(logcells) + doseamt + doserate,
+data = dicentric,
+family = poisson(link="log"))
+# Summarise the model
+summary(pois.model)
 
 ```
 
