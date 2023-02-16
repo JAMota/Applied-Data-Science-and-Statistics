@@ -22,6 +22,8 @@ library(coda)
 library(lattice)
 library(MCMCvis)
 library(tidyverse)
+library(ggmcmc)
+#install.packages("ggmcmc")
 ```
 
 
