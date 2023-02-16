@@ -1,0 +1,122 @@
+---
+title: "Stats Classification week 5 topic 3"
+format: html
+editor: visual
+---
+
+## Topic 3 ML Classification
+
+In the assignment she wants us to check the class specific performance/accuracy
+
+
+```{r}
+library(caret) # function for creating train/test datasets, and confusion matrices
+library(class) # this has the knn function
+library(ggplot2)
+data(iris)
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# Split test/train
+set.seed(12345) # for reproducibility
+
+ii <- createDataPartition(iris[, 5], p=.7, list=F) ## returns indices for train data
+
+# split the data using the indices returned by the createDataPartition function
+xTrain <- iris[ii, 1:4] # predictors for training
+yTrain <- iris[ii, 5] # class label for training
+xTest <- iris[-ii, 1:4] # predictors for testing
+yTest <- iris[-ii, 5] # class label for testing
+
+# check the dimensions (is the split is indeed 70-30%?)
+dim(xTrain)
+dim(xTest)
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# fit the model
+fit = knn(train=xTrain,test=xTest,cl=yTrain,k=3)
+# fit = knn(xTrain,xTest,yTrain,k=3)
+
+# produce the confusion matrix
+confusionMatrix(fit,yTest)
+# when numbers are used as class labels we might need
+# confusionMatrix(as.factor(fit),as.factor(yTest))
+
+
+```
+Here the Sensitivity and Specificity are not the same as in the binary sense in the start of the worksheet, here we we do the predicted value vs all the other values.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# Set training options
+# Repeat 5-fold cross-validation, ten times
+opts <- trainControl(method='repeatedcv', number=10, repeats=5)
+
+# Find optimal k (model), using the train function we are passing the entire training set and specify the method
+mdl <- train(x=xTrain, y=yTrain, # training data
+method='knn', # machine learning model
+trControl=opts, # training options
+tuneGrid=data.frame(k=seq(2, 15))) # range of k's to try, we tell R which Ks it should consider
+print(mdl) # print the outcome
+
+```
+As we increase k the bias gets higher and higher, so in the beginning the variance we get at the begining will be worth the bias sacrifice but after a while it is just detrimental when k is a high number
+K should be a reasonably low value
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# Test model on testing data
+yTestPred <- predict(mdl, newdata=xTest)
+confusionMatrix(yTestPred, yTest) # predicted/true
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+```{r}
+
+```
+
+The `echo: false` option disables the printing of code (only output is
+displayed).

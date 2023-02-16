@@ -1,0 +1,2 @@
+In the assignment she wants us to check the class specific performance and accuracy not just
+the overall model performance

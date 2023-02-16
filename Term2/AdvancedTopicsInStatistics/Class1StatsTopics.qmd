@@ -315,6 +315,9 @@ print(jags.mod.fit.bomb)
 # point estimate for the parameter is 0.933                   
                    
 ```
+```{r}
+
+```
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
