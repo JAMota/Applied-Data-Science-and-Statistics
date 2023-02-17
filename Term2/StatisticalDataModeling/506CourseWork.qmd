@@ -6,11 +6,11 @@ editor: visual
 
 ## For the love of god don't forget
 
-Do not display too much raw R output (e.g. don’t display the full output of
-‘summary(model)’), but edit this down to the essentials. Ensure to include justification for each step of your
-analyses, providing comments alongside your R code to explain what you are doing and add appropriate titles
-and labelled axes to your plots.
-
+Do not display too much raw R output (e.g. don't display the full output
+of 'summary(model)'), but edit this down to the essentials. Ensure to
+include justification for each step of your analyses, providing comments
+alongside your R code to explain what you are doing and add appropriate
+titles and labelled axes to your plots.
 
 ## Question 1
 
@@ -19,31 +19,52 @@ and labelled axes to your plots.
 load("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term2/StatisticalDataModeling/datasets_exercises_Assessment.RData")
 
 ## https://upyesp.org/posts/makrdown-vscode-math-notation/ // cheat worksheet
+
+library(ggplot2)
 ```
 
-We have the model: 
+We have the model:
 
-$Yi$ ~ $N(/frac{/theta1xi}{/theta2 + xi}$, $/sigma^2)$
+$Yi$ ~ $N(\frac{\theta1xi}{\theta2 + xi}$, $\sigma^2)$
 
 ## Question 1 a)
 
-Due to the visible non-linearity of the model, we would be required to significantly transform our data to get a linear model that would have an acceptable fit of the data. We can also see that the response data seems to be only positive while a normal distribution goes from ]-$/infty$,$/infty$[ . Such arbitrary transformation increases the complexity of the model, making it less interpretable and not respect the nature of the data.
+Due to the visible non-linearity of the model, we would be required to
+significantly transform our data to get a linear model that would have
+an acceptable fit of the data. We can also see that the response data
+seems to be only positive while a normal distribution goes from
+\]-$\infty$,$\infty$\[ . Such arbitrary transformation increases the
+complexity of the model, making it less interpretable and not respect
+the nature of the data.
 
+Linear regression models are based on the assumption that the
+relationship between the independent and dependent variables is linear.
+If the relationship between the variables is non-linear, a linear
+regression model may not be appropriate to use. In such cases,
+transforming the data to make the relationship linear may not result in
+an accurate representation of the true relationship, and can lead to
+overfitting or underfitting. Additionally, transforming the data can
+result in a loss of interpretability of the results, as it can be
+difficult to understand the meaning of the transformed variables.
 
-Linear regression models are based on the assumption that the relationship between the independent and dependent variables is linear. If the relationship between the variables is non-linear, a linear regression model may not be appropriate to use. In such cases, transforming the data to make the relationship linear may not result in an accurate representation of the true relationship, and can lead to overfitting or underfitting. Additionally, transforming the data can result in a loss of interpretability of the results, as it can be difficult to understand the meaning of the transformed variables.
+Another issue with using a linear regression model for non-linear data
+is that the residuals, which represent the difference between the
+observed and predicted values, may not be normally distributed, which is
+another assumption of linear regression models. This can lead to biased
+or incorrect results.
 
-Another issue with using a linear regression model for non-linear data is that the residuals, which represent the difference between the observed and predicted values, may not be normally distributed, which is another assumption of linear regression models. This can lead to biased or incorrect results.
-
-In conclusion, when the data is non-linear, a linear regression model may not be the best choice for modelling the relationship between the variables, and alternative methods need to be considered.
-
+In conclusion, when the data is non-linear, a linear regression model
+may not be the best choice for modelling the relationship between the
+variables, and alternative methods need to be considered.
 
 //should I talk about the increase in variance or is it only topic 2?
 
-
-
 ## Question 1 b)
 
+The Yi are independent so the likelihood is a product of the individual
+pdfs.
 
+$Y$ ~ $N(\frac{\theta1 xi}{\theta2+xi})$
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -53,7 +74,6 @@ In conclusion, when the data is non-linear, a linear regression model may not be
 
 ## Question 1 c)
 
-
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 
@@ -62,45 +82,49 @@ In conclusion, when the data is non-linear, a linear regression model may not be
 
 ## Question 1 d)
 
-
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 
 
 ```
 
-
-## Question 2 
+## Question 2
 
 Model 1:
 
-$Yi$ ~ $Pois(/lambda i)$
+$Yi$ \~ $Pois(\lambda i)$
 
-$log(/lambda i) = /beta0 + /beta1 xi$
+$log(\lambda i) = \beta0 + \beta1 xi$
 
 Model 2:
 
-$Yi$ ~ $N(/mu i,/sigma^2)$
+$Yi$ \~ $N(\mu i,\sigma^2)$
 
-$log(/mu i) = /gamma0 +/gamma1 xi$
+$log(\mu i) = \gamma0 +\gamma1 xi$
 
 ## Question 2 a)
 
-As we can from the graph and what we can determine from the nature of the data represented in such graph the recorded number of AIDS cases is a count variable and the counts are non-negative integers.
+As we can from the graph and what we can determine from the nature of
+the data represented in such graph the recorded number of AIDS cases is
+a count variable and the counts are non-negative integers.
 
-The first model, a Poisson distribution, would be a more appropriate choice. The Poisson distribution is a discrete distribution that models count data which respects the nature of the data 
+The first model, a Poisson distribution, would be a more appropriate
+choice. The Poisson distribution is a discrete distribution that models
+count data which respects the nature of the data
 
-The second model, a Normal distribution, would not be the best fit since its range is from ]-$/infty$,$/infty$[ and expects continuous values, not respecting the nature of the data.
+The second model, a Normal distribution, would not be the best fit since
+its range is from \]-$\infty$,$\infty$\[ and expects continuous values,
+not respecting the nature of the data.
 
-The log-link function in both models ensures that the predicted values are always positive. // redo this pls
-
+The log-link function in both models ensures that the predicted values
+are always positive. // redo this pls
 
 ## Question 2 b)
 
-The Yi are independent so the likelihood is a product of the individual pdfs.
+The Yi are independent so the likelihood is a product of the individual
+pdfs.
 
 $L(\theta1,theta2,\sigma^2;y,x)$
-
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 #Fitting in R 
@@ -128,9 +152,6 @@ summary(model1)
 
 ```
 
-
-
-
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 ##plotting the models
@@ -149,9 +170,6 @@ confint(model2, level = 1-0.05)
 
 ```
 
-
-
-
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 #As we are modelling an unbounded count we use Poisson distribution. The data increases exponentially so we use a log-link with a model linear in time.
@@ -160,7 +178,6 @@ confint(model2, level = 1-0.05)
 
 
 ```
-
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, eval=FALSE}
 ## only testing here won't show up in the final report
