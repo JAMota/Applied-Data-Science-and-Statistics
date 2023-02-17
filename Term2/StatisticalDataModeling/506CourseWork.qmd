@@ -99,15 +99,30 @@ The log-link function in both models ensures that the predicted values are alway
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+#Fitting in R 
+#model < −glm(< response >∼< covariates >,data = <data>, family = gaussian(link=’identity’))
+#model <- glm(<response> ∼ <covariates>, data = <data>, family = poisson(link=’log’))
 
-# Getting log(cells)
-dicentric$logcells <- log(dicentric$cells)
-# Fit the model
-pois.model <- glm(ca ~ offset(logcells) + doseamt + doserate,
-data = dicentric,
-family = poisson(link="log"))
+
+# Fitting model 2
+# pois.model <- glm(ca ~ offset(logcells) + doseamt + doserate,
+# data = dicentric,
+# family = poisson(link="log"))
+
+model2 = glm(cases ~ date, data = aids, family = poisson(link='log'))
+
 # Summarise the model
-summary(pois.model)
+summary(model2)
+
+plot(model2)
+
+#Fitting model 1
+model1 = glm(cases ~ date, data = aids, family = gaussian(link='identity'))
+
+# Summarise the model
+summary(model2)
+
+plot(model2)
 
 ```
 
@@ -115,6 +130,11 @@ summary(pois.model)
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+##plotting the models
+
+ggplot(aids, aes(x= date, y = cases)) +
+  geom_point()
 
 
 
