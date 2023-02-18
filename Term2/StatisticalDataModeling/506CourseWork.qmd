@@ -18,7 +18,7 @@ titles and labelled axes to your plots.
 
 load("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term2/StatisticalDataModeling/datasets_exercises_Assessment.RData")
 
-## https://upyesp.org/posts/makrdown-vscode-math-notation/ // cheat worksheet
+## https://tilburgsciencehub.com/building-blocks/collaborate-and-share-your-work/write-your-paper/amsmath-latex-cheatsheet/ // cheat worksheet
 
 library(ggplot2)
 ```
@@ -33,7 +33,7 @@ Due to the visible non-linearity of the model, we would be required to
 significantly transform our data to get a linear model that would have
 an acceptable fit of the data. We can also see that the response data
 seems to be only positive while a normal distribution goes from
-\]-$\infty$,$\infty$\[ . Such arbitrary transformation increases the
+]-$\infty$,$\infty$[ . Such arbitrary transformation increases the
 complexity of the model, making it less interpretable and not respect
 the nature of the data.
 
@@ -65,6 +65,13 @@ The Yi are independent so the likelihood is a product of the individual
 pdfs.
 
 $Y$ ~ $N(\frac{\theta1 xi}{\theta2+xi})$
+
+The likelihood is:
+$L(\beta0,\beta1,\sigma^2;x,y)$ = $\prod_{i=1}^{n}$ $p(\beta0,\beta1,\sigma^2;x,y)$ = 
+
+$(\overset{Ni}{yi})$
+
+The log-likelihood
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
