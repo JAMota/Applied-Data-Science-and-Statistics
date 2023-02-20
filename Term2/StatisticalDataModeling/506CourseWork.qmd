@@ -1,6 +1,8 @@
 ---
 title: "506CourseWork"
-format: html
+format:
+  html:
+    toc: true
 editor: visual
 ---
 
@@ -61,31 +63,59 @@ variables, and alternative methods need to be considered.
 
 // make a graph to show the data is not linear
 
-//should I talk about the increase in variance or is it only topic 2?
+<!-- //should I talk about the increase in variance or is it only topic 2? Not really because we don't have enough data at the start of the graph -->
 
 ## Question 1 b)
 
 The Yi are independent so the likelihood is a product of the individual
 pdfs.
 
-$Y$ ~ $N(\frac{\theta1 xi}{\theta2+xi})$
+## TODO GET BETTER WORDING FOR THE REPLACE PART 
 
-Likelihood of a normal distribution where $L(\mu,\sigma^2,x1...xn) = (2\pi\sigma^2)^n$
+<!-- $Y$ ~ $N(\frac{\theta1 xi}{\theta2+xi}, \sigma^2)$ -->
 
-$\Pi $
+Likelihood of a normal distribution where $L(\mu,\sigma^2,x1...xn)$ = 
 
-The likelihood is:
-$L(\beta0,\beta1,\sigma^2;x,y)$ = $\prod_{i=1}^{n}$ $p(\beta0,\beta1,\sigma^2;x,y)$ = 
+= $\Pi^n_{i=1} fX(xi,\mu,\sigma^2)$
 
-= $\Pi^n_{j=1} $
+= $\Pi^n_{i=1} (2\pi\sigma^2)^{-\frac{1}{2}}* e^{(-\frac{1}{2} * \frac{xi - \mu}{\sigma^2})}$ =
+
+= $(2\pi\sigma^2)^{-\frac{n}{2}} * e^{(-\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (xi-\mu)^2)}$
+
+Replacing the $\mu$ with the respective $\theta s$ and n, we have the likelihood as:
+
+$L(\beta0,\beta1,\sigma^2;x,y)$ = 
+
+= $\prod_{i=1}^{n}$ $p(\beta0,\beta1,\sigma^2;x,y)$ = 
+
+= $(2\pi\sigma^2)^{-\frac{100}{2}} * e^{(-\frac{1}{2\sigma^2}* \sum_{i=1}^{100}(xi-\frac{\theta1xi}{\theta2+xi})^2)}$
 
 
+The log-likelihood of a normal distribution is:
 
+$l(\mu,\sigma^2,x1...xn)$ =
 
-The log-likelihood
+= $ln(L(\mu,\sigma^2,x1...xn))$ =
+
+= $ln((2\pi\sigma^2)^{-\frac{n}{2}} * e^{(-\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (xi-\mu)^2)})$ =
+
+= $ln((2\pi\sigma^2)^{-\frac{n}{2}}) + ln(e^{(-\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (xi-\mu)^2)})$ =
+
+= $-\frac{n}{2}ln(2\pi\sigma^2) -\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (xi-\mu)^2)$ =
+
+= $-\frac{n}{2}ln(2\pi) -\frac{n}{2}ln(\sigma^2) -\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (xi-\mu)^2)$
+
+Once again replacing the $\mu$ with the respective $\theta s$ and n, we have the log-likelihood as:
+
+$l(\beta0,\beta1,\sigma^2;x,y)$ =
+
+= $-\frac{100}{2}ln(2\pi) -\frac{100}{2}ln(\sigma^2) -\frac{1}{2\sigma^2}* \sum_{i=1}^{100} (xi-\frac{\theta1xi}{\theta2+xi})^2)$ =
+
+= $-50ln(2\pi) -50ln(\sigma^2) -\frac{1}{2\sigma^2}* \sum_{i=1}^{100} (xi-\frac{\theta1xi}{\theta2+xi})^2)$
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, eval=FALSE}
-##https://www.statlect.com/fundamentals-of-statistics/normal-distribution-maximum-likelihood 
+## https://www.statlect.com/fundamentals-of-statistics/normal-distribution-maximum-likelihood 
 ## god bless 
 ## this one is not bad at explaining https://medium.com/@lorenzojcducv/maximum-likelihood-for-the-normal-distribution-966df16fd031
 ```

@@ -101,10 +101,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </head>
 
-<body class="fullcontent">
+<body>
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#for-the-love-of-god-dont-forget" id="toc-for-the-love-of-god-dont-forget" class="nav-link active" data-scroll-target="#for-the-love-of-god-dont-forget">For the love of god don’t forget</a></li>
+  <li><a href="#question-1" id="toc-question-1" class="nav-link" data-scroll-target="#question-1">Question 1</a></li>
+  <li><a href="#question-1-a" id="toc-question-1-a" class="nav-link" data-scroll-target="#question-1-a">Question 1 a)</a></li>
+  <li><a href="#question-1-b" id="toc-question-1-b" class="nav-link" data-scroll-target="#question-1-b">Question 1 b)</a></li>
+  <li><a href="#todo-get-better-wording-for-the-replace-part" id="toc-todo-get-better-wording-for-the-replace-part" class="nav-link" data-scroll-target="#todo-get-better-wording-for-the-replace-part">TODO GET BETTER WORDING FOR THE REPLACE PART</a></li>
+  <li><a href="#question-1-c" id="toc-question-1-c" class="nav-link" data-scroll-target="#question-1-c">Question 1 c)</a></li>
+  <li><a href="#question-1-d" id="toc-question-1-d" class="nav-link" data-scroll-target="#question-1-d">Question 1 d)</a></li>
+  <li><a href="#question-2" id="toc-question-2" class="nav-link" data-scroll-target="#question-2">Question 2</a></li>
+  <li><a href="#question-2-a" id="toc-question-2-a" class="nav-link" data-scroll-target="#question-2-a">Question 2 a)</a></li>
+  <li><a href="#question-2-b" id="toc-question-2-b" class="nav-link" data-scroll-target="#question-2-b">Question 2 b)</a></li>
+  </ul>
+</nav>
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -142,26 +159,47 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Linear regression models are based on the assumption that the relationship between the independent and dependent variables is linear. If the relationship between the variables is non-linear, a linear regression model may not be appropriate to use. In such cases, transforming the data to make the relationship linear may not result in an accurate representation of the true relationship, and can lead to overfitting or underfitting. Additionally, transforming the data can result in a loss of interpretability of the results, as it can be difficult to understand the meaning of the transformed variables.</p>
 <p>Another issue with using a linear regression model for non-linear data is that the residuals, which represent the difference between the observed and predicted values, may not be normally distributed, which is another assumption of linear regression models. This can lead to biased or incorrect results.</p>
 <p>In conclusion, when the data is non-linear, a linear regression model may not be the best choice for modelling the relationship between the variables, and alternative methods need to be considered.</p>
-<p>//should I talk about the increase in variance or is it only topic 2?</p>
+<p>// make a graph to show the data is not linear</p>
+<!-- //should I talk about the increase in variance or is it only topic 2? Not really because we don't have enough data at the start of the graph -->
 </section>
 <section id="question-1-b" class="level2">
 <h2 class="anchored" data-anchor-id="question-1-b">Question 1 b)</h2>
 <p>The Yi are independent so the likelihood is a product of the individual pdfs.</p>
-<p><span class="math inline">\(Y\)</span> ~ <span class="math inline">\(N(\frac{\theta1 xi}{\theta2+xi})\)</span></p>
-<p>Likelihood of a normal distribution where <span class="math inline">\(L(\mu,\sigma^2,x1...xn) = (2\pi\sigma^2)^n\)</span></p>
-<p>The likelihood is: <span class="math inline">\(L(\beta0,\beta1,\sigma^2;x,y)\)</span> = <span class="math inline">\(\prod_{i=1}^{n}\)</span> <span class="math inline">\(p(\beta0,\beta1,\sigma^2;x,y)\)</span> =</p>
-<p>=</p>
-<p><span class="math inline">\((\overset{Ni}{yi})\)</span></p>
-<p>The log-likelihood</p>
+</section>
+<section id="todo-get-better-wording-for-the-replace-part" class="level2">
+<h2 class="anchored" data-anchor-id="todo-get-better-wording-for-the-replace-part">TODO GET BETTER WORDING FOR THE REPLACE PART</h2>
+<!-- $Y$ ~ $N(\frac{\theta1 xi}{\theta2+xi}, \sigma^2)$ -->
+<p>Likelihood of a normal distribution where <span class="math inline">\(L(\mu,\sigma^2,x1...xn)\)</span> =</p>
+<p>= <span class="math inline">\(\Pi^n_{i=1} fX(xi,\mu,\sigma^2)\)</span></p>
+<p>= <span class="math inline">\(\Pi^n_{i=1} (2\pi\sigma^2)^{-\frac{1}{2}}* e^{(-\frac{1}{2} * \frac{xi - \mu}{\sigma^2})}\)</span> =</p>
+<p>= <span class="math inline">\((2\pi\sigma^2)^{-\frac{n}{2}} * e^{(-\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (xi-\mu)^2)}\)</span></p>
+<p>Replacing the <span class="math inline">\(\mu\)</span> with the respective <span class="math inline">\(\theta s\)</span> and n, we have the likelihood as:</p>
+<p><span class="math inline">\(L(\beta0,\beta1,\sigma^2;x,y)\)</span> =</p>
+<p>= <span class="math inline">\(\prod_{i=1}^{n}\)</span> <span class="math inline">\(p(\beta0,\beta1,\sigma^2;x,y)\)</span> =</p>
+<p>= <span class="math inline">\((2\pi\sigma^2)^{-\frac{100}{2}} * e^{(-\frac{1}{2\sigma^2}* \sum_{i=1}^{100}(xi-\frac{\theta1xi}{\theta2+xi})^2)}\)</span></p>
+<p>The log-likelihood of a normal distribution is:</p>
+<p><span class="math inline">\(l(\mu,\sigma^2,x1...xn)\)</span> =</p>
+<p>= <span class="math inline">\(ln(L(\mu,\sigma^2,x1...xn))\)</span> =</p>
+<p>= <span class="math inline">\(ln((2\pi\sigma^2)^{-\frac{n}{2}} * e^{(-\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (xi-\mu)^2)})\)</span> =</p>
+<p>= <span class="math inline">\(ln((2\pi\sigma^2)^{-\frac{n}{2}}) + ln(e^{(-\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (xi-\mu)^2)})\)</span> =</p>
+<p>= <span class="math inline">\(-\frac{n}{2}ln(2\pi\sigma^2) -\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (xi-\mu)^2)\)</span> =</p>
+<p>= <span class="math inline">\(-\frac{n}{2}ln(2\pi) -\frac{n}{2}ln(\sigma^2) -\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (xi-\mu)^2)\)</span></p>
+<p>Once again replacing the <span class="math inline">\(\mu\)</span> with the respective <span class="math inline">\(\theta s\)</span> and n, we have the log-likelihood as:</p>
+<p><span class="math inline">\(l(\beta0,\beta1,\sigma^2;x,y)\)</span> =</p>
+<p>= <span class="math inline">\(-\frac{100}{2}ln(2\pi) -\frac{100}{2}ln(\sigma^2) -\frac{1}{2\sigma^2}* \sum_{i=1}^{100} (xi-\frac{\theta1xi}{\theta2+xi})^2)\)</span> =</p>
+<p>= <span class="math inline">\(-50ln(2\pi) -50ln(\sigma^2) -\frac{1}{2\sigma^2}* \sum_{i=1}^{100} (xi-\frac{\theta1xi}{\theta2+xi})^2)\)</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="do">## https://www.statlect.com/fundamentals-of-statistics/normal-distribution-maximum-likelihood</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="do">## god bless</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
 </div>
 </section>
 <section id="question-1-c" class="level2">
 <h2 class="anchored" data-anchor-id="question-1-c">Question 1 c)</h2>
 <div class="cell">
-
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">=</span> <span class="dv">100</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>myLike <span class="ot">=</span> <span class="cf">function</span>(variables) {</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="question-1-d" class="level2">
