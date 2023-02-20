@@ -21,6 +21,8 @@ load("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Ter
 ## https://tilburgsciencehub.com/building-blocks/collaborate-and-share-your-work/write-your-paper/amsmath-latex-cheatsheet/ // cheat worksheet
 
 library(ggplot2)
+
+
 ```
 
 We have the model:
@@ -57,6 +59,8 @@ In conclusion, when the data is non-linear, a linear regression model
 may not be the best choice for modelling the relationship between the
 variables, and alternative methods need to be considered.
 
+// make a graph to show the data is not linear
+
 //should I talk about the increase in variance or is it only topic 2?
 
 ## Question 1 b)
@@ -66,23 +70,35 @@ pdfs.
 
 $Y$ ~ $N(\frac{\theta1 xi}{\theta2+xi})$
 
+Likelihood of a normal distribution where $L(\mu,\sigma^2,x1...xn) = (2\pi\sigma^2)^n$
+
+$\Pi $
+
 The likelihood is:
 $L(\beta0,\beta1,\sigma^2;x,y)$ = $\prod_{i=1}^{n}$ $p(\beta0,\beta1,\sigma^2;x,y)$ = 
 
-$(\overset{Ni}{yi})$
+= $\Pi^n_{j=1} $
+
+
+
 
 The log-likelihood
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-
-
-
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, eval=FALSE}
+##https://www.statlect.com/fundamentals-of-statistics/normal-distribution-maximum-likelihood 
+## god bless 
+## this one is not bad at explaining https://medium.com/@lorenzojcducv/maximum-likelihood-for-the-normal-distribution-966df16fd031
 ```
 
 ## Question 1 c)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+n = 100
+
+myLike = function(variables){
+  
+}
 
 
 ```
@@ -134,7 +150,7 @@ pdfs.
 $L(\theta1,theta2,\sigma^2;y,x)$
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-#Fitting in R 
+#Fitting in R
 #model < −glm(< response >∼< covariates >,data = <data>, family = gaussian(link=’identity’))
 #model <- glm(<response> ∼ <covariates>, data = <data>, family = poisson(link=’log’))
 
