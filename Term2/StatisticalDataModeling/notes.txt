@@ -1,0 +1,3 @@
+use the AIC last, for model testing
+
+if it's a nested model ANOVA is better
