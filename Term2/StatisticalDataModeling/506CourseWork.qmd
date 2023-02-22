@@ -1,7 +1,7 @@
 ---
 title: "506CourseWork"
 format:
-  html:
+  pdf:
     toc: true
 editor: visual
 ---
@@ -127,11 +127,12 @@ $l(\beta0,\beta1,\sigma^2;x,y)$ =
 n = nrow(nlmodel)
 
 
+
 ### Create a function to evaluate minus the log-likelihood
 myLike = function(variables){
   
 # Log-likelihood
-result = -n/2*log(2*pi) -n/2*log(variables$sigma^2) -0.5*(variables$sigma^2)* 
+result = -n/2*log(2*pi) -n/2*log(variables$sigma^2) -0.5*(variables$sigma^2) * sum((variables$y*variables$theta1)/(variables$theta2+xi))
   
 
 # Returning negative log-likelihood
@@ -152,13 +153,13 @@ return(-result)
 
 Model 1:
 
-$Yi$ \~ $Pois(\lambda i)$
+$Yi$ ~ $Pois(\lambda i)$
 
 $log(\lambda i) = \beta0 + \beta1 xi$
 
 Model 2:
 
-$Yi$ \~ $N(\mu i,\sigma^2)$
+$Yi$ ~ $N(\mu i,\sigma^2)$
 
 $log(\mu i) = \gamma0 +\gamma1 xi$
 
@@ -173,7 +174,7 @@ choice. The Poisson distribution is a discrete distribution that models
 count data which respects the nature of the data
 
 The second model, a Normal distribution, would not be the best fit since
-its range is from \]-$\infty$,$\infty$\[ and expects continuous values,
+its range is from ]-$\infty$,$\infty$[ and expects continuous values,
 not respecting the nature of the data.
 
 The log-link function in both models ensures that the predicted values
@@ -185,6 +186,7 @@ The Yi are independent so the likelihood is a product of the individual
 pdfs.
 
 $L(\theta1,theta2,\sigma^2;y,x)$
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 #Fitting in R
