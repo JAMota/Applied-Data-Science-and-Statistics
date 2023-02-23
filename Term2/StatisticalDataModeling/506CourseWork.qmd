@@ -129,10 +129,10 @@ n = nrow(nlmodel)
 
 
 ### Create a function to evaluate minus the log-likelihood
-myLike = function(variables){
+myLike = function(theta0,theta1,sigma){
   
 # Log-likelihood
-result = -n/2*log(2*pi) -n/2*log(variables$sigma^2) -0.5*(variables$sigma^2) * sum((variables$y*variables$theta1)/(variables$theta2+xi))
+result = -n/2*log(2*pi) -n/2*log(sigma^2) -0.5*(sigma^2) * sum((nlmodel$y*theta1)/(theta2+nlmodel$x))
   
 
 # Returning negative log-likelihood
@@ -145,7 +145,15 @@ return(-result)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+# Estimating the MLE
+out <- nlm(myLike,
+  p = c(1,1,1),
+  hessian = T,
+  iterlim = 10000,
+  steptol = 1e-10)
 
+# Reporting estimates
+out$estimate
 
 ```
 

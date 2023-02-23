@@ -1,0 +1,96 @@
+---
+title: "ML2Stats"
+format: html
+editor: visual
+---
+
+## Notes
+
+In pratice random forest surprass deicision tree in all categories but we will fit a decision tree first for learning reasons
+
+
+## Ex 1
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+library(C50)
+library(caret)
+
+```
+
+
+```{r}
+library(C50)
+library(caret)
+
+# install.packages("randomForest")
+
+library(randomForest)
+
+```
+
+## Learning decision true (not good to use in real life/practice)
+
+```{r}
+# Split train/test data
+ii <- createDataPartition(iris[, 5], p=.7, list=F) ## returns indices for train data
+xTrain <- iris[ii, 1:4]; yTrain <- iris[ii, 5]
+xTest <- iris[-ii, 1:4]; yTest <- iris[-ii, 5]
+# Fit and plot model
+mdl <- C5.0(x=xTrain, y=yTrain)
+plot(mdl)
+# Test model on testing data
+yTestPred <- predict(mdl, newdata=xTest)
+confusionMatrix(yTestPred, yTest) # predicted/true
+
+```
+
+## Random Forest
+
+In this exercise we fit a random forest to the iris dataset using the train function with method rf. We fix
+the number of trees (ntree), and the number of variables available for splitting at each tree node (mtry)
+  
+```{r}
+# Fit Random Forest model
+# Fix ntree and mtry
+set.seed(1040) # for reproducibility
+mdl <- train(x=xTrain, y=yTrain,
+    method='rf',
+    ntree=200, ## there is no optimal value unlike in the k=n 
+               ## we can't overfit by using too many tree, in the asseessment if we use 200 dorka will be happy
+    tuneGrid=data.frame(mtry=2))
+print(mdl)
+
+```
+Next we test the fitted model
+  
+```{r}
+# Test model on testing data
+yTestPred <- predict(mdl, newdata=xTest)
+confusionMatrix(yTestPred, yTest) # predicted/true
+
+```
+  
+```{r}
+
+
+```
+  
+```{r}
+
+
+```
+  
+```{r}
+
+
+```
+  
+```{r}
+
+
+```
