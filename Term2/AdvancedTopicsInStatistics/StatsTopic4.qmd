@@ -66,6 +66,8 @@ mdl <- train(x=xTrain, y=yTrain,
 print(mdl)
 
 ```
+Kappa is another performance metric but for this module it is enough to focus on the accuracy
+
 Next we test the fitted model
   
 ```{r}
@@ -74,9 +76,13 @@ yTestPred <- predict(mdl, newdata=xTest)
 confusionMatrix(yTestPred, yTest) # predicted/true
 
 ```
-  
-```{r}
 
+
+We can use the varImp function to estimate the importance of each variable.
+
+```{r}
+# Variable importance by mean decrease in gini index
+varImp(mdl$finalModel)
 
 ```
   
