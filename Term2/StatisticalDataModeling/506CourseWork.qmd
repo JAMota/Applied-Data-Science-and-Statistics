@@ -127,17 +127,23 @@ $l(\beta0,\beta1,\sigma^2;x,y)$ =
 n = nrow(nlmodel)
 
 
-
 ### Create a function to evaluate minus the log-likelihood
-myLike = function(theta0,theta1,sigma){
+myLike = function(variables){
   
+theta1 = variables[1] #theta1
+theta2 = variables[2] #theta2
+sigma = variables[3] #sigma
+
+
 # Log-likelihood
-result = -n/2*log(2*pi) -n/2*log(sigma^2) -0.5*(sigma^2) * sum((nlmodel$y*theta1)/(theta2+nlmodel$x))
-  
+result = (-(n/2)*log(2*pi)) -((n/2)*log(sigma^2)) -(1/(2*(sigma^2))) * (sum((nlmodel$y*theta1)/(theta2+nlmodel$x)))
+
 
 # Returning negative log-likelihood
 return(-result)
 }
+
+
 
 ```
 
@@ -147,7 +153,7 @@ return(-result)
 
 # Estimating the MLE
 out <- nlm(myLike,
-  p = c(1,1,1),
+  p = c(10,0.24,30),
   hessian = T,
   iterlim = 10000,
   steptol = 1e-10)
