@@ -1,2 +1,6 @@
 In the assignment she wants us to check the class specific performance and accuracy not just
 the overall model performance
+
+For vector machines, make sure the data is only factors
+it is important to try multiple kernerls for non linear data
+if it is linear, we will have to improve it by using cross validation

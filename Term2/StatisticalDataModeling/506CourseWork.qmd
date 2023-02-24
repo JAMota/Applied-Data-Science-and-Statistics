@@ -136,7 +136,7 @@ sigma = variables[3] #sigma
 
 
 # Log-likelihood
-result = (-(n/2)*log(2*pi)) -((n/2)*log(sigma^2)) -(1/(2*(sigma^2))) * (sum((nlmodel$y*theta1)/(theta2+nlmodel$x)))
+result = (-(n/2)*log(2*pi)) -((n/2)*log(sigma^2)) -(1/(2*(sigma^2))) * (sum(nlmodel$y-(theta1*nlmodel$x)/(theta2+nlmodel$x)))
 
 
 # Returning negative log-likelihood
@@ -149,19 +149,76 @@ return(-result)
 
 ## Question 1 d)
 
+From the graph data we can see that as x -> 0 y is approximately to 45 
+<!-- and mean is approximately 0 since $\theta1*0/\theta2+0$ is approx 0 -->
+
+when x -> 1 y is approximately 200
+
+
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 # Estimating the MLE
 out <- nlm(myLike,
-  p = c(10,0.24,30),
+  p = c(50,0.01,10), #c(50,0.01,10), c(10,0.24,30)
   hessian = T,
   iterlim = 10000,
   steptol = 1e-10)
 
 # Reporting estimates
+variableEstimates= out$estimate
 out$estimate
 
 ```
+## Question 1 e)
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# Invert the negated Hessian to obtain the Observed Information Matrix
+OIM <- solve(out$hessian)
+
+# The diagonal entries are the variances of beta0 and beta1 respectively so # obtain them
+VarianceBeta <- diag(OIM)
+
+# and then square root them to obtain standard errors
+stand_error <- sqrt(VarianceBeta)
+
+# reporting standard errors
+stand_error
+
+
+```
+The formula to calculate a 99% confidence interval is: β ± 2.576 * SE(β)
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# Estimating CIs
+CIs <- cbind(variableEstimates - 2.576 * stand_error, variableEstimates + 2.576 * stand_error)
+
+# Reporting the CIs
+CIs
+
+```
+
+## Question 1 f)
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+## Question 1 g)
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
 
 ## Question 2
 
