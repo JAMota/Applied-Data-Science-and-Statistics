@@ -4,3 +4,11 @@ the overall model performance
 For vector machines, make sure the data is only factors
 it is important to try multiple kernerls for non linear data
 if it is linear, we will have to improve it by using cross validation
+
+comment on the summary: explain what you can see (without just picking values)
+
+how the classification method classifies the data: explain how the theory works on my own words
+description based on the lecture material, not just googled the answer (might be good to refer 
+to the slide examples)
+
+set the seed and output so dorka can verify our answer

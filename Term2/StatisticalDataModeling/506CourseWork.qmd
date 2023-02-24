@@ -136,7 +136,7 @@ sigma = variables[3] #sigma
 
 
 # Log-likelihood
-result = (-(n/2)*log(2*pi)) -((n/2)*log(sigma^2)) -(1/(2*(sigma^2))) * (sum(nlmodel$y-(theta1*nlmodel$x)/(theta2+nlmodel$x)))
+result = (-(n/2)*log(2*pi)) -((n/2)*log(sigma^2)) -(1/(2*(sigma^2))) * (sum(nlmodel$y-((theta1*nlmodel$x)/(theta2+nlmodel$x))))
 
 
 # Returning negative log-likelihood
