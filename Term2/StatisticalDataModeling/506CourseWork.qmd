@@ -73,9 +73,9 @@ pdfs.
 ## TODO GET BETTER WORDING FOR THE REPLACE PART 
 
 
-Likelihood of a normal distribution where $L(\mu,\sigma^2,x1...xn)$ = 
+Likelihood of a normal distribution where $L(yi|\mu,\sigma^2)$ = 
 
-= $\Pi^n_{i=1} fX(yi,\mu,\sigma^2)$
+= $\Pi^n_{i=1} fX(yi|\mu,\sigma^2)$
 
 = $\Pi^n_{i=1} (2\pi\sigma^2)^{-\frac{1}{2}}* exp{(-\frac{1}{2} * \frac{(yi - \mu)^2}{\sigma^2})}$ =
 
@@ -92,9 +92,9 @@ $L(\beta0,\beta1,\sigma^2;x,y)$ =
 
 The log-likelihood of a normal distribution is:
 
-$l(\mu,\sigma^2,x1...xn)$ =
+$l(yi|\mu,\sigma^2)$ =
 
-= $ln(L(\mu,\sigma^2,x1...xn))$ =
+= $ln(L(yi|\mu,\sigma^2))$ =
 
 = $ln((2\pi\sigma^2)^{-\frac{n}{2}} * exp{(-\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (yi-\mu)^2)})$ =
 
