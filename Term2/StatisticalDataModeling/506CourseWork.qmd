@@ -110,7 +110,7 @@ $l(\beta0,\beta1,\sigma^2;x,y)$ =
 
 = $-\frac{100}{2}ln(2\pi) -\frac{100}{2}ln(\sigma^2) -\frac{1}{2\sigma^2}* \sum_{i=1}^{100} (yi-\frac{\theta1xi}{\theta2+xi})^2)$ =
 
-= $-50ln(2\pi) -50ln(\sigma^2) -\frac{1}{2\sigma^2}* \sum_{i=1}^{100} (xi-\frac{\theta1xi}{\theta2+xi})^2)$
+= $-50ln(2\pi) -50ln(\sigma^2) -\frac{1}{2\sigma^2}* \sum_{i=1}^{100} (yi-\frac{\theta1xi}{\theta2+xi})^2)$
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, eval=FALSE}
@@ -152,16 +152,32 @@ return(-result)
 <!-- From the graph data we can see that as x -> 0 y is approximately to 45  -->
 <!-- and mean is approximately 0 since $\theta1*0/\theta2+0$ is approx 0 -->
 
-From the graph data we can clearly see that the deviantion is approximatly 15 d
-see that when x -> 1 y is approximately 210 and as x -> 0 y is approximately to 50
+From the graph data we can clearly see that the deviantion is approximatly 15 from the value scatter which is easier to destinguish and measure between the $[0.5,1]$ interval.
+We can observethat when x -> 1 y is approximately 210 and as x -> 0 y is approximately to 50
 
+To determine the thetas we will first see see that when x approximates to zero we can observe that:
+
+$\underset{x->0}{lim} \frac{\theta1 xi}{\theta2 +xi} \implies \frac{1}{\theta2}$ 
+
+As such $ Y$ ~ $ N(\frac{\theta1 xi}{\theta2 +xi}) $ becomes $ 50$ ~ $ \frac{1}{\theta2}$
+
+Solving it for $\theta2$ we get $\theta2 = 1/50 \iff \theta2 = 0.02$
+
+Now that we have theta2 we can use the approximation of x to 1 to determine the value of $\theta1$
+
+$\underset{x->1}{lim} \frac{\theta1 xi}{\theta2 +xi} \implies \frac{\theta1}{\theta2+x}$ 
+
+As such $ Y$ ~ $ N(\frac{\theta1 xi}{\theta2 +xi}) $ becomes $ 215$ ~ $ \frac{\theta1*1}{\theta2+1}$
+
+
+Solving it for $\theta1$ we get $\theta1 = 215/1.02 \iff \theta1 \approx 210.7$
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 # Estimating the MLE
 out <- nlm(myLike,
-  p = c(210,0.02,15), #the values seem to vary by around 15 units, ##the professor said theta2 needs to be lower so the other values should be alright
+  p = c(210.7,0.02,15), #plugging in the starting values
   hessian = T,
   iterlim = 10000,
   steptol = 1e-10)
@@ -207,6 +223,7 @@ CIs
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+## Hipothesis thesis
 
 
 ```
