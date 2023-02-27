@@ -216,6 +216,38 @@ CIs <- cbind(variableEstimates - 2.576 * stand_error, variableEstimates + 2.576 
 # Reporting the CIs
 CIs
 
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE}
+
+# #Predict from this model using the predict()
+# 
+# ## We can use this to obtain 95% confidence intervals on our estimated relationship
+# xx <- seq(0, 1, len=200)
+# 
+# # Predicting from the model
+# pred <- predict(nlmodel, newdata = list(length = xx),
+# se.fit = TRUE,
+# type = 'link')
+# 
+# # Calculate CI limit since linear predictor is approx. Gaussian
+# mean <- pred$fit
+# upper <- pred$fit + 2.576 * pred$se.fit
+# lower <- pred$fit - 2.576 * pred$se.fit
+# 
+# # Transform the CI limit to get one at the level of the mean
+# mean <- exp(mean)/(1+exp(mean))
+# upper <- exp(upper)/(1+exp(upper))
+# lower <- exp(lower)/(1+exp(lower))
+# 
+# plot(fish$length, fish$escape/fish$total,
+# xlab = "Figh length", ylab = "Proportion escaping",
+# ylim = c(0,1), pch = 20)
+# lines(xx, mean, lwd = 2,col = "blue")
+# lines(xx, upper,lty=2,lwd=2,col="blue")
+# lines(xx, lower,lty=2,lwd=2,col="blue")
+
 ```
 
 ## Question 1 f)
@@ -223,7 +255,10 @@ CIs
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-## Hipothesis thesis
+## Hypothesis thesis without using confidence interval, aka probably a likelihood-ratio test(LTR)
+
+#H0: theta2 is 0.08
+
 
 
 ```
@@ -232,7 +267,13 @@ CIs
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+## ploting associated mean relationship
 
+ggplot(data = nlmodel, aes(x = x, y = y)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "red") +
+
+  labs(title = "Scatter Plot of y vs. x with Fitted Line and Prediction Intervals", x = "x", y = "y")
 
 
 ```
