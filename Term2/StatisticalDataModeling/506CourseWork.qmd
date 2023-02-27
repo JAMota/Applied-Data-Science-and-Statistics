@@ -72,15 +72,14 @@ pdfs.
 
 ## TODO GET BETTER WORDING FOR THE REPLACE PART 
 
-<!-- $Y$ ~ $N(\frac{\theta1 xi}{\theta2+xi}, \sigma^2)$ -->
 
 Likelihood of a normal distribution where $L(\mu,\sigma^2,x1...xn)$ = 
 
-= $\Pi^n_{i=1} fX(xi,\mu,\sigma^2)$
+= $\Pi^n_{i=1} fX(yi,\mu,\sigma^2)$
 
-= $\Pi^n_{i=1} (2\pi\sigma^2)^{-\frac{1}{2}}* exp{(-\frac{1}{2} * \frac{xi - \mu}{\sigma^2})}$ =
+= $\Pi^n_{i=1} (2\pi\sigma^2)^{-\frac{1}{2}}* exp{(-\frac{1}{2} * \frac{(yi - \mu)^2}{\sigma^2})}$ =
 
-= $(2\pi\sigma^2)^{-\frac{n}{2}} * exp{(-\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (xi-\mu)^2)}$
+= $(2\pi\sigma^2)^{-\frac{n}{2}} * exp{(-\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (yi-\mu)^2)}$
 
 Replacing the $\mu$ with the respective $\theta s$ and n, we have the likelihood as:
 
@@ -88,7 +87,7 @@ $L(\beta0,\beta1,\sigma^2;x,y)$ =
 
 = $\prod_{i=1}^{n}$ $p(\beta0,\beta1,\sigma^2;x,y)$ = 
 
-= $(2\pi\sigma^2)^{-\frac{100}{2}} * exp{(-\frac{1}{2\sigma^2}* \sum_{i=1}^{100}(xi-\frac{\theta1xi}{\theta2+xi})^2)}$
+= $(2\pi\sigma^2)^{-\frac{100}{2}} * exp{(-\frac{1}{2\sigma^2}* \sum_{i=1}^{100}(yi-\frac{\theta1xi}{\theta2+xi})^2)}$
 
 
 The log-likelihood of a normal distribution is:
@@ -97,19 +96,19 @@ $l(\mu,\sigma^2,x1...xn)$ =
 
 = $ln(L(\mu,\sigma^2,x1...xn))$ =
 
-= $ln((2\pi\sigma^2)^{-\frac{n}{2}} * exp{(-\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (xi-\mu)^2)})$ =
+= $ln((2\pi\sigma^2)^{-\frac{n}{2}} * exp{(-\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (yi-\mu)^2)})$ =
 
-= $ln((2\pi\sigma^2)^{-\frac{n}{2}}) + ln(exp{(-\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (xi-\mu)^2)})$ =
+= $ln((2\pi\sigma^2)^{-\frac{n}{2}}) + ln(exp{(-\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (yi-\mu)^2)})$ =
 
-= $-\frac{n}{2}ln(2\pi\sigma^2) -\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (xi-\mu)^2)$ =
+= $-\frac{n}{2}ln(2\pi\sigma^2) -\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (yi-\mu)^2)$ =
 
-= $-\frac{n}{2}ln(2\pi) -\frac{n}{2}ln(\sigma^2) -\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (xi-\mu)^2)$
+= $-\frac{n}{2}ln(2\pi) -\frac{n}{2}ln(\sigma^2) -\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (yi-\mu)^2)$
 
 Once again replacing the $\mu$ with the respective $\theta s$ and n, we have the log-likelihood as:
 
 $l(\beta0,\beta1,\sigma^2;x,y)$ =
 
-= $-\frac{100}{2}ln(2\pi) -\frac{100}{2}ln(\sigma^2) -\frac{1}{2\sigma^2}* \sum_{i=1}^{100} (xi-\frac{\theta1xi}{\theta2+xi})^2)$ =
+= $-\frac{100}{2}ln(2\pi) -\frac{100}{2}ln(\sigma^2) -\frac{1}{2\sigma^2}* \sum_{i=1}^{100} (yi-\frac{\theta1xi}{\theta2+xi})^2)$ =
 
 = $-50ln(2\pi) -50ln(\sigma^2) -\frac{1}{2\sigma^2}* \sum_{i=1}^{100} (xi-\frac{\theta1xi}{\theta2+xi})^2)$
 
@@ -153,7 +152,8 @@ return(-result)
 <!-- From the graph data we can see that as x -> 0 y is approximately to 45  -->
 <!-- and mean is approximately 0 since $\theta1*0/\theta2+0$ is approx 0 -->
 
-From the graph data we can see that when x -> 1 y is approximately 210 and as x -> 0 y is approximately to 45
+From the graph data we can clearly see that the deviantion is approximatly 15 d
+see that when x -> 1 y is approximately 210 and as x -> 0 y is approximately to 50
 
 
 
@@ -161,7 +161,7 @@ From the graph data we can see that when x -> 1 y is approximately 210 and as x 
 
 # Estimating the MLE
 out <- nlm(myLike,
-  p = c(210,0.01,15), #the values seem to vary by around 15 units, ##the professor said theta2 needs to be lower so the other values should be alright
+  p = c(210,0.02,15), #the values seem to vary by around 15 units, ##the professor said theta2 needs to be lower so the other values should be alright
   hessian = T,
   iterlim = 10000,
   steptol = 1e-10)
