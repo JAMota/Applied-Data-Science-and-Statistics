@@ -134,9 +134,10 @@ theta1 = variables[1] #theta1
 theta2 = variables[2] #theta2
 sigma = variables[3] #sigma
 
+mu = ((theta1*nlmodel$x)/(theta2+nlmodel$x))
 
 # Log-likelihood
-result = (-(n/2)*log(2*pi)) -((n/2)*log(sigma^2)) -(1/(2*(sigma^2))) * (sum(nlmodel$y-((theta1*nlmodel$x)/(theta2+nlmodel$x))))
+result = (-(n/2)*log(2*pi)) -((n/2)*log(sigma^2)) -(1/(2*(sigma^2))) * (sum((nlmodel$y-mu)^2))
 
 
 # Returning negative log-likelihood
@@ -149,10 +150,10 @@ return(-result)
 
 ## Question 1 d)
 
-From the graph data we can see that as x -> 0 y is approximately to 45 
+<!-- From the graph data we can see that as x -> 0 y is approximately to 45  -->
 <!-- and mean is approximately 0 since $\theta1*0/\theta2+0$ is approx 0 -->
 
-when x -> 1 y is approximately 200
+From the graph data we can see that when x -> 1 y is approximately 210 and as x -> 0 y is approximately to 45
 
 
 
@@ -160,7 +161,7 @@ when x -> 1 y is approximately 200
 
 # Estimating the MLE
 out <- nlm(myLike,
-  p = c(50,0.01,10), #c(50,0.01,10), c(10,0.24,30)
+  p = c(210,0.01,15), #the values seem to vary by around 15 units, ##the professor said theta2 needs to be lower so the other values should be alright
   hessian = T,
   iterlim = 10000,
   steptol = 1e-10)
@@ -249,7 +250,7 @@ its range is from ]-$\infty$,$\infty$[ and expects continuous values,
 not respecting the nature of the data.
 
 The log-link function in both models ensures that the predicted values
-are always positive. // redo this pls
+are always positive. //TODO redo this pls
 
 ## Question 2 b)
 
