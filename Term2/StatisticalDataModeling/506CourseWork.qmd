@@ -264,7 +264,7 @@ standardDeviation <- out$estimate[3]
 
 # Getting 95% interval from the quantiles of a Normal distribution
 plot(nlmodel$x,nlmodel$y,pch=20, xlab = 'X variable', ylab = 'Y variable')
-lines(xx, mu, col = 'yellow')
+
 lines(xx, qnorm(0.025, mean = mu, sd = standardDeviation), col = 'blue', lty = 'dashed')
 lines(xx, qnorm(0.975, mean = mu, sd = standardDeviation), col = 'blue', lty = 'dashed')
 
@@ -274,6 +274,11 @@ lines(xx, qnorm(0.5, mean = mu, sd = standardDeviation), col = 'red')
 
 ```
 
+From the estimations produced through our model we can see that the current model with a 95% prediction fits the data quite nicely, having only 4 of the 100 observations shortly out of the 95% prediction interval.
+
+However it should be noted that even though the model has a good performance, a normal distribution has the assumption that data can take any value in the real line however this data is bounded between the [0,1] interval.
+
+Considering that the variance increases trough the model it further indicates that a normal distribution should be switched for another distribution that better respects the nature of our data.
 
 ## Question 2
 
