@@ -256,21 +256,20 @@ As we can see the value from the z-statistician test is considerably lower than 
 xx <- seq(0, 1, len=200)
 
 # Estimating mean relationship (mean mu = )
-mu <- exp(out$estimate[1 ]* xx + out$estimate[2] )
+mu <- (out$estimate[1 ] * xx) /(out$estimate[2] + xx)
 
-# Getting alpha (shape parameter)
-shape <- out$estimate[3]
-
-# Getting lambda (scale parameter)
-scale <- mu/shape
+# Getting standard Deviation
+standardDeviation <- out$estimate[3]
 
 
-## ploting associated mean relationship
+# Getting 95% interval from the quantiles of a Normal distribution
+plot(nlmodel$x,nlmodel$y,pch=20, xlab = 'X variable', ylab = 'Y variable')
+lines(xx, mu, col = 'yellow')
+lines(xx, qnorm(0.025, mean = mu, sd = standardDeviation), col = 'blue', lty = 'dashed')
+lines(xx, qnorm(0.975, mean = mu, sd = standardDeviation), col = 'blue', lty = 'dashed')
 
-# ggplot(data = nlmodel, aes(x = x, y = y)) +
-#   geom_point() +
-#   geom_smooth(method = "lm", se = FALSE, color = "red") +
-#   labs(title = "Scatter Plot of y vs. x with Fitted Line and Prediction Intervals", x = "x", y = "y")
+lines(xx, qnorm(0.5, mean = mu, sd = standardDeviation), col = 'red')
+
 
 
 ```
