@@ -159,7 +159,7 @@ To determine the thetas we will first see see that when x approximates to zero w
 
 $\underset{x->0}{lim} \frac{\theta1 xi}{\theta2 +xi} \implies \frac{1}{\theta2}$ 
 
-As such $ Y$ ~ $ N(\frac{\theta1 xi}{\theta2 +xi}) $ becomes $ 50$ ~ $ \frac{1}{\theta2}$
+As such $ Y$ ~ $N(\frac{\theta1 xi}{\theta2 +xi})$ becomes $ 50$ ~ $\frac{1}{\theta2}$
 
 Solving it for $\theta2$ we get $\theta2 = 1/50 \iff \theta2 = 0.02$
 
@@ -167,7 +167,7 @@ Now that we have theta2 we can use the approximation of x to 1 to determine the 
 
 $\underset{x->1}{lim} \frac{\theta1 xi}{\theta2 +xi} \implies \frac{\theta1}{\theta2+x}$ 
 
-As such $ Y$ ~ $ N(\frac{\theta1 xi}{\theta2 +xi}) $ becomes $ 215$ ~ $ \frac{\theta1*1}{\theta2+1}$
+As such $ Y$ ~ $N(\frac{\theta1 xi}{\theta2 +xi})$ becomes $215$ ~ $\frac{\theta1*1}{\theta2+1}$
 
 
 Solving it for $\theta1$ we get $\theta1 = 215/1.02 \iff \theta1 \approx 210.7$
@@ -183,7 +183,7 @@ out <- nlm(myLike,
   steptol = 1e-10)
 
 # Reporting estimates
-variableEstimates= out$estimate
+variableEstimates = out$estimate
 out$estimate
 
 ```
@@ -219,61 +219,58 @@ CIs
 
 ```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE}
-
-# #Predict from this model using the predict()
-# 
-# ## We can use this to obtain 95% confidence intervals on our estimated relationship
-# xx <- seq(0, 1, len=200)
-# 
-# # Predicting from the model
-# pred <- predict(nlmodel, newdata = list(length = xx),
-# se.fit = TRUE,
-# type = 'link')
-# 
-# # Calculate CI limit since linear predictor is approx. Gaussian
-# mean <- pred$fit
-# upper <- pred$fit + 2.576 * pred$se.fit
-# lower <- pred$fit - 2.576 * pred$se.fit
-# 
-# # Transform the CI limit to get one at the level of the mean
-# mean <- exp(mean)/(1+exp(mean))
-# upper <- exp(upper)/(1+exp(upper))
-# lower <- exp(lower)/(1+exp(lower))
-# 
-# plot(fish$length, fish$escape/fish$total,
-# xlab = "Figh length", ylab = "Proportion escaping",
-# ylim = c(0,1), pch = 20)
-# lines(xx, mean, lwd = 2,col = "blue")
-# lines(xx, upper,lty=2,lwd=2,col="blue")
-# lines(xx, lower,lty=2,lwd=2,col="blue")
-
-```
 
 ## Question 1 f)
 
+H0 : θ2 = 0,08 vs. H1 : θ2 $\ne$ 0
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-## Hypothesis thesis without using confidence interval, aka probably a likelihood-ratio test(LTR)
+## Hypothesis thesis without using confidence interval
 
-#H0: theta2 is 0.08
+z_stat <- (variableEstimates[2] - 0.08)/stand_error[2]
 
+# Print the test values
+z_stat ## significance tests
 
 
 ```
+So now we need to decide if this value of the z-statistic is extreme at the 10% significance level
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+### Note that equivalently we can look at the 95% quantile of N(0,1)
+qnorm(0.95,0,1)
+
+qnorm(0.05,0,1)
+
+```
+As we can see the value from the z-statistician test is considerably lower than -1,645, meaning that it is an extreme value and therefore rejecting the null hypothesis that $\theta2$ is 0,08. 
 
 ## Question 1 g)
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# Plotting initial starting guess
+xx <- seq(0, 1, len=200)
+
+# Estimating mean relationship (mean mu = )
+mu <- exp(out$estimate[1 ]* xx + out$estimate[2] )
+
+# Getting alpha (shape parameter)
+shape <- out$estimate[3]
+
+# Getting lambda (scale parameter)
+scale <- mu/shape
+
+
 ## ploting associated mean relationship
 
-ggplot(data = nlmodel, aes(x = x, y = y)) +
-  geom_point() +
-  geom_smooth(method = "lm", se = FALSE, color = "red") +
-
-  labs(title = "Scatter Plot of y vs. x with Fitted Line and Prediction Intervals", x = "x", y = "y")
+# ggplot(data = nlmodel, aes(x = x, y = y)) +
+#   geom_point() +
+#   geom_smooth(method = "lm", se = FALSE, color = "red") +
+#   labs(title = "Scatter Plot of y vs. x with Fitted Line and Prediction Intervals", x = "x", y = "y")
 
 
 ```
@@ -312,8 +309,7 @@ are always positive. //TODO redo this pls
 
 ## Question 2 b)
 
-The Yi are independent so the likelihood is a product of the individual
-pdfs.
+The Yi are independent so the likelihood is a product of the individual pdfs.
 
 $L(\theta1,theta2,\sigma^2;y,x)$
 
@@ -353,8 +349,8 @@ ggplot(aids, aes(x= date, y = cases)) +
   geom_point()
 
 
-plot(model2)
-plot(model1)
+#plot(model2)
+#plot(model1)
 
 
 confint(model1, level = 1-0.05)
