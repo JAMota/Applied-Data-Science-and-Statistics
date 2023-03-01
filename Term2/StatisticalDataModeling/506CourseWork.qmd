@@ -383,13 +383,14 @@ lines(xx,muNormal_lower,col="red", lty = 'dashed')
 
 
 ```
-
+As we can see from the plot alone, the linear model fits the data better than the poisson model.
+The poisson model is clearly not a good model since the big majority of the model is either overestimating or underestimating the data, which is a clear indicator that this model is inadequate.
 
 ## Question 2 c)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-#As we are modelling an unbounded count we use Poisson distribution. The data increases exponentially so we use a log-link with a model linear in time.
+#Model comparisong IAC time
 
 
 

@@ -1,0 +1,4 @@
+What should we do when we have a model that does not respect the nature of the data but it fits 
+better than a model that respects the nature of the data?
+
+Are the Poisson model upper and lower confidence intervals supposed to be logged since it is a log
