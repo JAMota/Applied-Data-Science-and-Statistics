@@ -346,19 +346,71 @@ summary(model1)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-##plotting the models
+## We can use this to obtain 95% confidence intervals on our estimated relationship
+xx <- seq(83, 94, len=200)
 
-##this is the original data to then plot the models on top of
-ggplot(aids, aes(x= date, y = cases)) +
-  geom_point()
+##predict Poisson
+predPoisson = predict(model2, newdata = aids, type="link",se.fit = T)
+
+## Mean and Confidence Intervals estimation
+muPoisson = 1/predPoisson$fit
+muPoisson_upper = 1/(predPoisson$fit+1.96*predPoisson$se.fit)
+muPoisson_lower = 1/(predPoisson$fit-1.96*predPoisson$se.fit)
 
 
-#plot(model2)
-#plot(model1)
+##predict normal
+predNormal = predict(model1, newdata = aids, type="link", se.fit = T)
+
+## Mean and Confidence Intervals estimation
+muNormal = 1/predNormal$fit
+muNormal_upper = 1/(predNormal$fit+1.96*predNormal$se.fit)
+muNormal_upper = 1/(predNormal$fit-1.96*predNormal$se.fit)
 
 
-confint(model1, level = 1-0.05)
-confint(model2, level = 1-0.05)
+##plot the data
+
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, eval=FALSE}
+
+# Predicting when supplement is OJ
+predsOJ <- predict(model2,
+newdata = aids,
+type = "link",
+se.fit=T)
+
+# Estimating mean and CI
+muOJ <- 1/predsOJ$fit
+muOJ_upper <- 1/(predsOJ$fit+1.96*predsOJ$se.fit)
+muOJ_lower <- 1/(predsOJ$fit-1.96*predsOJ$se.fit)
+
+# Predicting when supplement is VC
+predsVC <- predict(model1,
+newdata = aids,
+type = "link",
+se.fit = T)
+
+# Estimating mean and CI
+muVC <- 1/predsVC$fit
+muVC_upper <- 1/(predsVC$fit+1.96*predsVC$se.fit)
+muVC_lower <- 1/(predsVC$fit-1.96*predsVC$se.fit)
+
+# Plotting data
+plot(aids$date,aids$cases,pch=20,
+xlab = 'Date', ylab = 'Number of aids cases')
+
+#Adding predictions and CIs
+lines(xx,muOJ)
+lines(xx,muOJ_upper,lty=2)
+lines(xx,muOJ_lower,lty=2)
+lines(xx,muVC,col="red")
+lines(xx,muVC_upper,lty=2,col="red")
+lines(xx,muVC_lower,lty=2,col="red")
+
+
 
 ```
 
@@ -391,11 +443,6 @@ summary(mod)
 
 ```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-
-
-
-```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
