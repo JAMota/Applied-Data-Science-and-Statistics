@@ -61,7 +61,7 @@ In conclusion, when the data is non-linear, a linear regression model
 may not be the best choice for modelling the relationship between the
 variables, and alternative methods need to be considered.
 
-// make a graph to show the data is not linear
+<!-- // make a graph to show the data is not linear -->
 
 <!-- //should I talk about the increase in variance or is it only topic 2? Not really because we don't have enough data at the start of the graph -->
 
@@ -77,7 +77,7 @@ Likelihood of a normal distribution where $L(yi|\mu,\sigma^2)$ =
 
 = $\Pi^n_{i=1} fX(yi|\mu,\sigma^2)$
 
-= $\Pi^n_{i=1} (2\pi\sigma^2)^{-\frac{1}{2}}* exp{(-\frac{1}{2} * \frac{(yi - \mu)^2}{\sigma^2})}$ =
+= $\Pi^n_{i=1} ((2\pi\sigma^2)^{-\frac{1}{2}}* exp{(-\frac{1}{2} * \frac{(yi - \mu)^2}{\sigma^2}))}$ =
 
 = $(2\pi\sigma^2)^{-\frac{n}{2}} * exp{(-\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (yi-\mu)^2)}$
 
@@ -222,7 +222,7 @@ CIs
 
 ## Question 1 f)
 
-H0 : θ2 = 0,08 vs. H1 : θ2 $\ne$ 0
+H0 : θ2 = 0,08 vs. H1 : θ2 $\ne$ 0,08
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -309,7 +309,7 @@ its range is from ]-$\infty$,$\infty$[ and expects continuous values,
 not respecting the nature of the data.
 
 The log-link function in both models ensures that the predicted values
-are always positive. //TODO redo this pls
+are always positive. which makes sense for poisson and not for normal //TODO redo this pls
 
 ## Question 2 b)
 
@@ -328,7 +328,7 @@ summary(model2)
 
 
 #Fitting model 1
-model1 = glm(cases ~ date, data = aids, family = gaussian(link='identity'))
+model1 = glm(cases ~ date, data = aids, family = gaussian(link='log'))
 
 # Summarise the model
 summary(model1)
@@ -347,8 +347,8 @@ predPoisson = predict(model2, newdata = aids, type="response", se.fit = T)
 
 ## Mean and Confidence Intervals estimation
 muPoisson = predPoisson$fit
-muPoisson_upper = (predPoisson$fit+qnorm(1-1.96/2)*predPoisson$se.fit) ##exp(p$fit+qnorm(1-a/2)*p$se.fit)
-muPoisson_lower = (predPoisson$fit-qnorm(1-1.96/2)*predPoisson$se.fit) ## this is the log ver in that was in cheat, ask if this is the correct way since we have a link function or I am just bad
+muPoisson_upper = exp(predPoisson$fit+qnorm(1-1.96/2)*predPoisson$se.fit) ##exp(p$fit+qnorm(1-a/2)*p$se.fit)
+muPoisson_lower = exp(predPoisson$fit-qnorm(1-1.96/2)*predPoisson$se.fit) ## this is the log ver in that was in cheat, ask if this is the correct way since we have a link function or I am just bad
 
 
 ##predict normal
@@ -390,25 +390,28 @@ AIC(model1)
 
 AIC(model2)
 
-## not sure about this one
-#logLik(model2) - logLik(model1)
 
 ```
+<!-- ## not sure about this one -->
+<!-- #logLik(model2) - logLik(model1) -->
+
 As we can see from the Akaike Information Criterion, model 1 as a much lower AIC, meaning model 1 has a much better fit than model 2 since when comparing AICs, the model with the lower values has the better fit
 ## Question 2 d)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-plot(model1)
+plot(model1,1)
 
 ```
 
-As we can see from the Residual bs fitted model, there seems to be pattern in how the model overfits and underfits the data in a way tha would require more flexibility from a multi polynomial equation.
+As we can see from the Residual bs fitted model, there seems to be pattern in how the model overfits and underfits the data in a way the would require more flexibility from a multi polynomial equation, like a quadratic or cubic.
+//write same for the linear
+//TODO rewrite because monkey sees line
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-plot(model2)
+plot(model2,1)
 
 ```
 The Poisson model residuals seem to follow a quadratic function, // does this mean it required a quadratic term?
