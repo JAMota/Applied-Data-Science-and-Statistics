@@ -320,14 +320,6 @@ $L(\theta1,theta2,\sigma^2;y,x)$
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 #Fitting in R
-#model < −glm(< response >∼< covariates >,data = <data>, family = gaussian(link=’identity’))
-#model <- glm(<response> ∼ <covariates>, data = <data>, family = poisson(link=’log’))
-
-
-# Fitting model 2
-# pois.model <- glm(ca ~ offset(logcells) + doseamt + doserate,
-# data = dicentric,
-# family = poisson(link="log"))
 
 model2 = glm(cases ~ date, data = aids, family = poisson(link='log'))
 
@@ -367,7 +359,6 @@ muNormal = predNormal$fit
 muNormal_upper = predNormal$fit+qnorm(1-1.96/2)*predNormal$se.fit ## p$fit+qnorm(1-a/2)*p$se.fit
 muNormal_lower = predNormal$fit-qnorm(1-1.96/2)*predNormal$se.fit ## p$fit-qnorm(1-a/2)*p$se.fit
 
-
 ##plot the data
 
 plot(aids$date,aids$cases, pch=20, xlab = "date", ylab = "Number of aids cases")
@@ -385,38 +376,42 @@ lines(xx,muNormal_lower,col="red", lty = 'dashed')
 ```
 As we can see from the plot alone, the linear model fits the data better than the poisson model.
 The poisson model is clearly not a good model since the big majority of the model is either overestimating or underestimating the data, which is a clear indicator that this model is inadequate.
+The Normal distribution, seems to fit somewhat the data due to the data although non-linear not deviating too much from a line but it is still clearly that it is not an adequate model since there is too many points that are under or overestimated, making it also a not very adequate model.
 
 ## Question 2 c)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-#Model comparisong IAC time
+#Model comparison aka IAC time
 
+#the formula to for the AIC: −2l + 2p
 
+AIC(model1)
 
+AIC(model2)
 
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, eval=FALSE}
-## only testing here won't show up in the final report
-load("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term2/StatisticalDataModeling/datasetsTopic2.RData")
-
-# Fit the model
-mod <- glm(y ~ t,
-family = poisson,
-data = aidsbelgium)
-
-# Summarise the model
-summary(mod)
+## not sure about this one
+#logLik(model2) - logLik(model1)
 
 ```
+As we can see from the Akaike Information Criterion, model 1 as a much lower AIC, meaning model 1 has a much better fit than model 2 since when comparing AICs, the model with the lower values has the better fit
+## Question 2 d)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-
+plot(model1)
 
 ```
 
+As we can see from the Residual bs fitted model, there seems to be pattern in how the model overfits and underfits the data in a way tha would require more flexibility from a multi polynomial equation.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+plot(model2)
+
+```
+The Poisson model residuals seem to follow a quadratic function, // does this mean it required a quadratic term?
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
