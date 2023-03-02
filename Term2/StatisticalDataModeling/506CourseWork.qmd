@@ -1,7 +1,7 @@
 ---
 title: "506CourseWork"
 format:
-  pdf:
+  docx:
     toc: true
 editor: visual
 ---
@@ -16,7 +16,7 @@ titles and labelled axes to your plots.
 
 ## Question 1
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, output=FALSE}
 
 load("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term2/StatisticalDataModeling/datasets_exercises_Assessment.RData")
 
