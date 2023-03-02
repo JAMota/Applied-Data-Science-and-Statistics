@@ -23,6 +23,8 @@ load("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Ter
 ## https://tilburgsciencehub.com/building-blocks/collaborate-and-share-your-work/write-your-paper/amsmath-latex-cheatsheet/ // cheat worksheet
 
 library(ggplot2)
+library(dplyr)
+require(MASS)
 
 
 ```
@@ -333,6 +335,8 @@ model1 = glm(cases ~ date, data = aids, family = gaussian(link='log'))
 # Summarise the model
 summary(model1)
 
+## Sorry Matthew, but it seems I have switched the model numbers and 
+## I only noticed after finished the exercise
 
 ```
 
@@ -406,7 +410,7 @@ plot(model1,1)
 
 ```
 
-As we can see from the Residual bs fitted model, there seems to be pattern in how the model overfits and underfits the data in a way the would require more flexibility from a multi polynomial equation, like a quadratic or cubic term.
+As we can see from the Residual vs fitted model, there seems to be quadratic pattern in how the model overfits and underfits the data in a way the would require more flexibility from a quadratic term.
 
 <!-- //write same for the linear -->
 <!-- //TODO rewrite because monkey sees line -->
@@ -417,30 +421,89 @@ As we can see from the Residual bs fitted model, there seems to be pattern in ho
 plot(model2,1)
 
 ```
-The Poisson model residuals seem to follow a quadratic function, this mean it required a quadratic or higher term
- polynomial for the flexibility to better fit the data.
+The Poisson model residuals seem to follow a quadratic function with some slight curves along the quadric function, this mean it required a quadratic and a cubic term for the flexibility to better fit the data.
  
  
 ## Question 2 e)
  
- As we commented on the previous  
+ As we commented on the previous exercise we will be adding the quadratic and cubic term values directly to the aids so we can use them in our model
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+aids$dataSq = aids$date^2
+
+aids$dataCubic = aids$date^3
+
+
+``` 
+ 
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
 #Fitting model 2 improvement
-model2Improved = glm(cases ~ date + date^2, data = aids, family = poisson(link='log'))
+model2Improved = glm(cases ~ date + dataSq + dataCubic, data = aids, family = poisson(link='log'))
+
+summary(model2Improved)
 
 #Fitting model 1 improvement
-model1Improved = glm(cases ~ date, data = aids, family = gaussian(link='log'))
+model1Improved = glm(cases ~ date + dataSq, data = aids, family = gaussian(link='log'))
 
 ```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## compare the full and reduced models using ANOVA (this order)
+anova(model2Improved, model2, test="Chisq")
+
+```
+We can see that the p-value is less than 0.05 and therefore we can reject the null hypothesis and
+conclude that the model with the quadratic and cubic terms is better than the linear Poisson model statistically so we should choose the improved model.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## compare the full and reduced models using ANOVA (this order)
+anova(model1Improved, model1, test="Chisq")
+
+```
+We can once again see that the p-value is less than 0.05 and therefore we can reject the null hypothesis and
+conclude that the model with the quadratic term is better than the linear Gaussian model statistically so we should choose the improved model.
+
 
 ## Question 2 f)
 
+<!-- model fit based on the deviance arguments means anova testing -->
+
+Firstly I will talk about each model flaws.
+
+Starting from the improved Gaussian model, its main flaw is how a normal distribution simply does not respect the nature of this data, that is count data with only values on the real line for the reasons already mentioned on question 2 a).
+
+The improved Poisson model although respects the nature of the nature, the initial model was underestimating and overestimating too much of the data and required a clear flexibility improvement by adding quadratic and cubic terms, however such performance improvement come at the cost of interpretability as it is not very clear what quadratic and cubic time real represent in this new model.
+
+Now that we have established that both models have their flaws I will begin by comparing both models.
+
+We can extract the deviance from the model and calculate a p-value to check whether the
+model fits the data using an LRT:
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+# Deviance goodness of fit of model 1 looks OK:
+1 - pchisq(model1Improved$deviance, model1Improved$df.residual)
 
-
-
+# Deviance goodness of fit of model 1 looks OK:
+1 - pchisq(model2Improved$deviance, model2Improved$df.residual)
 ```
+The p-value for both models are smaller than 0.05, so it means that both models although already improved still aren't a good fit for the data.
+
+Comparing both models using AIC we can see that:
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+AIC(model1Improved)
+AIC(model2Improved)
+```
+Both models have a relatively close AIC result. 
+
+Leaving us to choose neither of the models as good fit for the data, although the improved Poisson would still be preferred to the improved Gaussian since it is the only one of the improved models respecting the nature of the data.
+
+
 
 ## Question 2 g)
 
