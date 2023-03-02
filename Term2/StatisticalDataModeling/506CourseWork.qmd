@@ -72,8 +72,6 @@ variables, and alternative methods need to be considered.
 The Yi are independent so the likelihood is a product of the individual
 pdfs.
 
-## TODO GET BETTER WORDING FOR THE REPLACE PART 
-
 
 Likelihood of a normal distribution where $L(yi|\mu,\sigma^2)$ = 
 
@@ -83,7 +81,7 @@ Likelihood of a normal distribution where $L(yi|\mu,\sigma^2)$ =
 
 = $(2\pi\sigma^2)^{-\frac{n}{2}} * exp{(-\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (yi-\mu)^2)}$
 
-Replacing the $\mu$ with the respective $\theta s$ and n, we have the likelihood as:
+Plugging in the $\mu$ with the respective $\theta s$ formula and n, we have the likelihood as:
 
 $L(\beta0,\beta1,\sigma^2;x,y)$ = 
 
@@ -106,7 +104,7 @@ $l(yi|\mu,\sigma^2)$ =
 
 = $-\frac{n}{2}ln(2\pi) -\frac{n}{2}ln(\sigma^2) -\frac{1}{2\sigma^2}* \sum_{i=1}^{n} (yi-\mu)^2)$
 
-Once again replacing the $\mu$ with the respective $\theta s$ and n, we have the log-likelihood as:
+Once again plugging in the $\mu$ with the respective $\theta s$ formula and n, we have the log-likelihood as:
 
 $l(\beta0,\beta1,\sigma^2;x,y)$ =
 
@@ -310,7 +308,8 @@ its range is from ]-$\infty$,$\infty$[ and expects continuous values,
 not respecting the nature of the data.
 
 The log-link function in both models ensures that the predicted values
-are always positive. which makes sense for poisson and not for normal //TODO redo this pls
+are always positive. This behaviour is standard for a poisson distribution but is inadequate for a normal distribution.
+
 
 ## Question 2 b)
 
@@ -412,7 +411,6 @@ plot(model1,1)
 As we can see from the Residual vs fitted model, there seems to be quadratic pattern in how the model overfits and underfits the data in a way the would require more flexibility from a quadratic term.
 
 <!-- //write same for the linear -->
-<!-- //TODO rewrite because monkey sees line -->
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
@@ -493,7 +491,7 @@ model fits the data using an LRT:
 ```
 The p-value for both models are smaller than 0.05, so it means that both models although already improved still aren't a good fit for the data.
 
-<!-- //TODO DRAW THE PLOTS of these 2 omdels -->
+<!-- // DRAW THE PLOTS of these 2 omdels -->
 
 <!-- ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)} -->
 
