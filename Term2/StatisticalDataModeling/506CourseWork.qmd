@@ -281,13 +281,13 @@ Considering that the variance increases trough the model it further indicates th
 
 ## Question 2
 
-Model 1:
+Model 2:
 
 $Yi$ ~ $Pois(\lambda i)$
 
 $log(\lambda i) = \beta0 + \beta1 xi$
 
-Model 2:
+Model 1:
 
 $Yi$ ~ $N(\mu i,\sigma^2)$
 
