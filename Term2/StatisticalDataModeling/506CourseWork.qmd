@@ -510,6 +510,32 @@ Leaving us to choose neither of the models as good fit for the data, although th
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+# Fit the model 
+##model2Improved = glm(cases ~ date + dataSq + dataCubic, data = aids, family = poisson(link='log'))
+modelNegativeBinom <- glm.nb(cases ~ (date + dataSq + dataCubic ), data = aids)
 
+# Model summary
+summary(modelNegativeBinom)
 
 ```
+<!-- ## Negative Bonomial is a Quase Poisson that is already on the log scale -->
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# Fit the model 
+modelNegativeBinom <- glm.nb(cases ~ (date + dataSq + dataCubic ), data = aids)
+
+# Model summary
+summary(modelNegativeBinom)
+
+```
+
+Now that we have extended the improved Poisson into a 
+
+
+
+
+
+
+
+
