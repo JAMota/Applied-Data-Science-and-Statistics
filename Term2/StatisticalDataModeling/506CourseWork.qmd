@@ -396,6 +396,8 @@ AIC(model2)
 <!-- #logLik(model2) - logLik(model1) -->
 
 As we can see from the Akaike Information Criterion, model 1 as a much lower AIC, meaning model 1 has a much better fit than model 2 since when comparing AICs, the model with the lower values has the better fit
+
+
 ## Question 2 d)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
@@ -404,9 +406,10 @@ plot(model1,1)
 
 ```
 
-As we can see from the Residual bs fitted model, there seems to be pattern in how the model overfits and underfits the data in a way the would require more flexibility from a multi polynomial equation, like a quadratic or cubic.
-//write same for the linear
-//TODO rewrite because monkey sees line
+As we can see from the Residual bs fitted model, there seems to be pattern in how the model overfits and underfits the data in a way the would require more flexibility from a multi polynomial equation, like a quadratic or cubic term.
+
+<!-- //write same for the linear -->
+<!-- //TODO rewrite because monkey sees line -->
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
@@ -415,18 +418,32 @@ plot(model2,1)
 
 ```
 The Poisson model residuals seem to follow a quadratic function, this mean it required a quadratic or higher term
- polynomial for the flexibility.
+ polynomial for the flexibility to better fit the data.
+ 
+ 
+## Question 2 e)
+ 
+ As we commented on the previous  
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+#Fitting model 2 improvement
+model2Improved = glm(cases ~ date + date^2, data = aids, family = poisson(link='log'))
+
+#Fitting model 1 improvement
+model1Improved = glm(cases ~ date, data = aids, family = gaussian(link='log'))
+
+```
+
+## Question 2 f)
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 
 
 ```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+## Question 2 g)
 
-
-
-```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
