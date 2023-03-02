@@ -342,22 +342,22 @@ summary(model1)
 xx <- seq(83, 94, len=45)
 
 ##predict Poisson
-predPoisson = predict(model2, newdata = aids, type="response", se.fit = T)
+predPoisson = predict(model2, newdata = aids, type="link", se.fit = T)
 
 
 ## Mean and Confidence Intervals estimation
-muPoisson = predPoisson$fit
+muPoisson = exp(predPoisson$fit)
 muPoisson_upper = exp(predPoisson$fit+qnorm(1-1.96/2)*predPoisson$se.fit) ##exp(p$fit+qnorm(1-a/2)*p$se.fit)
 muPoisson_lower = exp(predPoisson$fit-qnorm(1-1.96/2)*predPoisson$se.fit) ## this is the log ver in that was in cheat, ask if this is the correct way since we have a link function or I am just bad
 
 
 ##predict normal
-predNormal = predict(model1, newdata = aids, type="response", se.fit = T)
+predNormal = predict(model1, newdata = aids, type="link", se.fit = T)
 
 ## Mean and Confidence Intervals estimation
-muNormal = predNormal$fit
-muNormal_upper = predNormal$fit+qnorm(1-1.96/2)*predNormal$se.fit ## p$fit+qnorm(1-a/2)*p$se.fit
-muNormal_lower = predNormal$fit-qnorm(1-1.96/2)*predNormal$se.fit ## p$fit-qnorm(1-a/2)*p$se.fit
+muNormal = exp(predNormal$fit)
+muNormal_upper = exp(predNormal$fit+qnorm(1-1.96/2)*predNormal$se.fit) ## p$fit+qnorm(1-a/2)*p$se.fit
+muNormal_lower = exp(predNormal$fit-qnorm(1-1.96/2)*predNormal$se.fit) ## p$fit-qnorm(1-a/2)*p$se.fit
 
 ##plot the data
 
@@ -371,7 +371,7 @@ lines(xx,muNormal,col="red")
 lines(xx,muNormal_upper,col="red", lty = 'dashed')
 lines(xx,muNormal_lower,col="red", lty = 'dashed')
 
-
+## even if the Confidence Intervals are not exactly clear, it is still correct to make the exp of the mean and CI When we are using a log-link function
 
 ```
 As we can see from the plot alone, the linear model fits the data better than the poisson model.
@@ -414,8 +414,8 @@ As we can see from the Residual bs fitted model, there seems to be pattern in ho
 plot(model2,1)
 
 ```
-The Poisson model residuals seem to follow a quadratic function, // does this mean it required a quadratic term?
-
+The Poisson model residuals seem to follow a quadratic function, this mean it required a quadratic or higher term
+ polynomial for the flexibility.
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 
