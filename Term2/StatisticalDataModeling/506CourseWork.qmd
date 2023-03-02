@@ -493,6 +493,45 @@ model fits the data using an LRT:
 ```
 The p-value for both models are smaller than 0.05, so it means that both models although already improved still aren't a good fit for the data.
 
+<!-- //TODO DRAW THE PLOTS of these 2 omdels -->
+
+<!-- ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)} -->
+
+<!-- ## We can use this to obtain 95% confidence intervals on our estimated relationship -->
+<!-- xx <- seq(83, 94, len=45) -->
+
+<!-- ##predict improved Poisson -->
+<!-- predPoissonImproved = predict(model2Improved, newdata = aids, type="link", se.fit = T) -->
+
+
+<!-- ## Mean and Confidence Intervals estimation -->
+<!-- muPoissonImproved = exp(predPoissonImproved$fit) -->
+<!-- muPoissonImproved_upper = exp(predPoissonImproved$fit+qnorm(1-1.96/2)*predPoissonImproved$se.fit)  -->
+<!-- muPoissonImproved_lower = exp(predPoissonImproved$fit-qnorm(1-1.96/2)*predPoissonImproved$se.fit)  -->
+
+<!-- ##predict Normal improved -->
+<!-- predNormalImproved = predict(model1Improved, newdata = aids, type="link", se.fit = T) -->
+
+<!-- ## Mean and Confidence Intervals estimation -->
+<!-- muNormalImproved = exp(predNormal$fit) -->
+<!-- muNormalImproved_upper = exp(predNormalImproved$fit+qnorm(1-1.96/2)*predNormalImproved$se.fit) -->
+<!-- muNormalImproved_lower = exp(predNormalImproved$fit-qnorm(1-1.96/2)*predNormalImproved$se.fit) -->
+
+<!-- ##plot the data -->
+
+<!-- plot(aids$date,aids$cases, pch=20, xlab = "date", ylab = "Number of aids cases") -->
+
+<!-- lines(xx, muPoissonImproved, col="blue") -->
+<!-- lines(xx,muPoissonImproved_upper, col="blue", lty = 'dashed') -->
+<!-- lines(xx,muPoissonImproved_lower, col="blue", lty = 'dashed') -->
+
+<!-- lines(xx,muNormalImproved,col="red") -->
+<!-- lines(xx,muNormalImproved_upper,col="red", lty = 'dashed') -->
+<!-- lines(xx,muNormalImproved_lower,col="red", lty = 'dashed') -->
+
+<!-- ``` -->
+
+
 Comparing both models using AIC we can see that:
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 AIC(model1Improved)
@@ -529,33 +568,32 @@ summary(modelNegativeBinom)
 
 ```
 
-Now that we have extended the improved Poisson into a negative Binomial, we will compare this new model against the previously improved Poisson model which we already determined altough not a good model it is to be prefered over the improved Gaussian model.
+Now that we have extended the improved Poisson into a negative Binomial, we will compare this new model against the previously improved Poisson model and the improved Gaussian model.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-# Deviance goodness of fit of model 1 looks OK:
+# Deviance goodness of fit of the negative model looks OK:
 1 - pchisq(modelNegativeBinom$deviance, modelNegativeBinom$df.residual)
 
-# Deviance goodness of fit of model 1 looks OK:
+# Deviance goodness of fit of improved model 2 looks OK:
 1 - pchisq(model2Improved$deviance, model2Improved$df.residual)
-```
-The p-value is larger than 0.05, meaning that the negative binomial is a good fit to the data. 
 
-Lastly from the Akaike Information Criterion test we can see that the Negative Binomial has the best goodness of fit per complexity and since it has the same complexity has the improved Poisson, it simply performs better
+# Deviance goodness of fit of improved model 1 looks OK:
+1 - pchisq(model1Improved$deviance, model1Improved$df.residual)
+```
+As we can see, the negative binomial model is the only model with a p-value is larger than 0.05, meaning that only negative binomial is considered a good fit to the data. 
+
+Lastly from the Akaike Information Criterion test we can see that the Negative Binomial has the best goodness of fit per penalised complexity meaning it simply performs better than the other 2 models.
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 AIC(modelNegativeBinom)
 
+AIC(model1Improved)
 AIC(model2Improved)
 
 ```
 
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-
-
-
-```
-
+To conclude the negative binomial model not only is preferable to both the improved poisson and improved gaussian model, it is also a good fit for the data.
 
 
 
