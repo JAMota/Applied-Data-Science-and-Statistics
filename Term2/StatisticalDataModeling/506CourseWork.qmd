@@ -140,7 +140,6 @@ mu = ((theta1*nlmodel$x)/(theta2+nlmodel$x))
 # Log-likelihood
 result = (-(n/2)*log(2*pi)) -((n/2)*log(sigma^2)) -(1/(2*(sigma^2))) * (sum((nlmodel$y-mu)^2))
 
-
 # Returning negative log-likelihood
 return(-result)
 }
@@ -530,10 +529,32 @@ summary(modelNegativeBinom)
 
 ```
 
-Now that we have extended the improved Poisson into a 
+Now that we have extended the improved Poisson into a negative Binomial, we will compare this new model against the previously improved Poisson model which we already determined altough not a good model it is to be prefered over the improved Gaussian model.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+# Deviance goodness of fit of model 1 looks OK:
+1 - pchisq(modelNegativeBinom$deviance, modelNegativeBinom$df.residual)
+
+# Deviance goodness of fit of model 1 looks OK:
+1 - pchisq(model2Improved$deviance, model2Improved$df.residual)
+```
+The p-value is larger than 0.05, meaning that the negative binomial is a good fit to the data. 
+
+Lastly from the Akaike Information Criterion test we can see that the Negative Binomial has the best goodness of fit per complexity and since it has the same complexity has the improved Poisson, it simply performs better
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+AIC(modelNegativeBinom)
+
+AIC(model2Improved)
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 
 
+```
 
 
 
