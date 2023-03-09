@@ -14,6 +14,7 @@ library(ggplot2)
 library(tidyverse)
 library(tidyr)
 library(DataExplorer)
+library(caTools)
 
 
 classificationDF = read_csv("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term2/AdvancedTopicsInStatistics/AssignmentData/Classification.csv")
@@ -63,7 +64,7 @@ plot_histogram(group1)
 
 ```
 Group 1 histograms reveal that X2 is normally distributed with mean equal to 0,5 and sightly skewed to the left.
-The variable X1 also seems to follow a normal distribution that has a very prolonged skewness to the left and mean 0,5.
+The variable X1 also seems to follow a normal distribution that has a very prolonged skewness to the left and mean 0,5.0
 
 
 ## Question 2.2 
@@ -82,10 +83,18 @@ The variable X1 also seems to follow a normal distribution that has a very prolo
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+# make this example reproducible
+set.seed(26041999)
+# use 80% of dataset as training set and 20% as test set
+sample <- sample.split(classificationDF$Group, SplitRatio = 0.8)
+## note that the column selected above can be any column.
+train <- classificationDF[sample, ]
+test <- classificationDF[!sample, ]
 
 
 ```
 
+## Question 2.4
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
