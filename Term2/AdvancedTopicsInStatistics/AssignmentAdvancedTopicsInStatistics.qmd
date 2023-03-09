@@ -1,0 +1,109 @@
+---
+title: "AdvancedStatsAssignment"
+format: pdf
+editor: visual
+---
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, output=FALSE}
+
+library(C50)
+library(caret) # function for creating train/test datasets, and confusion matrices
+library(class) # this has the knn function
+library(ggplot2)
+library(tidyverse)
+library(tidyr)
+library(DataExplorer)
+
+
+classificationDF = read_csv("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term2/AdvancedTopicsInStatistics/AssignmentData/Classification.csv")
+
+```
+
+## Question 1
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+## Question 2 - classification
+
+## Question 2.1
+
+Group 0 is characterised for always having x1 > -1,65 and x2 < 2,05 with the majority of the occurences of group 0 having 
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## I am just going to split the dataframe in two so its easier to show an histogram of each variable for both groups
+
+group0 <- subset(classificationDF, Group == 0)
+group1 <- subset(classificationDF, Group == 1)
+
+##removing the id variable from both of these new data frames so they are not included in the histograms
+group0 = group0 %>% select(-(1))
+group1 = group1 %>% select(-(1))
+
+
+plot_histogram(group0)
+
+
+```
+As we can see from the histograms from group 0 it seems that X2 seems to follow a normal distribution that is very slightly skewed to the left and has mean -0,5.
+X1 is clearly skewed to the right possibly following a normal distribution and again mean equal to -0,5.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+plot_histogram(group1)
+
+
+```
+Group 1 histograms reveal that X2 is normally distributed with mean equal to 0,5 and sightly skewed to the left.
+The variable X1 also seems to follow a normal distribution that has a very prolonged skewness to the left and mean 0,5.
+
+
+## Question 2.2 
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+## Question 2.3
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
