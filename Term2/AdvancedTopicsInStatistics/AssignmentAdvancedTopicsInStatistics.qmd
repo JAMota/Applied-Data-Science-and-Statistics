@@ -15,7 +15,8 @@ library(tidyverse)
 library(tidyr)
 library(DataExplorer)
 library(caTools)
-
+library(kernlab)
+library(e1071)
 
 classificationDF = read_csv("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term2/AdvancedTopicsInStatistics/AssignmentData/Classification.csv")
 
@@ -69,16 +70,21 @@ The variable X1 also seems to follow a normal distribution that has a very prolo
 
 ## Question 2.2 
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+Both LDA and QDA assume normality which is true from what we can see from the histograms on 2.1
+
+Starting with Linear discriminant analysis (LDA) we can easily see from the initial graph that we can see that the any sensible decision boundary is highly non-linear. As analysed from histograms this data violates the initial assumption of homogeneity of variance (homoscedasticity). The non-linearity of the data would also lead to LDA having terrible performance.
+As such we can conclude that LDA is not suitable for this data.
+
+Secondly, quadratic discriminant analysis (QDA) follow the assumption of normality of each of the variables which does seem to hold even with how highly non-linear the data is. However judging from the plot with the observations, it does seem that QDA might not have enough flexibility to account for all the variability in what is the theoretical Bayes decision boundary. As such QDA could be appropriate for this data but not the best performing classification method for such data.
+
+Thirdly, K-nearest neighbour classification (KNN) has no assumptions made about the shape of the decision, as such as we choose a adequate level of smoothness to prevent overfitting KNN classification is an adequate method for the data.
+
+Support Vector Machines (SVM) are most commonly used for binary classification, which holds true for our data. The high non-linear decision boundary however requires a careful selection of a non linear kernel function to ensure that the boundary becomes non-linear when converted back to the regular space. As such I deem SVM an appropriate method to classify the data.
+
+Finally, Random forest works by constructing multiple decision trees randomly selecting a portion of the variables and de-correlate them using multiple bootstrapped sets. Since our data has only 2 variables there isn't enough variables to overcome overfitting. To conclude, Random Forest classification is not very appropriate to this type of data.
 
 
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-
-
-
-```
 ## Question 2.3
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
@@ -91,11 +97,24 @@ sample <- sample.split(classificationDF$Group, SplitRatio = 0.8)
 train <- classificationDF[sample, ]
 test <- classificationDF[!sample, ]
 
+# split the data using the indices returned by the createDataPartition function
+X_train <- train[, c("X1", "X2")]
+y_train <- train$Group
+X_test <- test[, c("X1", "X2")]
+y_test <- test$Group
+
+# check the dimensions 
+dim(train)
+dim(test)
+
 
 ```
 
 ## Question 2.4
 
+The 3 method I will be using are QDA, KNN and SVM as deemed to be the most appropriate methods for this data.
+
+## QDA - quadratic discriminant analysis
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -103,9 +122,33 @@ test <- classificationDF[!sample, ]
 
 ```
 
-
+## KNN - K-nearest neighbour
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# fit the model
+fit = knn(train=X_train, test=X_test, cl=y_train,k=3)
+# fit = knn(xTrain,xTest,yTrain,k=3)
+
+# produce the confusion matrix
+# when numbers are used as class labels we might need
+confusionMatrix(as.factor(fit),as.factor(y_test))
+
+
+```
+
+## SVM - Support Vector Machines
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## checking the model performance with multiple difference C constants
+mdl <- train(x=X_train,y=y_train, method = "svmLinear",
+trControl = trainControl("cv", number = 5),
+tuneGrid = expand.grid(C = seq(0, 2, length = 20)))
+# Plot model accuracy vs different values of Cost
+plot(mdl)
+# Print the best tuning parameter C that maximises model accuracy
+mdl$bestTune
 
 
 
@@ -113,6 +156,27 @@ test <- classificationDF[!sample, ]
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+# Test model on testing data
+yTestPred <- predict(mdl, newdata=X_test)
+confusionMatrix(yTestPred, y_test) # predicted/true
+
+```
+
+## quick debug todo delete
+```{r}
+
+mdl <- train(x=X_train,y=y_train, method='svmRadial') 
+print(mdl)
+
+mdl = svm(Group ~ .,
+                 data = train,
+                 type = 'C-classification',
+                 kernel = 'radial')
+
+# Test model on testing data
+yTestPred = predict(mdl, newdata=test)
+# yTestPred <- mdl %>% predict(xTest) 
+confusionMatrix(as.factor(yTestPred), as.factor(y_test)) # predicted/true
 
 
 ```
