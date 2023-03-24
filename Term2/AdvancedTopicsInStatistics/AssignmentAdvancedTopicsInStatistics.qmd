@@ -153,6 +153,7 @@ mdl$bestTune
 
 
 ```
+#TODO talk about how there is a balance on how the number of miss classified 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -162,8 +163,12 @@ confusionMatrix(yTestPred, y_test) # predicted/true
 
 ```
 
-## quick debug todo delete
-```{r}
+## quick debug que funciona CARALHOOOOOOOOOOOOOOOO
+## TODO this is using radial but I should have one with polynimial as well to show that polinomial is better
+```{r, warning=FALSE}
+
+## https://github.com/MatheusSchaly/Online-Courses/blob/master/Machine_Learning_A-Z_Hands-On_Python_%26_R_In_Data_Science/2_Classification/R/4_Kernel_SVM.R
+## to add visualization
 
 mdl <- train(x=X_train,y=y_train, method='svmRadial') 
 print(mdl)
