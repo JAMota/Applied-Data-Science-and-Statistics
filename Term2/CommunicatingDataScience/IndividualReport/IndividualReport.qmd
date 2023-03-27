@@ -4,6 +4,7 @@ format:
   pdf:
     toc: true
 editor: visual
+bibliography: cod.bibtex
 ---
 
 ## Introduction
@@ -12,6 +13,22 @@ I. Introduction
 A. Background and context
 B. Purpose and objectives of the report
 C. Scope and limitations of the report
+
+
+Atlantic cod also known by its scientific name Gadus morhua is one of the most commercially important fish species in the world, with a long history of human exploitation dating back to the 10th century during by the Vikings @Kurlansky1998Cod. 
+
+This species has been an important source of food and income for coastal communities across the North Atlantic region, supporting a vast industry of fishermen, processors, and distributors for centuries. However, the sustainability of the Atlantic cod fishery has been increasingly threatened in recent years due to overfishing, habitat destruction, and climate change.
+
+The warming of ocean waters, caused by increasing greenhouse gas emissions, has altered the biology, ecology, and behaviour of Atlantic cod, leading to declines in population and distribution. These changes have had significant impacts on the commercial fishing industry, which has relied heavily on Atlantic cod as a source of income and food for centuries. 
+
+In recent years, scientific research and policy efforts have been focused on understanding the impacts of climate change on Atlantic cod, and developing sustainable fishing strategies that take into account the changing environmental conditions. 
+
+This report aims to review the current state of knowledge on the impact of climate change on Atlantic cod, including the ecological and environmental factors that shape its distribution and abundance, considering some of the socio-economic implications of its decline, and the strategies for sustainable management and conservation in the face of climate change.
+
+Through an analysis of the data regarding sea surface temperature increase and fishing, this report seeks to contribute to a more comprehensive and evidence-based understanding of the challenges associated with the Atlantic cod fishery in the era of climate change.
+
+
+
 
 II. Climate Change and its Impact on Cod Fisheries
 A. Causes and Effects of Climate Change
@@ -138,12 +155,4 @@ BacalhauSomado<- BomBacalhauDataFrameNumeric %>%
 
 
 
-You can add options to executable code like this
-
-```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is
-displayed).
+## References
