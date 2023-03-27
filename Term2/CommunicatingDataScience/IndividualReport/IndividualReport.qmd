@@ -18,7 +18,7 @@ A. Causes and Effects of Climate Change
 B. Historical Changes in Cod Populations
 C. Current Situation of Cod Fisheries
 
-III. The Effects of Climate Change on Cod Fisheries in Greenland, Iceland, and Norway
+III. The Effects of Climate Change on Cod Fisheries in Denmark, Iceland, and Norway
 A. Greenland
 
     Overview of Greenland's Cod Fisheries
@@ -50,32 +50,30 @@ library(DataExplorer)
 
 FishDataSet = read_csv("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term2/CommunicatingDataScience/IndividualReport/HistoricalLandings1950-2010/ICES_1950-2010.csv")
 
+## https://www.st.nmfs.noaa.gov/copepod/toolkit/subform_copepodite-c2.html
+## get the data from a location
+
 ```
 
 
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
 #FishDataSet$Species
 
 BacalhauDataFrame <- subset(FishDataSet, Species == "Atlantic cod")
 
 ```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
 #BacalhauDataFrame$Country
 
-BomBacalhauDataFrame <- subset(BacalhauDataFrame, Country %in% c("Norway", "Iceland", "Greenland"))
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE}
-
-BomBacalhauDataFrame <- subset(BacalhauDataFrame, Country %in% c("Norway", "Iceland", "Greenland"))
-
-
+BomBacalhauDataFrame <- subset(BacalhauDataFrame, Country %in% c("Norway", "Iceland", # "Greenland",
+  "Denmark","Faeroe Islands", "UK - England & Wales", "UK - Scotland" ))
 ```
 
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE}
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
 
 # total_count <- sum(BomBacalhauDataFrame$1951)
 
