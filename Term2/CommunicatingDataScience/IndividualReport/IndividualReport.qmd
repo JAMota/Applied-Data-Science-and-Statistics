@@ -14,6 +14,8 @@ A. Background and context
 B. Purpose and objectives of the report
 C. Scope and limitations of the report
 
+## Introduction
+
 
 Atlantic cod also known by its scientific name Gadus morhua is one of the most commercially important fish species in the world, with a long history of human exploitation dating back to the 10th century during by the Vikings @Kurlansky1998Cod. 
 
@@ -27,6 +29,15 @@ This report aims to review the current state of knowledge on the impact of clima
 
 Through an analysis of the data regarding sea surface temperature increase and fishing, this report seeks to contribute to a more comprehensive and evidence-based understanding of the challenges associated with the Atlantic cod fishery in the era of climate change.
 
+## Background and context
+
+Atlantic cod fishing has a long and complex history that dates back to at least the 11th century. Cod was a vital food source for European colonizers and became one of the most important commercial fish species in the North Atlantic.
+
+The first recorded European explorers to fish for cod in North America were the Vikings, who fished for cod off the coast of Newfoundland around 1000 AD. Later, in the 15th and 16th centuries, European fishermen established seasonal fishing camps along the New England nicknaming it Cape Cod @Kurlansky1998CodP63.
+
+As European fishing fleets grew in size and range, they began to explore deeper waters and more distant fishing grounds, leading to the development of large-scale commercial fishing operations. By the late 18th century, French and English fleets were competing for the rich cod fisheries of the Grand Banks and other areas leading to the modernization and a significant increase of cod fishing @Kurlansky1998CodP118.
+
+As such from its beginning of being an important food source, to its increased values in trade as a commodity and its increased in significance culturally due to it becoming a staple of many coastal diets and the naval development that produced experienced seamen and naval infrastructure that was required during the naval arms race of the colonial era.
 
 
 
