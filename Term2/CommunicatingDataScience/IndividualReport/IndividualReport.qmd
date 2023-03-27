@@ -1,21 +1,46 @@
 ---
 title: "Comunicating data science"
-format: pdf
+format:
+  pdf:
+    toc: true
 editor: visual
 ---
 
-## Quarto
+## Introduction
 
-Quarto enables you to weave together content and executable code into a
-finished document. To learn more about Quarto see <https://quarto.org>.
+I. Introduction
+A. Background and context
+B. Purpose and objectives of the report
+C. Scope and limitations of the report
 
-## Running Code
+II. Climate Change and its Impact on Cod Fisheries
+A. Causes and Effects of Climate Change
+B. Historical Changes in Cod Populations
+C. Current Situation of Cod Fisheries
 
-When you click the **Render** button a document will be generated that
-includes both content and the output of embedded code. You can embed
-code like this:
+III. The Effects of Climate Change on Cod Fisheries in Greenland, Iceland, and Norway
+A. Greenland
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+    Overview of Greenland's Cod Fisheries
+    The Effects of Climate Change on Greenland's Cod Fisheries
+    B. Iceland
+    Overview of Iceland's Cod Fisheries
+    The Effects of Climate Change on Iceland's Cod Fisheries
+    C. Norway
+    Overview of Norway's Cod Fisheries
+    The Effects of Climate Change on Norway's Cod Fisheries
+    
+V. Conclusion
+A. Summary of Findings
+B. Implications for Cod Fisheries and Fishing Communities
+C. Future Directions for Research and Action
+
+VI. References
+A. List of Sources Cited
+B. Additional Resources for Further Reading
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
 
 library(ggplot2)
 library(tidyverse)
@@ -29,27 +54,46 @@ FishDataSet = read_csv("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-
 
 
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE}
+#FishDataSet$Species
+
+BacalhauDataFrame <- subset(FishDataSet, Species == "Atlantic cod")
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE}
+#BacalhauDataFrame$Country
+
+BomBacalhauDataFrame <- subset(BacalhauDataFrame, Country %in% c("Norway", "Iceland", "Greenland"))
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE}
+
+BomBacalhauDataFrame <- subset(BacalhauDataFrame, Country %in% c("Norway", "Iceland", "Greenland"))
 
 
 ```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE}
+
+# total_count <- sum(BomBacalhauDataFrame$1951)
+
+BomBacalhauDataFrameNumeric <- BomBacalhauDataFrame %>% 
+     mutate_at(c(4:64), as.numeric)
+
+BomBacalhauDataFrameNumeric = BomBacalhauDataFrameNumeric %>% select(-(Species:Division))
+
+BomBacalhauDataFrameNumeric = BomBacalhauDataFrameNumeric %>% replace(is.na(.), 0)
 
 
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-
-
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+# Summarize all selected columns by summing them
+BacalhauSomado<- BomBacalhauDataFrameNumeric %>%
+  group_by(Country) %>%
+  summarise_at(vars(`1950`:`2010`), sum, na.rm = TRUE)
 
 
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+## now I just need to see the sea surface temperature change from 1950 to 2010 
 
 
 ```
