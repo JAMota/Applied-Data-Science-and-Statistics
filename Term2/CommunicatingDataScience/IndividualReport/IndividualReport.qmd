@@ -40,6 +40,18 @@ As European fishing fleets grew in size and range, they began to explore deeper 
 As such from its beginning of being an important food source, to its increased values in trade as a commodity and its increased in significance culturally due to it becoming a staple of many coastal diets and the naval development that produced experienced seamen and naval infrastructure that was required during the naval arms race of the colonial era.
 
 
+## Objectives
+
+The report aims to analyse the impacts of climate change on Atlantic cod fisheries in  Iceland, Norway, Denmark and the United Kingdom. The objectives of the report include evaluating the state of Atlantic cod fisheries from 1950 to 2010, identifying the scientific evidence linking climate change to changes in Atlantic cod's biology, ecology, and behaviour, identifying the key challenges facing the fisheries, and examining potential innovative management approaches to promote the resilience, adaptation, and sustainability of Atlantic cod fisheries.
+
+Overall, the report aims to provide a comprehensive analysis of the ecological consequences of climate change on Atlantic cod fisheries and propose strategies for adaptation and mitigation.
+
+## Scope and limitations
+
+The report is limited in scope to the impacts of climate change on Atlantic cod fisheries in Iceland, Norway, Denmark and Great Britain from 1950 to 2010. The report does not cover other fish species or historical changes in Atlantic cod populations prior to the onset of climate change. The analysis is based on existing scientific research and data, which may be limited in scope or availability. While the report provides an analysis of the ecological impact of climate change on Atlantic cod fisheries, it does not advocate for specific management strategies or policy recommendations. The report aims to provide a comprehensive analysis of the issues and potential solutions within the knowledge and expertise limitations of the author.
+
+## TODO talk here about overfishing as a limitation that is hard to account for
+
 
 II. Climate Change and its Impact on Cod Fisheries
 A. Causes and Effects of Climate Change
@@ -75,8 +87,16 @@ library(tidyverse)
 library(tidyr)
 library(DataExplorer)
 
+library(readr)
+library(lubridate)
 
-FishDataSet = read_csv("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term2/CommunicatingDataScience/IndividualReport/HistoricalLandings1950-2010/ICES_1950-2010.csv")
+library(tseries)
+library(forecast)
+
+#install.packages("forecast")
+
+
+FishDataSet = read_csv("HistoricalLandings1950-2010/ICES_1950-2010.csv")
 
 ## https://www.st.nmfs.noaa.gov/copepod/toolkit/subform_copepodite-c2.html
 ## get the data from a location
@@ -124,33 +144,81 @@ BacalhauSomado<- BomBacalhauDataFrameNumeric %>%
 
 ```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
 
+IcelandSeaSurfaceTemperature = read_csv("SeaSurfaceTemperature/IcelandSeaSurfaceTemperature.csv")
+
+NorwaySeaSurfaceTemperature = read_csv("SeaSurfaceTemperature/NorwaySeaSurfaceTemperature.csv")
+
+DenmarkSeaSurfaceTemperature = read_csv("SeaSurfaceTemperature/DenmarkSeaSurfaceTemperature.csv")
+
+FaroeIslandsSeaSurfaceTemperature = read_csv("SeaSurfaceTemperature/FaroeIslandsSeaSurfaceTemperature.csv")
+
+#EnglandWalesSeaSurfaceTemperature = read_csv("SeaSurfaceTemperature/EnglandWalesSeaSurfaceTemperature.csv")
+
+ScotlandSeaSurfaceTemperature = read_csv("SeaSurfaceTemperature/ScotlandSeaSurfaceTemperature.csv")
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
+## removing the third non existent variable form all the datasets
+
+IcelandSeaSurfaceTemperature = IcelandSeaSurfaceTemperature %>% select(-(...3))
+NorwaySeaSurfaceTemperature = NorwaySeaSurfaceTemperature %>% select(-(...3))
+DenmarkSeaSurfaceTemperature = DenmarkSeaSurfaceTemperature %>% select(-(...3))
+FaroeIslandsSeaSurfaceTemperature = FaroeIslandsSeaSurfaceTemperature %>% select(-(...3))
+ScotlandSeaSurfaceTemperature = ScotlandSeaSurfaceTemperature %>% select(-(...3))
+
+##maybe add england + wales if needed
+
+str(IcelandSeaSurfaceTemperature)
+## the data was indeed correctly stored in the date YYYY-MM-DD format
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
+IcelandSeaSurfaceTemperature <- IcelandSeaSurfaceTemperature[-c(1:600), ]
+
+IcelandSeaSurfaceTemperature <- IcelandSeaSurfaceTemperature[-c(733:864), ]
+
+NorwaySeaSurfaceTemperature <- NorwaySeaSurfaceTemperature[-c(1:600), ]
+
+NorwaySeaSurfaceTemperature <- NorwaySeaSurfaceTemperature[-c(733:864), ]
+
+FaroeIslandsSeaSurfaceTemperature <- FaroeIslandsSeaSurfaceTemperature[-c(1:600), ]
+
+FaroeIslandsSeaSurfaceTemperature <- FaroeIslandsSeaSurfaceTemperature[-c(733:864), ]
+
+ScotlandSeaSurfaceTemperature <- ScotlandSeaSurfaceTemperature[-c(1:600), ]
+
+ScotlandSeaSurfaceTemperature <- ScotlandSeaSurfaceTemperature[-c(733:864), ]
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
+# Create time series object
+timeSeriesIceland <- ts(IcelandSeaSurfaceTemperature$`HSST= HadISST Temperature (C)` , start = ymd("1950-01-15"), frequency = 12)
+
+plot(timeSeriesIceland, main = "Temperature Time Series")
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+adf.test(timeSeriesIceland)
 
 ```
+If the p-value of the test is less than 0.05, you can reject the null hypothesis that the time series is non-stationary and assume that it is stationary.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+arima_model <- auto.arima(timeSeriesIceland)
 
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-
-
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-
-
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-
+summary(arima_model)
 
 ```
 
