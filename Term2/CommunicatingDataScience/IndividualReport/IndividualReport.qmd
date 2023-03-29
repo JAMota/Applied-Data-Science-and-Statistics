@@ -3,18 +3,20 @@ title: "Comunicating data science"
 format:
   pdf:
     toc: true
+    toc-depth: 4
+    # number-sections: true
 editor: visual
 bibliography: cod.bibtex
 ---
 
-## Introduction
+## I. Introduction {#sec-introduction1}
 
-I. Introduction
-A. Background and context
-B. Purpose and objectives of the report
-C. Scope and limitations of the report
+<!-- I. Introduction -->
+<!-- A. Background and context -->
+<!-- B. Purpose and objectives of the report -->
+<!-- C. Scope and limitations of the report -->
 
-## Introduction
+### Introduction {#sec-introduction2}
 
 
 Atlantic cod also known by its scientific name Gadus morhua is one of the most commercially important fish species in the world, with a long history of human exploitation dating back to the 10th century during by the Vikings @Kurlansky1998Cod. 
@@ -53,31 +55,39 @@ The report is limited in scope to the impacts of climate change on Atlantic cod 
 ## TODO talk here about overfishing as a limitation that is hard to account for
 
 
-II. Climate Change and its Impact on Cod Fisheries
-A. Causes and Effects of Climate Change
-B. Historical Changes in Cod Populations
-C. Current Situation of Cod Fisheries
+## II. Climate Change and its Impact on Cod Fisheries
+
+<!-- A. Causes and Effects of Climate Change -->
+<!-- B. Historical Changes in Cod Populations -->
+<!-- C. Current Situation of Cod Fisheries -->
+
+## Causes and Effects of Climate Change
+Climate change is primarily caused by the increase in greenhouse gases (GHGs) in the atmosphere, particularly carbon dioxide (CO2). Human activities, such as burning fossil fuels, deforestation, and agriculture, are the main sources of GHG emissions. These activities release large amounts of CO2 and other GHGs into the atmosphere, trapping heat and warming the planet.
+
+## Causes and Effects of Climate Change
 
 III. The Effects of Climate Change on Cod Fisheries in Denmark, Iceland, and Norway
-A. Greenland
-
-    Overview of Greenland's Cod Fisheries
-    The Effects of Climate Change on Greenland's Cod Fisheries
-    B. Iceland
-    Overview of Iceland's Cod Fisheries
-    The Effects of Climate Change on Iceland's Cod Fisheries
-    C. Norway
-    Overview of Norway's Cod Fisheries
-    The Effects of Climate Change on Norway's Cod Fisheries
+A. Denmark
+Overview of Denmark's Cod Fisheries
+The Effects of Climate Change on Denmark's Cod Fisheries
+B. Iceland
+Overview of Iceland's Cod Fisheries
+The Effects of Climate Change on Iceland's Cod Fisheries
+C. Norway
+Overview of Norway's Cod Fisheries
+The Effects of Climate Change on Norway's Cod Fisheries
+C. Scotland
+Overview of Scotland's Cod Fisheries
+The Effects of Climate Change on Scotland's Cod Fisheries
     
 V. Conclusion
 A. Summary of Findings
 B. Implications for Cod Fisheries and Fishing Communities
 C. Future Directions for Research and Action
 
-VI. References
-A. List of Sources Cited
-B. Additional Resources for Further Reading
+<!-- VI. References -->
+<!-- A. List of Sources Cited -->
+<!-- B. Additional Resources for Further Reading -->
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
