@@ -9,7 +9,7 @@ editor: visual
 bibliography: cod.bibtex
 ---
 
-## I. Introduction {#sec-introduction1}
+##  Introduction {#sec-introduction1}
 
 <!-- I. Introduction -->
 <!-- A. Background and context -->
@@ -31,7 +31,7 @@ This report aims to review the current state of knowledge on the impact of clima
 
 Through an analysis of the data regarding sea surface temperature increase and fishing, this report seeks to contribute to a more comprehensive and evidence-based understanding of the challenges associated with the Atlantic cod fishery in the era of climate change.
 
-## Background and context
+### Background and context
 
 Atlantic cod fishing has a long and complex history that dates back to at least the 11th century. Cod was a vital food source for European colonizers and became one of the most important commercial fish species in the North Atlantic.
 
@@ -42,13 +42,13 @@ As European fishing fleets grew in size and range, they began to explore deeper 
 As such from its beginning of being an important food source, to its increased values in trade as a commodity and its increased in significance culturally due to it becoming a staple of many coastal diets and the naval development that produced experienced seamen and naval infrastructure that was required during the naval arms race of the colonial era.
 
 
-## Objectives
+### Objectives
 
 The report aims to analyse the impacts of climate change on Atlantic cod fisheries in  Iceland, Norway, Denmark and the United Kingdom. The objectives of the report include evaluating the state of Atlantic cod fisheries from 1950 to 2010, identifying the scientific evidence linking climate change to changes in Atlantic cod's biology, ecology, and behaviour, identifying the key challenges facing the fisheries, and examining potential innovative management approaches to promote the resilience, adaptation, and sustainability of Atlantic cod fisheries.
 
 Overall, the report aims to provide a comprehensive analysis of the ecological consequences of climate change on Atlantic cod fisheries and propose strategies for adaptation and mitigation.
 
-## Scope and limitations
+### Scope and limitations
 
 The report is limited in scope to the impacts of climate change on Atlantic cod fisheries in Iceland, Norway, Denmark and Great Britain from 1950 to 2010. The report does not cover other fish species or historical changes in Atlantic cod populations prior to the onset of climate change. The analysis is based on existing scientific research and data, which may be limited in scope or availability. While the report provides an analysis of the ecological impact of climate change on Atlantic cod fisheries, it does not advocate for specific management strategies or policy recommendations. The report aims to provide a comprehensive analysis of the issues and potential solutions within the knowledge and expertise limitations of the author.
 
@@ -61,10 +61,11 @@ The report is limited in scope to the impacts of climate change on Atlantic cod 
 <!-- B. Historical Changes in Cod Populations -->
 <!-- C. Current Situation of Cod Fisheries -->
 
-## Causes and Effects of Climate Change
+### Causes and Effects of Climate Change
+
 Climate change is primarily caused by the increase in greenhouse gases (GHGs) in the atmosphere, particularly carbon dioxide (CO2). Human activities, such as burning fossil fuels, deforestation, and agriculture, are the main sources of GHG emissions. These activities release large amounts of CO2 and other GHGs into the atmosphere, trapping heat and warming the planet.
 
-## Causes and Effects of Climate Change
+
 
 III. The Effects of Climate Change on Cod Fisheries in Denmark, Iceland, and Norway
 A. Denmark
