@@ -232,14 +232,22 @@ Regarding another division of subdivision of Atlantic cod, Faroese cod, the repo
 Lastly, ICES notes that Icelandic cod is currently below the precautionary reference point, and ICES advises that no directed fishing for Icelandic cod should take place in 2023 @FaroeReport.
 
 
-III. The Effects of Climate Change on Cod Fisheries in Iceland, Danish Faroe Islands,
-     and Norway A. Denmark Overview of Denmark's Cod Fisheries The
-     Effects of Climate Change on Denmark's Cod Fisheries B. Iceland
-     Overview of Iceland's Cod Fisheries The Effects of Climate Change
-     on Iceland's Cod Fisheries C. Norway Overview of Norway's Cod
-     Fisheries The Effects of Climate Change on Norway's Cod
-     Fisheries C. Scotland Overview of Scotland's Cod Fisheries The
-     Effects of Climate Change on Scotland's Cod Fisheries
+## The Effects of Climate Change on Cod Fisheries
+
+### Iceland
+
+## Norway
+
+## Faroe Islands
+
+<!-- III. The Effects of Climate Change on Cod Fisheries in Iceland, Danish Faroe Islands, -->
+<!--      and Norway A. Denmark Overview of Denmark's Cod Fisheries The -->
+<!--      Effects of Climate Change on Denmark's Cod Fisheries B. Iceland -->
+<!--      Overview of Iceland's Cod Fisheries The Effects of Climate Change -->
+<!--      on Iceland's Cod Fisheries C. Norway Overview of Norway's Cod -->
+<!--      Fisheries The Effects of Climate Change on Norway's Cod -->
+<!--      Fisheries C. Scotland Overview of Scotland's Cod Fisheries The -->
+<!--      Effects of Climate Change on Scotland's Cod Fisheries -->
 
 V. Conclusion A. Summary of Findings B. Implications for Cod Fisheries
 and Fishing Communities C. Future Directions for Research and Action
@@ -456,7 +464,7 @@ ggplot(IcelandCodEconomy, aes(x = Year, y = ratio)) +
   geom_point() +
   xlab("Year") +
   ylab("Cod export percentage") +
-  ggtitle("Percentage of cod revenue per total exports 1999-2020")
+  ggtitle("Iceland percentage of cod revenue per total exports 1999-2020")
 
 #p2 =
 ggplot(IcelandCodEconomy, aes(x = Year, y = CodEurosMillions)) +
@@ -464,7 +472,7 @@ ggplot(IcelandCodEconomy, aes(x = Year, y = CodEurosMillions)) +
   geom_point() +
   xlab("Year") +
   ylab("Cod export € (Millions)") +
-  ggtitle("Cod exports value € (Millions) 1999-2021")
+  ggtitle("Iceland cod exports value € (Millions) 1999-2021")
 
 
 # Combine graphs using patchwork
@@ -474,25 +482,100 @@ ggplot(IcelandCodEconomy, aes(x = Year, y = CodEurosMillions)) +
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
 
+IcelandSeaSurfaceTemperature$year <- format(IcelandSeaSurfaceTemperature$`DATE-YMD`, "%Y")
+
+IcelandSeaSurfaceTemperatureYearly <- aggregate(. ~ year, data = IcelandSeaSurfaceTemperature, mean)
+
+IcelandSeaSurfaceTemperatureYearly = IcelandSeaSurfaceTemperatureYearly %>% select(-(`DATE-YMD`))
+
+# ggplot(IcelandSeaSurfaceTemperatureYearly, aes(x = year, y = `HSST= HadISST Temperature (C)`)) +
+#   geom_line() +
+#   geom_point() +
+#   xlab("Year") +
+#   ylab("Cod export € (Millions)") +
+#   ggtitle("Iceland cod exports value € (Millions) 1999-2021")
+
+
+ggplot(IcelandSeaSurfaceTemperature, aes(x = `DATE-YMD`, y = `HSST= HadISST Temperature (C)`)) +
+  geom_line() +
+  geom_point() +
+  xlab("Year") +
+  geom_smooth() +
+  ylab("Cod export € (Millions)") +
+  ggtitle("Iceland temp")
+
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
 
 
+BacalhauSomado <- BacalhauSomado[-5, ]
+BacalhauSomado <- BacalhauSomado[-5, ]
+
+
+BacalhauSomadoLong <- pivot_longer(BacalhauSomado, cols = `1950`:`2010`, names_to = "year", values_to = "catches")
+
+BacalhauSomadoLong$year = as.Date(paste0(BacalhauSomadoLong$year, "-01-01"), format = "%Y-%m-%d")
+
+BacalhauIslandiaSomado <- subset(BacalhauSomadoLong, Country == "Iceland")
+
+ggplot(BacalhauIslandiaSomado, aes(x = year, y = catches)) +
+  geom_line() +
+  geom_point() +
+  xlab("Year") +
+  geom_smooth() +
+  ylab("Cod export € (Millions)") +
+  ggtitle("Iceland temp")
+
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
 
+BacalhauNoruegaSomado <- subset(BacalhauSomadoLong, Country == "Norway")
+
+ggplot(BacalhauNoruegaSomado, aes(x = year, y = catches)) +
+  geom_line() +
+  geom_point() +
+  xlab("Year") +
+  geom_smooth() +
+  ylab("Cod export € (Millions)") +
+  ggtitle("Iceland temp")
+
+ggplot(NorwaySeaSurfaceTemperature, aes(x = `DATE-YMD`, y = `HSST= HadISST Temperature (C)`)) +
+  geom_line() +
+  geom_point() +
+  xlab("Year") +
+  geom_smooth() +
+  ylab("Cod export € (Millions)") +
+  ggtitle("Iceland temp")
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
 
+BacalhauFaroeSomado <- subset(BacalhauSomadoLong, Country == "Norway")
+
+ggplot(BacalhauFaroeSomado, aes(x = year, y = catches)) +
+  geom_line() +
+  geom_point() +
+  xlab("Year") +
+  geom_smooth() +
+  ylab("Cod export € (Millions)") +
+  ggtitle("Iceland temp")
+
+ggplot(FaroeIslandsSeaSurfaceTemperature, aes(x = `DATE-YMD`, y = `HSST= HadISST Temperature (C)`)) +
+  geom_line() +
+  geom_point() +
+  xlab("Year") +
+  geom_smooth() +
+  ylab("Cod export € (Millions)") +
+  ggtitle("Iceland temp")
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
 
 
 ```
