@@ -44,13 +44,24 @@ As such from its beginning of being an important food source, to its increased v
 
 ### Objectives
 
-The report aims to analyse the impacts of climate change on Atlantic cod fisheries in  Iceland, Norway, Denmark and the United Kingdom. The objectives of the report include evaluating the state of Atlantic cod fisheries from 1950 to 2010, identifying the scientific evidence linking climate change to changes in Atlantic cod's biology, ecology, and behaviour, identifying the key challenges facing the fisheries, and examining potential innovative management approaches to promote the resilience, adaptation, and sustainability of Atlantic cod fisheries.
+The report aims to analyse the impacts of climate change on Atlantic cod fisheries in  Iceland, Norway, Denmark and Scotland. The objectives of the report include evaluating the state of Atlantic cod fisheries from 1950 to 2010, identifying the scientific evidence linking climate change to changes in Atlantic cod's biology, ecology, and behaviour, identifying the key challenges facing the fisheries, and examining potential innovative management approaches to promote the resilience, adaptation, and sustainability of Atlantic cod fisheries.
 
-Overall, the report aims to provide a comprehensive analysis of the ecological consequences of climate change on Atlantic cod fisheries and propose strategies for adaptation and mitigation.
+The countries of Iceland, Norway and Denmark were chosen due to their availability of cod in their natural waters, the economy value of the fish and the long lasting traditions of cod consumption from the Viking era.
+
+## specify why these countries
+iceland, norway gdp
+
+proof of cultural  significance on these countries
+
+
+Overall, the report aims to provide a comprehensive analysis of the ecological consequences of climate change on Atlantic cod fisheries and propose strategies for adaptation and mitigation. exhaustion of code fisheries (fishing quotas, alternative fishing, like fishlike code pangaceas)
 
 ### Scope and limitations
 
-The report is limited in scope to the impacts of climate change on Atlantic cod fisheries in Iceland, Norway, Denmark and Great Britain from 1950 to 2010. The report does not cover other fish species or historical changes in Atlantic cod populations prior to the onset of climate change. The analysis is based on existing scientific research and data, which may be limited in scope or availability. While the report provides an analysis of the ecological impact of climate change on Atlantic cod fisheries, it does not advocate for specific management strategies or policy recommendations. The report aims to provide a comprehensive analysis of the issues and potential solutions within the knowledge and expertise limitations of the author.
+The report is limited in scope to the impacts of climate change on Atlantic cod fisheries in Iceland, Norway, Denmark and Scotland from 1950 to 2010. The report does not cover other fish species or historical changes in Atlantic cod populations prior to the onset of climate change. The analysis is based on existing scientific research and data, which may be limited in scope or availability. While the report provides an analysis of the ecological impact of climate change on Atlantic cod fisheries, it does not advocate for specific management strategies or policy recommendations. The report aims to provide a comprehensive analysis of the issues and potential solutions within the knowledge and expertise limitations of the author.
+
+fish data is only yearly and doesnt fully represent fishing seasons
+tempature sensitivy of measuring equipment may mean there are measurement erros which aren't accounted for
 
 ## TODO talk here about overfishing as a limitation that is hard to account for
 
@@ -64,6 +75,12 @@ The report is limited in scope to the impacts of climate change on Atlantic cod 
 ### Causes and Effects of Climate Change
 
 Climate change is primarily caused by the increase in greenhouse gases (GHGs) in the atmosphere, particularly carbon dioxide (CO2). Human activities, such as burning fossil fuels, deforestation, and agriculture, are the main sources of GHG emissions. These activities release large amounts of CO2 and other GHGs into the atmosphere, trapping heat and warming the planet.
+
+Climate change is having a significant impact on plant and animal species, and these changes are having ripple effects throughout ecosystems. One of the most significant impacts of climate change on ecosystems is that it is causing shifts in the behavior and distribution of species. As temperatures and precipitation patterns change, some species are migrating to cooler or wetter areas. For example, some fish species are moving further north or to deeper waters in response to warming ocean temperatures.
+
+These shifts in the distribution of species can have significant implications for ecosystems. As species move, they may encounter new competitors, predators, or prey, which can have cascading effects on food webs. Additionally, if certain species decline or disappear entirely, it can impact the availability of food and other resources for other species. This can lead to changes in the abundance and distribution of species, and can have significant impacts on ecosystem health and function.
+
+Changes in ecosystems can also have impacts on human livelihoods. For example, in the fishing industry, changes in the distribution of fish species can impact the abundance and availability of fish, which can impact the success of fishing operations. Similarly, changes in the distribution of tree species can impact the forestry industry by altering the availability of timber and other forest products. These impacts can have economic and social implications for communities that rely on these industries for their livelihoods.
 
 
 
@@ -86,6 +103,8 @@ A. Summary of Findings
 B. Implications for Cod Fisheries and Fishing Communities
 C. Future Directions for Research and Action
 
+This improves the world because goverments can take this data to plan for longevitie of cod supplies for future generations
+
 <!-- VI. References -->
 <!-- A. List of Sources Cited -->
 <!-- B. Additional Resources for Further Reading -->
@@ -103,6 +122,8 @@ library(lubridate)
 
 library(tseries)
 library(forecast)
+
+library(gridExtra)
 
 #install.packages("forecast")
 
@@ -233,16 +254,125 @@ summary(arima_model)
 
 ```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
+
+NorwayExportEconomy = read_csv("CodEconomy/statistic_id1199193_value-of-exported-goods-from-norway-2012-2022.csv")
+
+
+NorwayCodEconomy = read_csv("CodEconomy/statistic_id606925_export-value-of-cod-from-norway-2010-2021.csv")
+
+NorwayExportEconomy <- rename(NorwayExportEconomy, "GDP" = `Value of exported goods from Norway from 2012 to 2022 (in billion NOK)`)
+
+NorwayExportEconomy$GDP = NorwayExportEconomy$GDP*1000
+
+NorwayCodEconomy <- rename(NorwayCodEconomy, "GDP" = `Value of cod exported from Norway from 2010 to 2021 (in million NOK)`)
+
+NorwayCodEconomy$GDPEuro = NorwayCodEconomy$GDP*0.088539968
+
+NorwayExportEconomy$GDPEuro = NorwayExportEconomy$GDP*0.088539968
+
+## currency exchange 1 EUR = 11.2953 NOK  Mar 29, 2023, 22:12 UTC
+
+NorwayCodEconomy$ratio = NorwayCodEconomy$GDPEuro / NorwayExportEconomy$GDPEuro * 100
+
 
 
 ```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+IcelandCodEconomy = read_csv("CodEconomy/IcelandCodExport.csv")
+
+## now got to convert cod exports from ISK to euros and total exports from usd to euro
+IcelandCodEconomy$`Cod Export value ISK` = IcelandCodEconomy$`Cod Export value ISK`*1000
+
+IcelandCodEconomy$CodEuros = IcelandCodEconomy$`Cod Export value ISK`* 0.0067495374
+
+IcelandCodEconomy$`total export thousand USD` = IcelandCodEconomy$`total export thousand USD`*1000
+
+
+IcelandCodEconomy$ExportEuros = IcelandCodEconomy$`total export thousand USD`*0.92254505
+
+IcelandCodEconomy$ratio = (IcelandCodEconomy$CodEuros/IcelandCodEconomy$ExportEuros) * 100
+
+IcelandCodEconomy$CodEurosMillions = IcelandCodEconomy$CodEuros /1000000
+
+## 1 EUR = 148.106 ISK updated Mar 30, 2023, 00:19 UTC
+
+## 1 USD = 0.922463 EUR Mar 30, 2023, 00:22 UTC
+
+## https://wits.worldbank.org/CountryProfile/en/Country/ISL/Year/2020/TradeFlow/Export
+
+## https://statice.is/statistics/business-sectors/fisheries/export-of-marine-products/
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
+#p1 = 
+ggplot(IcelandCodEconomy, aes(x = Year, y = ratio)) +
+  geom_line() +
+  geom_point() +
+  xlab("Year") +
+  ylab("Cod export percentage") +
+  ggtitle("Percentage of cod revenue per total exports 1999-2020")
+
+#p2 =
+ggplot(IcelandCodEconomy, aes(x = Year, y = CodEurosMillions)) +
+  geom_line() +
+  geom_point() +
+  xlab("Year") +
+  ylab("Cod export € (Millions)") +
+  ggtitle("Cod exports value € (Millions) 1999-2021")
+
+
+# Combine graphs using patchwork
+#gridExtra::grid.arrange(p1,p2, ncol=2)
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
 
 
 ```
 
 
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
+
+```
 
 ## References
