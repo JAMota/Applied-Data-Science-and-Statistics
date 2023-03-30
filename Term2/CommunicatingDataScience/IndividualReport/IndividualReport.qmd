@@ -1,7 +1,7 @@
 ---
 title: "Comunicating data science"
 format:
-  pdf:
+  docx:
     toc: true
     toc-depth: 4
 editor: visual
@@ -301,7 +301,7 @@ As we can observe from graphic the relation between temperature and and cod land
 
 ### Norway
 
-Due to lacking of readily available data it will not be possible to make meaningful comparisons with the previous analysis, furthermore primary data collection would be beyond the scope of this project.
+As a result of the lack of readily available data it will not be possible to make meaningful comparisons with the previous analysis, furthermore primary data collection would be beyond the scope of this project.
 
 <!-- III. The Effects of Climate Change on Cod Fisheries in Iceland, Danish Faroe Islands, -->
 <!--      and Norway A. Denmark Overview of Denmark's Cod Fisheries The -->
