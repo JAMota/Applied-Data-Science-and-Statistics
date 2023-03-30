@@ -110,9 +110,9 @@ Particularly Iceland's economy has the highest dependence on cod, which is refle
 
 <!-- ## https://statice.is/statistics/business-sectors/fisheries/export-of-marine-products/ -->
 
-These calculations were made using the data of cod exports from the statistics made available by the National Statistical Institute of Iceland and the data of Icelandic exports available from the World Bank's World Integrated Trade Solution (WITS). 
+These calculations were made using the data of cod exports from the statistics made available by the National Statistical Institute of Iceland @statisticsIceland and the data of Icelandic exports available from the World Bank's World Integrated Trade Solution (WITS) @wits. 
 
-The cod exports were converted from Icelandic Kronur to Euros at the rate of 148.106 ISk per 1€ updated at the 30th of March, 2023 at 00:19 UTC. The total exports from Iceland was converted from United States dollars to euros at a rate of 1US$ = 0.922463€ updated at the 30th of March, 2023 at 00:22 UTC.
+The cod exports were converted from Icelandic Kronur to Euros at the rate of 148.106 ISk per 1€ updated at the 30th of March, 2023 at 00:19 UTC. The total exports from Iceland was converted from United States dollars to euros at a rate of 1US$ = 0.922463€ updated at the 30th of March, 2023 at 00:22 UTC @xe.
 
 <!-- ## specify why these countries -->
 
@@ -124,7 +124,7 @@ Overall, the report aims to provide a comprehensive analysis of the
 ecological consequences of climate change on Atlantic cod fisheries and
 propose strategies for adaptation and mitigation.
 
-## exhaustion of cod fisheries (fishing quotas, alternative fishing, like fishlike cod pangaceas)
+<!-- ## exhaustion of cod fisheries (fishing quotas, alternative fishing, like fishlike cod pangaceas) -->
 
 ### Scope and limitations
 
@@ -135,11 +135,9 @@ The report does not cover other fish species or historical
 changes in Atlantic cod populations prior to the onset of climate
 change. The analysis is based on existing scientific research and data,
 which may be limited in scope or availability and most likely with measurements errors due to the lack of precision in measurement tools during the first half of the 20th century.
-<!-- While the report provides -->
-<!-- an analysis of the ecological impact of climate change on Atlantic cod -->
-<!-- fisheries, it does not advocate for specific management strategies or -->
-<!-- policy recommendations. -->
+Overfishing is a significant limitation that can be hard to account for in fisheries management. It occurs when fish stocks are harvested at a rate that exceeds their ability to reproduce and replenish themselves, leading to a decline in the population size and potentially even collapse of the fishery.
 The data available from ICES during the previously mentioned time period for Norway and Faroe Islands has an annual frequency which does not us factor in the seasonality from fishing seasons to correlate with the temperature.
+
 The report aims to provide a comprehensive
 analysis of the issues and potential solutions within the knowledge and
 expertise limitations of the author.
@@ -148,7 +146,6 @@ expertise limitations of the author.
 <!-- tempature sensitivy of measuring equipment may mean there are -->
 <!-- measurement erros which aren't accounted for -->
 
-## TODO talk here about overfishing as a limitation that is hard to account for
 
 ## Climate Change and its Impact on Cod Fisheries
 
@@ -255,7 +252,9 @@ Lastly, ICES notes that Icelandic cod is currently below the precautionary refer
 
 ### Iceland
 
-Starting with Iceland, the country with one of the largest cod fishing industry, it is evident that there has been a clear and gradual increase in the number of cod caught over time from 2010 to 2020 and a small decrease from the start of 2020 till the end of 2021.
+Starting with Iceland, we have gathered data of the sea surface temperature from the NOAA tool kit datasets of the coastal regions surrounding Iceland @toolkit. The caught data was gathered from the ICES dataset of country members @datasetCollections which was used to double check the validity of the monthly caught data from the National Statistical Institute of Iceland @hagstofa.
+
+The country with one of the largest cod fishing industry, it is evident that there has been a clear and gradual increase in the number of cod caught over time from 2010 to 2020 and a small decrease from the start of 2020 till the end of 2021.
 
 ![Icelandic monthly cod landing](IcelandSeasonalCodFishing.png)
 <!-- Atlought the increase in fishing was very gradual, there was a significant increase in cod market value -->
@@ -271,26 +270,31 @@ We will start by fitting a linear model to see how much can the change in temper
 ![Linear Model summary](IcelandLinearModel.png)
 As we can from the model, temperature is statistically significant and is capable of explaining up tp 20% of variation in cod landings however this model is not capturing the time series aspect of our data.
 
-Which from the temperature to catch ration does seem to hold true as lower temperature values seem to 
+Which from the temperature to catch ration does seem to hold true as lower temperature values seem to attract a bigger number of cod landings and the inverse also does seem to hold true.
+
 ![Icelandic cod export trade value](tempCatchesRelationship.png)
 
 
 ### Faroe Islands
 
-Looking now at the Danish Faroe Islands it is evident that there was a sharp increase in the number of cod caught over time from 2010 to 2016 and a sharper decrease from the start of 2016 till the end of our data in December of 2021.
+Looking now at the Danish Faroe Islands we have gathered data of the sea surface temperature from the NOAA tool kit datasets of the approximate exclusive economic zone of the Faroe Islands @toolkit. The caught data was again gathered from the ICES dataset of country members @datasetCollections which was also used to double check the validity of the monthly caught data from the Statistics Institution of the Faroe Islands @statisticsFaroeIslands.
+
+From the graph bellow, it is evident that there was a sharp increase in the number of cod caught over time from 2010 to 2016 and a sharper decrease from the start of 2016 till the end of our data in December of 2021.
 
 ![Faroe Islands monthly cod landing](FaroeSeasonalCodFishing.png)
 
 Now we will check the temperature to look for any similar patterns we can see that temperature did not follow this trend as it seems to be too gradual to justify any of the sharp increases or decreases in the fishing partners we have previously observed. Exactly at the start there is an increase in temperature that does coincide with a decrease in cod landings but has fishing has a sharp increased and decreased the temperature only very barely decreases until 2020 where it starts increasing which does coincide when the landing decreased becomes even sharper.
 
-indeed have a slight increase and then decrease why could explain some of the variation of the controlled fishing observed.
+Has the graph displays, temperature has a slight increase at the beginning of the of our designated data time frame, peaking at around 2017 and then very gradually decreasing till 2020, where it starts gradually increasing again.
+
+This behaviours might be why we could explain some of the variation of the controlled fishing observed but not the sharp increases and decreases of cod landings during the time frame.
 
 ![Faroe Islands monthly temperature variations](FaroeSeasonTemperatureC.png)
 
-We will start by fitting a linear model to see how much can the change in temperature lead to variation in the number of cod landings.
+Afterwards, We will start by fitting a linear model to see how much can how the multiple gradual changes in temperature are correlated to any of the abrupt variation in the number of cod landings.
 
 ![Linear Model summary](FaroeLinearModel.png)
-As we can from the model, temperature is still statistically significant and but is only capable of justifying 1 to 2% variation of catches due to the lack of variation of temperature to infer on any of the sharp changes in cod landings.
+As we can from the model, temperature is still statistically significant and but is only capable of justifying 1 to 2% variation of catches due to the lack of variation of temperature to infer on any of the sharp changes in cod landings, leading us to believe there might be impactful local factors than the global ecosystem change due to global warming, however the available data doesn't cover a sufficient time period to make such statements.
 
 ![Faroe Island Temperature to Cod landing relation](FaroeTemperatureCatchRelation.png)
 As we can observe from graphic the relation between temperature and and cod landing seems to be no correlation as temperature spikes have little to no effect on the cod landing.
@@ -341,14 +345,19 @@ Moreover, the data indicates that there are substantial disparities in the well-
 
 Lastly, it is clear that overfishing has had a significant impact on the cod population, particularly in Norway and that sustainable fishing practices and regulations are necessary to ensure the long-term viability of this industry @NorwayReport. This could involve measures such as reducing fishing pressure, improving fishing practices, protecting spawning and nursery areas and  making fisheries adopt industry standards such as the Marine Stewardship Council (MSC) certification can play an important role in ensuring responsible exploitation of fish stocks @MSC. 
 
-There are available standard that ensure a sustainable exploitation of fisheries and the government should make it a legal requirement to get the MSC  standard to operate
+<!-- There are available standard that ensure a sustainable exploitation of fisheries and the government should make it a legal requirement to get the MSC  standard to operate -->
 
 ### Future Directions for Research and Action
 
-continue gathering more data so we can have a longer time frame to allow us to more easily identify trends in our data. Especially because temperature change trends are very slow
+<!-- continue gathering more data so we can have a longer time frame to allow us to more easily identify trends in our data. Especially because temperature change trends are very slow -->
 
-This improves the world because goverments can take this data to plan
-for longevitie of cod supplies for future generations and not repeat the collapse of the Atlantic northwest cod fishery and its repercusions
+In addition to continuing to gather more data over a longer time frame, it is also important to increase the frequency and accuracy of data collection to better understand the rate and magnitude of temperature changes in different regions. This will require investment in advanced monitoring technologies and infrastructure to improve the quality and coverage of data collection.
+
+Furthermore, it may be beneficial to expand research beyond just the effects of temperature on Atlantic cod populations, to also investigate the impact of other environmental factors such as ocean acidification and habitat degradation. This will help to better understand the complex interactions between different factors that contribute to changes in fish populations, and inform more comprehensive and effective management strategies.
+
+
+<!-- This improves the world because goverments can take this data to plan -->
+<!-- for longevitie of cod supplies for future generations and not repeat the collapse of the Atlantic northwest cod fishery and its repercusions -->
 
 <!-- As water temperature increases the less fish there is in iceland but not true for faroe islands -->
 
@@ -498,11 +507,13 @@ plot(timeSeriesIceland, main = "Temperature Time Series")
 
 adf.test(timeSeriesIceland)
 
+# If the p-value of the test is less than 0.05, you can reject the null
+# hypothesis that the time series is non-stationary and assume that it is
+# stationary.
+
 ```
 
-If the p-value of the test is less than 0.05, you can reject the null
-hypothesis that the time series is non-stationary and assume that it is
-stationary.
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
 
