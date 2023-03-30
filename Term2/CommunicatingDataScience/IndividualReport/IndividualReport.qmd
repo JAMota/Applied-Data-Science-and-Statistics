@@ -5,6 +5,9 @@ format:
     toc: true
     toc-depth: 4
     # number-sections: true
+  docx:
+    toc: true
+    toc-depth: 4
 editor: visual
 bibliography: cod.bibtex
 ---
@@ -74,15 +77,36 @@ tempature sensitivy of measuring equipment may mean there are measurement erros 
 
 ### Causes and Effects of Climate Change
 
-Climate change is primarily caused by the increase in greenhouse gases (GHGs) in the atmosphere, particularly carbon dioxide (CO2). Human activities, such as burning fossil fuels, deforestation, and agriculture, are the main sources of GHG emissions. These activities release large amounts of CO2 and other GHGs into the atmosphere, trapping heat and warming the planet.
+Climate change is primarily caused by the increase in greenhouse gases (GHGs) in the atmosphere, particularly carbon dioxide (CO2). Human activities, such as burning fossil fuels, deforestation, and agriculture, are the main sources of GHG emissions. These activities release large amounts of CO2 and as a result the planet is experiencing a rise in temperature due to the heat-trapping effect of these gases.
 
 Climate change is having a significant impact on plant and animal species, and these changes are having ripple effects throughout ecosystems. One of the most significant impacts of climate change on ecosystems is that it is causing shifts in the behavior and distribution of species. As temperatures and precipitation patterns change, some species are migrating to cooler or wetter areas. For example, some fish species are moving further north or to deeper waters in response to warming ocean temperatures.
 
 These shifts in the distribution of species can have significant implications for ecosystems. As species move, they may encounter new competitors, predators, or prey, which can have cascading effects on food webs. Additionally, if certain species decline or disappear entirely, it can impact the availability of food and other resources for other species. This can lead to changes in the abundance and distribution of species, and can have significant impacts on ecosystem health and function.
 
-Changes in ecosystems can also have impacts on human livelihoods. For example, in the fishing industry, changes in the distribution of fish species can impact the abundance and availability of fish, which can impact the success of fishing operations. Similarly, changes in the distribution of tree species can impact the forestry industry by altering the availability of timber and other forest products. These impacts can have economic and social implications for communities that rely on these industries for their livelihoods.
+These changes in ecosystems can also have impacts on human livelihoods. For example, in the fishing industry, changes in the distribution of fish species can impact the abundance and availability of fish, which can impact the success of fishing operations. These impacts can have economic and social implications for communities that rely on the fishing industry for their livelihoods.
 
 
+### Historical Changes in Cod Populations
+
+Atlantic cod populations have undergone significant changes over the centuries due to human fishing activities. Before European colonization, cod populations were plentiful and sustained Indigenous communities along the coast of North America. However, as commercial fishing began in the 15th century, the pressure on cod populations increased, leading to their depletion. By the early 1900s, there were concerns about the sustainability of the fishery, and measures such as fishing quotas and seasonal closures were implemented to allow for the recovery of the population.
+
+These conservation measures led to a partial recovery of the cod population in the mid-20th century. However, during this time, technological advancements in fishing methods, such as motorized vessels and sonar technology, allowed for increased efficiency and the exploitation of deeper waters, further depleting cod populations. Despite concerns about the sustainability of the fishery, the demand for cod continued to increase, and fishing pressure intensified in the latter half of the 20th century.
+
+In addition to overfishing, the cod population was also impacted by changes in the climate. As ocean temperatures increased in the latter half of the 20th century, the cod's food sources began to shift, leading to changes in their distribution and abundance @SST. Warmer waters also allowed for the expansion of predators, such as seals and haddock, which preyed on cod populations. 
+
+These changes in the ocean ecosystem, coupled with overfishing, contributed to the collapse of multiple fisheries such as the Atlantic Northwest cod fishery in the 1990s, with cod population reaching 1% of its historical value despite efforts to regulate fishing and promote sustainability @colapse.
+
+### Current Situation of Cod Fisheries
+
+<!-- https://www.ices.dk/advice/Fisheries-overviews/Pages/fisheries-overviews.aspx -->
+
+<!-- In Iceland due to the recognition of the importance of sustainable fishing and as such the management of the fishery is largely based on scientific research and collaboration between the government, industry, and stakeholders. -->
+
+<!-- The Icelandic cod fishery has been certified by the MSC, an international organization that sets standards for sustainable fisheries. This certification indicates that it meets the organization's standards for sustainable fishing practices. The certification covers several Icelandic cod fishing areas and includes requirements for effective management, minimizing environmental impact, and maintaining healthy fish populations. The MSC certification has helped to promote the sustainability of Icelandic cod fisheries and increase market demand for certified sustainable seafood @msc. -->
+
+According to the ICES's latest fisheries overviews, the cod population in Icelandic waters is currently being fished above its sustainable harvest rate. While the biomass ratios of cod are currently in a desirable condition, the fishing mortality rates for cod are above the recommended levels for sustainable fishing @IcelandReport. 
+
+This suggests that the cod population is under pressure and additional management measures may be needed to ensure its long-term sustainability.
 
 III. The Effects of Climate Change on Cod Fisheries in Denmark, Iceland, and Norway
 A. Denmark
