@@ -86,7 +86,7 @@ colonial era.
 ### Objectives
 
 The report aims to analyse the impacts of climate change on Atlantic cod
-fisheries in Iceland, Norway, Denmark and Scotland. The objectives of
+fisheries in Iceland, Norway, Danish Faroe Islands. The objectives of
 the report include evaluating the state of Atlantic cod fisheries from
 1950 to 2010, identifying the scientific evidence linking climate change
 to changes in Atlantic cod's biology, ecology, and behaviour,
@@ -114,7 +114,7 @@ pangaceas)
 ### Scope and limitations
 
 The report is limited in scope to the impacts of climate change on
-Atlantic cod fisheries in Iceland, Norway, Denmark and Scotland from
+Atlantic cod fisheries in Iceland, Norway and Danish Faroe Islands from
 1950 to 2010. The report does not cover other fish species or historical
 changes in Atlantic cod populations prior to the onset of climate
 change. The analysis is based on existing scientific research and data,
@@ -221,11 +221,18 @@ harvest rate. While the biomass ratios of cod are currently in a
 desirable condition, the fishing mortality rates for cod are above the
 recommended levels for sustainable fishing @IcelandReport.
 
-This suggests that the cod population is under pressure and additional
-management measures may be needed to ensure its long-term
-sustainability.
+In Norway there have been fluctuations in the cod population over the years. While the cod population had declined sharply in the 1980s due to overfishing, there have been some signs of recovery in recent years. However, the cod population in the Norwegian Sea, as well as in some other areas, has been declining since 2014.
 
-III. The Effects of Climate Change on Cod Fisheries in Denmark, Iceland,
+ICES data highlights the impact of climate change on the cod population in Norway, with changes in ocean temperature and acidity levels affecting the fish's growth, reproduction, and survival rates. However data suggests that measures such as reducing fishing pressure, improving fishing practices, and protecting spawning and nursery areas can help to support the recovery and long-term sustainability of the cod population in Norway @NorwayReport.
+
+In the Danish Faroe Islands the subdivision of Atlantic cod (Gadus morhua), North-east Arctic cod stocks that are fished within the Faroese ecoregion has been increasing since the late 1990s, and in 2021, the spawning-stock biomass (SSB) was estimated to be at its highest level since the early 1970s. ICES only advises that catches of Northeast Arctic cod should not exceed 783,000 tonnes in 2023 @FaroeReport.
+
+Regarding another division of subdivision of Atlantic cod, Faroese cod, the report states that the stock is in a healthy state, with the SSB estimated to be at or above the precautionary reference point. ICES advises that catches of Faroese cod should not exceed 9,815 tonnes in 2023 @FaroeReport.
+
+Lastly, ICES notes that Icelandic cod is currently below the precautionary reference point, and ICES advises that no directed fishing for Icelandic cod should take place in 2023 @FaroeReport.
+
+
+III. The Effects of Climate Change on Cod Fisheries in Iceland, Danish Faroe Islands,
      and Norway A. Denmark Overview of Denmark's Cod Fisheries The
      Effects of Climate Change on Denmark's Cod Fisheries B. Iceland
      Overview of Iceland's Cod Fisheries The Effects of Climate Change
