@@ -277,6 +277,9 @@ library(tseries)
 library(forecast)
 
 library(gridExtra)
+library(xts)
+
+library(vars)
 
 #install.packages("forecast")
 
@@ -578,11 +581,150 @@ ggplot(FaroeIslandsSeaSurfaceTemperature, aes(x = `DATE-YMD`, y = `HSST= HadISST
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
 
+## https://www.statice.is/statistics/business-sectors/fisheries/catch/
+
 MonthlyIcelandCatches = read_csv("IcelandMonthly/SJA01101.csv")
 
 MonthlyIcelandCatches = slice(MonthlyIcelandCatches, 3:nrow(MonthlyIcelandCatches))
 
 MonthlyIcelandCatchesLong <- pivot_longer(MonthlyIcelandCatches, cols = `2022 January`:`2010 December`, names_to = "date", values_to = "value")
+
+MonthlyIcelandCatchesLong$value = as.numeric(MonthlyIcelandCatchesLong$value)
+
+MonthlyIcelandCatchesLong <- rename(MonthlyIcelandCatchesLong, catches = value)
+
+MonthlyIcelandCatchesLong$date <- as.Date(paste0(MonthlyIcelandCatchesLong$date, " 1"), format = "%Y %B %d")
+
+ggplot(MonthlyIcelandCatchesLong, aes(x = date, y = catches)) +
+  geom_line() +
+  geom_point() +
+  xlab("Year") +
+  geom_smooth() +
+  ylab("Cod export € (Millions)") +
+  ggtitle("Iceland temp")
+
+ggplot(IcelandSeaSurfaceTemperature, aes(x = `DATE-YMD`, y = `HSST= HadISST Temperature (C)`)) +
+  geom_line() +
+  geom_point() +
+  xlab("Year") +
+  geom_smooth() +
+  ylab("Cod export € (Millions)") +
+  ggtitle("Iceland temp")
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
+IcelandSeaSurfaceTemperatureRecently = read_csv("SeaSurfaceTemperature/IcelandSeaSurfaceTemperature.csv")
+
+IcelandSeaSurfaceTemperatureRecently = IcelandSeaSurfaceTemperatureRecently %>% select(-(...3))
+
+IcelandSeaSurfaceTemperatureRecently <- IcelandSeaSurfaceTemperatureRecently[-c(1:1320), ]
+
+
+
+IcelandSeaSurfaceTemperatureRecently$`DATE-YMD` = as.Date(format(IcelandSeaSurfaceTemperatureRecently$`DATE-YMD`, "%Y-%m-01"))
+
+IcelandSeaSurfaceTemperatureRecently =  rename(IcelandSeaSurfaceTemperatureRecently, date = `DATE-YMD`)
+IcelandSeaSurfaceTemperatureRecently =  rename(IcelandSeaSurfaceTemperatureRecently, tempC = `HSST= HadISST Temperature (C)`)
+
+
+IcelandRecentAnalysis =  merge(MonthlyIcelandCatchesLong, IcelandSeaSurfaceTemperatureRecently, by = "date")
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+# Set the date column as index
+#library(xts)
+IcelandTimeSeriesDf <- xts(IcelandRecentAnalysis[, -1], order.by = IcelandRecentAnalysis$date)
+
+# Split the data into training and testing sets
+train_size <- floor(nrow(IcelandTimeSeriesDf) * 0.8)
+train <- IcelandTimeSeriesDf[1:train_size, ]
+test <- IcelandTimeSeriesDf[(train_size + 1):nrow(IcelandTimeSeriesDf), ]
+
+# Fit the ARIMA model
+model <- VAR(train, p = 1)
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+# Forecast the values for the test period
+forecast_values <- predict(model, n.ahead = length(test))
+
+# Extract the forecasted values for the second variable (number of fishes)
+forecast_values_fish <- forecast_values$fcst[,2]
+
+# Calculate the error metrics
+mape <- mean(abs(test[,2] - forecast_values_fish)/test[,2])
+rmse <- sqrt(mean((test[,2] - forecast_values_fish)^2))
+
+# Print the error metrics
+cat("MAPE:", round(mape, 4), "\n")
+cat("RMSE:", round(rmse, 4))
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
+
 
 ```
 
