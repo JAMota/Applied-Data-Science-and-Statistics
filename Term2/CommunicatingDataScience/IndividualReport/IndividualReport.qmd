@@ -27,13 +27,13 @@ the Vikings @Kurlansky1998Cod.
 
 This species has been an important source of food and income for coastal
 communities across the North Atlantic region, supporting a vast industry
-of fishermen, processors, and distributors for centuries. However, the
+of fishermen, processors and distributors for centuries. However, the
 sustainability of the Atlantic cod fishery has been increasingly
-threatened in recent years due to overfishing, habitat destruction, and
+threatened in recent years due to overfishing, habitat destruction and
 climate change.
 
 The warming of ocean waters, caused by increasing greenhouse gas
-emissions, has altered the biology, ecology, and behaviour of Atlantic
+emissions, has altered the biology, ecology and behaviour of Atlantic
 cod, leading to declines in population and distribution. These changes
 have had significant impacts on the commercial fishing industry, which
 has relied heavily on Atlantic cod as a source of income and food for
@@ -47,7 +47,7 @@ changing environmental conditions.
 This report aims to review the current state of knowledge on the impact
 of climate change on Atlantic cod, including the ecological and
 environmental factors that shape its distribution and abundance,
-considering some of the socio-economic implications of its decline, and
+considering some of the socio-economic implications of its decline and
 the strategies for sustainable management and conservation in the face
 of climate change.
 
@@ -89,14 +89,14 @@ The report aims to analyse the impacts of climate change on Atlantic cod
 fisheries in Iceland, Norway, Danish Faroe Islands. The objectives of
 the report include evaluating the state of Atlantic cod fisheries from
 1950 to 2010, identifying the scientific evidence linking climate change
-to changes in Atlantic cod's biology, ecology, and behaviour,
-identifying the key challenges facing the fisheries, and examining
+to changes in Atlantic cod's biology, ecology and behaviour,
+identifying the key challenges facing the fisheries and examining
 potential innovative management approaches to promote the resilience,
-adaptation, and sustainability of Atlantic cod fisheries.
+adaptation and sustainability of Atlantic cod fisheries.
 
-The countries of Iceland, Norway and Denmark were chosen due to their
+The countries of Iceland, Norway and Danish Faroe Islands were chosen due to their
 availability of cod in their natural waters, the economy value of the
-fish and the long lasting traditions of cod consumption from the Viking
+fish and the historic traditions of cod consumption that started during the Viking
 era.
 
 Particularly Iceland's economy has the highest dependence on cod, which is reflected in the graph showing the percentage of cod exports over total exports. 
@@ -162,13 +162,13 @@ expertise limitations of the author.
 
 Climate change is primarily caused by the increase in greenhouse gases
 (GHGs) in the atmosphere, particularly carbon dioxide (CO2). Human
-activities, such as burning fossil fuels, deforestation, and
+activities, such as burning fossil fuels, deforestation and
 agriculture, are the main sources of GHG emissions. These activities
 release large amounts of CO2 and as a result the planet is experiencing
 a rise in temperature due to the heat-trapping effect of these gases.
 
 Climate change is having a significant impact on plant and animal
-species, and these changes are having ripple effects throughout
+species and these changes are having ripple effects throughout
 ecosystems. One of the most significant impacts of climate change on
 ecosystems is that it is causing shifts in the behavior and distribution
 of species. As temperatures and precipitation patterns change, some
@@ -182,7 +182,7 @@ competitors, predators, or prey, which can have cascading effects on
 food webs. Additionally, if certain species decline or disappear
 entirely, it can impact the availability of food and other resources for
 other species. This can lead to changes in the abundance and
-distribution of species, and can have significant impacts on ecosystem
+distribution of species and can have significant impacts on ecosystem
 health and function.
 
 These changes in ecosystems can also have impacts on human livelihoods.
@@ -200,7 +200,7 @@ cod populations were plentiful and sustained Indigenous communities
 along the coast of North America. However, as commercial fishing began
 in the 15th century, the pressure on cod populations increased, leading
 to their depletion. By the early 1900s, there were concerns about the
-sustainability of the fishery, and measures such as fishing quotas and
+sustainability of the fishery and measures such as fishing quotas and
 seasonal closures were implemented to allow for the recovery of the
 population.
 
@@ -210,7 +210,7 @@ technological advancements in fishing methods, such as motorized vessels
 and sonar technology, allowed for increased efficiency and the
 exploitation of deeper waters, further depleting cod populations.
 Despite concerns about the sustainability of the fishery, the demand for
-cod continued to increase, and fishing pressure intensified in the
+cod continued to increase and fishing pressure intensified in the
 latter half of the 20th century.
 
 In addition to overfishing, the cod population was also impacted by
@@ -242,13 +242,13 @@ recommended levels for sustainable fishing @IcelandReport.
 
 In Norway there have been fluctuations in the cod population over the years. While the cod population had declined sharply in the 1980s due to overfishing, there have been some signs of recovery in recent years. However, the cod population in the Norwegian Sea, as well as in some other areas, has been declining since 2014.
 
-ICES data highlights the impact of climate change on the cod population in Norway, with changes in ocean temperature and acidity levels affecting the fish's growth, reproduction, and survival rates. However data suggests that measures such as reducing fishing pressure, improving fishing practices, and protecting spawning and nursery areas can help to support the recovery and long-term sustainability of the cod population in Norway @NorwayReport.
+ICES data highlights the impact of climate change on the cod population in Norway, with changes in ocean temperature and acidity levels affecting the fish's growth, reproduction and survival rates. However data suggests that measures such as reducing fishing pressure, improving fishing practices and protecting spawning and nursery areas can help to support the recovery and long-term sustainability of the cod population in Norway @NorwayReport.
 
-In the Danish Faroe Islands the subdivision of Atlantic cod (Gadus morhua), North-east Arctic cod stocks that are fished within the Faroese ecoregion has been increasing since the late 1990s, and in 2021, the spawning-stock biomass (SSB) was estimated to be at its highest level since the early 1970s. ICES only advises that catches of Northeast Arctic cod should not exceed 783,000 tonnes in 2023 @FaroeReport.
+In the Danish Faroe Islands the subdivision of Atlantic cod (Gadus morhua), North-east Arctic cod stocks that are fished within the Faroese ecoregion has been increasing since the late 1990s and in 2021, the spawning-stock biomass (SSB) was estimated to be at its highest level since the early 1970s. ICES only advises that catches of North-east Arctic cod should not exceed 783,000 tonnes in 2023 @FaroeReport.
 
 Regarding another division of subdivision of Atlantic cod, Faroese cod, the report states that the stock is in a healthy state, with the SSB estimated to be at or above the precautionary reference point. ICES advises that catches of Faroese cod should not exceed 9,815 tonnes in 2023 @FaroeReport.
 
-Lastly, ICES notes that Icelandic cod is currently below the precautionary reference point, and ICES advises that no directed fishing for Icelandic cod should take place in 2023 @FaroeReport.
+Lastly, ICES notes that Icelandic cod is currently below the precautionary reference point and ICES advises that no directed fishing for Icelandic cod should take place in 2023 @FaroeReport.
 
 
 ## The Effects of Climate Change on Cod Fisheries
@@ -266,7 +266,7 @@ Checking the temperature to look for any similar patterns we can see that temper
 
 ![Icelandic monthly temperature variations](IcelandSeasonalTempC.png)
 
-We will start by fitting a linear model to see how much can the change in temperature lead to variantion in the number of cod landings
+We will start by fitting a linear model to see how much can the change in temperature lead to variation in the number of cod landings
 
 ![Linear Model summary](IcelandLinearModel.png)
 As we can from the model, temperature is statistically significant and is capable of explaining up tp 20% of variation in cod landings however this model is not capturing the time series aspect of our data.
@@ -275,27 +275,29 @@ Which from the temperature to catch ration does seem to hold true as lower tempe
 ![Icelandic cod export trade value](tempCatchesRelationship.png)
 
 
-## Faroe Islands
+### Faroe Islands
 
 Looking now at the Danish Faroe Islands it is evident that there was a sharp increase in the number of cod caught over time from 2010 to 2016 and a sharper decrease from the start of 2016 till the end of our data in December of 2021.
 
 ![Faroe Islands monthly cod landing](FaroeSeasonalCodFishing.png)
 
-Now we will check the temperature to look for any similar patterns we can see that temperature did not follow this trend as it seems to almost have an opposite
+Now we will check the temperature to look for any similar patterns we can see that temperature did not follow this trend as it seems to be too gradual to justify any of the sharp increases or decreases in the fishing partners we have previously observed. Exactly at the start there is an increase in temperature that does coincide with a decrease in cod landings but has fishing has a sharp increased and decreased the temperature only very barely decreases until 2020 where it starts increasing which does coincide when the landing decreased becomes even sharper.
 
 indeed have a slight increase and then decrease why could explain some of the variation of the controlled fishing observed.
 
 ![Faroe Islands monthly temperature variations](FaroeSeasonTemperatureC.png)
 
-We will start by fitting a linear model to see how much can the change in temperature lead to variantion in the number of cod landings
+We will start by fitting a linear model to see how much can the change in temperature lead to variation in the number of cod landings.
 
-![Linear Model summary](FaroedLinearModel.png)
-As we can from the model, temperature is statistically significant and is capable of explaining up tp 20% of variation in cod landings however this model is not capturing the time series aspect of our data.
+![Linear Model summary](FaroeLinearModel.png)
+As we can from the model, temperature is still statistically significant and but is only capable of justifying 1 to 2% variation of catches due to the lack of variation of temperature to infer on any of the sharp changes in cod landings.
 
+![Faroe Island Temperature to Cod landing relation](FaroeTemperatureCatchRelation.png)
+As we can observe from graphic the relation between temperature and and cod landing seems to be no correlation as temperature spikes have little to no effect on the cod landing.
 
-## Norway
+### Norway
 
-
+Due to lacking of readily available data it will not be possible to make meaningful comparisons with the previous analysis, furthermore primary data collection would be beyond the scope of this project.
 
 <!-- III. The Effects of Climate Change on Cod Fisheries in Iceland, Danish Faroe Islands, -->
 <!--      and Norway A. Denmark Overview of Denmark's Cod Fisheries The -->
@@ -306,16 +308,55 @@ As we can from the model, temperature is statistically significant and is capabl
 <!--      Fisheries C. Scotland Overview of Scotland's Cod Fisheries The -->
 <!--      Effects of Climate Change on Scotland's Cod Fisheries -->
 
-## V. Conclusion A. Summary of Findings B. Implications for Cod Fisheries and Fishing Communities C. Future Directions for Research and Action
+## Conclusion 
+
+### Summary of findings 
+
+The current study provides an assessment of the current state of the Atlantic cod populations in Norway, the Danish Faroe Islands and Iceland. The analysis reveals that the fishing mortality rates for cod in Norway are above the recommended levels for sustainable fishing, while the cod population in the Norwegian Sea and other areas has been declining since 2014 @NorwayReport. Climate change has been identified as a significant factor affecting the cod population in Norway, with changes in ocean temperature and acidity levels impacting the fish's growth, reproduction and survival rates. However, the study suggests that implementing measures such as reducing fishing pressure, improving fishing practices and protecting spawning and nursery areas can support the recovery and long-term sustainability of the cod population in Norway @NorwayReport.
+
+In the Danish Faroe Islands, the study found that the subdivision of Atlantic cod stocks fished within the Faroese ecoregion has been increasing since the late 1990s, with the spawning-stock biomass (SSB) estimated to be at its highest level since the early 1970s. The report also highlights that the Faroese cod stock is in a healthy state, with the SSB estimated to be at or above the precautionary reference point. However, the study notes that the Icelandic cod stock is currently below the precautionary reference point and no directed fishing for Icelandic cod should take place in 2023 @FaroeReport.
+
+The study also investigates the effects of climate change on cod fisheries in Iceland and finds that there has been a clear and gradual increase in the number of cod caught over time from 2010 to 2020, with a small decrease from the start of 2020 till the end of 2021. Temperature variations were found to be statistically significant in explaining up to 20% of the variation in cod landings. In contrast, the study found that temperature had little to no effect on the cod landing in the Danish Faroe Islands.
+
+Overall, the findings of the present study provide insights into the current state of Atlantic cod populations in Norway, the Danish Faroe Islands and Iceland, highlighting the impact of climate change on these populations and the potential for sustainable fishing practices to support their recovery and long-term sustainability.
+
+### Implications for cod fisheries and fishing communities 
+
+
+Firstly, the impact of climate change on cod populations cannot be ignored. Changes in ocean temperature can have significant effects on the growth, reproduction, and survival rates of cod @NorwayReport. As such, it may be necessary for fisheries management to take into account the effects of climate change in order to ensure the sustainability of the industry.
+
+The study has found that as water temperatures rise, there is a decrease in the number of Atlantic cod in Iceland, but not in the Faroe Islands. One possible explanation for this is that the range of temperature variation in the Faroe Islands is much smaller than in Iceland, which could help to explain why the impact of rising temperatures on cod populations is less severe in this region.
+
+To further investigate this trend, it may be necessary to identify the critical temperature range at which Atlantic cod populations experience a substantial decline. This would help to provide more specific insights into the factors that contribute to the observed differences in cod populations between Iceland and the Faroe Islands.
+
+Another potential explanation for the differing impact of rising temperatures on cod populations in Iceland and the Faroe Islands is that other subspecies of cod might migrate to the waters around the Faroe Islands, which could help to offset the negative impact of temperature on the local cod population.
+
+<!-- Overall, these findings suggest that further research is needed to understand the complex interactions between temperature and Atlantic cod populations in different regions. -->
+
+<!-- Furthermore, the data presented suggests that there are significant differences in the health of cod stocks in different regions. For example, while the cod population in the Norwegian Sea has been declining since 2014, the stock in the Faroe Islands appears to be in a healthy state. As such, it may be necessary for fisheries management to take a more localized approach, rather than assuming that all cod stocks are equally at risk or attempting a universally applicable solution for all fisheries. -->
+
+The findings presented in the study highlight the need for further research to gain a more comprehensive understanding of the intricate relationship between water temperature and Atlantic cod populations in various regions. 
+
+Moreover, the data indicates that there are substantial disparities in the well-being of cod stocks across different areas. For instance, while the Norwegian Sea's cod population has been decreasing since 2014, the stock in the Faroe Islands seems to be thriving @NorwayReport. Therefore, it may be necessary for fisheries management to adopt a more localized approach instead of assuming that all cod stocks are equally vulnerable or implementing a "one-size-fits-all" solution for all fisheries.
+
+Lastly, it is clear that overfishing has had a significant impact on the cod population, particularly in Norway and that sustainable fishing practices and regulations are necessary to ensure the long-term viability of this industry @NorwayReport. This could involve measures such as reducing fishing pressure, improving fishing practices, protecting spawning and nursery areas and  making fisheries adopt industry standards such as the Marine Stewardship Council (MSC) certification can play an important role in ensuring responsible exploitation of fish stocks @MSC. 
+
+There are available standard that ensure a sustainable exploitation of fisheries and the government should make it a legal requirement to get the MSC  standard to operate
+
+### Future Directions for Research and Action
+
+continue gathering more data so we can have a longer time frame to allow us to more easily identify trends in our data. Especially because temperature change trends are very slow
 
 This improves the world because goverments can take this data to plan
 for longevitie of cod supplies for future generations and not repeat the collapse of the Atlantic northwest cod fishery and its repercusions
 
-As water temperature increases the less fish there is in iceland but not true for faroe islands
+<!-- As water temperature increases the less fish there is in iceland but not true for faroe islands -->
 
-The range of temperature variation is much smaller in faroe islands than iceland so that might justify the findings
+<!-- The range of temperature variation is much smaller in faroe islands than iceland so that might justify the findings -->
 
-for further it would be to find the critical temperature range which would lead to a substantial decline to Atlantic cod
+<!-- for further it would be to find the critical temperature range which would lead to a substantial decline to Atlantic cod -->
+
+<!-- A reason why Faroe Islandings might not feel the same effect as Iceland is that some other subspecies of cod might migrate to those waters negative the effect of temperature depleting the population. -->
 
 
 <!-- VI. References -->
@@ -805,7 +846,7 @@ summary(FaroeIceland)
 ggplot(FaraoeMonthlyDf, aes(x = `Atlantic cod (tons)`, y = tempC)) +
   geom_line() +
   geom_point() +
-  xlab("Number of cod catch") +
+  xlab("Number of cod catch (tons)") +
   geom_smooth() +
   ylab("temperature ºC") +
   ggtitle("Faroe Islands temperature to catch relation")
@@ -815,7 +856,7 @@ ggplot(FaraoeMonthlyDf, aes(x = date, y = `Atlantic cod (tons)`)) +
   geom_point() +
   geom_smooth() +
   xlab("Year") +
-  ylab("Number of caught cods)") +
+  ylab("Number of caught cods (tons)") +
   ggtitle("Faroe Islands seasonal cod fishing from 1999-2021")
 
 ggplot(FaraoeMonthlyDf, aes(x = date, y = tempC)) +
