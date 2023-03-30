@@ -236,6 +236,8 @@ Lastly, ICES notes that Icelandic cod is currently below the precautionary refer
 
 ### Iceland
 
+
+
 ## Norway
 
 ## Faroe Islands
@@ -576,7 +578,11 @@ ggplot(FaroeIslandsSeaSurfaceTemperature, aes(x = `DATE-YMD`, y = `HSST= HadISST
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
 
+MonthlyIcelandCatches = read_csv("IcelandMonthly/SJA01101.csv")
 
+MonthlyIcelandCatches = slice(MonthlyIcelandCatches, 3:nrow(MonthlyIcelandCatches))
+
+MonthlyIcelandCatchesLong <- pivot_longer(MonthlyIcelandCatches, cols = `2022 January`:`2010 December`, names_to = "date", values_to = "value")
 
 ```
 
