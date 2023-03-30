@@ -264,7 +264,7 @@ for longevitie of cod supplies for future generations
 <!-- B. Additional Resources for Further Reading -->
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
-
+library(dplyr)
 library(ggplot2)
 library(tidyverse)
 library(tidyr)
@@ -280,6 +280,7 @@ library(gridExtra)
 library(xts)
 
 library(vars)
+library(scales)
 
 #install.packages("forecast")
 
@@ -312,7 +313,7 @@ BomBacalhauDataFrame <- subset(BacalhauDataFrame, Country %in% c("Norway", "Icel
 BomBacalhauDataFrameNumeric <- BomBacalhauDataFrame %>% 
      mutate_at(c(4:64), as.numeric)
 
-BomBacalhauDataFrameNumeric = BomBacalhauDataFrameNumeric %>% select(-(Species:Division))
+BomBacalhauDataFrameNumeric = BomBacalhauDataFrameNumeric %>% dplyr::select(-c(Species:Division))
 
 BomBacalhauDataFrameNumeric = BomBacalhauDataFrameNumeric %>% replace(is.na(.), 0)
 
@@ -349,11 +350,11 @@ ScotlandSeaSurfaceTemperature = read_csv("SeaSurfaceTemperature/ScotlandSeaSurfa
 
 ## removing the third non existent variable form all the datasets
 
-IcelandSeaSurfaceTemperature = IcelandSeaSurfaceTemperature %>% select(-(...3))
-NorwaySeaSurfaceTemperature = NorwaySeaSurfaceTemperature %>% select(-(...3))
-DenmarkSeaSurfaceTemperature = DenmarkSeaSurfaceTemperature %>% select(-(...3))
-FaroeIslandsSeaSurfaceTemperature = FaroeIslandsSeaSurfaceTemperature %>% select(-(...3))
-ScotlandSeaSurfaceTemperature = ScotlandSeaSurfaceTemperature %>% select(-(...3))
+IcelandSeaSurfaceTemperature = IcelandSeaSurfaceTemperature %>% dplyr::select(-(...3))
+NorwaySeaSurfaceTemperature = NorwaySeaSurfaceTemperature %>% dplyr::select(-(...3))
+DenmarkSeaSurfaceTemperature = DenmarkSeaSurfaceTemperature %>% dplyr::select(-(...3))
+FaroeIslandsSeaSurfaceTemperature = FaroeIslandsSeaSurfaceTemperature %>% dplyr::select(-(...3))
+ScotlandSeaSurfaceTemperature = ScotlandSeaSurfaceTemperature %>% dplyr::select(-(...3))
 
 ##maybe add england + wales if needed
 
@@ -491,7 +492,7 @@ IcelandSeaSurfaceTemperature$year <- format(IcelandSeaSurfaceTemperature$`DATE-Y
 
 IcelandSeaSurfaceTemperatureYearly <- aggregate(. ~ year, data = IcelandSeaSurfaceTemperature, mean)
 
-IcelandSeaSurfaceTemperatureYearly = IcelandSeaSurfaceTemperatureYearly %>% select(-(`DATE-YMD`))
+IcelandSeaSurfaceTemperatureYearly = IcelandSeaSurfaceTemperatureYearly %>% dplyr::select(-(`DATE-YMD`))
 
 # ggplot(IcelandSeaSurfaceTemperatureYearly, aes(x = year, y = `HSST= HadISST Temperature (C)`)) +
 #   geom_line() +
@@ -619,7 +620,7 @@ ggplot(IcelandSeaSurfaceTemperature, aes(x = `DATE-YMD`, y = `HSST= HadISST Temp
 
 IcelandSeaSurfaceTemperatureRecently = read_csv("SeaSurfaceTemperature/IcelandSeaSurfaceTemperature.csv")
 
-IcelandSeaSurfaceTemperatureRecently = IcelandSeaSurfaceTemperatureRecently %>% select(-(...3))
+IcelandSeaSurfaceTemperatureRecently = IcelandSeaSurfaceTemperatureRecently %>% dplyr::select(-(...3))
 
 IcelandSeaSurfaceTemperatureRecently <- IcelandSeaSurfaceTemperatureRecently[-c(1:1320), ]
 
@@ -640,36 +641,48 @@ IcelandRecentAnalysis =  merge(MonthlyIcelandCatchesLong, IcelandSeaSurfaceTempe
 #library(xts)
 IcelandTimeSeriesDf <- xts(IcelandRecentAnalysis[, -1], order.by = IcelandRecentAnalysis$date)
 
-# Split the data into training and testing sets
-train_size <- floor(nrow(IcelandTimeSeriesDf) * 0.8)
-train <- IcelandTimeSeriesDf[1:train_size, ]
-test <- IcelandTimeSeriesDf[(train_size + 1):nrow(IcelandTimeSeriesDf), ]
+# Convert your data to a time series object
+myts <- ts(IcelandTimeSeriesDf, start = c(2000, 1), end = c(2021, 12), frequency = 12)
 
-# Fit the ARIMA model
-model <- VAR(train, p = 1)
+# Fit a VAR model with two variables and two lags
+myvar <- VAR(myts, p = 2)
+
+# Print a summary of the VAR model
+summary(myvar)
+
+
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
-# Forecast the values for the test period
-forecast_values <- predict(model, n.ahead = length(test))
 
-# Extract the forecasted values for the second variable (number of fishes)
-forecast_values_fish <- forecast_values$fcst[,2]
+# Plot the impulse response functions
+irf = irf(myvar)
 
-# Calculate the error metrics
-mape <- mean(abs(test[,2] - forecast_values_fish)/test[,2])
-rmse <- sqrt(mean((test[,2] - forecast_values_fish)^2))
+plot(irf)
 
-# Print the error metrics
-cat("MAPE:", round(mape, 4), "\n")
-cat("RMSE:", round(rmse, 4))
+# irf <- irf(myvar, impulse = "catches", response = c("catches", "tempC"), boot = FALSE)
+# plot(irf)
+
+# # Normalize the variables using min-max scaling
+# myts_norm <- apply(myts, 2, rescale)
+# 
+# # Plot the VAR model with normalized variables
+# plot(myvar, lags = 2, names = c("Catches", "Temperature"), 
+#      col = c("blue", "red"), lwd = 2, gg = list(scale = 5))
 
 ```
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, warning=FALSE, output=FALSE}
 
+ggplot(IcelandRecentAnalysis, aes(x = catches, y = tempC)) +
+  geom_line() +
+  geom_point() +
+  xlab("Number of cod catch") +
+  geom_smooth() +
+  ylab("temperature ºC") +
+  ggtitle("Iceland temperature to catch relation")
 
 ```
 
