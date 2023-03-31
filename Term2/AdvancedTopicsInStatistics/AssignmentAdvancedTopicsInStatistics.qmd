@@ -18,6 +18,8 @@ library(caTools)
 library(kernlab)
 library(e1071)
 
+library(reshape2)
+
 classificationDF = read_csv("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term2/AdvancedTopicsInStatistics/AssignmentData/Classification.csv")
 
 ```
@@ -132,8 +134,25 @@ fit = knn(train=X_train, test=X_test, cl=y_train,k=3)
 
 # produce the confusion matrix
 # when numbers are used as class labels we might need
-confusionMatrix(as.factor(fit),as.factor(y_test))
+confusion = confusionMatrix(as.factor(fit),as.factor(y_test))
 
+confusion
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+test$predicted_group <- fit
+test$correct_prediction <- test$predicted_group == test$Group
+
+# plot the test data points
+p <- ggplot(data = test, aes(x = X1, y = X2, color = correct_prediction)) + geom_point()
+
+# add labels and legend
+p <- p + xlab("X1") + ylab("X2") + ggtitle("KNN Classification Results") + scale_color_manual(values = c("red", "blue"), labels = c("Incorrect", "Correct"))
+
+# display the plot
+print(p)
 
 ```
 
