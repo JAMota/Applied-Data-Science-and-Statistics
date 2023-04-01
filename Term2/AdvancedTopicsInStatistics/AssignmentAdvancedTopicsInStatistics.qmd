@@ -145,11 +145,14 @@ confusion
 test$predicted_group <- fit
 test$correct_prediction <- test$predicted_group == test$Group
 
-# plot the test data points
-p <- ggplot(data = test, aes(x = X1, y = X2, color = correct_prediction)) + geom_point()
-
-# add labels and legend
-p <- p + xlab("X1") + ylab("X2") + ggtitle("KNN Classification Results") + scale_color_manual(values = c("red", "blue"), labels = c("Incorrect", "Correct"))
+# plot the data points
+p <- ggplot() + 
+  geom_point(data = train, aes(x = X1, y = X2, color = "Training"), size = 3) +
+  geom_point(data = test, aes(x = X1, y = X2, color = correct_prediction, shape = factor(correct_prediction)), size = 3) +
+  scale_color_manual(values = c("red", "blue", "green"), labels = c("Incorrect", "Correct", "Training")) +
+  scale_shape_manual(values = c(1, 16)) +
+  labs(x = "X1", y = "X2", color = "", shape = "") +
+  ggtitle("KNN Classification Results")
 
 # display the plot
 print(p)
