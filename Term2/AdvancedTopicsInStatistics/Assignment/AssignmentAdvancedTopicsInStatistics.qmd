@@ -4,7 +4,6 @@ format: pdf
 editor: visual
 ---
 
-
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, output=FALSE}
 
 library(C50)
@@ -18,19 +17,26 @@ library(caTools)
 library(kernlab)
 library(e1071)
 
+
+library(RColorBrewer)
+library(sf)
+library(rgdal)
+
+#install.packages("sf")
+
 library(reshape2)
 
-classificationDF = read_csv("C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term2/AdvancedTopicsInStatistics/AssignmentData/Classification.csv")
+classificationDF = read_csv("Classification.csv")
 
 ```
 
 ## Question 1
 
-
-
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-
+source("AssignmentData/ScotlandMap.R") # need to read in the ScotlandMap function
+testdat <- runif(56) # generate random numbers to use as observations
+ScotlandMap(testdat,figtitle="Scotland random numbers")
 
 ```
 
@@ -38,7 +44,8 @@ classificationDF = read_csv("C:/AppliedDataScienceAndStatistics/Applied-Data-Sci
 
 ## Question 2.1
 
-Group 0 is characterised for always having x1 > -1,65 and x2 < 2,05 with the majority of the occurences of group 0 having 
+Group 0 is characterised for always having x1 \> -1,65 and x2 \< 2,05
+with the majority of the occurences of group 0 having
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -56,9 +63,11 @@ plot_histogram(group0)
 
 
 ```
-As we can see from the histograms from group 0 it seems that X2 seems to follow a normal distribution that is very slightly skewed to the left and has mean -0,5.
-X1 is clearly skewed to the right possibly following a normal distribution and again mean equal to -0,5.
 
+As we can see from the histograms from group 0 it seems that X2 seems to
+follow a normal distribution that is very slightly skewed to the left
+and has mean -0,5. X1 is clearly skewed to the right possibly following
+a normal distribution and again mean equal to -0,5.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -66,26 +75,51 @@ plot_histogram(group1)
 
 
 ```
-Group 1 histograms reveal that X2 is normally distributed with mean equal to 0,5 and sightly skewed to the left.
-The variable X1 also seems to follow a normal distribution that has a very prolonged skewness to the left and mean 0,5.0
 
+Group 1 histograms reveal that X2 is normally distributed with mean
+equal to 0,5 and sightly skewed to the left. The variable X1 also seems
+to follow a normal distribution that has a very prolonged skewness to
+the left and mean 0,5.0
 
-## Question 2.2 
+## Question 2.2
 
+Both LDA and QDA assume normality which is true from what we can see
+from the histograms on 2.1
 
-Both LDA and QDA assume normality which is true from what we can see from the histograms on 2.1
+Starting with Linear discriminant analysis (LDA) we can easily see from
+the initial graph that we can see that the any sensible decision
+boundary is highly non-linear. As analysed from histograms this data
+violates the initial assumption of homogeneity of variance
+(homoscedasticity). The non-linearity of the data would also lead to LDA
+having terrible performance. As such we can conclude that LDA is not
+suitable for this data.
 
-Starting with Linear discriminant analysis (LDA) we can easily see from the initial graph that we can see that the any sensible decision boundary is highly non-linear. As analysed from histograms this data violates the initial assumption of homogeneity of variance (homoscedasticity). The non-linearity of the data would also lead to LDA having terrible performance.
-As such we can conclude that LDA is not suitable for this data.
+Secondly, quadratic discriminant analysis (QDA) follow the assumption of
+normality of each of the variables which does seem to hold even with how
+highly non-linear the data is. However judging from the plot with the
+observations, it does seem that QDA might not have enough flexibility to
+account for all the variability in what is the theoretical Bayes
+decision boundary. As such QDA could be appropriate for this data but
+not the best performing classification method for such data.
 
-Secondly, quadratic discriminant analysis (QDA) follow the assumption of normality of each of the variables which does seem to hold even with how highly non-linear the data is. However judging from the plot with the observations, it does seem that QDA might not have enough flexibility to account for all the variability in what is the theoretical Bayes decision boundary. As such QDA could be appropriate for this data but not the best performing classification method for such data.
+Thirdly, K-nearest neighbour classification (KNN) has no assumptions
+made about the shape of the decision, as such as we choose a adequate
+level of smoothness to prevent overfitting KNN classification is an
+adequate method for the data.
 
-Thirdly, K-nearest neighbour classification (KNN) has no assumptions made about the shape of the decision, as such as we choose a adequate level of smoothness to prevent overfitting KNN classification is an adequate method for the data.
+Support Vector Machines (SVM) are most commonly used for binary
+classification, which holds true for our data. The high non-linear
+decision boundary however requires a careful selection of a non linear
+kernel function to ensure that the boundary becomes non-linear when
+converted back to the regular space. As such I deem SVM an appropriate
+method to classify the data.
 
-Support Vector Machines (SVM) are most commonly used for binary classification, which holds true for our data. The high non-linear decision boundary however requires a careful selection of a non linear kernel function to ensure that the boundary becomes non-linear when converted back to the regular space. As such I deem SVM an appropriate method to classify the data.
-
-Finally, Random forest works by constructing multiple decision trees randomly selecting a portion of the variables and de-correlate them using multiple bootstrapped sets. Since our data has only 2 variables there isn't enough variables to overcome overfitting. To conclude, Random Forest classification is not very appropriate to this type of data.
-
+Finally, Random forest works by constructing multiple decision trees
+randomly selecting a portion of the variables and de-correlate them
+using multiple bootstrapped sets. Since our data has only 2 variables
+there isn't enough variables to overcome overfitting. To conclude,
+Random Forest classification is not very appropriate to this type of
+data.
 
 ## Question 2.3
 
@@ -114,7 +148,8 @@ dim(test)
 
 ## Question 2.4
 
-The 3 method I will be using are QDA, KNN and SVM as deemed to be the most appropriate methods for this data.
+The 3 method I will be using are QDA, KNN and SVM as deemed to be the
+most appropriate methods for this data.
 
 ## QDA - quadratic discriminant analysis
 
@@ -175,7 +210,9 @@ mdl$bestTune
 
 
 ```
-#TODO talk about how there is a balance on how the number of miss classified 
+
+#TODO talk about how there is a balance on how the number of miss
+classified
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -186,7 +223,9 @@ confusionMatrix(yTestPred, y_test) # predicted/true
 ```
 
 ## quick debug que funciona CARALHOOOOOOOOOOOOOOOO
+
 ## TODO this is using radial but I should have one with polynimial as well to show that polinomial is better
+
 ```{r, warning=FALSE}
 
 ## https://github.com/MatheusSchaly/Online-Courses/blob/master/Machine_Learning_A-Z_Hands-On_Python_%26_R_In_Data_Science/2_Classification/R/4_Kernel_SVM.R
