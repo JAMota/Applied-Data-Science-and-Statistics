@@ -40,7 +40,7 @@ ScotlandDF = read_csv("Scotland.csv")
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE}
 
 source("ScotlandMap.R") # need to read in the Scotland Map function
-testdat <- runif(56) # generate random numbers to use as observations
+testdat = runif(56) # generate random numbers to use as observations
 ScotlandMap(testdat,figtitle="Scotland random numbers")
 
 ```
@@ -63,7 +63,7 @@ hist(ScotlandDF$SMR, breaks = 20, col = "lightblue",
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 source("ScotlandMap.R") # need to read in the ScotlandMap function
-testdat <- ScotlandDF$SMR # generate random numbers to use as observations
+testdat = ScotlandDF$SMR # generate random numbers to use as observations
 ScotlandMap(testdat,figtitle="Scotland random numbers")
 
 
@@ -71,23 +71,83 @@ ScotlandMap(testdat,figtitle="Scotland random numbers")
 
 ## Question 1 b)
 
+For the model: 
 \begin{align*}
 Obs_i \sim \text{Pois}(\mu_i) \
 \log(\mu_i) = \log(\text{Exp}_i) + \beta_0 + \theta_i \
 \text{RR}_i = \exp(\beta_0) \exp(\theta_i)
 \end{align*}
 
-\begin{align*}
-Obs_i \sim \text{Pois}(\mu_i) \[1ex]
-\log(\mu_i) = \log(\text{Exp}_i) + \beta_0 + \theta_i \[1ex]
-\text{RR}_i = \exp(\beta_0) \exp(\theta_i)
-\end{align*}
 
-Beta0 is the intersect 
+$\beta0$ is the intercept that represents the baseline for when all the other variables are 0 which can also be interpreted as the log number expected of cases per administrative area.
+
+$\theta i$ is the effect that captures the variation in the observed number of cases that cannot be explained by the expected numbers alone. 
+$\theta i$ also represents the deviation of the log observed number of cases from the log expected number of cases for area i. 
+
+
+In the Poisson model, $\theta i$ represents the deviation of the observed number of cases in area i from the expected number of cases in area i, given the reference rates. In other words, it captures how much higher or lower the observed number of cases is compared to what we would expect based on the reference rates
+
+The role of θi in the estimation of the relative risk is to allow for variation in the risk of disease across different areas, over and above what is explained by the reference rates. By including a random effect for each area in the model, we are able to estimate the relative risk for each area, while accounting for the fact that some areas may have higher or lower risk due to factors that are not captured by the reference rates alone.
+
+## Question 1 c)
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+# # Define the JAGS model
+# model = "
+# model {
+#   # Priors
+#   beta0 ~ dnorm(0, 1/1000)
+#   tau ~ dgamma(1, 0.05)
+# 
+#   # Likelihood
+#   for (i in 1:N) {
+#     obs[i] ~ dpois(mu[i])
+#     log(mu[i]) = log(expo[i]) + beta0 + theta[i]
+#     theta[i] ~ dnorm(0, tau)
+#   }
+# }
+
+# model definition
+jags.mod.poisson = function(){
+  # Priors
+  beta0 ~ dnorm(0, 1/1000)
+  tau ~ dgamma(1, 0.05)
+  
+  # Likelihood
+  for (i in 1:N) {
+    obs[i] ~ dpois(mu[i])
+    log(mu[i]) = log(expo[i]) + beta0 + theta[i]
+    theta[i] ~ dnorm(0, tau)
+
+  }
+}  
+
+# Data
+list(N = nrow(ScotlandDF),
+     obs = ScotlandDF$Observed,
+     expo = ScotlandDF$Expected)
+
+# Parameters to monitor
+params = c("beta0", "theta", "tau")
+
+# Number of chains
+n.chains <- 2.
+
+# Number of iterations
+n.iter <- 5000
+
+# Burn-in
+burnin <- 1000
+
+# Run the model
+results <- run.jags(model, n.chains = n.chains, n.iter = n.iter, burnin = burnin,
+                    monitor = params, method = "parallel")
+                    
+# Check convergence
+plot(results)
+summary(results)
 
 
 ```
@@ -321,14 +381,15 @@ mdl$bestTune
 
 ```
 
-#TODO talk about how there is a balance on how the number of miss
-classified
+#TODO talk about how there is a balance on how the number of miss classified
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-# Test model on testing data
-yTestPred <- predict(mdl, newdata=X_test)
-confusionMatrix(yTestPred, y_test) # predicted/true
+## the SVM not working part
+
+# # Test model on testing data
+# yTestPred <- predict(mdl, newdata=X_test)
+# confusionMatrix(yTestPred, y_test) # predicted/true
 
 ```
 
