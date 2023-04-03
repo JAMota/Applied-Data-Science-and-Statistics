@@ -26,17 +26,127 @@ library(rgdal)
 
 library(reshape2)
 
+library(R2jags); library(MCMCvis); library(coda); library(lattice)
+
 classificationDF = read_csv("Classification.csv")
+
+ScotlandDF = read_csv("Scotland.csv")
+
 
 ```
 
 ## Question 1
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE}
 
-source("AssignmentData/ScotlandMap.R") # need to read in the ScotlandMap function
+source("ScotlandMap.R") # need to read in the Scotland Map function
 testdat <- runif(56) # generate random numbers to use as observations
 ScotlandMap(testdat,figtitle="Scotland random numbers")
+
+```
+## Question 1 a)
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+ScotlandDF$SMR = ScotlandDF$Observed /ScotlandDF$Expected
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+hist(ScotlandDF$SMR, breaks = 20, col = "lightblue",
+     main = "Distribution of Standard Mortality Ratios",
+     xlab = "SMR")
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+source("ScotlandMap.R") # need to read in the ScotlandMap function
+testdat <- ScotlandDF$SMR # generate random numbers to use as observations
+ScotlandMap(testdat,figtitle="Scotland random numbers")
+
+
+```
+
+## Question 1 b)
+
+\begin{align*}
+Obs_i \sim \text{Pois}(\mu_i) \
+\log(\mu_i) = \log(\text{Exp}_i) + \beta_0 + \theta_i \
+\text{RR}_i = \exp(\beta_0) \exp(\theta_i)
+\end{align*}
+
+\begin{align*}
+Obs_i \sim \text{Pois}(\mu_i) \[1ex]
+\log(\mu_i) = \log(\text{Exp}_i) + \beta_0 + \theta_i \[1ex]
+\text{RR}_i = \exp(\beta_0) \exp(\theta_i)
+\end{align*}
+
+Beta0 is the intersect 
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
 
 ```
 

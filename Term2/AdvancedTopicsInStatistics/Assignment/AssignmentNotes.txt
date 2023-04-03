@@ -12,3 +12,8 @@ description based on the lecture material, not just googled the answer (might be
 to the slide examples)
 
 set the seed and output so dorka can verify our answer
+
+
+Beta0, thau and RR
+
+machine learning, add slack
