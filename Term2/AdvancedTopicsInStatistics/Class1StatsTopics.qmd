@@ -54,6 +54,7 @@ parameters.to.save = c('Y','P8'),n.chains=1,
 DIC=FALSE, n.burnin=0,n.iter = 100) ## here we make DICE=False because our code does not contain the likelihood
 
 ```
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 #To get the numerical summary of the above model run we use the print function
@@ -62,6 +63,7 @@ print(jags.mod.fit.coin)
 
 ## this gives us the mean, standard deviation and some quantiles of the generated samples
 ```
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 #We can also plot the simulated samples using the traceplot function
@@ -119,7 +121,9 @@ jags.mod.fit.coin$BUGSoutput$summary[,3] # 2.5 percentile
 jags.mod.fit.coin$BUGSoutput$summary[,7] # 97.5 percentile
 
 ```
+
 ## Exercise 1
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 ##increasing the number of iterations
@@ -134,7 +138,9 @@ print(jags.mod.fit.coin)
 ## it becomes more accurate as we can see that the mean is closer to the expected real value of 5
 
 ```
+
 ## Exercise 2
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 ##number of chains, how much times does jags runs the simulation independently of each other
@@ -158,6 +164,7 @@ densityplot(jagsfit.mcmc.coin)
 
 
 ```
+
 ## Exercise 3
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
@@ -179,6 +186,7 @@ print(jags.mod.fit.clinicalTrial)
 ```
 
 ## Exercise 4
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 #model definition with var 1 and sd 2
@@ -232,8 +240,12 @@ parameters.to.save = c('x'),n.chains=1,
 DIC=FALSE, n.burnin=0,n.iter = 10000)
 print(jags.mod.fit[drop=F]) # look at mean of x
 ```
+
 ## Trace plot note
-We need to check both the trace plots and the coefficients to check for the scale reduction factor, sometimes the factor will be good but we have no conversion.
+
+We need to check both the trace plots and the coefficients to check for
+the scale reduction factor, sometimes the factor will be good but we
+have no conversion.
 
 ## Drug trial exercise without data
 
@@ -249,7 +261,6 @@ P.crit <- ifelse(y>=15,1,0) # quantity of interest, we want to know how the prob
 
 ```
 
-
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 ##Even though we don’t have any available data, monitoring the parameters y and P.crit will allow us to
 ##plot the predictive distribution of y, and get a point estimate for the predictive probability that 15 or more
@@ -261,7 +272,6 @@ parameters.to.save = c('theta','y','P.crit'),
 model.file = jags.mod.drug,n.chains=1)
 
 ```
-
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -315,10 +325,10 @@ print(jags.mod.fit.bomb)
 # point estimate for the parameter is 0.933                   
                    
 ```
+
 ```{r}
 
 ```
-
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 

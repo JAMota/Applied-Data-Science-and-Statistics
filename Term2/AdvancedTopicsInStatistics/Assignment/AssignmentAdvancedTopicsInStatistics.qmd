@@ -32,6 +32,9 @@ classificationDF = read_csv("Classification.csv")
 
 ScotlandDF = read_csv("Scotland.csv")
 
+surgicalDF = read_csv("surgical.csv")
+
+## https://www.r-bloggers.com/2012/04/getting-started-with-jags-rjags-and-bayesian-modelling/
 
 ```
 
@@ -44,6 +47,7 @@ testdat = runif(56) # generate random numbers to use as observations
 ScotlandMap(testdat,figtitle="Scotland random numbers")
 
 ```
+
 ## Question 1 a)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
@@ -52,7 +56,7 @@ ScotlandDF$SMR = ScotlandDF$Observed /ScotlandDF$Expected
 
 ```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), warning=FALSE}
 
 hist(ScotlandDF$SMR, breaks = 20, col = "lightblue",
      main = "Distribution of Standard Mortality Ratios",
@@ -71,26 +75,39 @@ ScotlandMap(testdat,figtitle="Scotland random numbers")
 
 ## Question 1 b)
 
-For the model: 
-\begin{align*}
+For the model: \begin{align*}
 Obs_i \sim \text{Pois}(\mu_i) \
 \log(\mu_i) = \log(\text{Exp}_i) + \beta_0 + \theta_i \
 \text{RR}_i = \exp(\beta_0) \exp(\theta_i)
-\end{align*}
+\end{align*}= \log(\text{Exp}\_i) + \beta\_0 + \theta\_i\
+\text{RR}\_i = \exp(\beta\_0) \exp(\theta\_i) \\end{align\*}=
+\log(\text{Exp}\_i) + \beta\_0 + \theta\_i\
+\text{RR}\_i = \exp(\beta\_0) \exp(\theta\_i) \\end{align\*}
 
+$\beta0$ is the intercept that represents the baseline for when all the
+other variables are 0 which can also be interpreted as the log number
+expected of cases per administrative area.
 
-$\beta0$ is the intercept that represents the baseline for when all the other variables are 0 which can also be interpreted as the log number expected of cases per administrative area.
+$\theta i$ is the effect that captures the variation in the observed
+number of cases that cannot be explained by the expected numbers alone.
+$\theta i$ also represents the deviation of the log observed number of
+cases from the log expected number of cases for area i.
 
-$\theta i$ is the effect that captures the variation in the observed number of cases that cannot be explained by the expected numbers alone. 
-$\theta i$ also represents the deviation of the log observed number of cases from the log expected number of cases for area i. 
+In the Poisson model, $\theta i$ represents the deviation of the
+observed number of cases in area i from the expected number of cases in
+area i, given the reference rates. In other words, it captures how much
+higher or lower the observed number of cases is compared to what we
+would expect based on the reference rates
 
-
-In the Poisson model, $\theta i$ represents the deviation of the observed number of cases in area i from the expected number of cases in area i, given the reference rates. In other words, it captures how much higher or lower the observed number of cases is compared to what we would expect based on the reference rates
-
-The role of θi in the estimation of the relative risk is to allow for variation in the risk of disease across different areas, over and above what is explained by the reference rates. By including a random effect for each area in the model, we are able to estimate the relative risk for each area, while accounting for the fact that some areas may have higher or lower risk due to factors that are not captured by the reference rates alone.
+The role of θi in the estimation of the relative risk is to allow for
+variation in the risk of disease across different areas, over and above
+what is explained by the reference rates. By including a random effect
+for each area in the model, we are able to estimate the relative risk
+for each area, while accounting for the fact that some areas may have
+higher or lower risk due to factors that are not captured by the
+reference rates alone.
 
 ## Question 1 c)
-
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -133,16 +150,16 @@ list(N = nrow(ScotlandDF),
 params = c("beta0", "theta", "tau")
 
 # Number of chains
-n.chains <- 2.
+n.chains = 2.
 
 # Number of iterations
-n.iter <- 5000
+n.iter = 5000
 
 # Burn-in
-burnin <- 1000
+burnin = 1000
 
 # Run the model
-results <- run.jags(model, n.chains = n.chains, n.iter = n.iter, burnin = burnin,
+results = run.jags(jags.mod.poisson, n.chains = n.chains, n.iter = n.iter, burnin = burnin,
                     monitor = params, method = "parallel")
                     
 # Check convergence
@@ -152,12 +169,162 @@ summary(results)
 
 ```
 
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+# Number of areas
+n_areas <- nrow(ScotlandDF)
+
+
+
+# Define model string
+model_string <- "
+  model {
+    for (i in 1:n_areas) {
+      obs[i] ~ dpois(mu[i])
+      mu[i] <- exp(beta0 + theta[i]) * offset[i]
+      log(offset[i]) <- log(expec[i])
+      theta[i] ~ dnorm(0, tau)
+    }
+    beta0 ~ dnorm(0, 1/1000)
+    tau ~ dgamma(1, 0.05)
+  }
+"
+
+# Define model parameters
+parameters <- c("beta0", "tau", "theta", "RR")
+
+# Define initial values
+initial_values <- list(
+  beta0 = 0,
+  tau = 20,
+  theta = rnorm(n_areas, 0, sqrt(1/tau)),
+  RR = rep(1, n_areas)
+)
+
+# Compile the model
+model <- jags.model(textConnection(model_string), data = list(obs = ScotlandDF$obs, expec = ScotlandDF$expec, n_areas = n_areas), n.chains = 2)
+
+# Run the model
+n.iter <- 10000
+burnin <- 1000
+thin <- 10
+model.samples <- coda.samples(model, variable.names = parameters, n.iter = n.iter, thin = thin)
+
+# Plot trace plots
+traceplot(model.samples, varname.cex = 0.7)
+
+# Summarise model parameters
+summary(model.samples)
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# Define model in JAGS
+modelString <- "model{
+  # Priors
+  beta0 ~ dnorm(0, 1/1000)
+  tau ~ dgamma(1, 0.05)
+
+  # Likelihood
+  for(i in 1:n_areas){
+    theta[i] ~ dnorm(0, tau)
+    obs[i] ~ dpois(exp(beta0 + logExp[i] + theta[i]))
+  }
+
+  # Offset term
+  for(i in 1:n_areas){
+    logExp[i] <- log(offset[i])
+  }
+}"
+
+# Compile model
+model <- jags.model(textConnection(modelString), data = list(obs = ScotlandDF$Observed,
+                                                           offset = ScotlandDF$Expected,
+                                                           n_areas = nrow(ScotlandDF)),
+                    n.chains = 2)
+
+# Burn-in and run MCMC
+n.iter <- 20000
+n.burnin <- 100000
+params <- c("beta0", "theta")
+jags.out <- coda.samples(model, variable.names = params, n.iter = n.iter+n.burnin, thin = 1)
+
+# Summarize results
+summary(jags.out)
+
+# Trace plots
+traceplot(jags.out)
+
+```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 
 
+```
+
+## Question 2 a)
+
+To main steps of fitting a Bayesian model using R2jags are the
+following. 1. Define the JAGS model (as a function). 2. Prepare the
+data, which should be passed on as a list. Note that this list should
+include other known variables not in the data, like the length N of the
+data vector, when this N is used in the JAGS model definition (e.g. in a
+for loop). 3. Identify the parameters whose posterior distributions are
+of interest. Here a vector of the parameter names is needed. 4. Define
+starting values for JAGS. We need starting values for all the stochastic
+nodes (unknown parameters, missing data) in each chain. Initial values
+should be passed on as a list. Note that JAGS runs without user-defined
+starting values, in which case it generates its own initial values. But
+this is not recommended, especially for complex models. 5. Fit the model
+in JAGS. The most important arguments of the jags function includes:
+data (data list), inits (list of initial values), parameters.to.save
+(parameters of interest), n.chains (number of MC chains - each gives a
+sequence of simulated values), n.iter (number of iterations in the
+sampling process), n.burnin (number of initial samples to discard),
+model.file (the JAGS model definition). 6. Convergence diagnostics.
+Update if convergence hasn't reached. (See later). 7. Once we are
+satisfied that the chains have converged, we can start the statistical
+inference. E.g. we can plot the posterior density, get point estimates
+and interval estimates by extracting the posterior mean and credible
+intervals.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+jags.mod.infantDeath <- function(){
+for(i in 1:12){
+r[i] ~ dbin(theta[i],n[i])
+logit(theta[i]) <- logit.theta[i]
+logit.theta[i] ~ dnorm(mu, tau)
+}
+mu ~ dnorm(0,1.0E-3)
+tau <- 1/sigmaˆ2
+sigma ~ dunif(0,100)
+}
+
+# Parameters to monitor
+jags.param.infantDeath <- c("mu", "sigma", "theta")
+
+## initial values
+
+
+# # Compile model
+# model <- jags.model(textConnection(model_string), data = list(r = surgicalDF$r, n = surgicalDF$n))
+# 
+# 
+# # MCMC sampling
+# samples <- coda.samples(model, variable.names = params, n.iter = 10000, n.chains = 2, thin = 1)
+# 
+# # Discard burn-in
+# burn_in <- 5000
+# samples <- window(samples, start = burn_in + 1)
+
+# Posterior summaries
+summary(samples)
+
+# Traceplots
+plot(samples)
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
@@ -176,11 +343,6 @@ summary(results)
 
 
 
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-
-
 
 ```
 
@@ -197,22 +359,9 @@ summary(results)
 
 ```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+## Question B - classification
 
-
-
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-
-
-
-
-```
-
-## Question 2 - classification
-
-## Question 2.1
+## Question B.1
 
 Group 0 is characterised for always having x1 \> -1,65 and x2 \< 2,05
 with the majority of the occurences of group 0 having
@@ -221,8 +370,8 @@ with the majority of the occurences of group 0 having
 
 ## I am just going to split the dataframe in two so its easier to show an histogram of each variable for both groups
 
-group0 <- subset(classificationDF, Group == 0)
-group1 <- subset(classificationDF, Group == 1)
+group0 = subset(classificationDF, Group == 0)
+group1 = subset(classificationDF, Group == 1)
 
 ##removing the id variable from both of these new data frames so they are not included in the histograms
 group0 = group0 %>% select(-(1))
@@ -251,7 +400,7 @@ equal to 0,5 and sightly skewed to the left. The variable X1 also seems
 to follow a normal distribution that has a very prolonged skewness to
 the left and mean 0,5.0
 
-## Question 2.2
+## Question B.2
 
 Both LDA and QDA assume normality which is true from what we can see
 from the histograms on 2.1
@@ -291,23 +440,23 @@ there isn't enough variables to overcome overfitting. To conclude,
 Random Forest classification is not very appropriate to this type of
 data.
 
-## Question 2.3
+## Question B.3
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 # make this example reproducible
 set.seed(26041999)
 # use 80% of dataset as training set and 20% as test set
-sample <- sample.split(classificationDF$Group, SplitRatio = 0.8)
+sample = sample.split(classificationDF$Group, SplitRatio = 0.8)
 ## note that the column selected above can be any column.
-train <- classificationDF[sample, ]
-test <- classificationDF[!sample, ]
+train = classificationDF[sample, ]
+test = classificationDF[!sample, ]
 
 # split the data using the indices returned by the createDataPartition function
-X_train <- train[, c("X1", "X2")]
-y_train <- train$Group
-X_test <- test[, c("X1", "X2")]
-y_test <- test$Group
+X_train = train[, c("X1", "X2")]
+y_train = train$Group
+X_test = test[, c("X1", "X2")]
+y_test = test$Group
 
 # check the dimensions 
 dim(train)
@@ -316,7 +465,7 @@ dim(test)
 
 ```
 
-## Question 2.4
+## Question B.4
 
 The 3 method I will be using are QDA, KNN and SVM as deemed to be the
 most appropriate methods for this data.
@@ -347,11 +496,11 @@ confusion
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-test$predicted_group <- fit
-test$correct_prediction <- test$predicted_group == test$Group
+test$predicted_group = fit
+test$correct_prediction = test$predicted_group == test$Group
 
 # plot the data points
-p <- ggplot() + 
+p = ggplot() + 
   geom_point(data = train, aes(x = X1, y = X2, color = "Training"), size = 3) +
   geom_point(data = test, aes(x = X1, y = X2, color = correct_prediction, shape = factor(correct_prediction)), size = 3) +
   scale_color_manual(values = c("red", "blue", "green"), labels = c("Incorrect", "Correct", "Training")) +
@@ -369,7 +518,7 @@ print(p)
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 ## checking the model performance with multiple difference C constants
-mdl <- train(x=X_train,y=y_train, method = "svmLinear",
+mdl = train(x=X_train,y=y_train, method = "svmLinear",
 trControl = trainControl("cv", number = 5),
 tuneGrid = expand.grid(C = seq(0, 2, length = 20)))
 # Plot model accuracy vs different values of Cost
@@ -381,14 +530,15 @@ mdl$bestTune
 
 ```
 
-#TODO talk about how there is a balance on how the number of miss classified
+#TODO talk about how there is a balance on how the number of miss
+classified
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 ## the SVM not working part
 
 # # Test model on testing data
-# yTestPred <- predict(mdl, newdata=X_test)
+# yTestPred = predict(mdl, newdata=X_test)
 # confusionMatrix(yTestPred, y_test) # predicted/true
 
 ```
@@ -402,7 +552,7 @@ mdl$bestTune
 ## https://github.com/MatheusSchaly/Online-Courses/blob/master/Machine_Learning_A-Z_Hands-On_Python_%26_R_In_Data_Science/2_Classification/R/4_Kernel_SVM.R
 ## to add visualization
 
-mdl <- train(x=X_train,y=y_train, method='svmRadial') 
+mdl = train(x=X_train,y=y_train, method='svmRadial') 
 print(mdl)
 
 mdl = svm(Group ~ .,
@@ -412,8 +562,11 @@ mdl = svm(Group ~ .,
 
 # Test model on testing data
 yTestPred = predict(mdl, newdata=test)
-# yTestPred <- mdl %>% predict(xTest) 
+# yTestPred = mdl %>% predict(xTest) 
 confusionMatrix(as.factor(yTestPred), as.factor(y_test)) # predicted/true
 
 
 ```
+
+
+## Question B.5

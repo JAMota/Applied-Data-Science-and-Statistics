@@ -6,15 +6,9 @@ editor: visual
 
 ## Quarto
 
-Udeni ∼ N (μi, σ2)
-μi = b0 + b1(LeftGi − LeftG) + b2(LabFi − LabF) + b3(IndCi − IndC)
-with vague priors
-1/σ2 ∼ Gamma(0.001, 0.001)
-b0 ∼ N (0, 100000)
-b1 ∼ N (0, 100000)
-b2 ∼ N (0, 100000)
-b3 ∼ N (0, 100000)
-
+Udeni ∼ N (μi, σ2) μi = b0 + b1(LeftGi − LeftG) + b2(LabFi − LabF) +
+b3(IndCi − IndC) with vague priors 1/σ2 ∼ Gamma(0.001, 0.001) b0 ∼ N (0,
+100000) b1 ∼ N (0, 100000) b2 ∼ N (0, 100000) b3 ∼ N (0, 100000)
 
 ```{r, echo=FALSE}
 library(R2jags)
@@ -25,9 +19,6 @@ library(tidyverse)
 library(ggmcmc)
 #install.packages("ggmcmc")
 ```
-
-
-
 
 ```{r}
 jags.mod <- function(){
@@ -47,7 +38,6 @@ b[k] ~ dnorm(0,0.00001)
 }
 }
 ```
-
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -139,14 +129,16 @@ colnames(beta) <- c("b1","b2","b3")
 boxplot(beta,outline=FALSE)
 
 ```
+
 ## Exercise 2
 
-it does not change anything because JAGS will centre automatically to boost convergence
+it does not change anything because JAGS will centre automatically to
+boost convergence
 
+## Exercise 3
 
-## Exercise 3 
-
-When we want to set up different priors we have to set them manually and cannot use the foor loop
+When we want to set up different priors we have to set them manually and
+cannot use the foor loop
 
 ```{r}
 jags.mod <- function(){
@@ -262,16 +254,7 @@ boxplot(beta,outline=FALSE)
 
 ## Exercise 4
 
-
-
-
-
-
-
-
-
-##################################################### DUGONGS ###########################################
-
+##################################################### DUGONGS
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -289,7 +272,6 @@ N = 27
 jags.data <- list("x","Y", "N")
 
 ```
-
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
