@@ -266,29 +266,68 @@ traceplot(jags.out)
 
 ## Question 2 a)
 
-To main steps of fitting a Bayesian model using R2jags are the
-following. 1. Define the JAGS model (as a function). 2. Prepare the
-data, which should be passed on as a list. Note that this list should
-include other known variables not in the data, like the length N of the
-data vector, when this N is used in the JAGS model definition (e.g. in a
-for loop). 3. Identify the parameters whose posterior distributions are
-of interest. Here a vector of the parameter names is needed. 4. Define
-starting values for JAGS. We need starting values for all the stochastic
-nodes (unknown parameters, missing data) in each chain. Initial values
-should be passed on as a list. Note that JAGS runs without user-defined
-starting values, in which case it generates its own initial values. But
-this is not recommended, especially for complex models. 5. Fit the model
-in JAGS. The most important arguments of the jags function includes:
-data (data list), inits (list of initial values), parameters.to.save
-(parameters of interest), n.chains (number of MC chains - each gives a
-sequence of simulated values), n.iter (number of iterations in the
-sampling process), n.burnin (number of initial samples to discard),
-model.file (the JAGS model definition). 6. Convergence diagnostics.
-Update if convergence hasn't reached. (See later). 7. Once we are
-satisfied that the chains have converged, we can start the statistical
-inference. E.g. we can plot the posterior density, get point estimates
-and interval estimates by extracting the posterior mean and credible
-intervals.
+<!-- To main steps of fitting a Bayesian model using R2jags are the -->
+<!-- following. 1. Define the JAGS model (as a function). 2. Prepare the -->
+<!-- data, which should be passed on as a list. Note that this list should -->
+<!-- include other known variables not in the data, like the length N of the -->
+<!-- data vector, when this N is used in the JAGS model definition (e.g. in a -->
+<!-- for loop). 3. Identify the parameters whose posterior distributions are -->
+<!-- of interest. Here a vector of the parameter names is needed. 4. Define -->
+<!-- starting values for JAGS. We need starting values for all the stochastic -->
+<!-- nodes (unknown parameters, missing data) in each chain. Initial values -->
+<!-- should be passed on as a list. Note that JAGS runs without user-defined -->
+<!-- starting values, in which case it generates its own initial values. But -->
+<!-- this is not recommended, especially for complex models. 5. Fit the model -->
+<!-- in JAGS. The most important arguments of the jags function includes: -->
+<!-- data (data list), inits (list of initial values), parameters.to.save -->
+<!-- (parameters of interest), n.chains (number of MC chains - each gives a -->
+<!-- sequence of simulated values), n.iter (number of iterations in the -->
+<!-- sampling process), n.burnin (number of initial samples to discard), -->
+<!-- model.file (the JAGS model definition). 6. Convergence diagnostics. -->
+<!-- Update if convergence hasn't reached. (See later). 7. Once we are -->
+<!-- satisfied that the chains have converged, we can start the statistical -->
+<!-- inference. E.g. we can plot the posterior density, get point estimates -->
+<!-- and interval estimates by extracting the posterior mean and credible -->
+<!-- intervals. -->
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+jags.mod.infantDeath <- function(){
+for(i in 1:12){
+r[i] ~ dbin(theta[i],n[i])
+logit(theta[i]) <- logit.theta[i]
+logit.theta[i] ~ dnorm(mu, tau)
+}
+mu ~ dnorm(0,0.001)
+tau <- 1/sigma^2
+sigma ~ dunif(0,100)
+}
+
+# Parameters to monitor
+jags.param.infantDeath <- c("mu", "sigma", "theta")
+
+## initial values
+inits1 <- list('tau' = 100, 'sigma' = 20, 'theta'=c(10,-5,-25))
+inits2 <- list('tau'=100000,'sigma'=-100,'theta'=c(-100,100,500))
+
+jags.inits = list(inits1,inits2)
+
+## fit the jags model
+
+jags.data.infantDeath <- list(r = surgicalDF$r, n = surgicalDF$n)
+
+jags.mod.fit.infantDeath <- jags(data = jags.data.infantDeath, #inits = jags.inits,
+parameters.to.save = jags.param.infantDeath, n.chains = 2, n.iter = 10000,
+n.burnin = 5000,n.thin=1,model.file = jags.mod.infantDeath, DIC=FALSE)
+
+
+
+# Posterior summaries
+summary(samples)
+
+# Traceplots
+plot(samples)
+```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -307,34 +346,37 @@ sigma ~ dunif(0,100)
 jags.param.infantDeath <- c("mu", "sigma", "theta")
 
 ## initial values
+inits1 <- list('sigma' = 10, 'theta' = c(-5, -5, -5))
+inits2 <- list('sigma' = 50, 'theta' = c(5, 5, 5))
 
+jags.inits <- list(inits1, inits2)
 
-# # Compile model
-# model <- jags.model(textConnection(model_string), data = list(r = surgicalDF$r, n = surgicalDF$n))
-# 
-# 
-# # MCMC sampling
-# samples <- coda.samples(model, variable.names = params, n.iter = 10000, n.chains = 2, thin = 1)
-# 
-# # Discard burn-in
-# burn_in <- 5000
-# samples <- window(samples, start = burn_in + 1)
+## fit the jags model
+jags.data.infantDeath <- list(r = surgicalDF$r, n = surgicalDF$n)
+
+jags.mod.fit.infantDeath <- jags(
+  data = jags.data.infantDeath,
+  inits = jags.inits,
+  parameters.to.save = jags.param.infantDeath,
+  n.chains = 2,
+  n.iter = 10000,
+  n.burnin = 5000,
+  n.thin = 1,
+  model = jags.mod,
+  DIC = FALSE
+)
+
 
 # Posterior summaries
 summary(samples)
 
 # Traceplots
 plot(samples)
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-
 
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-
 
 
 ```
