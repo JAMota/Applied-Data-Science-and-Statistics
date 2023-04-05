@@ -111,23 +111,7 @@ reference rates alone.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-# # Define the JAGS model
-# model = "
-# model {
-#   # Priors
-#   beta0 ~ dnorm(0, 1/1000)
-#   tau ~ dgamma(1, 0.05)
-# 
-#   # Likelihood
-#   for (i in 1:N) {
-#     obs[i] ~ dpois(mu[i])
-#     log(mu[i]) = log(expo[i]) + beta0 + theta[i]
-#     theta[i] ~ dnorm(0, tau)
-#   }
-# }
-
-# model definition
-jags.mod.poisson = function(){
+jags.mod.lipCancer = function(){
   # Priors
   beta0 ~ dnorm(0, 1/1000)
   tau ~ dgamma(1, 0.05)
@@ -139,122 +123,42 @@ jags.mod.poisson = function(){
     theta[i] ~ dnorm(0, tau)
 
   }
-}  
+} 
+
+# Parameters to monitor
+jags.param.lipCancer = c("beta0", "theta", "tau")
 
 # Data
-list(N = nrow(ScotlandDF),
+jags.data.lipCancer <- list(N = nrow(ScotlandDF),
      obs = ScotlandDF$Observed,
      expo = ScotlandDF$Expected)
 
-# Parameters to monitor
-params = c("beta0", "theta", "tau")
+## initial values
+inits1 <- list('tau' = 100, 'sigma' = 20, 'theta'=c(10,-5,-25))
+inits2 <- list('tau'=100000,'sigma'=-100,'theta'=c(-100,100,500))
 
-# Number of chains
-n.chains = 2.
+jags.inits.lipCancer = list(inits1,inits2)
 
-# Number of iterations
-n.iter = 5000
+## fit the jags model
 
-# Burn-in
-burnin = 1000
+jags.mod.fit.lipCancer <- jags(data = jags.data.lipCancer, #inits = jags.inits.lipCancer,
+parameters.to.save = jags.param.lipCancer, n.chains = 2, n.iter = 10000,
+n.burnin = 5000,n.thin=1,model.file = jags.mod.lipCancer, DIC=FALSE)
 
-# Run the model
-results = run.jags(jags.mod.poisson, n.chains = n.chains, n.iter = n.iter, burnin = burnin,
-                    monitor = params, method = "parallel")
-                    
-# Check convergence
-plot(results)
-summary(results)
 
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-# Number of areas
-n_areas <- nrow(ScotlandDF)
-
-
-
-# Define model string
-model_string <- "
-  model {
-    for (i in 1:n_areas) {
-      obs[i] ~ dpois(mu[i])
-      mu[i] <- exp(beta0 + theta[i]) * offset[i]
-      log(offset[i]) <- log(expec[i])
-      theta[i] ~ dnorm(0, tau)
-    }
-    beta0 ~ dnorm(0, 1/1000)
-    tau ~ dgamma(1, 0.05)
-  }
-"
-
-# Define model parameters
-parameters <- c("beta0", "tau", "theta", "RR")
-
-# Define initial values
-initial_values <- list(
-  beta0 = 0,
-  tau = 20,
-  theta = rnorm(n_areas, 0, sqrt(1/tau)),
-  RR = rep(1, n_areas)
-)
-
-# Compile the model
-model <- jags.model(textConnection(model_string), data = list(obs = ScotlandDF$obs, expec = ScotlandDF$expec, n_areas = n_areas), n.chains = 2)
-
-# Run the model
-n.iter <- 10000
-burnin <- 1000
-thin <- 10
-model.samples <- coda.samples(model, variable.names = parameters, n.iter = n.iter, thin = thin)
-
-# Plot trace plots
-traceplot(model.samples, varname.cex = 0.7)
-
-# Summarise model parameters
-summary(model.samples)
+jagsfitlipCancer.mcmc <- as.mcmc(jags.mod.fit.lipCancer )
+MCMCtrace(jagsfitlipCancer.mcmc ,type = 'trace',ind = TRUE, pdf = FALSE)
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-# Define model in JAGS
-modelString <- "model{
-  # Priors
-  beta0 ~ dnorm(0, 1/1000)
-  tau ~ dgamma(1, 0.05)
-
-  # Likelihood
-  for(i in 1:n_areas){
-    theta[i] ~ dnorm(0, tau)
-    obs[i] ~ dpois(exp(beta0 + logExp[i] + theta[i]))
-  }
-
-  # Offset term
-  for(i in 1:n_areas){
-    logExp[i] <- log(offset[i])
-  }
-}"
-
-# Compile model
-model <- jags.model(textConnection(modelString), data = list(obs = ScotlandDF$Observed,
-                                                           offset = ScotlandDF$Expected,
-                                                           n_areas = nrow(ScotlandDF)),
-                    n.chains = 2)
-
-# Burn-in and run MCMC
-n.iter <- 20000
-n.burnin <- 100000
-params <- c("beta0", "theta")
-jags.out <- coda.samples(model, variable.names = params, n.iter = n.iter+n.burnin, thin = 1)
-
-# Summarize results
-summary(jags.out)
-
-# Trace plots
-traceplot(jags.out)
+gelman.diag(jagsfitlipCancer.mcmc)
 
 ```
 
@@ -304,7 +208,7 @@ sigma ~ dunif(0,100)
 }
 
 # Parameters to monitor
-jags.param.infantDeath <- c("mu", "sigma", "theta")
+jags.param.infantDeath <- c("mu", "sigma", "theta", "tau")
 
 ## initial values
 inits1 <- list('tau' = 100, 'sigma' = 20, 'theta'=c(10,-5,-25))
@@ -312,9 +216,11 @@ inits2 <- list('tau'=100000,'sigma'=-100,'theta'=c(-100,100,500))
 
 jags.inits = list(inits1,inits2)
 
-## fit the jags model
+## data
 
 jags.data.infantDeath <- list(r = surgicalDF$r, n = surgicalDF$n)
+
+## fit the jags model
 
 jags.mod.fit.infantDeath <- jags(data = jags.data.infantDeath, #inits = jags.inits,
 parameters.to.save = jags.param.infantDeath, n.chains = 2, n.iter = 10000,
