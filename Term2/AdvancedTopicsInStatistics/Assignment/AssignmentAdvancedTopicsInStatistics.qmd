@@ -48,7 +48,7 @@ ScotlandMap(testdat,figtitle="Scotland random numbers")
 
 ```
 
-## Question 1 a)
+### Question 1 a)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -73,7 +73,7 @@ ScotlandMap(testdat,figtitle="Scotland random numbers")
 
 ```
 
-## Question 1 b)
+### Question 1 b)
 
 For the model: \begin{align*}
 Obs_i \sim \text{Pois}(\mu_i) \
@@ -107,7 +107,7 @@ for each area, while accounting for the fact that some areas may have
 higher or lower risk due to factors that are not captured by the
 reference rates alone.
 
-## Question 1 c)
+### Question 1 c)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -126,7 +126,7 @@ jags.mod.lipCancer = function(){
 } 
 
 # Parameters to monitor
-jags.param.lipCancer = c("beta0", "theta", "tau")
+jags.param.lipCancer = c("beta0", "theta", "tau", "mu")
 
 # Data
 jags.data.lipCancer <- list(N = nrow(ScotlandDF),
@@ -159,6 +159,48 @@ MCMCtrace(jagsfitlipCancer.mcmc ,type = 'trace',ind = TRUE, pdf = FALSE)
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 gelman.diag(jagsfitlipCancer.mcmc)
+
+
+```
+
+### question 1.c)
+
+we know have to monitor mu as well 
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# extract posterior mean for mu
+pos <- substr(rownames(jags.mod.fit.lipCancer$BUGSoutput$summary),1,2)=='mu'
+
+muRegions = jags.mod.fit.lipCancer$BUGSoutput$summary[pos,1]
+
+ScotlandDF$mu = muRegions
+
+```
+
+Checking the difference between the average mu of the SMR for each region
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
 
 ```
 
