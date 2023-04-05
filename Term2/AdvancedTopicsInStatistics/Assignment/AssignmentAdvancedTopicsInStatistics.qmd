@@ -121,12 +121,12 @@ jags.mod.lipCancer = function(){
     obs[i] ~ dpois(mu[i])
     log(mu[i]) = log(expo[i]) + beta0 + theta[i]
     theta[i] ~ dnorm(0, tau)
-
+    RR[i] = exp(beta0) * exp(theta[i])
   }
 } 
 
 # Parameters to monitor
-jags.param.lipCancer = c("beta0", "theta", "tau", "mu")
+jags.param.lipCancer = c("beta0", "theta", "tau", "RR")
 
 # Data
 jags.data.lipCancer <- list(N = nrow(ScotlandDF),
@@ -165,38 +165,75 @@ gelman.diag(jagsfitlipCancer.mcmc)
 
 ### question 1.c)
 
-we know have to monitor mu as well 
+we know have to monitor RR as well 
+
+<!-- # extract posterior mean for mu -->
+<!-- pos <- substr(rownames(jags.mod.fit.lipCancer$BUGSoutput$summary),1,2)=='mu' -->
+
+<!-- muRegions = jags.mod.fit.lipCancer$BUGSoutput$summary[pos,1] -->
+
+<!-- ScotlandDF$mu = muRegions -->
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-# extract posterior mean for mu
-pos <- substr(rownames(jags.mod.fit.lipCancer$BUGSoutput$summary),1,2)=='mu'
+##extract posterior RR
+posRR <- substr(rownames(jags.mod.fit.lipCancer$BUGSoutput$summary),1,2)=='RR'
 
-muRegions = jags.mod.fit.lipCancer$BUGSoutput$summary[pos,1]
+RRRegions = jags.mod.fit.lipCancer$BUGSoutput$summary[posRR,1]
 
-ScotlandDF$mu = muRegions
+ScotlandDF$RR = RRRegions
 
 ```
 
-Checking the difference between the average mu of the SMR for each region
+Checking the difference between the average RR and the SMR for each region 
+
+should I do RR/SMR and see how close it is to 1?
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+ScotlandDF$SMR / ScotlandDF$RR
+
+```
+
+### Question 1.e)
+
+Now I will have to check when RR is > 1 using similarly the summary Confidicence intervals
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 
+# ##extract posterior RR
+# posProbRR <- substr(rownames(jags.mod.fit.lipCancer$BUGSoutput$summary),1,6)=='ProbRR'
+# 
+# jags.mod.fit.lipCancer$BUGSoutput$summary[posProbRR,1] ##mean
+# jags.mod.fit.lipCancer$BUGSoutput$summary[posProbRR,3] # 2.5 percentile
+# jags.mod.fit.lipCancer$BUGSoutput$summary[posProbRR,7] # 97.5 percentile
+
+## to see which regions RR are in the 95% C.I we will have to see if the 2.5% is small or equal to 1 and if 97.5% is equal or greater than 1
+
+##extract posterior RR
+posProbRR <- substr(rownames(jags.mod.fit.lipCancer$BUGSoutput$summary),1,2)=='RR'
+
+#jags.mod.fit.lipCancer$BUGSoutput$summary[posProbRR,1] ##mean
+lowerCI = jags.mod.fit.lipCancer$BUGSoutput$summary[posProbRR,3] # 2.5 percentile
+upperCI = jags.mod.fit.lipCancer$BUGSoutput$summary[posProbRR,7] # 97.5 percentile
 
 ```
+
+Since we know that the 97,5 percentile is always bigger than the the 2,5 percentile to check if the 95% CI of RR is lower than 1, meaning there is no excessive risk,  all we have to do is check if a region 97,5% percentile is smaller than 1
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+for(i in 1:nrow(ScotlandDF) ){
+  if(upperCI[i] < 1){
+    print(ScotlandDF$Name[i])
+  }
+}
 
 
 ```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
-
-
-
-```
+And as so here are the regions without any excessive lip cancer.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
