@@ -1,6 +1,8 @@
 ---
 title: "AdvancedStatsAssignment"
-format: pdf
+format:
+  pdf:
+    toc: true
 editor: visual
 ---
 
@@ -68,21 +70,22 @@ hist(ScotlandDF$SMR, breaks = 20, col = "lightblue",
 
 source("ScotlandMap.R") # need to read in the ScotlandMap function
 testdat = ScotlandDF$SMR # generate random numbers to use as observations
-ScotlandMap(testdat,figtitle="Scotland random numbers")
+ScotlandMap(testdat,figtitle="Scotland SMR by region")
 
 
 ```
 
 ### Question 1 b)
 
-For the model: \begin{align*}
-Obs_i \sim \text{Pois}(\mu_i) \
-\log(\mu_i) = \log(\text{Exp}_i) + \beta_0 + \theta_i \
-\text{RR}_i = \exp(\beta_0) \exp(\theta_i)
-\end{align*}= \log(\text{Exp}\_i) + \beta\_0 + \theta\_i\
-\text{RR}\_i = \exp(\beta\_0) \exp(\theta\_i) \\end{align\*}=
-\log(\text{Exp}\_i) + \beta\_0 + \theta\_i\
-\text{RR}\_i = \exp(\beta\_0) \exp(\theta\_i) \\end{align\*}
+##fix this latex TODO
+<!-- For the model: \begin{align*} -->
+<!-- Obs_i \sim \text{Pois}(\mu_i) \ -->
+<!-- \log(\mu_i) = \log(\text{Exp}_i) + \beta_0 + \theta_i \ -->
+<!-- \text{RR}_i = \exp(\beta_0) \exp(\theta_i) -->
+<!-- \end{align*}= \log(\text{Exp}\_i) + \beta\_0 + \theta\_i\ -->
+<!-- \text{RR}\_i = \exp(\beta\_0) \exp(\theta\_i) \\end{align\*}= -->
+<!-- \log(\text{Exp}\_i) + \beta\_0 + \theta\_i\ -->
+<!-- \text{RR}\_i = \exp(\beta\_0) \exp(\theta\_i) \\end{align\*} -->
 
 $\beta0$ is the intercept that represents the baseline for when all the
 other variables are 0 which can also be interpreted as the log number
@@ -133,7 +136,7 @@ jags.data.lipCancer <- list(N = nrow(ScotlandDF),
      obs = ScotlandDF$Observed,
      expo = ScotlandDF$Expected)
 
-## initial values
+## initial values, have to be for the stochaic for thetta it will be a repetition because of the i
 inits1 <- list('tau' = 100, 'sigma' = 20, 'theta'=c(10,-5,-25))
 inits2 <- list('tau'=100000,'sigma'=-100,'theta'=c(-100,100,500))
 
@@ -142,8 +145,8 @@ jags.inits.lipCancer = list(inits1,inits2)
 ## fit the jags model
 
 jags.mod.fit.lipCancer <- jags(data = jags.data.lipCancer, #inits = jags.inits.lipCancer,
-parameters.to.save = jags.param.lipCancer, n.chains = 2, n.iter = 10000,
-n.burnin = 5000,n.thin=1,model.file = jags.mod.lipCancer, DIC=FALSE)
+parameters.to.save = jags.param.lipCancer, n.chains = 2, n.iter = 15000,
+n.burnin = 7500,n.thin=1,model.file = jags.mod.lipCancer, DIC=FALSE)
 
 
 
@@ -163,7 +166,7 @@ gelman.diag(jagsfitlipCancer.mcmc)
 
 ```
 
-### question 1.c)
+### question 1.d)
 
 we know have to monitor RR as well 
 
@@ -195,9 +198,63 @@ ScotlandDF$SMR / ScotlandDF$RR
 
 ```
 
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+source("ScotlandMap.R") # need to read in the ScotlandMap function
+testdat = ScotlandDF$RR # generate random numbers to use as observations
+ScotlandMap(testdat,figtitle="Scotland SMR by region")
+
+
+```
+
+
 ### Question 1.e)
 
 Now I will have to check when RR is > 1 using similarly the summary Confidicence intervals
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+jags.mod.lipCancer = function(){
+  # Priors
+  beta0 ~ dnorm(0, 1/1000)
+  tau ~ dgamma(1, 0.05)
+  
+  # Likelihood
+  for (i in 1:N) {
+    obs[i] ~ dpois(mu[i])
+    log(mu[i]) = log(expo[i]) + beta0 + theta[i]
+    theta[i] ~ dnorm(0, tau)
+    RR[i] = exp(beta0) * exp(theta[i])
+  }
+  
+  PRRAbove = ifelse(RR>1,1,0)
+  
+} 
+
+# Parameters to monitor
+jags.param.lipCancer = c("beta0", "theta", "tau", "RR", "PRRAbove")
+
+# Data
+jags.data.lipCancer <- list(N = nrow(ScotlandDF),
+     obs = ScotlandDF$Observed,
+     expo = ScotlandDF$Expected)
+
+## initial values, have to be for the stochaic for thetta it will be a repetition because of the i
+inits1 <- list('tau' = 100, 'sigma' = 20, 'theta'=c(10,-5,-25))
+inits2 <- list('tau'=100000,'sigma'=-100,'theta'=c(-100,100,500))
+
+jags.inits.lipCancer = list(inits1,inits2)
+
+## fit the jags model
+
+jags.mod.fit.lipCancer <- jags(data = jags.data.lipCancer, #inits = jags.inits.lipCancer,
+parameters.to.save = jags.param.lipCancer, n.chains = 2, n.iter = 15000,
+n.burnin = 7500,n.thin=1,model.file = jags.mod.lipCancer, DIC=FALSE)
+
+
+
+```
+
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
@@ -225,15 +282,44 @@ Since we know that the 97,5 percentile is always bigger than the the 2,5 percent
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+ScotlandDF$AboveRR = upperCI
+ScotlandDF$isAboveRR = 0
+
 for(i in 1:nrow(ScotlandDF) ){
+
+  if(ScotlandDF$AboveRR[i] > 1){
+    ScotlandDF$isAboveRR[i] = 1
+  }
+  
+  
   if(upperCI[i] < 1){
     print(ScotlandDF$Name[i])
   }
 }
 
 
+
+
 ```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+source("ScotlandMap.R") # need to read in the ScotlandMap function
+testdat = ScotlandDF$isAboveRR # generate random numbers to use as observations
+ScotlandMap(testdat,figtitle="Scotland SMR by region")
+
+
+```
+
 And as so here are the regions without any excessive lip cancer.
+
+Map the scotland for the RR instead of SMR
+
+### Question 1f)
+
+#exponential? normal prior?
+# for beta0 normal?
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -342,6 +428,11 @@ logit.theta[i] ~ dnorm(mu, tau)
 mu ~ dnorm(0,0.001)
 tau <- 1/sigma^2
 sigma ~ dunif(0,100)
+
+## pi = P (rpred i > ri) + 1/2 * P (rpred i = ri)
+
+
+
 }
 
 # Parameters to monitor
@@ -508,6 +599,8 @@ most appropriate methods for this data.
 ```
 
 ### KNN - K-nearest neighbour
+
+## TODO make the elbow curve to see which K is the most appropriate
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
