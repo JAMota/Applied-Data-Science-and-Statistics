@@ -321,65 +321,28 @@ parameters.to.save = jags.param.infantDeath, n.chains = 2, n.iter = 10000,
 n.burnin = 5000,n.thin=1,model.file = jags.mod.infantDeath, DIC=FALSE)
 
 
-
-# Posterior summaries
-summary(samples)
-
-# Traceplots
-plot(samples)
 ```
+Now that we have the fitted the model we will observe the plots to check for possible convergence during the recorded 5000 iterations.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-jags.mod.infantDeath <- function(){
-for(i in 1:12){
-r[i] ~ dbin(theta[i],n[i])
-logit(theta[i]) <- logit.theta[i]
-logit.theta[i] ~ dnorm(mu, tau)
-}
-mu ~ dnorm(0,1.0E-3)
-tau <- 1/sigmaˆ2
-sigma ~ dunif(0,100)
-}
-
-# Parameters to monitor
-jags.param.infantDeath <- c("mu", "sigma", "theta")
-
-## initial values
-inits1 <- list('sigma' = 10, 'theta' = c(-5, -5, -5))
-inits2 <- list('sigma' = 50, 'theta' = c(5, 5, 5))
-
-jags.inits <- list(inits1, inits2)
-
-## fit the jags model
-jags.data.infantDeath <- list(r = surgicalDF$r, n = surgicalDF$n)
-
-jags.mod.fit.infantDeath <- jags(
-  data = jags.data.infantDeath,
-  inits = jags.inits,
-  parameters.to.save = jags.param.infantDeath,
-  n.chains = 2,
-  n.iter = 10000,
-  n.burnin = 5000,
-  n.thin = 1,
-  model = jags.mod,
-  DIC = FALSE
-)
-
-
-# Posterior summaries
-summary(samples)
-
-# Traceplots
-plot(samples)
+jagsfitinfantDeath.mcmc <- as.mcmc(jags.mod.fit.infantDeath )
+MCMCtrace(jagsfitinfantDeath.mcmc ,type = 'trace',ind = TRUE, pdf = FALSE)
 
 
 ```
+
+As we can see from the plots, there seems to be no visible patterns on the chains and all parameters have stable oscillation around a common value. We can also observe that the chains seem to be well mixed with each other as it is difficult to distinguish between chains.
+
+However visualization alone is not enough to fully access the convergence so we will use the Gelman-Rubin diagnostics to check for convergence.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+gelman.diag(jagsfitinfantDeath.mcmc)
 
 ```
+As we can see from the Upper Confidence Interval, the values of all parameters are approximately 1, indicating that the parameters have indeed converged.
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
