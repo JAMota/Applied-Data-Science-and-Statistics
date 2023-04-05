@@ -475,7 +475,7 @@ dim(test)
 The 3 method I will be using are QDA, KNN and SVM as deemed to be the
 most appropriate methods for this data.
 
-## QDA - quadratic discriminant analysis
+### QDA - quadratic discriminant analysis
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -483,7 +483,7 @@ most appropriate methods for this data.
 
 ```
 
-## KNN - K-nearest neighbour
+### KNN - K-nearest neighbour
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -518,7 +518,7 @@ print(p)
 
 ```
 
-## SVM - Support Vector Machines
+### SVM - Support Vector Machines
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
