@@ -329,6 +329,45 @@ gelman.diag(jagsfitinfantDeath.mcmc)
 As we can see from the Upper Confidence Interval, the values of all parameters are approximately 1, indicating that the parameters have indeed converged.
 
 
+### Question 2 b)
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+jags.mod.infantDeath <- function(){
+for(i in 1:12){
+r[i] ~ dbin(theta[i],n[i])
+logit(theta[i]) <- logit.theta[i]
+logit.theta[i] ~ dnorm(mu, tau)
+}
+mu ~ dnorm(0,0.001)
+tau <- 1/sigma^2
+sigma ~ dunif(0,100)
+}
+
+# Parameters to monitor
+jags.param.infantDeath <- c("mu", "sigma", "theta", "tau")
+
+## initial values
+inits1 <- list('tau' = 100, 'sigma' = 20, 'theta'=c(10,-5,-25))
+inits2 <- list('tau'=100000,'sigma'=-100,'theta'=c(-100,100,500))
+
+jags.inits = list(inits1,inits2)
+
+## data
+
+jags.data.infantDeath <- list(r = surgicalDF$r, n = surgicalDF$n)
+
+## fit the jags model
+
+jags.mod.fit.infantDeath <- jags(data = jags.data.infantDeath, #inits = jags.inits,
+parameters.to.save = jags.param.infantDeath, n.chains = 2, n.iter = 10000,
+n.burnin = 5000,n.thin=1,model.file = jags.mod.infantDeath, DIC=FALSE)
+
+
+```
+
+### Question 2 c)
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 
