@@ -20,6 +20,7 @@ library(kernlab)
 library(e1071)
 
 library(randomForest)
+library(mlbench)
 
 
 library(RColorBrewer)
@@ -487,7 +488,7 @@ n.burnin = 5000,n.thin=1,model.file = jags.mod.infantDeath, DIC=FALSE)
 ## Question B.1
 
 Group 0 is characterised for always having x1 \> -1,65 and x2 \< 2,05
-with the majority of the occurences of group 0 having
+with the majority of the occurrences of group 0 having
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -590,7 +591,7 @@ dim(test)
 
 ## Question B.4
 
-The 3 method I will be using are QDA, KNN and SVM as deemed to be the
+The 3 method I will be using are Random forest, KNN and SVM as deemed to be the
 most appropriate methods for this data.
 
 ### Random Forest
@@ -600,6 +601,7 @@ most appropriate methods for this data.
 
 # Train the model
 rf_model <- randomForest(Group ~ ., data=train)
+
 
 # Make predictions on the test data
 predictions <- predict(rf_model, test)
@@ -658,7 +660,7 @@ confusion
 
 ```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE}
 
 test$predicted_group = fit
 test$correct_prediction = test$predicted_group == test$Group
@@ -694,10 +696,9 @@ mdl$bestTune
 
 ```
 
-#TODO talk about how there is a balance on how the number of miss
-classified
+#TODO talk about how there is a balance on how the number of miss classified
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE, echo=FALSE}
 
 ## the SVM not working part
 
@@ -707,7 +708,6 @@ classified
 
 ```
 
-## quick debug que funciona CARALHOOOOOOOOOOOOOOOO
 
 ## TODO this is using radial but I should have one with polynimial as well to show that polinomial is better
 
@@ -734,3 +734,6 @@ confusionMatrix(as.factor(yTestPred), as.factor(y_test)) # predicted/true
 
 
 ## Question B.5
+
+
+The best method is ... because ...
