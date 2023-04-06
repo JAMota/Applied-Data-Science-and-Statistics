@@ -614,12 +614,40 @@ confusionMatrix(as.factor(predictions), as.factor(y_test))
 
 ### KNN - K-nearest neighbour
 
-## TODO make the elbow curve to see which K is the most appropriate
+First we make an graph displaying the accuracy for each k from 1 to 30 to see which K is the most appropriate by giving us the best accuracy.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# Define range of K values to test
+k_range <- 1:30
+
+# Empty list to store validation accuracy scores
+accuracy_scores <- c()
+
+# Train and evaluate KNN model for each value of K
+for (k in k_range) {
+  knn <- knn(X_train, X_test, y_train, k = k)
+  accuracy_scores <- c(accuracy_scores, sum(knn == y_test)/length(y_test))
+}
+
+# Plot the elbow curve
+df <- data.frame(k = k_range, accuracy = accuracy_scores)
+ggplot(df, aes(x = k, y = accuracy)) +
+  geom_line() +
+  geom_point() +
+  xlab("K") +
+  ylab("Validation Accuracy") +
+  ggtitle("Elbow Curve for KNN")
+
+```
+
+As we can see from the graph, k= 9 is the one that give us the most accuracy and most other values have not been as highly accurate.
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 # fit the model
-fit = knn(train=X_train, test=X_test, cl=y_train,k=3)
+fit = knn(train=X_train, test=X_test, cl=y_train,k=9)
 # fit = knn(xTrain,xTest,yTrain,k=3)
 
 # produce the confusion matrix
