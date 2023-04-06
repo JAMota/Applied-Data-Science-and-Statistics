@@ -19,6 +19,8 @@ library(caTools)
 library(kernlab)
 library(e1071)
 
+library(randomForest)
+
 
 library(RColorBrewer)
 library(sf)
@@ -275,6 +277,7 @@ posProbRR <- substr(rownames(jags.mod.fit.lipCancer$BUGSoutput$summary),1,2)=='R
 #jags.mod.fit.lipCancer$BUGSoutput$summary[posProbRR,1] ##mean
 lowerCI = jags.mod.fit.lipCancer$BUGSoutput$summary[posProbRR,3] # 2.5 percentile
 upperCI = jags.mod.fit.lipCancer$BUGSoutput$summary[posProbRR,7] # 97.5 percentile
+
 
 ```
 
@@ -590,10 +593,21 @@ dim(test)
 The 3 method I will be using are QDA, KNN and SVM as deemed to be the
 most appropriate methods for this data.
 
-### QDA - quadratic discriminant analysis
+### Random Forest
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+# Train the model
+rf_model <- randomForest(Group ~ ., data=train)
+
+# Make predictions on the test data
+predictions <- predict(rf_model, test)
+
+## Manually making the cut at 0,5 of predicition for the groups
+predictions  <- ifelse(predictions >= 0.5, 1, 0)
+
+confusionMatrix(as.factor(predictions), as.factor(y_test))
 
 
 ```
@@ -637,7 +651,7 @@ print(p)
 
 ### SVM - Support Vector Machines
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), warning=FALSE}
 
 ## checking the model performance with multiple difference C constants
 mdl = train(x=X_train,y=y_train, method = "svmLinear",
