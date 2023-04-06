@@ -597,10 +597,33 @@ most appropriate methods for this data.
 ### Random Forest
 
 
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, output=FALSE}
+
+trainNum = train
+trainNum$Group = as.factor(trainNum$Group)
+
+trainNum = trainNum %>% select(-(1))
+
+```
+
+For random Forest we will tune the number of variables randomly split for each of the random samples, as such we will try if only 1 split variable or both variables give a better accuracy
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# Random Search
+control <- trainControl(method="repeatedcv", number=10, repeats=3, search="random")
+rf_random <- train(Group~., data=trainNum, method="rf", metric="Accuracy", tuneLength=15, trControl=control)
+print(rf_random)
+plot(rf_random)
+
+```
+As we can see the accuracy is almost identical with a difference of less that 0,1% as such I will use mtry = 2 as it is more accurate.
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 # Train the model
-rf_model <- randomForest(Group ~ ., data=train)
+rf_model <- randomForest(Group ~ ., data=train, 
+                         tuneGrid=data.frame(mtry=2))
 
 
 # Make predictions on the test data
