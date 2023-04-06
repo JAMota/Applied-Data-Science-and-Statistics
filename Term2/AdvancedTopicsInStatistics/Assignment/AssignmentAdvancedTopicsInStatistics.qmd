@@ -8,6 +8,8 @@ editor: visual
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, output=FALSE}
 
+rm(list = ls())
+
 library(C50)
 library(caret) # function for creating train/test datasets, and confusion matrices
 library(class) # this has the knn function
@@ -150,7 +152,6 @@ jags.inits.lipCancer = list(inits1,inits2)
 jags.mod.fit.lipCancer <- jags(data = jags.data.lipCancer, #inits = jags.inits.lipCancer,
 parameters.to.save = jags.param.lipCancer, n.chains = 2, n.iter = 15000,
 n.burnin = 7500,n.thin=1,model.file = jags.mod.lipCancer, DIC=FALSE)
-
 
 
 ```
@@ -322,7 +323,7 @@ Map the scotland for the RR instead of SMR
 
 ### Question 1f)
 
-#exponential? normal prior?
+#exponential? normal/gamma prior?
 # for beta0 normal?
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
@@ -426,6 +427,7 @@ As we can see from the Upper Confidence Interval, the values of all parameters a
 jags.mod.infantDeath <- function(){
 for(i in 1:12){
 r[i] ~ dbin(theta[i],n[i])
+rpred[i] ~ dbin(theta[i],n[i])
 logit(theta[i]) <- logit.theta[i]
 logit.theta[i] ~ dnorm(mu, tau)
 }
@@ -704,30 +706,56 @@ print(p)
 
 ### SVM - Support Vector Machines
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), warning=FALSE}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE, echo=FALSE}
 
 ## checking the model performance with multiple difference C constants
-mdl = train(x=X_train,y=y_train, method = "svmLinear",
-trControl = trainControl("cv", number = 5),
-tuneGrid = expand.grid(C = seq(0, 2, length = 20)))
+# mdl = train(x=X_train,y=y_train, method = "svmRadial",
+# trControl = trainControl("cv", number = 5),
+# tuneGrid = expand.grid(C = seq(0, 3, length = 20)))
+
+# mdl <- train(x = X_train, y = y_train, method = "svmRadial",
+#              trControl = trainControl("cv", number = 5),
+#              tuneGrid = expand.grid(C = seq(0, 2, length = 10),
+#                                     sigma = seq(0.1, 1, length = 10)))
 # Plot model accuracy vs different values of Cost
 plot(mdl)
 # Print the best tuning parameter C that maximises model accuracy
-mdl$bestTune
+C = mdl$bestTune
 
-
+C
 
 ```
 
+
 #TODO talk about how there is a balance on how the number of miss classified
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE, echo=FALSE}
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 ## the SVM not working part
 
 # # Test model on testing data
 # yTestPred = predict(mdl, newdata=X_test)
 # confusionMatrix(yTestPred, y_test) # predicted/true
+
+
+
+fitControl = trainControl(## 10-fold CV
+                           method = "repeatedcv",
+                           number = 10,
+                           ## repeated ten times
+                           repeats = 10)
+
+param_grid <- expand.grid(C = seq(0.1, 10, length = 10),
+                          sigma = seq(0.1, 1, length = 10))
+
+
+svm_tuned = train(Group ~ .,
+                 data = trainNum,
+                 method = 'svmRadial',
+                 trControl = fitControl,
+                 tuneGrid = param_grid)
+
+svm_tuned
 
 ```
 
@@ -739,16 +767,15 @@ mdl$bestTune
 ## https://github.com/MatheusSchaly/Online-Courses/blob/master/Machine_Learning_A-Z_Hands-On_Python_%26_R_In_Data_Science/2_Classification/R/4_Kernel_SVM.R
 ## to add visualization
 
-mdl = train(x=X_train,y=y_train, method='svmRadial') 
-print(mdl)
 
-mdl = svm(Group ~ .,
+mdlSVM = svm(Group ~ .,
                  data = train,
                  type = 'C-classification',
-                 kernel = 'radial')
+                 kernel = 'radial',
+                 cost = C)
 
 # Test model on testing data
-yTestPred = predict(mdl, newdata=test)
+yTestPred = predict(mdlSVM, newdata=test)
 # yTestPred = mdl %>% predict(xTest) 
 confusionMatrix(as.factor(yTestPred), as.factor(y_test)) # predicted/true
 
