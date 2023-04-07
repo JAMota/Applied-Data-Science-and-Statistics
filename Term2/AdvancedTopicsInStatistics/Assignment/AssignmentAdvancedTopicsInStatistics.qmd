@@ -607,38 +607,61 @@ trainNum$Group = as.factor(trainNum$Group)
 
 trainNum = trainNum %>% select(-(1))
 
+testNum = test
+testNum$Group = as.factor(testNum$Group)
+
 ```
 
 For random Forest we will tune the number of variables randomly split for each of the random samples, as such we will try if only 1 split variable or both variables give a better accuracy
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-# Random Search
+# Random Search for best number of variables
 control <- trainControl(method="repeatedcv", number=10, repeats=3, search="random")
+
 rf_random <- train(Group~., data=trainNum, method="rf", metric="Accuracy", tuneLength=15, trControl=control)
 print(rf_random)
 plot(rf_random)
 
 ```
-As we can see the accuracy is almost identical with a difference of less that 0,1% as such I will use mtry = 2 as it is more accurate.
+As we can see the accuracy is almost identical with a difference of less that 0,1% and is actually variable depending on the randomly selected values during the training process as such I will try both mtry = 1  and mtry = 2.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 # Train the model
-rf_model <- randomForest(Group ~ ., data=train, 
-                         tuneGrid=data.frame(mtry=2))
+rf_model <- randomForest(Group ~ ., data=trainNum, 
+                         tuneGrid=data.frame(mtry=1))
 
 
 # Make predictions on the test data
-predictions <- predict(rf_model, test)
+predictions <- predict(rf_model, testNum)
 
 ## Manually making the cut at 0,5 of predicition for the groups
-predictions  <- ifelse(predictions >= 0.5, 1, 0)
+#predictions  <- ifelse(predictions >= 0.5, 1, 0)
 
 confusionMatrix(as.factor(predictions), as.factor(y_test))
 
 
 ```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# Train the model
+rf_model <- randomForest(Group~., data=trainNum, 
+                         tuneGrid=data.frame(mtry=2))
+
+
+# Make predictions on the test data
+predictions <- predict(rf_model, testNum)
+
+## Manually making the cut at 0,5 of predicition for the groups
+#predictions  <- ifelse(predictions >= 0.5, 1, 0)
+
+confusionMatrix(as.factor(predictions), as.factor(y_test))
+
+
+```
+
+As we can see from the summary tables both fine tuned values lead to approximatly the same result of 82% accuracy which is actually 
 
 ### KNN - K-nearest neighbour
 
@@ -707,7 +730,46 @@ print(p)
 
 ### SVM - Support Vector Machines
 
-Since we don't have a linear kernel due to the nature of the data we have a choice of using either a polynomial kernel or a radial kernel, however there is no simple test to diferenciate which kernel function has the best performance for this data, as such I will be fine tunning both kernel functions and then see which kernel function has the best performance.
+Since we don't have a linear kernel due to the nature of the data we have a choice of using either a polynomial kernel or a radial kernel, however there is no simple test to differentiate which kernel function has the best performance for this data, as such I would be fine tuning both kernel functions and then see which kernel function has the best performance.
+
+However since the polynomial fine tuning does not converge I will use the non tuned kernels to show that the radial kernel is better suited to the data.
+
+Startin with the polynomial kernel
+
+```{r, warning=FALSE}
+
+mdlSVMPoly = svm(Group ~ .,
+                 data = train,
+                 type = 'C-classification',
+                 kernel = 'polynomial',
+                 #cost = svmPolynoml_tuned$bestTune$C,
+                 #sigma = svmPolynoml_tuned$bestTune$sigma
+                 )
+
+# Test model on testing data
+yTestPredPoly = predict(mdlSVMPoly, newdata=test)
+# yTestPred = mdl %>% predict(xTest) 
+confusionMatrix(as.factor(yTestPredPoly), as.factor(y_test)) # predicted/true
+
+
+```
+As we can see this kernel function only has an average accuracy of 73% which is significanly lower than the other methods.
+
+```{r, warning=FALSE}
+
+mdlSVM = svm(Group ~ .,
+                 data = train,
+                 type = 'C-classification',
+                 kernel = 'radial')
+
+# Test model on testing data
+yTestPred = predict(mdlSVM, newdata=test)
+# yTestPred = mdl %>% predict(xTest) 
+confusionMatrix(as.factor(yTestPred), as.factor(y_test)) # predicted/true
+
+
+```
+As we can see, the Radial kernel function even when not fine tuned has a significantly better accuracy than the polynomial kernel by almost 10%, such gap would have not been narrowed by the fine tuning of the parameters alone and as such a Radial kernel function is the most appropriate for this data, as such we will be fine tuning the hyper parameters of the model.
 
 Firstly I will start by fine tuning the common constant C and the sigma parameter which is specific to the radial kernel SVM
 
@@ -733,9 +795,10 @@ svmRadial_tuned
 
 ```
 
-Next I will fine tuning the common constant C and the specific fine tuning parameters from the polynomial function, degree and scale.
+This is the non-converging polynomial SVM where I would fine tuning the common constant C and the specific fine tuning parameters from the polynomial function, degree and scale.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE}
+
 
 
 # Set up the tuning grid
@@ -763,14 +826,13 @@ svmPoly_tuned <- train(Group ~ .,
                        minstep = 1e-08)
 
 
-
 # Print the results
 svmPoly_tuned
 
 
 ```
 
-Now that we have the fine tuned parameters I will be using these to fit a model with each of the kernels and compare the accuracy between these 2 models, starting with the radial kernel one.
+Now that we have the fine tuned parameters I will be using these to fit a model for the Radial kernel.
 
 ```{r, warning=FALSE}
 
@@ -789,30 +851,11 @@ confusionMatrix(as.factor(yTestPred), as.factor(y_test)) # predicted/true
 
 ```
 
-And now the polynomial SVM
-
-```{r, warning=FALSE}
-
-mdlSVMPoly = svm(Group ~ .,
-                 data = train,
-                 type = 'C-classification',
-                 kernel = 'polynomial',
-                 #cost = svmPolynoml_tuned$bestTune$C,
-                 #sigma = svmPolynoml_tuned$bestTune$sigma
-                 )
-
-# Test model on testing data
-yTestPredPoly = predict(mdlSVMPoly, newdata=test)
-# yTestPred = mdl %>% predict(xTest) 
-confusionMatrix(as.factor(yTestPredPoly), as.factor(y_test)) # predicted/true
-
-
-```
+As we can see from the fine tuned model summary, the usage of C and sigma managed to improve the model by approximately 0,5% making this model slightly better than the prevviously untuned model.
 
 
 ## Question B.5
 
 In our data we have 475 observations belonging to the group 0 and the remaining 525 belonging to group 1, since there is only a small difference in number of observations between both groups, accuracy will be a sensible metric to compare all 3 different methods.
 
-The model selection 
-The best method is ... because ...
+From the 3 final fine tuned models we can see that the Radial kernel SVM has an accuracy of 83%, the KNN with k=9 has an accuracy of 85% and the random forest has an accuracy of 86,5%
