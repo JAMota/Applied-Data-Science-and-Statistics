@@ -380,8 +380,8 @@ Here I will supply the values of the mean and sd from both beta0 and tau manuall
 jags.mod.lipCancerNew = function(beta0PosteriorMean){
   
   ##calcs for prior gamma
-  ## α = (x_bar^2 / s^2)
-  ## β = (s^2 / x_bar)
+  ## alpha = (x_bar^2 / s^2)
+  ## beta = (s^2 / x_bar)
   shape <- (1.811285/0.45581)^2
   rate <- ((0.45581)^2) /1.811285
   
