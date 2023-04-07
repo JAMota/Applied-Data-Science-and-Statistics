@@ -624,6 +624,13 @@ mid_p_summary <- jags.mod.fit.infantDeath$BUGSoutput$summary[grep("p\\[\\d+\\]",
 
 mid_p_summary_means <- subset(mid_p_summary, select = "mean")
 
+mid_p_summary
+
+```
+As we can see from the average mid p-value, the probability that the predicted mortality is higher than the registered mortality, it seems that hospital 3, 4 and 11 have mean values significantly lower than 0,5 meaning they have unusually higher mortality rate compared to the predicted mortality rate
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
 # Plot kernel density of mid p-values
 plot(density(mid_p_summary_means), main = "Kernel Density Plot of Mid P-values", xlab = "Mid P-value")
 
