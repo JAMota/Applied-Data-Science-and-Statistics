@@ -583,19 +583,22 @@ rpred[i] ~ dbin(theta[i],n[i])
 
 logit(theta[i]) <- logit.theta[i]
 logit.theta[i] ~ dnorm(mu, tau)
+
+#mid p-value
+p[i] =ifelse(rpred[i] > r[i], 1, ifelse(rpred[i] == r[i], 0.5, 0))
+ 
+ 
+
 }
 mu ~ dnorm(0,0.001)
 tau <- 1/sigma^2
 sigma ~ dunif(0,100)
 
-## pi = P (rpred i > ri) + 1/2 * P (rpred i = ri)
-
-
 
 }
 
 # Parameters to monitor
-jags.param.infantDeath <- c("mu", "sigma", "theta", "tau")
+jags.param.infantDeath <- c("mu", "sigma", "theta", "tau", "p")
 
 ## initial values
 inits1 <- list('tau' = 100, 'sigma' = 20, 'theta'=c(10,-5,-25))
@@ -627,6 +630,9 @@ for(i in 1:12){
 
     theta[i] ~ dunif(0, 1) ## new theta definition
     r[i] ~ dbin(theta[i],n[i])
+    rpred[i] ~ dbin(theta[i],n[i])
+    
+    p[i] =ifelse(rpred[i] > r[i], 1, ifelse(rpred[i] == r[i], 0.5, 0))
 }
   
 mu ~ dnorm(0,0.001)
@@ -635,7 +641,7 @@ sigma ~ dunif(0,100)
 }
 
 # Parameters to monitor
-jags.param.infantDeathUniform <- c("mu", "sigma", "theta", "tau")
+jags.param.infantDeathUniform <- c("mu", "sigma", "theta", "tau", "p")
 
 ## initial values
 inits1 <- list('mu' = 1, 'sigma' = 1, 'theta'=rep(1,12))
@@ -675,11 +681,12 @@ boxplot(theta.samplesUniform, xlab = "Hospitals", ylab = "Mortality Rate", main 
 ```
 From the 2 box plots it seems that the changes are mainly in increasing the overall mortality rate theta in the last model as the trends remain identical but all values seem to have a sightly constant increase in value. This means that our new independent fixed effect model has a very similar effect captured compared to the previous mortality rate effect.
 
+### Question 2 d)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 
-
+jags.mod.fit.infantDeath
 
 ```
 
