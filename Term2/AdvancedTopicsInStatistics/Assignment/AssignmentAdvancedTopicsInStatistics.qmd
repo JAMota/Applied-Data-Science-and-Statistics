@@ -478,8 +478,7 @@ densityplot(jags.mod.fit.mcmc[, "beta0"])
 densityplot(jags.mod.fit.mcmcNew[, "beta0"])
 
 ```
-Plotting $\beta0$ density plot to better identify any patterns changes in the summaries we can see that in the updated model the bell curve is not as flat as it reaches a maximum density of close to 5
-
+Plotting $\beta0$ density plots to better identify any patterns changes in the summaries we can see that in the updated model the bell curve is not as flat as it reaches a maximum density of close to 5 while the previous model didn't reach density 4 at its peak of the bell curve, however that means that the new bell curve is narrower. 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -488,6 +487,7 @@ densityplot(jags.mod.fit.mcmc[, "tau"])
 densityplot(jags.mod.fit.mcmcNew[, "tau"])
 
 ```
+Again plotting $\tau$ density plots to better identify any patterns changes in the summaries we can see that the opposite has occurred from $\beta0$ as the curve is more stretched and more skewed to the right than the previous model.
 
 
 ## Question 2 a)
