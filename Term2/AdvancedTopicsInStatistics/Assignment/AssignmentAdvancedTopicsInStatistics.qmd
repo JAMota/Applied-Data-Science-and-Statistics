@@ -624,7 +624,7 @@ print(rf_random)
 plot(rf_random)
 
 ```
-As we can see the accuracy is almost identical with a difference of less that 0,1% and is actually variable depending on the randomly selected values during the training process as such I will try both mtry = 1  and mtry = 2.
+As we can see the accuracy is almost identical with a difference of less that 0,1% and is actually variable depending on the randomly selected values during the training process due to the nature of the random search as such I will try both mtry = 1  and mtry = 2.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -632,12 +632,8 @@ As we can see the accuracy is almost identical with a difference of less that 0,
 rf_model <- randomForest(Group ~ ., data=trainNum, 
                          tuneGrid=data.frame(mtry=1))
 
-
 # Make predictions on the test data
 predictions <- predict(rf_model, testNum)
-
-## Manually making the cut at 0,5 of predicition for the groups
-#predictions  <- ifelse(predictions >= 0.5, 1, 0)
 
 confusionMatrix(as.factor(predictions), as.factor(y_test))
 
@@ -661,7 +657,7 @@ confusionMatrix(as.factor(predictions), as.factor(y_test))
 
 ```
 
-As we can see from the summary tables both fine tuned values lead to approximatly the same result of 82% accuracy which is actually 
+As we can see from the summary tables both fine tuned values lead to approximately the same result of 82% accuracy which is actually lower than the random search was predicting.
 
 ### KNN - K-nearest neighbour
 
@@ -858,4 +854,11 @@ As we can see from the fine tuned model summary, the usage of C and sigma manage
 
 In our data we have 475 observations belonging to the group 0 and the remaining 525 belonging to group 1, since there is only a small difference in number of observations between both groups, accuracy will be a sensible metric to compare all 3 different methods.
 
-From the 3 final fine tuned models we can see that the Radial kernel SVM has an accuracy of 83%, the KNN with k=9 has an accuracy of 85% and the random forest has an accuracy of 86,5%
+From the 3 final fine tuned models we can see that the Radial kernel SVM has an accuracy of 83%, the KNN with k=9 has an accuracy of 85% and the random forest has an accuracy of 82%, as such with overall accuracy in mind we can determine that KNN with 9 clusters is the better predictive model.
+
+This also holds true if we were to compare the specificity of the 3 models as KNN has the highest value of 83,81% compared to the 80,00% from random forest and 78,10% from SVM.
+
+However for sensitivity the SVM has 88,42% which beats both the SVM 86,32% and the random forest 84,32%.
+
+To conclude unless there was a specific need to focus on the specificity of the model which is not given for this dataset the best method for classification is the K-nearest neighbour classification.
+
