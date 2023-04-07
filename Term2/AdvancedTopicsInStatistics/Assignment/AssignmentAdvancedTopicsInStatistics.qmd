@@ -3,6 +3,7 @@ title: "AdvancedStatsAssignment"
 format:
   pdf:
     toc: true
+    toc-depth: 4
 editor: visual
 ---
 
@@ -488,7 +489,7 @@ n.burnin = 5000,n.thin=1,model.file = jags.mod.infantDeath, DIC=FALSE)
 
 ## Question B - classification
 
-## Question B.1
+### Question B.1
 
 Group 0 is characterised for always having x1 \> -1,65 and x2 \< 2,05
 with the majority of the occurrences of group 0 having
@@ -527,10 +528,10 @@ equal to 0,5 and sightly skewed to the left. The variable X1 also seems
 to follow a normal distribution that has a very prolonged skewness to
 the left and mean 0,5.0
 
-## Question B.2
+### Question B.2
 
-Both LDA and QDA assume normality which is true from what we can see
-from the histograms on 2.1
+Both LDA and QDA assume normality which seems to hold from what we can see
+from the histograms on question B.1
 
 Starting with Linear discriminant analysis (LDA) we can easily see from
 the initial graph that we can see that the any sensible decision
@@ -543,10 +544,9 @@ suitable for this data.
 Secondly, quadratic discriminant analysis (QDA) follow the assumption of
 normality of each of the variables which does seem to hold even with how
 highly non-linear the data is. However judging from the plot with the
-observations, it does seem that QDA might not have enough flexibility to
+observations, it does seem that QDA does not have enough flexibility to
 account for all the variability in what is the theoretical Bayes
-decision boundary. As such QDA could be appropriate for this data but
-not the best performing classification method for such data.
+decision boundary due to the highly non-linear nature of the data. As such we can conclude that QDA is not suitable for this data.
 
 Thirdly, K-nearest neighbour classification (KNN) has no assumptions
 made about the shape of the decision, as such as we choose a adequate
@@ -560,12 +560,9 @@ kernel function to ensure that the boundary becomes non-linear when
 converted back to the regular space. As such I deem SVM an appropriate
 method to classify the data.
 
-Finally, Random forest works by constructing multiple decision trees
-randomly selecting a portion of the variables and de-correlate them
-using multiple bootstrapped sets. Since our data has only 2 variables
-there isn't enough variables to overcome overfitting. To conclude,
-Random Forest classification is not very appropriate to this type of
-data.
+Finally, Random forest also do not make any assumptions about the underlying distribution present on the data set. A random forest would also have the added bonus of letting us understand which of the variables X1 or X2 has the biggest impact on the classification of data points which could be useful for future applications of this model. As such I deem Random forest an appropriate
+method to classify the data.
+
 
 ## Question B.3
 
@@ -592,12 +589,12 @@ dim(test)
 
 ```
 
-## Question B.4
+### Question B.4
 
 The 3 method I will be using are Random forest, KNN and SVM as deemed to be the
 most appropriate methods for this data.
 
-### Random Forest
+#### Random Forest
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, output=FALSE}
@@ -659,7 +656,7 @@ confusionMatrix(as.factor(predictions), as.factor(y_test))
 
 As we can see from the summary tables both fine tuned values lead to approximately the same result of 82% accuracy which is actually lower than the random search was predicting.
 
-### KNN - K-nearest neighbour
+#### KNN - K-nearest neighbour
 
 First we make an graph displaying the accuracy for each k from 1 to 30 to see which K is the most appropriate by giving us the best accuracy.
 
@@ -724,7 +721,7 @@ print(p)
 
 ```
 
-### SVM - Support Vector Machines
+#### SVM - Support Vector Machines
 
 Since we don't have a linear kernel due to the nature of the data we have a choice of using either a polynomial kernel or a radial kernel, however there is no simple test to differentiate which kernel function has the best performance for this data, as such I would be fine tuning both kernel functions and then see which kernel function has the best performance.
 
@@ -850,7 +847,7 @@ confusionMatrix(as.factor(yTestPred), as.factor(y_test)) # predicted/true
 As we can see from the fine tuned model summary, the usage of C and sigma managed to improve the model by approximately 0,5% making this model slightly better than the prevviously untuned model.
 
 
-## Question B.5
+### Question B.5
 
 In our data we have 475 observations belonging to the group 0 and the remaining 525 belonging to group 1, since there is only a small difference in number of observations between both groups, accuracy will be a sensible metric to compare all 3 different methods.
 
