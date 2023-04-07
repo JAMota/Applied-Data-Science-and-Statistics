@@ -67,9 +67,8 @@ ScotlandDF$SMR = ScotlandDF$Observed /ScotlandDF$Expected
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), warning=FALSE}
 
-hist(ScotlandDF$SMR, breaks = 20, col = "lightblue",
-     main = "Distribution of Standard Mortality Ratios",
-     xlab = "SMR")
+plot(density(ScotlandDF$SMR), main = "Distribution of Standard Mortality Ratios", 
+     xlab = "SMR", ylab = "Density", col = "red")
 
 ```
 
@@ -84,7 +83,7 @@ ScotlandMap(testdat,figtitle="Scotland SMR by region")
 
 ### Question 1 b)
 
-##fix this latex TODO
+<!-- ##fix this latex TODO -->
 <!-- For the model: \begin{align*} -->
 <!-- Obs_i \sim \text{Pois}(\mu_i) \ -->
 <!-- \log(\mu_i) = \log(\text{Exp}_i) + \beta_0 + \theta_i \ -->
@@ -196,19 +195,22 @@ ScotlandDF$RR = RRRegions
 
 Checking the difference between the average RR and the SMR for each region 
 
-should I do RR/SMR and see how close it is to 1?
+I firstly do RR/SMR and see how close it is to 1
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 ScotlandDF$SMR / ScotlandDF$RR
 
 ```
+And now I plot it on the map to see how close the posterior is to SMR likelihood
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+comparison = ScotlandDF$SMR / ScotlandDF$RR
+
 source("ScotlandMap.R") # need to read in the ScotlandMap function
-testdat = ScotlandDF$RR # generate random numbers to use as observations
-ScotlandMap(testdat,figtitle="Scotland SMR by region")
+testdat = comparison # generate random numbers to use as observations
+ScotlandMap(testdat,figtitle="Scotland SMR by RR comparison by region")
 
 
 ```
@@ -265,14 +267,6 @@ n.burnin = 7500,n.thin=1,model.file = jags.mod.lipCancer, DIC=FALSE)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-
-# ##extract posterior RR
-# posProbRR <- substr(rownames(jags.mod.fit.lipCancer$BUGSoutput$summary),1,6)=='ProbRR'
-# 
-# jags.mod.fit.lipCancer$BUGSoutput$summary[posProbRR,1] ##mean
-# jags.mod.fit.lipCancer$BUGSoutput$summary[posProbRR,3] # 2.5 percentile
-# jags.mod.fit.lipCancer$BUGSoutput$summary[posProbRR,7] # 97.5 percentile
-
 ## to see which regions RR are in the 95% C.I we will have to see if the 2.5% is small or equal to 1 and if 97.5% is equal or greater than 1
 
 ##extract posterior RR
@@ -286,6 +280,7 @@ upperCI = jags.mod.fit.lipCancer$BUGSoutput$summary[posProbRR,7] # 97.5 percenti
 ```
 
 Since we know that the 97,5 percentile is always bigger than the the 2,5 percentile to check if the 95% CI of RR is lower than 1, meaning there is no excessive risk,  all we have to do is check if a region 97,5% percentile is smaller than 1
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -305,23 +300,26 @@ for(i in 1:nrow(ScotlandDF) ){
 }
 
 
-
-
 ```
+Here is the list of the regions where we are 95% certain that RR is bellow 1
 
+So now to map the regions with and without excess risk of lip cancer
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 source("ScotlandMap.R") # need to read in the ScotlandMap function
 testdat = ScotlandDF$isAboveRR # generate random numbers to use as observations
-ScotlandMap(testdat,figtitle="Scotland SMR by region")
+ScotlandMap(testdat,figtitle="Scotland regions with excess lip cancer")
 
+source("ScotlandMap.R") # need to read in the ScotlandMap function
+testdat = as.integer(!ScotlandDF$isAboveRR) # generate random numbers to use as observations
+ScotlandMap(testdat,figtitle="Scotland regions without excess of lip cancer")
 
 ```
 
-And as so here are the regions without any excessive lip cancer.
+Here I have decided to map separetly without and without the risk of lip cancer due to the default colour scheme of the above risk cancer regions making it very hard to see which regions have risk bellow 1.
 
-Map the scotland for the RR instead of SMR
+
 
 ### Question 1f)
 
