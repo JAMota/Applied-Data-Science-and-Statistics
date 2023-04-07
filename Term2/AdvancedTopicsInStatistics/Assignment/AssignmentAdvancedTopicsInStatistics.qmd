@@ -339,10 +339,12 @@ Here I have decided to map separetly without and without the risk of lip cancer 
 
 ### Question 1f)
 
-#exponential? normal/gamma prior?
-# for beta0 normal?
+For the new priors I have chosen to utilize the previous posterior values for $\beta0$ and $\tau$ as they represent our newly updated beliefs about the values derived from the data after the first model.
 
-We will first start by gathering the previous posteriors to use as the new model priors since these values should be better informed about the data than the previous values.
+Here, we have used the posterior distributions from the previous model of the same data to update our prior beliefs about the parameters $\beta0$ and $\tau$ and as such this new model has information about our previous analysis. 
+The mean of the posterior distributions is an approximated value of the most likely values for $\beta0$ and $\tau$ from the observed data.
+
+We will first start by gathering the previous posteriors to use as the new model priors.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -430,8 +432,8 @@ n.burnin = 7500,n.thin=1,model.file = jags.mod.lipCancerNew, DIC=FALSE)
 ```
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-jagsfitlipCancer.mcmc <- as.mcmc(jags.mod.fit.lipCancer )
-MCMCtrace(jagsfitlipCancer.mcmc ,type = 'trace',ind = TRUE, pdf = FALSE)
+jagsfitlipCancerNew.mcmc <- as.mcmc(jags.mod.fit.lipCancerNew )
+MCMCtrace(jagsfitlipCancerNew.mcmc ,type = 'trace',ind = TRUE, pdf = FALSE)
 
 ```
 
@@ -440,7 +442,53 @@ MCMCtrace(jagsfitlipCancer.mcmc ,type = 'trace',ind = TRUE, pdf = FALSE)
 
 gelman.diag(jagsfitlipCancer.mcmc)
 
+
 ```
+As we can see everything still converges so we will now extract the new RR posterior values and map the two posterior RRs we have
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+##extract posterior RR
+posRRNew <- substr(rownames(jags.mod.fit.lipCancerNew$BUGSoutput$summary),1,2)=='RR'
+
+RRRegionsNew = jags.mod.fit.lipCancerNew$BUGSoutput$summary[posRRNew,1]
+
+ScotlandDF$RRNew = RRRegionsNew
+
+source("ScotlandMap.R") # need to read in the ScotlandMap function
+testdat = ScotlandDF$RR # generate random numbers to use as observations
+ScotlandMap(testdat,figtitle="Scotland SMR by region")
+
+source("ScotlandMap.R") # need to read in the ScotlandMap function
+testdat = ScotlandDF$RRNew # generate random numbers to use as observations
+ScotlandMap(testdat,figtitle="Scotland SMR by region")
+
+```
+
+As we can see from both maps there seems to be higher risk in some of the regions within the latitudes of 57 and 58 degrees from the new updated posteriors.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+jags.mod.fit.mcmc <- as.mcmc(jags.mod.fit.lipCancer)
+jags.mod.fit.mcmcNew <- as.mcmc(jags.mod.fit.lipCancerNew)
+
+
+densityplot(jags.mod.fit.mcmc[, "beta0"])
+densityplot(jags.mod.fit.mcmcNew[, "beta0"])
+
+```
+Plotting $\beta0$ density plot to better identify any patterns changes in the summaries we can see that in the updated model the bell curve is not as flat as it reaches a maximum density of close to 5
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+densityplot(jags.mod.fit.mcmc[, "tau"])
+densityplot(jags.mod.fit.mcmcNew[, "tau"])
+
+```
+
 
 ## Question 2 a)
 
