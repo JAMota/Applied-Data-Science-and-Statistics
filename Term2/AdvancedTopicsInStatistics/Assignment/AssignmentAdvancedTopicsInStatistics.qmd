@@ -534,7 +534,7 @@ jags.param.infantDeath <- c("mu", "sigma", "theta", "tau")
 
 ## initial values
 inits1 <- list('mu' = 1, 'sigma' = 1, 'theta'=rep(1,12))
-inits2 <- list('mu'=,'sigma'=,'theta'= )
+inits2 <- list('mu'= 0,'sigma'=50,'theta'= rep(20,12))
 
 jags.inits = list(inits1,inits2)
 
@@ -580,6 +580,7 @@ jags.mod.infantDeath <- function(){
 for(i in 1:12){
 r[i] ~ dbin(theta[i],n[i])
 rpred[i] ~ dbin(theta[i],n[i])
+
 logit(theta[i]) <- logit.theta[i]
 logit.theta[i] ~ dnorm(mu, tau)
 }
@@ -620,15 +621,60 @@ n.burnin = 5000,n.thin=1,model.file = jags.mod.infantDeath, DIC=FALSE)
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 
+jags.mod.infantDeathUniform <- function(){
+  
+for(i in 1:12){
+
+    theta[i] ~ dunif(0, 1) ## new theta definition
+    r[i] ~ dbin(theta[i],n[i])
+}
+  
+mu ~ dnorm(0,0.001)
+tau <- 1/sigma^2
+sigma ~ dunif(0,100)
+}
+
+# Parameters to monitor
+jags.param.infantDeathUniform <- c("mu", "sigma", "theta", "tau")
+
+## initial values
+inits1 <- list('mu' = 1, 'sigma' = 1, 'theta'=rep(1,12))
+inits2 <- list('mu'= 0,'sigma'=50,'theta'= rep(20,12))
+
+jags.inits = list(inits1,inits2)
+
+## data
+
+jags.data.infantDeathUniform <- list(r = surgicalDF$r, n = surgicalDF$n)
+
+## fit the jags model
+
+jags.mod.fit.infantDeathUniform <- jags(data = jags.data.infantDeathUniform, #inits = jags.inits,
+parameters.to.save = jags.param.infantDeathUniform, n.chains = 2, n.iter = 10000,
+n.burnin = 5000,n.thin=1,model.file = jags.mod.infantDeathUniform, DIC=FALSE)
+
 
 
 ```
+
+After having checked for convergence we will now use box plots to compare the theta mortality rates from the first and the last model.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
+# Extract posterior samples of theta
+theta.samples <- jags.mod.fit.infantDeath$BUGSoutput$sims.list$theta
+theta.samplesUniform <- jags.mod.fit.infantDeathUniform$BUGSoutput$sims.list$theta
+
+# Create boxplot
+boxplot(theta.samples, xlab = "Hospitals", ylab = "Mortality Rate", main = "Posterior Distribution of Theta for the 1st model")
+
+# Create boxplot
+boxplot(theta.samplesUniform, xlab = "Hospitals", ylab = "Mortality Rate", main = "Posterior Distribution of Theta For uniform dist model")
 
 
 ```
+From the 2 box plots it seems that the changes are mainly in increasing the overall mortality rate theta in the last model as the trends remain identical but all values seem to have a sightly constant increase in value. This means that our new independent fixed effect model has a very similar effect captured compared to the previous mortality rate effect.
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -714,7 +760,7 @@ Finally, Random forest also do not make any assumptions about the underlying dis
 method to classify the data.
 
 
-## Question B.3
+### Question B.3
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
