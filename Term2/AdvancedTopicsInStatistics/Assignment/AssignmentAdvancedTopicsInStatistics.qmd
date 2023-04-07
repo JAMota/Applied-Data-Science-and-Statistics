@@ -342,15 +342,103 @@ Here I have decided to map separetly without and without the risk of lip cancer 
 #exponential? normal/gamma prior?
 # for beta0 normal?
 
+We will first start by gathering the previous posteriors to use as the new model priors since these values should be better informed about the data than the previous values.
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+  # Extracting the posterior mean for each variable
+  beta0PosteriorMean <- mean(as.numeric(jags.mod.fit.lipCancer$BUGSoutput$sims.list$beta0))
+  tauPosteriorMean <- mean(as.numeric(jags.mod.fit.lipCancer$BUGSoutput$sims.list$tau))
+
+  beta0PosteriorSD = sd(as.numeric(jags.mod.fit.lipCancer$BUGSoutput$sims.list$beta0))
+  tauPosteriorSD = sd(as.numeric(jags.mod.fit.lipCancer$BUGSoutput$sims.list$tau))
+  
+  
+  beta0PosteriorMean
+  beta0PosteriorSD
+  
+  tauPosteriorMean
+  tauPosteriorSD
+
+```
+  <!-- #beta0.samples = as.numeric(jags.mod.fit.lipCancer$BUGSoutput$sims.list$beta0) -->
+  <!-- #tau.samples = as.numeric(jags.mod.fit.lipCancer$BUGSoutput$sims.list$tau) -->
+  <!-- beta0PosteriorMean <- mean(beta0.samples) -->
+  <!-- beta0PosteriorSD <- sd(beta0.samples) -->
+  <!-- tauPosteriorAlpha <- (mean(tau.samples)^2) / var(tau.samples) -->
+  <!-- tauPosteriorBeta <- mean(tau.samples) / var(tau.samples) -->
+  <!--   tau ~ dgamma(tauPosteriorAlpha, tauPosteriorBeta) -->
+  <!-- beta0 ~ dnorm(beta0PosteriorMean, beta0PosteriorSD) -->
+  
+Here I will supply the values of the mean and sd from both beta0 and tau manually since JAGS model function does not have a global scope to see all variables in the system
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+jags.mod.lipCancerNew = function(beta0PosteriorMean){
+  
+  ##calcs for prior gamma
+  ## α = (x_bar^2 / s^2)
+  ## β = (s^2 / x_bar)
+  shape <- (1.811285/0.45581)^2
+  rate <- ((0.45581)^2) /1.811285
+  
+  # Priors
+  beta0 ~ dnorm(0.08064184, 0.1167079)
+
+  tau ~ dgamma(shape, rate)
+
+  
+  # Likelihood
+  for (i in 1:N) {
+    obs[i] ~ dpois(mu[i])
+    log(mu[i]) = log(expo[i]) + beta0 + theta[i]
+    theta[i] ~ dnorm(0, tau)
+    RR[i] = exp(beta0) * exp(theta[i])
+  }
+} 
+
+
+# Parameters to monitor
+jags.param.lipCancerNew = c("beta0", "theta", "tau", "RR")
+
+# Data
+jags.data.lipCancerNew <- list(N = nrow(ScotlandDF),
+     obs = ScotlandDF$Observed,
+     expo = ScotlandDF$Expected)
+
+## initial values, have to be for the stochaic for thetta it will be a repetition because of the i
+inits1 <- list('tau' = 1, 'beta0' = 1, 'theta'= rep(1,56))
+inits2 <- list('tau'=17.20806,'beta0'=-0.5604756,'theta'=rep(19.38524,56))
+
+## these initial values for inits2 came from these functions random generation set.seed(123)
+#y <- rgamma(n = 1, shape = 1, rate = 0.05)
+#value <- rnorm(1, mean = 0, sd = sqrt(1000))
+#tau_init <- 1/rgamma(n = 1, shape = 2, rate = 0.1)
+
+
+jags.inits.lipCancerNew = list(inits1,inits2)
+
+## fit the jags model
+
+jags.mod.fit.lipCancerNew <- jags(data = jags.data.lipCancerNew, inits = jags.inits.lipCancerNew,
+parameters.to.save = jags.param.lipCancerNew, n.chains = 2, n.iter = 15000,
+n.burnin = 7500,n.thin=1,model.file = jags.mod.lipCancerNew, DIC=FALSE)
 
 
 
 ```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+jagsfitlipCancer.mcmc <- as.mcmc(jags.mod.fit.lipCancer )
+MCMCtrace(jagsfitlipCancer.mcmc ,type = 'trace',ind = TRUE, pdf = FALSE)
+
+```
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
-
+gelman.diag(jagsfitlipCancer.mcmc)
 
 ```
 
@@ -397,8 +485,8 @@ sigma ~ dunif(0,100)
 jags.param.infantDeath <- c("mu", "sigma", "theta", "tau")
 
 ## initial values
-inits1 <- list('tau' = 100, 'sigma' = 20, 'theta'=c(10,-5,-25))
-inits2 <- list('tau'=100000,'sigma'=-100,'theta'=c(-100,100,500))
+inits1 <- list('mu' = 1, 'sigma' = 1, 'theta'=rep(1,12))
+inits2 <- list('mu'=,'sigma'=,'theta'= )
 
 jags.inits = list(inits1,inits2)
 
