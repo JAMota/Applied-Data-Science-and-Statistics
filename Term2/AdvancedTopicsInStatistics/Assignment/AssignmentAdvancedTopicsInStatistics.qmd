@@ -134,6 +134,7 @@ jags.mod.lipCancer = function(){
   }
 } 
 
+
 # Parameters to monitor
 jags.param.lipCancer = c("beta0", "theta", "tau", "RR")
 
@@ -143,16 +144,23 @@ jags.data.lipCancer <- list(N = nrow(ScotlandDF),
      expo = ScotlandDF$Expected)
 
 ## initial values, have to be for the stochaic for thetta it will be a repetition because of the i
-inits1 <- list('tau' = 100, 'sigma' = 20, 'theta'=c(10,-5,-25))
-inits2 <- list('tau'=100000,'sigma'=-100,'theta'=c(-100,100,500))
+inits1 <- list('tau' = 1, 'beta0' = 1, 'theta'= rep(1,56))
+inits2 <- list('tau'=17.20806,'beta0'=-0.5604756,'theta'=rep(19.38524,56))
+
+## these initial values for inits2 came from these functions random generation set.seed(123)
+#y <- rgamma(n = 1, shape = 1, rate = 0.05)
+#value <- rnorm(1, mean = 0, sd = sqrt(1000))
+#tau_init <- 1/rgamma(n = 1, shape = 2, rate = 0.1)
+
 
 jags.inits.lipCancer = list(inits1,inits2)
 
 ## fit the jags model
 
-jags.mod.fit.lipCancer <- jags(data = jags.data.lipCancer, #inits = jags.inits.lipCancer,
+jags.mod.fit.lipCancer <- jags(data = jags.data.lipCancer, inits = jags.inits.lipCancer,
 parameters.to.save = jags.param.lipCancer, n.chains = 2, n.iter = 15000,
 n.burnin = 7500,n.thin=1,model.file = jags.mod.lipCancer, DIC=FALSE)
+
 
 
 ```
