@@ -704,9 +704,25 @@ From the 2 box plots it seems that the changes are mainly in increasing the over
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 
-jags.mod.fit.infantDeath
+mid_p_summaryUniform <- jags.mod.fit.infantDeathUniform$BUGSoutput$summary[grep("p\\[\\d+\\]", rownames(jags.mod.fit.infantDeathUniform$BUGSoutput$summary)), ]
+
+mid_p_summary_meansUniform <- subset(mid_p_summaryUniform, select = "mean")
+
+mid_p_summaryUniform
 
 ```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+# Plot kernel density of mid p-values
+plot(density(mid_p_summary_means), main = "Kernel Density Plot of Mid P-values previous model", xlab = "Mid P-value")
+
+# Plot kernel density of mid p-values
+plot(density(mid_p_summary_meansUniform), main = "Kernel Density Plot of Mid P-values Uniform dist", xlab = "Mid P-value")
+
+```
+As we can see from the graph, it seems that the previous model mid p-values have an higher mean and are more skewed to the left, as compared to the new model that is skewed to the right, meaning that the newer model has smaller mid p-values.
+
+This indicates that the fixed effects model is a better fit for the data. This means that the unusual mortality rates can be better explained by the fixed effects model, which assumes that each hospital has its own fixed effect on the mortality rate, rather than the random effects model, which assumes that the effects vary randomly across hospitals.
 
 ## Question B - classification
 
