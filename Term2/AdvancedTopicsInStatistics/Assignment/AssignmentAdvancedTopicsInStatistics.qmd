@@ -618,6 +618,17 @@ n.burnin = 5000,n.thin=1,model.file = jags.mod.infantDeath, DIC=FALSE)
 
 
 ```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+mid_p_summary <- jags.mod.fit.infantDeath$BUGSoutput$summary[grep("p\\[\\d+\\]", rownames(jags.mod.fit.infantDeath$BUGSoutput$summary)), ]
+
+mid_p_summary_means <- subset(mid_p_summary, select = "mean")
+
+# Plot kernel density of mid p-values
+plot(density(mid_p_summary_means), main = "Kernel Density Plot of Mid P-values", xlab = "Mid P-value")
+
+```
+
 
 ### Question 2 c)
 
