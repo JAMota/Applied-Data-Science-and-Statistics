@@ -1,0 +1,211 @@
+---
+title: "SpaceAndTime"
+format: html
+editor: visual
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a
+finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that
+includes both content and the output of embedded code. You can embed
+code like this:
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, output=FALSE}
+rm(list = ls())
+
+library(class) # this has the knn function
+library(ggplot2)
+library(tidyverse)
+library(tidyr)
+library(DataExplorer)
+
+netherlandsDF = read_csv("assessmentData/netherlands.csv")
+californiaDF = read_csv("assessmentData/maxTempCalifornia.csv")
+AMOCDF = read_csv("assessmentData/AMOCdata.csv")
+metadataDF = read_csv("assessmentData/metadataCA.csv")
+
+#install.packages('gstat')
+library(geoR)
+library(viridis)
+library(sp)
+library(gstat)
+
+
+```
+
+## Question 1 Spatial modelling dutch
+
+### 1 a)
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+ggplot(data = netherlandsDF) +
+  geom_point(aes(x = longitude, y = latitude, size = precip, color = precip)) +
+  scale_color_continuous(low = "blue", high = "red") +
+  labs(title = "Precipitation in Netherlands Stations",
+       x = "Longitude",
+       y = "Latitude",
+       size = "Precipitation",
+       color = "Precipitation") +
+  theme_minimal()
+
+```
+From what we can see from the data it does seem to be spatially correlated as we can that the Dutch provinces of north Holland, Friesland and Groningen has higher precipitation and as we go south the precipitation does decrease as we can see from the Dutch provinces of Zeeland, north Brabant and Limburg where precipitation is significantly lower than their northern counterparts. 
+
+From this data, latitude seems to be the biggest factor in the variation of the precipitation as the longitude only suggests some slight variations in the data.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+##converting the dataframe into a geodata object
+
+# coordinates(netherlandsDF) <- c("longitude", "latitude")
+# proj4string(netherlandsDF) <- CRS("+proj=longlat +datum=WGS84")
+# 
+# netherlandsDF_geodata <- as.geodata(netherlandsDF)
+
+```
+
+### 1 b)
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+# set seed for reproducibility
+set.seed(26041999)
+
+# Select 3 random rows from the data frame
+random_rows <- netherlandsDF %>% sample_n(3)
+
+# Add a new column with labels
+random_rows$label <- c("A", "B", "C")
+
+# Print the randomly selected rows
+random_rows
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+# Remove the selected rows from the original dataset
+netherlandsDF_filtered <- netherlandsDF %>% anti_join(random_rows)
+
+# Print the resulting dataframe
+netherlandsDF_filtered
+
+```
+
+### 1 c)
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+##converting the dataframe into a geodata object
+
+coordinates(netherlandsDF) <- c("longitude", "latitude")
+proj4string(netherlandsDF) <- CRS("+proj=longlat +datum=WGS84")
+
+netherlandsDF_geodata <- as.geodata(netherlandsDF)
+
+sample_variogram <- variogram(precip~1, netherlandsDF)
+
+plot(sample_variogram, type = "b", main = "Variogram: Percipitation over Netherlands")
+
+
+```
+From the plotted variogram we can see there a very clear need for a nugget as there is a non-zero value around zero distance.
+
+The semi variance continuous to increase with distance, as such there is no clear trend to help us decide in a clear cut off to set as our maximum distance, as such it is better to compare multiple models with different maximum distances to determine the most optimal maximum distance.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE, echo=FALSE}
+
+coordinates(netherlandsDF) <- ~longitude+latitude
+geodata <- as.geodata(netherlandsDF, coords.col = 1:2, data.col = 4)
+
+sample_variogram <- variog(geodata)
+
+
+```
+
+### 1 d)
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
