@@ -24,6 +24,7 @@ library(geoR)
 library(viridis)
 library(sp)
 library(gstat)
+library(forecast)
 
 
 ```
@@ -128,6 +129,10 @@ sample_variogram <- variog(geodata)
 
 ### 1 d)
 
+## TODO
+
+Initial asusmptions:
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
 # Create a grid for interpolation
@@ -165,13 +170,17 @@ YearQuarterAverage <- AMOCDF %>%
   group_by(YearQuarter) %>%
   summarise(AverageStrength = mean(Strength))
 
-YearQuarterAverage$Year = str_extract(YearQuarterAverage$YearQuarter, "\\d{4}")
 
-YearQuarterAverage$Quarter <- str_extract(YearQuarterAverage$YearQuarter, "(?<=Q)\\d")
 
 ```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, eval=FALSE }
+
+## nevermind ts object does this
+
+YearQuarterAverage$Year = str_extract(YearQuarterAverage$YearQuarter, "\\d{4}")
+
+YearQuarterAverage$Quarter <- str_extract(YearQuarterAverage$YearQuarter, "(?<=Q)\\d")
 
 YearQuarterAverage$YearLabel <- ifelse(YearQuarterAverage$Quarter == 1,
                                        YearQuarterAverage$Year,"")
@@ -185,19 +194,42 @@ ggplot(YearQuarterAverage, aes(x = YearQuarter, y = AverageStrength)) +
   ggtitle("Average Strength by Year") +
   scale_x_discrete(labels = function(x) ifelse(seq_along(x) %% 4 == 1, x, ""))
 
-
-
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+#write.csv(YearQuarterAverage, "data.csv", row.names=FALSE)
 
 
 
 ```
 
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+tsAtlantic <- ts(YearQuarterAverage, start = c(2010, 1), frequency = 4)
+
+plot(tsAtlantic)
+
+
+```
+## TODO more trends
+
+From this graph we can see a yearly oscillation of Sverdrups. We can also identify that the peaks in Sverdrups are usually in the last quarter before the start of a new year and the valleys are on the second quarter of the year.
+
+### 2 b)
+
+First we will start by checking the ACF(Autocorrelation Function) and PACF(Partial Autocorrelation Function) to check for if we have stationary data or not to help us decide between an ARMA or an ARIMA model.
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
+acf(tsAtlantic)
 
+
+```
+
+We can see that for ACF there is a 
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+pacf(tsAtlantic)
 
 ```
 
