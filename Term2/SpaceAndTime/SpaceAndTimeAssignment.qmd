@@ -206,6 +206,8 @@ ggplot(YearQuarterAverage, aes(x = YearQuarter, y = AverageStrength)) +
 
 tsAtlantic <- ts(YearQuarterAverage, start = c(2010, 1), frequency = 4)
 
+tsAtlantic = tsAtlantic[, "AverageStrength"]
+
 plot(tsAtlantic)
 
 
@@ -225,22 +227,28 @@ acf(tsAtlantic)
 
 ```
 
-We can see that for ACF there is a 
+We can see that for ACF OF Average strength slowly decreases as lag increases to infinity, meaning it is not a simple AR model.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
 pacf(tsAtlantic)
 
 ```
+## todo get better wording for relevance interval
+The PACF of the average strength has a mix values above and bellow the relevance interval so although it does look like there is a gradual decrease as lag increases to infinity it is not very conclusive and it can also be a sharp cut-off instead.
+
+Since both ACF and PACF seem to be slowly decaying and the the previous question plot does not seem to indicate any trend that needs to be differentiated, we will start by fitting multiple ARMA models with multiple choices of p and q values
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-
+model101 = Arima(tsAtlantic, order = c(1,0,1))
+model201 <- Arima(tsAtlantic, order = c(2,0,1))
+model102 <- Arima(tsAtlantic, order = c(1,0,2))
+model202 <- Arima(tsAtlantic, order = c(2,0,2))
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
-
 
 
 ```
