@@ -159,6 +159,8 @@ kriging_result <- krige(precip ~ 1, netherlandsDF, grid, model = fitted_variogra
 
 ### 2 a)
 
+We fist start by making the appropriate changes in the data to average the data to quarterly means
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
 AMOCDF$Date = as.Date(AMOCDF$Date, format = "%d/%m/%Y")
@@ -200,6 +202,7 @@ ggplot(YearQuarterAverage, aes(x = YearQuarter, y = AverageStrength)) +
 
 ```
 
+Now we will convert the average data to a time series object to be able to plot it
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
@@ -208,17 +211,23 @@ tsAtlantic <- ts(YearQuarterAverage, start = c(2010, 1), frequency = 4)
 
 tsAtlantic = tsAtlantic[, "AverageStrength"]
 
-plot(tsAtlantic)
+plot.ts(tsAtlantic)
 
 
 ```
-## TODO more trends
+#### Trend analysis
 
 From this graph we can see a yearly oscillation of Sverdrups. We can also identify that the peaks in Sverdrups are usually in the last quarter before the start of a new year and the valleys are on the second quarter of the year.
 
+The data does seem stationary enough that if we were to differentiate we would start losing some of the structure.
+
+
 ### 2 b)
 
-First we will start by checking the ACF(Autocorrelation Function) and PACF(Partial Autocorrelation Function) to check for if we have stationary data or not to help us decide between an ARMA or an ARIMA model.
+#### ACF
+
+First we will start by checking the ACF(Autocorrelation Function) and PACF(Partial Autocorrelation Function) to check for if we have stationary data or not to help us decide between an ARMA or an ARIMA model. 
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
@@ -227,28 +236,236 @@ acf(tsAtlantic)
 
 ```
 
-We can see that for ACF OF Average strength slowly decreases as lag increases to infinity, meaning it is not a simple AR model.
+We can see that for ACF OF Average strength slowly decreases as lag increases to infinity with lag = 3 still being a significant values, meaning it is not a simple MA model as AR is clearly not quickly cut-off.
+
+#### PACF
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
 pacf(tsAtlantic)
 
 ```
-## todo get better wording for relevance interval
-The PACF of the average strength has a mix values above and bellow the relevance interval so although it does look like there is a gradual decrease as lag increases to infinity it is not very conclusive and it can also be a sharp cut-off instead.
 
-Since both ACF and PACF seem to be slowly decaying and the the previous question plot does not seem to indicate any trend that needs to be differentiated, we will start by fitting multiple ARMA models with multiple choices of p and q values
+The PACF seems to be cut-off at lag 0,5 indicating an AR model might be a best fit for our data to be a   but with some almost significant values after the cut it might be also appropriate to some non-zero q values to confirm our initial assumption
+
+As such we will now proceed to fit multiple model firstly with the initial assumption that, then I will both use models with non-zero q and the model given by the auto.arima function to double check that the assumptions made by the previous analyses is correct.
+
+<!-- The PACF of the average strength has a mix values above and bellow the relevance interval so although it does look like there is a gradual decrease as lag increases to infinity it is not very conclusive and it can also be a sharp cut-off instead. -->
+
+<!-- Since both ACF and PACF seem to be slowly decaying and the the previous question plot does not seem to indicate any trend that needs to be differentiated, we will start by fitting multiple ARMA models with multiple choices of p and q values -->
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
+# it is always a good practice to try multiple values of p,d and q to see if we can do better
+## we then obviously compare via the AIC of the models and their log likelihoods
+## it is never enough to check those we also need to check the residuals
+
+## order is p, d ,q 
+
+##initial models under our assumptions
+
+model100 = Arima(tsAtlantic, order = c(1,0,0))
+model200 = Arima(tsAtlantic, order = c(2,0,0))
+model300 = Arima(tsAtlantic, order = c(3,0,0))
+
+## now I will add postive q values
+
 model101 = Arima(tsAtlantic, order = c(1,0,1))
-model201 <- Arima(tsAtlantic, order = c(2,0,1))
 model102 <- Arima(tsAtlantic, order = c(1,0,2))
+model103 <- Arima(tsAtlantic, order = c(1,0,3))
+
+model201 <- Arima(tsAtlantic, order = c(2,0,1))
 model202 <- Arima(tsAtlantic, order = c(2,0,2))
+model203 <- Arima(tsAtlantic, order = c(2,0,3))
+
+model301 <- Arima(tsAtlantic, order = c(3,0,1))
+model302 <- Arima(tsAtlantic, order = c(3,0,2))
+model303 <- Arima(tsAtlantic, order = c(3,0,3))
+
+
+
+## lastly we will use auto.arima without seasonality to comfirm our inital assumptions
+modelAuto = auto.arima(tsAtlantic, max.d = 0, max.p = 5, max.q = 5, seasonal = FALSE)
+
+
+```
+
+#### best model selection
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+model100
+model200
+model300
+
+```
+As we can see from these inital models ARIMA(2,0,0) is the model that has the best fit has we can see from its lower AIC score of 194,9.
+
+Now we will check against the other models to check the validity of our assumptions.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+model101
+model102
+model103
+
+model201
+model202
+model203
+
+model301
+model302
+model303
+
+```
+In this initial analysis we have found models that do have a lower AIC lower log likelihood than our previous best model, however these model ma's standard error are to close the the ma values indicating that while we are getting a better fit we might be overfitting to our data.
+
+As such this does confirm our initial assumption for the choice of a zero q value.
+
+Now lastly we will check if the auto.arima function does comfirm our initial assumptions.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+modelAuto
+
+```
+The function does comfirm our assumption that ARIMA(2,0,0) is indeed the best model.
+
+We will now check the residuals to verify if any of ou rpreviously selected model validates well or if it is simply the best of bad models.
+
+
+#### Best model residual validation
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+tsdiag(model200)
+
+```
+Initially from the standardised residuals plot we can identify some sort of sinusoidal pattern, this implies that there is a seasonal trend that is not being accounted for in our model and as such this trends needs to be accounted in future models to better explain and increase the prediction power of a new model.
+
+
+#### Forecasting 
+
+Now using the forecast function we will forecast the next 4 quarters of 2021 
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+forecast(model200, 4)
+
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
 
 
 ```
