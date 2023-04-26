@@ -15,9 +15,9 @@ library(tidyr)
 library(DataExplorer)
 
 netherlandsDF = read_csv("assessmentData/netherlands.csv")
-californiaDF = read_csv("assessmentData/maxTempCalifornia.csv")
+californiaTempDF = read_csv("assessmentData/maxTempCalifornia.csv")
 AMOCDF = read_csv("assessmentData/AMOCdata.csv")
-metadataDF = read_csv("assessmentData/metadataCA.csv")
+californiaSpatialDataDF = read_csv("assessmentData/metadataCA.csv")
 
 #install.packages('gstat')
 library(geoR)
@@ -392,15 +392,26 @@ forecast(model200, 4)
 
 ```
 
+## Question 3
+
+### Question 3 a)
+
+I will start with the time series analysis of the temperature in California
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
 
+californiaTempDF$Date = as.Date(as.character(californiaTempDF$Date), format = "%Y%m%d", origin = "1970-01-01")
+
+## its better to just get a time series object for each city and plot each of those in the same plot
+
+tsCaliforniaSanDiegoTemp <- ts(californiaTempDF$`San Diego`, start = c(2012,1), frequency = 366)
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-
+plot.ts(tsCaliforniaSanDiegoTemp)
 
 ```
 
