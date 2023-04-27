@@ -286,7 +286,7 @@ model303 = Arima(tsAtlantic, order = c(3,0,3))
 
 
 
-## lastly we will use auto.arima without seasonality to comfirm our inital assumptions
+## lastly we will use auto.arima without seasonality to confirm our inital assumptions
 modelAuto = auto.arima(tsAtlantic, max.d = 0, max.p = 5, max.q = 5, seasonal = FALSE)
 
 
@@ -357,49 +357,178 @@ forecast(model200, 4)
 
 ```
 
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+predictedArimaDF = forecast(model200, 4)
+
+plot(model200)
+
+sqrtR <- sapply(amocForecast$R, function(x) sqrt(x[1,1]))
+pl <- amocForecast$a[,1] + qnorm(0.025, sd = sqrtR)
+pu <- amocForecast$a[,1] + qnorm(0.975, sd = sqrtR)
+x <- ts.union(window(tsAtlantic, start = c(2010, 1)),
+    amocForecast$a[,1],
+    amocForecast$f, pl, pu)
+par(mar=c(4,4,2,2))
+plot(x, plot.type = "single", type = 'o', pch = c(1, 20, 3, NA, NA),
+    col = c("darkgrey", "brown", "brown", "blue", "blue"),
+    ylab = "Log gas consumption")
+
+legend("bottomright", legend = c("Observed","Forecast", "95% interval"),
+    bty = 'n', pch = c(1, 20, NA), lty = 1,
+    col = c("darkgrey", "brown", "blue"))
+
+
+```
+
 
 ### 2 c)
 
+#### Initial assumptions
+
+From the previous exploratory analysis of the data we have established that the data did not need to be differentiated since it was constant, this translates to polynomial DLM component of order 2 that will use linear model to account for this type of changes in the data.
+
+Furthermore, from the residual analysis we have inferred that there is an underlying seasonal trend present on the data, this seasonal trend will be represented by a seasonal component of frequency 4 to represent the 4 quarters per year.
+
+#### model fitting
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-#?dlmModSeas
-## linear model, order = 2, quadraic order = 3 , etc
+## linear model, order = 2, quadratic order = 3 , etc
 
 ## what we want is a linear model with a seasonal component so we add the 2 components together in a model
 
-quarterDLM_AMOC = dlmModSeas(4)
-summary(seasonal_model)
+## things to try, another term like quadratic, or a arma component stacked on top of this
+
+## Initial model with a linear polynomial and a seasonal component
+
+buildFun = function(x) {
+dlmModPoly(order = 2, dV = exp(x[1]), dW = c(0, exp(x[2]))) +
+dlmModSeas(frequency = 4, dV = 0, dW = c(exp(x[3]), rep(0,2)))
+}
+
+linearDLM = dlmMLE(tsAtlantic, parm = c(0,0,0), build = buildFun)
+
+linearDLM$par
+
+fittedLinearDLM = buildFun(linearDLM$par)
+
+V(fittedLinearDLM)
+
+W(fittedLinearDLM)
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## second model with a quadratic polynomial and a seasonal component
+
+buildFunQuad = function(x) {
+  dlmModPoly(order = 3, dV = exp(x[1]), dW = c(0, exp(x[2]), exp(x[3]))) +
+  dlmModSeas(frequency = 4, dV = 0, dW = c(exp(x[4]), rep(0,2)))
+}
+
+quadraticDLM = dlmMLE(tsAtlantic, parm = c(0,0,0,0), build = buildFunQuad)
+
+quadraticDLM$par
+
+fittedQuadraticDLM = buildFunQuad(quadraticDLM$par)
+
+V(fittedQuadraticDLM)
+
+W(fittedQuadraticDLM)
+
+```
+## TODO include dlm with arima?
+
+First to compare both models we will use AIC to see if the extra flexibility from the extra polynomial function is providing a better fit
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE, echo=FALSE}
+
+
+# Filter the data using the quadratic DLM model
+quadFilter <- dlmFilter(tsAtlantic, fittedQuadraticDLM)
+
+# Calculate the log-likelihood of the filtered data
+logLik <- sum(quadFilter$logLik)
+
+# Calculate the number of parameters in the model
+numParams <- length(quadraticDLM$par)
+
+# Calculate the AIC
+AIC <- 2 * numParams - 2 * logLik
+AIC
+
+
+# Filter the data using the quadratic DLM model
+quadFilter <- dlmFilter(tsAtlantic, fittedLinearDLM)
+
+# Calculate the log-likelihood of the filtered data
+logLik <- sum(quadFilter$logLik)
+
+# Calculate the number of parameters in the model
+numParams <- length(linearDLM$par)
+
+# Calculate the AIC
+AIC <- 2 * numParams - 2 * logLik
+AIC
+
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+amocPredict <- dlmFilter(tsAtlantic, mod = fittedLinearDLM)
+summary(amocPredict)
+
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
+x <- cbind(tsAtlantic, dropFirst(amocPredict$a[,c(1,3)]))
+x <- window(x, start = c(2010,1))
+colnames(x) <- c("Gas", "Trend", "Seasonal")
+plot(x, type = 'o', main = "Atlantic AMOC at 26,5N 2010-2020")
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+amocForecast = dlmForecast(amocPredict, nAhead = 4)
+summary(amocForecast)
+
+dim(amocForecast$a)
+
+dim(amocForecast$f)
 
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
+sqrtR <- sapply(amocForecast$R, function(x) sqrt(x[1,1]))
+pl <- amocForecast$a[,1] + qnorm(0.025, sd = sqrtR)
+pu <- amocForecast$a[,1] + qnorm(0.975, sd = sqrtR)
+x <- ts.union(window(tsAtlantic, start = c(2010, 1)),
+    amocForecast$a[,1],
+    amocForecast$f, pl, pu)
+par(mar=c(4,4,2,2))
+plot(x, plot.type = "single", type = 'o', pch = c(1, 20, 3, NA, NA),
+    col = c("darkgrey", "brown", "brown", "blue", "blue"),
+    ylab = "Log gas consumption")
 
+legend("bottomright", legend = c("Observed","Forecast", "95% interval"),
+    bty = 'n', pch = c(1, 20, NA), lty = 1,
+    col = c("darkgrey", "brown", "blue"))
 
 ```
 
-
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-
-
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
-
-
-
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
-
-
+tsdiag(gasFilt)
 
 ```
 
@@ -411,7 +540,11 @@ I will start with the time series analysis of the temperature in California
 
 other approach see max temp in the entire state with 8 cities
 
+## TODO WARNING
+For a dataset of daily data with only 1 year of a cycle data available a daily frequency won't be a very good fit because we only have one observation per cycle, we need a hidden entry to capture the 12 months instead
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
 
 
 californiaTempDF$Date = as.Date(as.character(californiaTempDF$Date), format = "%Y%m%d", origin = "1970-01-01")
