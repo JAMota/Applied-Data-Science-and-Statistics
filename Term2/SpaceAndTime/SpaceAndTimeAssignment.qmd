@@ -26,6 +26,8 @@ library(sp)
 library(gstat)
 library(forecast)
 
+library(dlm)
+
 
 ```
 
@@ -54,7 +56,7 @@ From this data, latitude seems to be the biggest factor in the variation of the 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
 # Create geodata object
-precip_geoR <- as.geodata(netherlandsDF, coords.col = c("longitude", "latitude"), data.col = "precip")
+precip_geoR = as.geodata(netherlandsDF, coords.col = c("longitude", "latitude"), data.col = "precip")
 
 ```
 
@@ -66,10 +68,10 @@ precip_geoR <- as.geodata(netherlandsDF, coords.col = c("longitude", "latitude")
 set.seed(26041999)
 
 # Select 3 random rows from the data frame
-random_rows <- netherlandsDF %>% sample_n(3)
+random_rows = netherlandsDF %>% sample_n(3)
 
 # Add a new column with labels
-random_rows$label <- c("A", "B", "C")
+random_rows$label = c("A", "B", "C")
 
 # Print the randomly selected rows
 random_rows
@@ -79,7 +81,7 @@ random_rows
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
 # Remove the selected rows from the original dataset
-netherlandsDF_filtered <- netherlandsDF %>% anti_join(random_rows)
+netherlandsDF_filtered = netherlandsDF %>% anti_join(random_rows)
 
 # Print the resulting dataframe
 netherlandsDF_filtered
@@ -92,20 +94,20 @@ netherlandsDF_filtered
 
 ##converting the dataframe into a geodata object
 
-coordinates(netherlandsDF) <- c("longitude", "latitude")
-proj4string(netherlandsDF) <- CRS("+proj=longlat +datum=WGS84")
+coordinates(netherlandsDF) = c("longitude", "latitude")
+proj4string(netherlandsDF) = CRS("+proj=longlat +datum=WGS84")
 
-netherlandsDF_geodata <- as.geodata(netherlandsDF)
+netherlandsDF_geodata = as.geodata(netherlandsDF)
 
 
 
-sample_variogram <- variogram(precip~1, netherlandsDF)
+sample_variogram = variogram(precip~1, netherlandsDF)
 
 plot(sample_variogram, type = "b", main = "Variogram: Percipitation over Netherlands")
 
 
 # # Calculate empirical variogram
-# precip_variog <- variog(precip_geoR)
+# precip_variog = variog(precip_geoR)
 # 
 # # Plot empirical variogram
 # plot(precip_variog)
@@ -119,10 +121,10 @@ The semi variance continuous to increase with distance, as such there is no clea
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE, echo=FALSE}
 
-coordinates(netherlandsDF) <- ~longitude+latitude
-geodata <- as.geodata(netherlandsDF, coords.col = 1:2, data.col = 4)
+coordinates(netherlandsDF) = ~longitude+latitude
+geodata = as.geodata(netherlandsDF, coords.col = 1:2, data.col = 4)
 
-sample_variogram <- variog(geodata)
+sample_variogram = variog(geodata)
 
 
 ```
@@ -136,15 +138,15 @@ Initial asusmptions:
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
 # Create a grid for interpolation
-grid <- expand.grid(longitude = seq(min(netherlandsDF$longitude), max(netherlandsDF$longitude),
+grid = expand.grid(longitude = seq(min(netherlandsDF$longitude), max(netherlandsDF$longitude),
           length.out = 100),
           latitude = seq(min(netherlandsDF$latitude), max(netherlandsDF$latitude), length.out = 100))
 
-coordinates(grid) <- ~longitude + latitude
-gridded(grid) <- TRUE
+coordinates(grid) = ~longitude + latitude
+gridded(grid) = TRUE
 
 # Perform ordinary Kriging
-kriging_result <- krige(precip ~ 1, netherlandsDF, grid, model = fitted_variogram)
+kriging_result = krige(precip ~ 1, netherlandsDF, grid, model = fitted_variogram)
 
 
 ```
@@ -166,9 +168,9 @@ We fist start by making the appropriate changes in the data to average the data 
 AMOCDF$Date = as.Date(AMOCDF$Date, format = "%d/%m/%Y")
 
 ## I will now make a column with the quarter and year that I will use to create the averages per quarter
-AMOCDF$YearQuarter <- paste(AMOCDF$Year, AMOCDF$Quarter, sep = "-")
+AMOCDF$YearQuarter = paste(AMOCDF$Year, AMOCDF$Quarter, sep = "-")
 
-YearQuarterAverage <- AMOCDF %>%
+YearQuarterAverage = AMOCDF %>%
   group_by(YearQuarter) %>%
   summarise(AverageStrength = mean(Strength))
 
@@ -182,9 +184,9 @@ YearQuarterAverage <- AMOCDF %>%
 
 YearQuarterAverage$Year = str_extract(YearQuarterAverage$YearQuarter, "\\d{4}")
 
-YearQuarterAverage$Quarter <- str_extract(YearQuarterAverage$YearQuarter, "(?<=Q)\\d")
+YearQuarterAverage$Quarter = str_extract(YearQuarterAverage$YearQuarter, "(?<=Q)\\d")
 
-YearQuarterAverage$YearLabel <- ifelse(YearQuarterAverage$Quarter == 1,
+YearQuarterAverage$YearLabel = ifelse(YearQuarterAverage$Quarter == 1,
                                        YearQuarterAverage$Year,"")
 
 # plot with year label
@@ -207,7 +209,7 @@ Now we will convert the average data to a time series object to be able to plot 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
 
 
-tsAtlantic <- ts(YearQuarterAverage, start = c(2010, 1), frequency = 4)
+tsAtlantic = ts(YearQuarterAverage, start = c(2010, 1), frequency = 4)
 
 tsAtlantic = tsAtlantic[, "AverageStrength"]
 
@@ -271,16 +273,16 @@ model300 = Arima(tsAtlantic, order = c(3,0,0))
 ## now I will add postive q values
 
 model101 = Arima(tsAtlantic, order = c(1,0,1))
-model102 <- Arima(tsAtlantic, order = c(1,0,2))
-model103 <- Arima(tsAtlantic, order = c(1,0,3))
+model102 = Arima(tsAtlantic, order = c(1,0,2))
+model103 = Arima(tsAtlantic, order = c(1,0,3))
 
-model201 <- Arima(tsAtlantic, order = c(2,0,1))
-model202 <- Arima(tsAtlantic, order = c(2,0,2))
-model203 <- Arima(tsAtlantic, order = c(2,0,3))
+model201 = Arima(tsAtlantic, order = c(2,0,1))
+model202 = Arima(tsAtlantic, order = c(2,0,2))
+model203 = Arima(tsAtlantic, order = c(2,0,3))
 
-model301 <- Arima(tsAtlantic, order = c(3,0,1))
-model302 <- Arima(tsAtlantic, order = c(3,0,2))
-model303 <- Arima(tsAtlantic, order = c(3,0,3))
+model301 = Arima(tsAtlantic, order = c(3,0,1))
+model302 = Arima(tsAtlantic, order = c(3,0,2))
+model303 = Arima(tsAtlantic, order = c(3,0,3))
 
 
 
@@ -355,9 +357,18 @@ forecast(model200, 4)
 
 ```
 
+
+### 2 c)
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
+#?dlmModSeas
+## linear model, order = 2, quadraic order = 3 , etc
 
+## what we want is a linear model with a seasonal component so we add the 2 components together in a model
+
+quarterDLM_AMOC = dlmModSeas(4)
+summary(seasonal_model)
 
 ```
 
@@ -398,6 +409,8 @@ forecast(model200, 4)
 
 I will start with the time series analysis of the temperature in California
 
+other approach see max temp in the entire state with 8 cities
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
 
@@ -405,7 +418,7 @@ californiaTempDF$Date = as.Date(as.character(californiaTempDF$Date), format = "%
 
 ## its better to just get a time series object for each city and plot each of those in the same plot
 
-tsCaliforniaSanDiegoTemp <- ts(californiaTempDF$`San Diego`, start = c(2012,1), frequency = 366)
+tsCaliforniaSanDiegoTemp = ts(californiaTempDF$`San Diego`, start = c(2012,1), frequency = 366)
 
 ```
 
