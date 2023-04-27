@@ -92,25 +92,25 @@ netherlandsDF_filtered
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-##converting the dataframe into a geodata object
-
-coordinates(netherlandsDF) = c("longitude", "latitude")
-proj4string(netherlandsDF) = CRS("+proj=longlat +datum=WGS84")
-
-netherlandsDF_geodata = as.geodata(netherlandsDF)
-
-
-
-sample_variogram = variogram(precip~1, netherlandsDF)
-
-plot(sample_variogram, type = "b", main = "Variogram: Percipitation over Netherlands")
+# ##converting the dataframe into a geodata object
+# 
+# coordinates(netherlandsDF) = c("longitude", "latitude")
+# proj4string(netherlandsDF) = CRS("+proj=longlat +datum=WGS84")
+# 
+# netherlandsDF_geodata = as.geodata(netherlandsDF)
+# 
+# 
+# 
+# sample_variogram = variogram(precip~1, netherlandsDF)
+# 
+# plot(sample_variogram, type = "b", main = "Variogram: Percipitation over Netherlands")
 
 
 # # Calculate empirical variogram
-# precip_variog = variog(precip_geoR)
-# 
-# # Plot empirical variogram
-# plot(precip_variog)
+precip_variog = variog(precip_geoR)
+
+# Plot empirical variogram
+plot(precip_variog)
 
 
 
@@ -150,6 +150,8 @@ kriging_result = krige(precip ~ 1, netherlandsDF, grid, model = fitted_variogram
 
 
 ```
+
+1 h) he predicts using the grid but we have to change it to our own coordinate and the prior use previous results
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
@@ -331,7 +333,7 @@ Now lastly we will check if the auto.arima function does comfirm our initial ass
 modelAuto
 
 ```
-The function does comfirm our assumption that ARIMA(2,0,0) is indeed the best model.
+The function does confirm our assumption that ARIMA(2,0,0) is indeed the best model.
 
 We will now check the residuals to verify if any of ou rpreviously selected model validates well or if it is simply the best of bad models.
 
@@ -357,30 +359,46 @@ forecast(model200, 4)
 
 ```
 
+But this data is better visualized in a graph to better understand if the predictions are sensible compared to our real data.
+
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-predictedArimaDF = forecast(model200, 4)
+predictedArimaDF = data.frame(forecast(model200, 4))  
 
-plot(model200)
+predictedArimaDF$YearQuarter =  c("2021-Q1"	, "2021-Q2", "2021-Q3","2021-Q4"	)
 
-sqrtR <- sapply(amocForecast$R, function(x) sqrt(x[1,1]))
-pl <- amocForecast$a[,1] + qnorm(0.025, sd = sqrtR)
-pu <- amocForecast$a[,1] + qnorm(0.975, sd = sqrtR)
-x <- ts.union(window(tsAtlantic, start = c(2010, 1)),
-    amocForecast$a[,1],
-    amocForecast$f, pl, pu)
-par(mar=c(4,4,2,2))
-plot(x, plot.type = "single", type = 'o', pch = c(1, 20, 3, NA, NA),
-    col = c("darkgrey", "brown", "brown", "blue", "blue"),
-    ylab = "Log gas consumption")
+# Combine real_data and pred_data into a single data frame
+combined_data <- rbind(
+  data.frame(Date = YearQuarterAverage$YearQuarter, Temperature = YearQuarterAverage$AverageStrength, Type = "Real"),
+  data.frame(Date = predictedArimaDF$YearQuarter, Temperature = predictedArimaDF$Point.Forecast, Type = "Predicted")
+)
 
-legend("bottomright", legend = c("Observed","Forecast", "95% interval"),
-    bty = 'n', pch = c(1, 20, NA), lty = 1,
-    col = c("darkgrey", "brown", "blue"))
+predictedArimaDF$Temperature = predictedArimaDF$Point.Forecast
+
+predictedArimaDF$Type = "Predicted"
+
+
+# Create the ggplot
+p <- ggplot(combined_data, aes(x = Date, y = Temperature, color = Type, group = 1)) +
+  geom_line() +
+  scale_color_manual(values = c("blue", "red"))
+
+# Add the 95% confidence interval
+p <- p + geom_ribbon(
+  data = predictedArimaDF, aes(x = YearQuarter, ymin = Lo.95, ymax = Hi.95),
+  fill = "red",
+  alpha = 0.2
+)
+
+# Display the plot
+print(p)
+
+
 
 
 ```
-
+As we can see from the graph the ARIMA (2,0,0) seems to give us a sensible forecast for the 2021 quarter values, however as we can see the interval of the prediction accuracy our model is not too certain on the values most likely due to our model not accounting for the seasonal cycle of our data.
 
 ### 2 c)
 
@@ -528,7 +546,7 @@ legend("bottomright", legend = c("Observed","Forecast", "95% interval"),
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-tsdiag(gasFilt)
+tsdiag(amocPredict)
 
 ```
 
