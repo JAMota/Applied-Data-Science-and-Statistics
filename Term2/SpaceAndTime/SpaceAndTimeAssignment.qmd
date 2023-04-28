@@ -335,7 +335,9 @@ modelAuto
 ```
 The function does confirm our assumption that ARIMA(2,0,0) is indeed the best model.
 
-We will now check the residuals to verify if any of ou rpreviously selected model validates well or if it is simply the best of bad models.
+We will now check the residuals to verify if any of ou previously selected model validates well or if it is simply the best of bad models.
+
+## talk about the model being more easily explainability  becaues MA = 0
 
 
 #### Best model residual validation
