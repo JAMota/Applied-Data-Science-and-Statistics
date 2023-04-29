@@ -90,20 +90,20 @@ netherlandsDF_filtered
 
 ### 1 c)
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+<!-- # ##converting the dataframe into a geodata object -->
+<!-- #  -->
+<!-- # coordinates(netherlandsDF) = c("longitude", "latitude") -->
+<!-- # proj4string(netherlandsDF) = CRS("+proj=longlat +datum=WGS84") -->
+<!-- #  -->
+<!-- # netherlandsDF_geodata = as.geodata(netherlandsDF) -->
+<!-- #  -->
+<!-- #  -->
+<!-- #  -->
+<!-- # sample_variogram = variogram(precip~1, netherlandsDF) -->
+<!-- #  -->
+<!-- # plot(sample_variogram, type = "b", main = "Variogram: Percipitation over Netherlands") -->
 
-# ##converting the dataframe into a geodata object
-# 
-# coordinates(netherlandsDF) = c("longitude", "latitude")
-# proj4string(netherlandsDF) = CRS("+proj=longlat +datum=WGS84")
-# 
-# netherlandsDF_geodata = as.geodata(netherlandsDF)
-# 
-# 
-# 
-# sample_variogram = variogram(precip~1, netherlandsDF)
-# 
-# plot(sample_variogram, type = "b", main = "Variogram: Percipitation over Netherlands")
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
 
 # # Calculate empirical variogram
@@ -112,14 +112,23 @@ precip_variog = variog(precip_geoR)
 # Plot empirical variogram
 plot(precip_variog)
 
-
+precip_variog$n
 
 ```
 From the plotted variogram we can see there a very clear need for a nugget as there is a non-zero value around zero distance, this values seems to be around  100 at the zero distance from how much is it decreasing.
 
-The semi variance continuous to increase with distance till around the distance of 2 degrees distance wise, this is 
+The semi variance continuous to increase with distance till around the distance of 2 degrees distance wise, after this there is a decrease in variance that is not representative of the data as we are more and more uncertain the further we are from our known points, as such we will choose the distance of two as the cut off for the maximum distance.
 
-, as such there is no clear trend to help us decide in a clear cut off to set as our maximum distance, as such it is better to compare multiple models with different maximum distances to determine the most optimal maximum distance.
+<!-- , as such there is no clear trend to help us decide in a clear cut off to set as our maximum distance, as such it is better to compare multiple models with different maximum distances to determine the most optimal maximum distance. -->
+
+we know change the maximum distance change and recut our previous variogram.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+precip_variog = variog(precip_geoR, option='bin', max.dist = 2)
+
+```
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE, echo=FALSE}
 
@@ -135,9 +144,9 @@ sample_variogram = variog(geodata)
 
 ## TODO
 
-Initial asusmptions:
+Initial assumptions:
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE, echo=FALSE}
 
 # Create a grid for interpolation
 grid = expand.grid(longitude = seq(min(netherlandsDF$longitude), max(netherlandsDF$longitude),
@@ -153,7 +162,45 @@ kriging_result = krige(precip ~ 1, netherlandsDF, grid, model = fitted_variogram
 
 ```
 
+## TODO look for better initial values.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+krigingVariogramFitted <- variofit(precip_variog)
+
+```
+
 1 h) he predicts using the grid but we have to change it to our own coordinate and the prior use previous results
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
@@ -465,41 +512,17 @@ W(fittedQuadraticDLM)
 ```
 ## TODO include dlm with arima?
 
-First to compare both models we will use AIC to see if the extra flexibility from the extra polynomial function is providing a better fit
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE, echo=FALSE}
+Now we will compare both models through their log likelihood using the dlmLL function and see if the extra flexibility from the extra polynomial function is providing a better fit
 
 
-# Filter the data using the quadratic DLM model
-quadFilter <- dlmFilter(tsAtlantic, fittedQuadraticDLM)
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-# Calculate the log-likelihood of the filtered data
-logLik <- sum(quadFilter$logLik)
+dlmLL(tsAtlantic, fittedLinearDLM)
 
-# Calculate the number of parameters in the model
-numParams <- length(quadraticDLM$par)
-
-# Calculate the AIC
-AIC <- 2 * numParams - 2 * logLik
-AIC
-
-
-# Filter the data using the quadratic DLM model
-quadFilter <- dlmFilter(tsAtlantic, fittedLinearDLM)
-
-# Calculate the log-likelihood of the filtered data
-logLik <- sum(quadFilter$logLik)
-
-# Calculate the number of parameters in the model
-numParams <- length(linearDLM$par)
-
-# Calculate the AIC
-AIC <- 2 * numParams - 2 * logLik
-AIC
-
+dlmLL(tsAtlantic, fittedQuadraticDLM)
 
 ```
-
+As we can see the dlm model using only a linear polynomial has a lower log likelihood than the model with an extra quadratic term, meaning this extra flexibility does not contribute to a better model fit and as such we will use the linear fitted model to do our forecasting.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
@@ -552,6 +575,43 @@ legend("bottomright", legend = c("Observed","Forecast", "95% interval"),
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
 tsdiag(amocPredict)
+
+```
+### 2 d)
+
+Again comparing the forecast values and their respective prediction intervals from both 
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+sqrtR <- sapply(amocForecast$R, function(x) sqrt(x[1,1]))
+pl <- amocForecast$a[,1] + qnorm(0.025, sd = sqrtR)
+pu <- amocForecast$a[,1] + qnorm(0.975, sd = sqrtR)
+x <- ts.union(window(tsAtlantic, start = c(2010, 1)),
+    amocForecast$a[,1],
+    amocForecast$f, pl, pu)
+par(mar=c(4,4,2,2))
+plot(x, plot.type = "single", type = 'o', pch = c(1, 20, 3, NA, NA),
+    col = c("darkgrey", "brown", "brown", "blue", "blue"),
+    ylab = "Log gas consumption")
+
+legend("bottomright", legend = c("Observed","Forecast", "95% interval"),
+    bty = 'n', pch = c(1, 20, NA), lty = 1,
+    col = c("darkgrey", "brown", "blue"))
+
+print(p)
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
 
 ```
 
