@@ -115,9 +115,11 @@ plot(precip_variog)
 
 
 ```
-From the plotted variogram we can see there a very clear need for a nugget as there is a non-zero value around zero distance.
+From the plotted variogram we can see there a very clear need for a nugget as there is a non-zero value around zero distance, this values seems to be around  100 at the zero distance from how much is it decreasing.
 
-The semi variance continuous to increase with distance, as such there is no clear trend to help us decide in a clear cut off to set as our maximum distance, as such it is better to compare multiple models with different maximum distances to determine the most optimal maximum distance.
+The semi variance continuous to increase with distance till around the distance of 2 degrees distance wise, this is 
+
+, as such there is no clear trend to help us decide in a clear cut off to set as our maximum distance, as such it is better to compare multiple models with different maximum distances to determine the most optimal maximum distance.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE, echo=FALSE}
 
@@ -438,6 +440,7 @@ V(fittedLinearDLM)
 W(fittedLinearDLM)
 
 
+
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
@@ -578,12 +581,6 @@ tsCaliforniaSanDiegoTemp = ts(californiaTempDF$`San Diego`, start = c(2012,1), f
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
 plot.ts(tsCaliforniaSanDiegoTemp)
-
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
-
-
 
 ```
 
