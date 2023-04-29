@@ -442,6 +442,16 @@ p <- p + geom_ribbon(
   alpha = 0.2
 )
 
+# Adjust the x-axis labels
+p <- p + scale_x_discrete(
+  breaks = combined_data$Date[c(TRUE, rep(FALSE, 3))],
+  labels = combined_data$Date[c(TRUE, rep(FALSE, 3))]
+)
+
+p <- p + theme(
+  axis.text.x = element_text(angle = 90, vjust = 0.5, size = 8)
+)
+
 # Display the plot
 print(p)
 
@@ -579,7 +589,7 @@ tsdiag(amocPredict)
 ```
 ### 2 d)
 
-Again comparing the forecast values and their respective prediction intervals as we can see from the graphs bellow
+Again comparing the forecast values and their respective prediction intervals as we can see from the graphs bellow the dlm model has smaller prediction intervals, most likely due to being able to explain the underlying seasonal trend reducing therefore the uncertainty in comparison the ARIMA model.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
@@ -604,6 +614,8 @@ legend("bottomright", legend = c("Observed","Forecast", "95% interval"),
 
 
 ```
+
+### 2 e)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
