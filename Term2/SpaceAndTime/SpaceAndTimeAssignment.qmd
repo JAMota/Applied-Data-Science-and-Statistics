@@ -579,9 +579,11 @@ tsdiag(amocPredict)
 ```
 ### 2 d)
 
-Again comparing the forecast values and their respective prediction intervals from both 
+Again comparing the forecast values and their respective prediction intervals as we can see from the graphs bellow
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+print(p)
 
 sqrtR <- sapply(amocForecast$R, function(x) sqrt(x[1,1]))
 pl <- amocForecast$a[,1] + qnorm(0.025, sd = sqrtR)
@@ -598,7 +600,7 @@ legend("bottomright", legend = c("Observed","Forecast", "95% interval"),
     bty = 'n', pch = c(1, 20, NA), lty = 1,
     col = c("darkgrey", "brown", "blue"))
 
-print(p)
+
 
 
 ```
