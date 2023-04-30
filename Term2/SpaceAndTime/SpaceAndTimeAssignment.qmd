@@ -431,29 +431,29 @@ predictedArimaDF$Type = "Predicted"
 
 
 # Create the ggplot
-p <- ggplot(combined_data, aes(x = Date, y = Temperature, color = Type, group = 1)) +
+plotARIMA <- ggplot(combined_data, aes(x = Date, y = Temperature, color = Type, group = 1)) +
   geom_line() +
   scale_color_manual(values = c("blue", "red"))
 
 # Add the 95% confidence interval
-p <- p + geom_ribbon(
+plotARIMA <- plotARIMA + geom_ribbon(
   data = predictedArimaDF, aes(x = YearQuarter, ymin = Lo.95, ymax = Hi.95),
   fill = "red",
   alpha = 0.2
 )
 
 # Adjust the x-axis labels
-p <- p + scale_x_discrete(
+plotARIMA <- plotARIMA + scale_x_discrete(
   breaks = combined_data$Date[c(TRUE, rep(FALSE, 3))],
   labels = combined_data$Date[c(TRUE, rep(FALSE, 3))]
 )
 
-p <- p + theme(
+plotARIMA <- plotARIMA + theme(
   axis.text.x = element_text(angle = 90, vjust = 0.5, size = 8)
 )
 
 # Display the plot
-print(p)
+print(plotARIMA)
 
 
 
@@ -593,14 +593,14 @@ Again comparing the forecast values and their respective prediction intervals as
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-print(p)
+print(plotARIMA)
 
-sqrtR <- sapply(amocForecast$R, function(x) sqrt(x[1,1]))
-pl <- amocForecast$a[,1] + qnorm(0.025, sd = sqrtR)
-pu <- amocForecast$a[,1] + qnorm(0.975, sd = sqrtR)
+sqaretRoot <- sapply(amocForecast$R, function(x) sqrt(x[1,1]))
+predictionLow <- amocForecast$a[,1] + qnorm(0.025, sd = sqaretRoot) ## Low
+predictionUpper <- amocForecast$a[,1] + qnorm(0.975, sd = sqaretRoot) ## Upper 
 x <- ts.union(window(tsAtlantic, start = c(2010, 1)),
     amocForecast$a[,1],
-    amocForecast$f, pl, pu)
+    amocForecast$f, predictionLow, predictionUpper)
 par(mar=c(4,4,2,2))
 plot(x, plot.type = "single", type = 'o', pch = c(1, 20, 3, NA, NA),
     col = c("darkgrey", "brown", "brown", "blue", "blue"),
@@ -619,6 +619,8 @@ legend("bottomright", legend = c("Observed","Forecast", "95% interval"),
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
+AMOCDFMonthly <- AMOCDF %>%
+  mutate(YearMonth = paste0(year(Date), "-", month(Date, label = TRUE, abbr = FALSE)))
 
 
 ```
@@ -664,15 +666,27 @@ plot.ts(tsCaliforniaSanDiegoTemp)
 
 ```
 
+### 3 b)
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
+californiaLongTempDF = pivot_longer(californiaTempDF, 
+                               cols = -Date, 
+                               names_to = "Location", 
+                               values_to = "Temperature")
+
+spatialTemperatureCaliforniaDF = merge(californiaLongTempDF, californiaSpatialDataDF )
+
+geoDataCalifornia= as.geodata( spatialTemperatureCaliforniaDF, coords.col = 4:5, data.col = "Temperature", covar.col = "Elev")
+
+variogramCalifornia= variog(geoDataCalifornia)
 
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-
+plot(variogramCalifornia)
 
 ```
 
