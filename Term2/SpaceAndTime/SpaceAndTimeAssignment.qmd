@@ -420,7 +420,7 @@ predictedArimaDF = data.frame(forecast(model200, 4))
 predictedArimaDF$YearQuarter =  c("2021-Q1"	, "2021-Q2", "2021-Q3","2021-Q4"	)
 
 # Combine real_data and pred_data into a single data frame
-combined_data <- rbind(
+combinedDataframeAMOC <- rbind(
   data.frame(Date = YearQuarterAverage$YearQuarter, Temperature = YearQuarterAverage$AverageStrength, Type = "Real"),
   data.frame(Date = predictedArimaDF$YearQuarter, Temperature = predictedArimaDF$Point.Forecast, Type = "Predicted")
 )
@@ -431,7 +431,7 @@ predictedArimaDF$Type = "Predicted"
 
 
 # Create the ggplot
-plotARIMA <- ggplot(combined_data, aes(x = Date, y = Temperature, color = Type, group = 1)) +
+plotARIMA <- ggplot(combinedDataframeAMOC, aes(x = Date, y = Temperature, color = Type, group = 1)) +
   geom_line() +
   scale_color_manual(values = c("blue", "red"))
 
@@ -444,8 +444,8 @@ plotARIMA <- plotARIMA + geom_ribbon(
 
 # Adjust the x-axis labels
 plotARIMA <- plotARIMA + scale_x_discrete(
-  breaks = combined_data$Date[c(TRUE, rep(FALSE, 3))],
-  labels = combined_data$Date[c(TRUE, rep(FALSE, 3))]
+  breaks = combinedDataframeAMOC$Date[c(TRUE, rep(FALSE, 3))],
+  labels = combinedDataframeAMOC$Date[c(TRUE, rep(FALSE, 3))]
 )
 
 plotARIMA <- plotARIMA + theme(
