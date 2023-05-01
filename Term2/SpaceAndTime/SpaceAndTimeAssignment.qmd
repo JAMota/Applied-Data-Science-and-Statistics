@@ -56,9 +56,17 @@ From this data, latitude seems to be the biggest factor in the variation of the 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
 # Create geodata object
-precip_geoR = as.geodata(netherlandsDF, coords.col = c("longitude", "latitude"), data.col = "precip")
+precipitationNetherland_geoR = as.geodata(netherlandsDF, coords.col = c("longitude", "latitude"), data.col = "precip")
+
+summary(precipitationNetherland_geoR)
 
 ```
+<!-- https://notepub.io/notes/mathematics/statistics/descriptive-statistics/descriptive-statistics-moments-skewness-and-kurtosis/ -->
+<!-- Central Tendency Measures in  Negatively, Zero, Positively Skewed Curve -->
+
+
+As we can see from the numerical summary of the data the median is different from the mean, which indicates it is not a symmetric distribution of data points and is instead positively skewed since the mean is bigger than the median. 
+As such there are more values on the left side of the distribution.
 
 ### 1 b)
 
@@ -68,20 +76,20 @@ precip_geoR = as.geodata(netherlandsDF, coords.col = c("longitude", "latitude"),
 set.seed(26041999)
 
 # Select 3 random rows from the data frame
-random_rows = netherlandsDF %>% sample_n(3)
+randomRowsPrecipitation = netherlandsDF %>% sample_n(3)
 
 # Add a new column with labels
-random_rows$label = c("A", "B", "C")
+randomRowsPrecipitation$label = c("A", "B", "C")
 
 # Print the randomly selected rows
-random_rows
+randomRowsPrecipitation
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
 # Remove the selected rows from the original dataset
-netherlandsDF_filtered = netherlandsDF %>% anti_join(random_rows)
+netherlandsDF_filtered = netherlandsDF %>% anti_join(randomRowsPrecipitation)
 
 # Print the resulting dataframe
 netherlandsDF_filtered
@@ -90,29 +98,17 @@ netherlandsDF_filtered
 
 ### 1 c)
 
-<!-- # ##converting the dataframe into a geodata object -->
-<!-- #  -->
-<!-- # coordinates(netherlandsDF) = c("longitude", "latitude") -->
-<!-- # proj4string(netherlandsDF) = CRS("+proj=longlat +datum=WGS84") -->
-<!-- #  -->
-<!-- # netherlandsDF_geodata = as.geodata(netherlandsDF) -->
-<!-- #  -->
-<!-- #  -->
-<!-- #  -->
-<!-- # sample_variogram = variogram(precip~1, netherlandsDF) -->
-<!-- #  -->
-<!-- # plot(sample_variogram, type = "b", main = "Variogram: Percipitation over Netherlands") -->
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
 
 # # Calculate empirical variogram
-precip_variog = variog(precip_geoR)
+variogramPrecipitationNetherlands = variog(precipitationNetherland_geoR)
 
 # Plot empirical variogram
-plot(precip_variog)
+plot(variogramPrecipitationNetherlands)
 
-precip_variog$n
+variogramPrecipitationNetherlands$n
 
 ```
 From the plotted variogram we can see there a very clear need for a nugget as there is a non-zero value around zero distance, this values seems to be around  100 at the zero distance from how much is it decreasing.
@@ -125,7 +121,7 @@ we know change the maximum distance change and recut our previous variogram.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-precip_variog = variog(precip_geoR, option='bin', max.dist = 2)
+variogramPrecipitationNetherlands = variog(precipitationNetherland_geoR, option='bin', max.dist = 2)
 
 ```
 
@@ -142,9 +138,6 @@ sample_variogram = variog(geodata)
 
 ### 1 d)
 
-## TODO
-
-Initial assumptions:
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE, echo=FALSE}
 
@@ -164,11 +157,17 @@ kriging_result = krige(precip ~ 1, netherlandsDF, grid, model = fitted_variogram
 
 ## TODO look for better initial values.
 
+
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-krigingVariogramFitted <- variofit(precip_variog)
+krigingVariogramFitted <- variofit(variogramPrecipitationNetherlands)
+
+krigingVariogramFitted
 
 ```
+fitting this variogram we get the estimated values of $\sigma^2, \phi$ and $\tau^2$ also known as the nugget
+
 
 1 h) he predicts using the grid but we have to change it to our own coordinate and the prior use previous results
 
@@ -619,8 +618,8 @@ legend("bottomright", legend = c("Observed","Forecast", "95% interval"),
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-AMOCDFMonthly <- AMOCDF %>%
-  mutate(YearMonth = paste0(year(Date), "-", month(Date, label = TRUE, abbr = FALSE)))
+# AMOCDFMonthly <- AMOCDF %>%
+#   mutate(YearMonth = paste0(year(Date), "-", month(Date, label = TRUE, abbr = FALSE)))
 
 
 ```
@@ -662,7 +661,22 @@ plot.ts(tsCaliforniaSanDiegoTemp)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
+californiaLongTempDF = pivot_longer(californiaTempDF, 
+                               cols = -Date, 
+                               names_to = "Location", 
+                               values_to = "Temperature")
 
+spatialTemperatureCaliforniaDF = merge(californiaLongTempDF, californiaSpatialDataDF)
+
+
+ggplot(data = spatialTemperatureCaliforniaDF) +
+  geom_point(aes(x = Lat, y = Long, color = Temperature, size = Temperature)) +
+  scale_color_continuous(low = "blue", high = "red") +
+  labs(title = "Precipitation in Netherlands Stations",
+       x = "Longitude",
+       y = "Latitude",
+       color = "Precipitation") +
+  theme_minimal()
 
 ```
 
@@ -670,12 +684,7 @@ plot.ts(tsCaliforniaSanDiegoTemp)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-californiaLongTempDF = pivot_longer(californiaTempDF, 
-                               cols = -Date, 
-                               names_to = "Location", 
-                               values_to = "Temperature")
 
-spatialTemperatureCaliforniaDF = merge(californiaLongTempDF, californiaSpatialDataDF )
 
 geoDataCalifornia= as.geodata( spatialTemperatureCaliforniaDF, coords.col = 4:5, data.col = "Temperature", covar.col = "Elev")
 
