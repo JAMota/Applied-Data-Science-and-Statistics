@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.240">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>SpaceAndTime</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="SpaceAndTimeAssignment_files/libs/clipboard/clipboard.min.js"></script>
+<script src="SpaceAndTimeAssignment_files/libs/quarto-html/quarto.js"></script>
+<script src="SpaceAndTimeAssignment_files/libs/quarto-html/popper.min.js"></script>
+<script src="SpaceAndTimeAssignment_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="SpaceAndTimeAssignment_files/libs/quarto-html/anchor.min.js"></script>
+<link href="SpaceAndTimeAssignment_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="SpaceAndTimeAssignment_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="SpaceAndTimeAssignment_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="SpaceAndTimeAssignment_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="SpaceAndTimeAssignment_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">SpaceAndTime</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<section id="question-1-spatial-modelling-dutch" class="level2">
+<h2 class="anchored" data-anchor-id="question-1-spatial-modelling-dutch">Question 1 Spatial modelling dutch</h2>
+<section id="a" class="level3">
+<h3 class="anchored" data-anchor-id="a">1 a)</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> netherlandsDF) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> longitude, <span class="at">y =</span> latitude,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> precip, <span class="at">color =</span> precip)) <span class="sc">+</span> <span class="fu">scale_color_continuous</span>(<span class="at">low =</span> <span class="st">"blue"</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">high =</span> <span class="st">"red"</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Precipitation in Netherlands Stations"</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Longitude"</span>, <span class="at">y =</span> <span class="st">"Latitude"</span>, <span class="at">size =</span> <span class="st">"Precipitation"</span>, <span class="at">color =</span> <span class="st">"Precipitation"</span>) <span class="sc">+</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SpaceAndTimeAssignment_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>From what we can see from the data it does seem to be spatially correlated as we can that the Dutch provinces of north Holland, Friesland and Groningen has higher precipitation and as we go south the precipitation does decrease as we can see from the Dutch provinces of Zeeland, north Brabant and Limburg where precipitation is significantly lower than their northern counterparts.</p>
+<p>From this data, latitude seems to be the biggest factor in the variation of the precipitation as the longitude only suggests some slight variations in the data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create geodata object</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>precipitationNetherland_geoR <span class="ot">=</span> <span class="fu">as.geodata</span>(netherlandsDF, <span class="at">coords.col =</span> <span class="fu">c</span>(<span class="st">"longitude"</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"latitude"</span>), <span class="at">data.col =</span> <span class="st">"precip"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(precipitationNetherland_geoR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of data points: 220 
+
+Coordinates summary
+    longitude latitude
+min     3.500   50.767
+max     7.033   53.483
+
+Distance summary
+     min      max 
+0.001000 3.998498 
+
+Data summary
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+ 33.9000  80.8500 100.1500 106.5705 137.3500 185.6000 </code></pre>
+</div>
+</div>
+<!-- https://notepub.io/notes/mathematics/statistics/descriptive-statistics/descriptive-statistics-moments-skewness-and-kurtosis/ -->
+<!-- Central Tendency Measures in  Negatively, Zero, Positively Skewed Curve -->
+<p>As we can see from the numerical summary of the data the median is different from the mean, which indicates it is not a symmetric distribution of data points and is instead positively skewed since the mean is bigger than the median. As such there are more values on the left side of the distribution.</p>
+</section>
+<section id="b" class="level3">
+<h3 class="anchored" data-anchor-id="b">1 b)</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># set seed for reproducibility</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">26041999</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Select 3 random rows from the data frame</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>randomRowsPrecipitation <span class="ot">=</span> netherlandsDF <span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sample_n</span>(<span class="dv">3</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a new column with labels</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>randomRowsPrecipitation<span class="sc">$</span>label <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"C"</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the randomly selected rows</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>randomRowsPrecipitation</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 5
+  station_name   longitude latitude precip label
+  &lt;chr&gt;              &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;
+1 NIJKERK             5.47     52.2   89.1 A    
+2 WOLPHAARTSDIJK      3.73     51.5   95.9 B    
+3 EEXT                6.73     53    147.  C    </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the selected rows from the original dataset</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>netherlandsDF_filtered <span class="ot">=</span> netherlandsDF <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">anti_join</span>(randomRowsPrecipitation)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Joining, by = c("station_name", "longitude", "latitude", "precip")</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the resulting dataframe</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>netherlandsDF_filtered</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 217 × 4
+   station_name      longitude latitude precip
+   &lt;chr&gt;                 &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+ 1 WEST TERSCHELLING      5.22     53.4  130. 
+ 2 GRONINGEN-1            6.6      53.2  157. 
+ 3 HOORN                  5.07     52.6  146. 
+ 4 HOOFDDORP              4.7      52.3  130. 
+ 5 WINTERSWIJK            6.7      52.0   77.7
+ 6 KERKWERVE              3.87     51.7   91.8
+ 7 WESTDORPE-1            3.87     51.2   87.7
+ 8 OUDENBOSCH             4.53     51.6   84.2
+ 9 ROERMOND               5.97     51.2   56.4
+10 PETTEN                 4.65     52.8  158. 
+# … with 207 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="c" class="level3">
+<h3 class="anchored" data-anchor-id="c">1 c)</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># # Calculate empirical variogram</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>variogramPrecipitationNetherlands <span class="ot">=</span> <span class="fu">variog</span>(precipitationNetherland_geoR)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>variog: computing omnidirectional variogram</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot empirical variogram</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(variogramPrecipitationNetherlands)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SpaceAndTimeAssignment_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>variogramPrecipitationNetherlands<span class="sc">$</span>n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 1108 2543 3474 3915 3726 3293 2615 1597  811  497  346  147   17</code></pre>
+</div>
+</div>
+<p>From the plotted variogram we can see there a very clear need for a nugget as there is a non-zero value around zero distance, this values seems to be around 100 at the zero distance from how much is it decreasing.</p>
+<p>The semi variance continuous to increase with distance till around the distance of 2 degrees distance wise, after this there is a decrease in variance that is not representative of the data as we are more and more uncertain the further we are from our known points, as such we will choose the distance of two as the cut off for the maximum distance.</p>
+<!-- , as such there is no clear trend to help us decide in a clear cut off to set as our maximum distance, as such it is better to compare multiple models with different maximum distances to determine the most optimal maximum distance. -->
+<p>we know change the maximum distance change and recut our previous variogram.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>variogramPrecipitationNetherlands <span class="ot">=</span> <span class="fu">variog</span>(precipitationNetherland_geoR,</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">option =</span> <span class="st">"bin"</span>, <span class="at">max.dist =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>variog: computing omnidirectional variogram</code></pre>
+</div>
+</div>
+<div class="cell">
+
+</div>
+</section>
+<section id="d" class="level3">
+<h3 class="anchored" data-anchor-id="d">1 d)</h3>
+<div class="cell">
+
+</div>
+</section>
+</section>
+<section id="todo-look-for-better-initial-values." class="level2">
+<h2 class="anchored" data-anchor-id="todo-look-for-better-initial-values.">TODO look for better initial values.</h2>
+<p>Now that we have the variogram we will start by fitting a parametric</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>krigingVariogramFitted <span class="ot">&lt;-</span> <span class="fu">variofit</span>(variogramPrecipitationNetherlands)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>variofit: covariance model used is matern 
+variofit: weights used: npairs 
+variofit: minimisation function used: optim </code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in variofit(variogramPrecipitationNetherlands): initial values not
+provided - running the default search</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>variofit: searching for best initial value ... selected values:
+              sigmasq   phi    tausq kappa
+initial.value "1962.06" "1.23" "0"   "0.5"
+status        "est"     "est"  "est" "fix"
+loss value: 695488723.456829 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>krigingVariogramFitted</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>variofit: model parameters estimated by WLS (weighted least squares):
+covariance model is: matern with fixed kappa = 0.5 (exponential)
+parameter estimates:
+      tausq     sigmasq         phi 
+       0.00 33753473.44    34350.67 
+Practical Range with cor=0.05 for asymptotic range: 102905.4
+
+variofit: minimised weighted sum of squares = 29453245</code></pre>
+</div>
+</div>
+<p>fitting this variogram we get the estimated values of <span class="math inline">\(\sigma^2, \phi\)</span> and <span class="math inline">\(\tau^2\)</span> also known as the nugget</p>
+<p>1 h) he predicts using the grid but we have to change it to our own coordinate and the prior use previous results</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+</section>
+<section id="question-2" class="level2">
+<h2 class="anchored" data-anchor-id="question-2">Question 2</h2>
+<section id="a-1" class="level3">
+<h3 class="anchored" data-anchor-id="a-1">2 a)</h3>
+<p>We fist start by making the appropriate changes in the data to average the data to quarterly means</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>AMOCDF<span class="sc">$</span>Date <span class="ot">=</span> <span class="fu">as.Date</span>(AMOCDF<span class="sc">$</span>Date, <span class="at">format =</span> <span class="st">"%d/%m/%Y"</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="do">## I will now make a column with the quarter and year that I will use</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="do">## to create the averages per quarter</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>AMOCDF<span class="sc">$</span>YearQuarter <span class="ot">=</span> <span class="fu">paste</span>(AMOCDF<span class="sc">$</span>Year, AMOCDF<span class="sc">$</span>Quarter, <span class="at">sep =</span> <span class="st">"-"</span>)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>YearQuarterAverage <span class="ot">=</span> AMOCDF <span class="sc">%&gt;%</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(YearQuarter) <span class="sc">%&gt;%</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">AverageStrength =</span> <span class="fu">mean</span>(Strength))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+
+</div>
+<p>Now we will convert the average data to a time series object to be able to plot it</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>tsAtlantic <span class="ot">=</span> <span class="fu">ts</span>(YearQuarterAverage, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2010</span>, <span class="dv">1</span>), <span class="at">frequency =</span> <span class="dv">4</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>tsAtlantic <span class="ot">=</span> tsAtlantic[, <span class="st">"AverageStrength"</span>]</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.ts</span>(tsAtlantic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SpaceAndTimeAssignment_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<section id="trend-analysis" class="level4">
+<h4 class="anchored" data-anchor-id="trend-analysis">Trend analysis</h4>
+<p>From this graph we can see a yearly oscillation of Sverdrups. We can also identify that the peaks in Sverdrups are usually in the last quarter before the start of a new year and the valleys are on the second quarter of the year.</p>
+<p>The data does seem stationary enough that if we were to differentiate we would start losing some of the structure.</p>
+</section>
+</section>
+<section id="b-1" class="level3">
+<h3 class="anchored" data-anchor-id="b-1">2 b)</h3>
+<section id="acf" class="level4">
+<h4 class="anchored" data-anchor-id="acf">ACF</h4>
+<p>First we will start by checking the ACF(Autocorrelation Function) and PACF(Partial Autocorrelation Function) to check for if we have stationary data or not to help us decide between an ARMA or an ARIMA model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">acf</span>(tsAtlantic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SpaceAndTimeAssignment_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We can see that for ACF OF Average strength slowly decreases as lag increases to infinity with lag = 3 still being a significant values, meaning it is not a simple MA model as AR is clearly not quickly cut-off.</p>
+</section>
+<section id="pacf" class="level4">
+<h4 class="anchored" data-anchor-id="pacf">PACF</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pacf</span>(tsAtlantic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SpaceAndTimeAssignment_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The PACF seems to be cut-off at lag 0,5 indicating an AR model might be a best fit for our data to be a but with some almost significant values after the cut it might be also appropriate to some non-zero q values to confirm our initial assumption</p>
+<p>As such we will now proceed to fit multiple model firstly with the initial assumption that, then I will both use models with non-zero q and the model given by the auto.arima function to double check that the assumptions made by the previous analyses is correct.</p>
+<!-- The PACF of the average strength has a mix values above and bellow the relevance interval so although it does look like there is a gradual decrease as lag increases to infinity it is not very conclusive and it can also be a sharp cut-off instead. -->
+<!-- Since both ACF and PACF seem to be slowly decaying and the the previous question plot does not seem to indicate any trend that needs to be differentiated, we will start by fitting multiple ARMA models with multiple choices of p and q values -->
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># it is always a good practice to try multiple values of p,d and q to</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># see if we can do better we then obviously compare via the AIC of the</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co"># models and their log likelihoods it is never enough to check those we</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co"># also need to check the residuals</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="do">## order is p, d ,q</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="do">## initial models under our assumptions</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>model100 <span class="ot">=</span> <span class="fu">Arima</span>(tsAtlantic, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>model200 <span class="ot">=</span> <span class="fu">Arima</span>(tsAtlantic, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>model300 <span class="ot">=</span> <span class="fu">Arima</span>(tsAtlantic, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="do">## now I will add postive q values</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>model101 <span class="ot">=</span> <span class="fu">Arima</span>(tsAtlantic, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>model102 <span class="ot">=</span> <span class="fu">Arima</span>(tsAtlantic, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">2</span>))</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>model103 <span class="ot">=</span> <span class="fu">Arima</span>(tsAtlantic, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">3</span>))</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>model201 <span class="ot">=</span> <span class="fu">Arima</span>(tsAtlantic, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>model202 <span class="ot">=</span> <span class="fu">Arima</span>(tsAtlantic, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">2</span>))</span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>model203 <span class="ot">=</span> <span class="fu">Arima</span>(tsAtlantic, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">3</span>))</span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>model301 <span class="ot">=</span> <span class="fu">Arima</span>(tsAtlantic, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a>model302 <span class="ot">=</span> <span class="fu">Arima</span>(tsAtlantic, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">2</span>))</span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a>model303 <span class="ot">=</span> <span class="fu">Arima</span>(tsAtlantic, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">0</span>, <span class="dv">3</span>))</span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a><span class="do">## lastly we will use auto.arima without seasonality to confirm our</span></span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a><span class="do">## inital assumptions</span></span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a>modelAuto <span class="ot">=</span> <span class="fu">auto.arima</span>(tsAtlantic, <span class="at">max.d =</span> <span class="dv">0</span>, <span class="at">max.p =</span> <span class="dv">5</span>, <span class="at">max.q =</span> <span class="dv">5</span>, <span class="at">seasonal =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="best-model-selection" class="level4">
+<h4 class="anchored" data-anchor-id="best-model-selection">best model selection</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>model100</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series: tsAtlantic 
+ARIMA(1,0,0) with non-zero mean 
+
+Coefficients:
+         ar1     mean
+      0.0665  16.3878
+s.e.  0.1788   0.3726
+
+sigma^2 = 5.572:  log likelihood = -99.2
+AIC=204.41   AICc=205.01   BIC=209.76</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>model200</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series: tsAtlantic 
+ARIMA(2,0,0) with non-zero mean 
+
+Coefficients:
+         ar1      ar2     mean
+      0.0990  -0.5565  16.4298
+s.e.  0.1576   0.1488   0.2113
+
+sigma^2 = 4.321:  log likelihood = -93.45
+AIC=194.9   AICc=195.92   BIC=202.04</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>model300</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series: tsAtlantic 
+ARIMA(3,0,0) with non-zero mean 
+
+Coefficients:
+         ar1      ar2     ar3     mean
+      0.1626  -0.5690  0.1464  16.4227
+s.e.  0.1729   0.1479  0.1708   0.2409
+
+sigma^2 = 4.35:  log likelihood = -93.09
+AIC=196.17   AICc=197.75   BIC=205.1</code></pre>
+</div>
+</div>
+<p>As we can see from these inital models ARIMA(2,0,0) is the model that has the best fit has we can see from its lower AIC score of 194,9.</p>
+<p>Now we will check against the other models to check the validity of our assumptions.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>model101</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series: tsAtlantic 
+ARIMA(1,0,1) with non-zero mean 
+
+Coefficients:
+          ar1     ma1     mean
+      -0.4204  0.7718  16.3721
+s.e.   0.2390  0.1466   0.4067
+
+sigma^2 = 5.045:  log likelihood = -96.64
+AIC=201.29   AICc=202.31   BIC=208.43</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>model102</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series: tsAtlantic 
+ARIMA(1,0,2) with non-zero mean 
+
+Coefficients:
+         ar1     ma1      ma2     mean
+      0.0230  0.1275  -0.4485  16.4289
+s.e.  0.3051  0.2420   0.1348   0.2224
+
+sigma^2 = 4.651:  log likelihood = -94.41
+AIC=198.81   AICc=200.39   BIC=207.73</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>model103</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series: tsAtlantic 
+ARIMA(1,0,3) with non-zero mean 
+
+Coefficients:
+          ar1     ma1      ma2      ma3     mean
+      -0.5284  0.7214  -0.3646  -0.3072  16.4299
+s.e.   0.9228  0.8649   0.2077   0.3545   0.2195
+
+sigma^2 = 4.733:  log likelihood = -94.25
+AIC=200.5   AICc=202.77   BIC=211.21</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>model201</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series: tsAtlantic 
+ARIMA(2,0,1) with non-zero mean 
+
+Coefficients:
+          ar1      ar2     ma1     mean
+      -0.0669  -0.5475  0.2187  16.4255
+s.e.   0.2740   0.1555  0.2883   0.2300
+
+sigma^2 = 4.366:  log likelihood = -93.15
+AIC=196.31   AICc=197.88   BIC=205.23</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>model202</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series: tsAtlantic 
+ARIMA(2,0,2) with non-zero mean 
+
+Coefficients:
+         ar1      ar2      ma1     ma2     mean
+      0.0787  -0.9982  -0.0255  0.9999  16.4015
+s.e.  0.0285   0.0066   0.0899  0.1158   0.2684
+
+sigma^2 = 3.378:  log likelihood = -89.46
+AIC=190.91   AICc=193.18   BIC=201.62</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>model203</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series: tsAtlantic 
+ARIMA(2,0,3) with non-zero mean 
+
+Coefficients:
+         ar1      ar2     ma1     ma2     ma3     mean
+      0.0325  -0.9621  0.0499  0.8487  0.4147  16.4028
+s.e.  0.0645   0.0442  0.1987  0.2041  0.2511   0.3044
+
+sigma^2 = 3.315:  log likelihood = -89.07
+AIC=192.13   AICc=195.25   BIC=204.62</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>model301</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series: tsAtlantic 
+ARIMA(3,0,1) with non-zero mean 
+
+Coefficients:
+         ar1      ar2     ar3      ma1     mean
+      0.4092  -0.5931  0.2864  -0.2467  16.4191
+s.e.  0.6330   0.1651  0.3580   0.6291   0.2537
+
+sigma^2 = 4.449:  log likelihood = -93.03
+AIC=198.06   AICc=200.34   BIC=208.77</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>model302</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series: tsAtlantic 
+ARIMA(3,0,2) with non-zero mean 
+
+Coefficients:
+         ar1      ar2     ar3      ma1     ma2     mean
+      0.2684  -0.9851  0.2222  -0.3030  1.0000  16.4144
+s.e.  0.1999   0.0305  0.1995   0.1453  0.1921   0.2922
+
+sigma^2 = 3.392:  log likelihood = -89.53
+AIC=193.06   AICc=196.17   BIC=205.54</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>model303</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series: tsAtlantic 
+ARIMA(3,0,3) with non-zero mean 
+
+Coefficients:
+          ar1      ar2      ar3     ma1     ma2     ma3     mean
+      -0.3983  -0.9518  -0.4263  0.4381  0.7816  0.7352  16.4197
+s.e.   0.3385   0.0412   0.3442  0.2946  0.1690  0.2422   0.2691
+
+sigma^2 = 3.352:  log likelihood = -88.54
+AIC=193.08   AICc=197.19   BIC=207.35</code></pre>
+</div>
+</div>
+<p>In this initial analysis we have found models that do have a lower AIC lower log likelihood than our previous best model, however these model ma’s standard error are to close the the ma values indicating that while we are getting a better fit we might be overfitting to our data.</p>
+<p>As such this does confirm our initial assumption for the choice of a zero q value.</p>
+<p>Now lastly we will check if the auto.arima function does comfirm our initial assumptions.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>modelAuto</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Series: tsAtlantic 
+ARIMA(2,0,0) with non-zero mean 
+
+Coefficients:
+         ar1      ar2     mean
+      0.0990  -0.5565  16.4298
+s.e.  0.1576   0.1488   0.2113
+
+sigma^2 = 4.321:  log likelihood = -93.45
+AIC=194.9   AICc=195.92   BIC=202.04</code></pre>
+</div>
+</div>
+<p>The function does confirm our assumption that ARIMA(2,0,0) is indeed the best model.</p>
+<p>We will now check the residuals to verify if any of ou previously selected model validates well or if it is simply the best of bad models.</p>
+</section>
+</section>
+</section>
+<section id="talk-about-the-model-being-more-easily-explainability-becaues-ma-0" class="level2">
+<h2 class="anchored" data-anchor-id="talk-about-the-model-being-more-easily-explainability-becaues-ma-0">talk about the model being more easily explainability becaues MA = 0</h2>
+<section id="best-model-residual-validation" class="level4">
+<h4 class="anchored" data-anchor-id="best-model-residual-validation">Best model residual validation</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tsdiag</span>(model200)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SpaceAndTimeAssignment_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Initially from the standardised residuals plot we can identify some sort of sinusoidal pattern, this implies that there is a seasonal trend that is not being accounted for in our model and as such this trends needs to be accounted in future models to better explain and increase the prediction power of a new model.</p>
+</section>
+<section id="forecasting" class="level4">
+<h4 class="anchored" data-anchor-id="forecasting">Forecasting</h4>
+<p>Now using the forecast function we will forecast the next 4 quarters of 2021</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">forecast</span>(model200, <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        Point Forecast    Lo 80    Hi 80    Lo 95    Hi 95
+2021 Q1       16.50240 13.83841 19.16639 12.42818 20.57662
+2021 Q2       14.81104 12.13403 17.48804 10.71691 18.90517
+2021 Q3       16.22919 13.18168 19.27669 11.56843 20.88994
+2021 Q4       17.31076 14.24941 20.37212 12.62882 21.99271</code></pre>
+</div>
+</div>
+<p>But this data is better visualized in a graph to better understand if the predictions are sensible compared to our real data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>predictedArimaDF <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="fu">forecast</span>(model200, <span class="dv">4</span>))</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>predictedArimaDF<span class="sc">$</span>YearQuarter <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"2021-Q1"</span>, <span class="st">"2021-Q2"</span>, <span class="st">"2021-Q3"</span>, <span class="st">"2021-Q4"</span>)</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine real_data and pred_data into a single data frame</span></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>combinedDataframeAMOC <span class="ot">&lt;-</span> <span class="fu">rbind</span>(<span class="fu">data.frame</span>(<span class="at">Date =</span> YearQuarterAverage<span class="sc">$</span>YearQuarter,</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Temperature =</span> YearQuarterAverage<span class="sc">$</span>AverageStrength, <span class="at">Type =</span> <span class="st">"Real"</span>), <span class="fu">data.frame</span>(<span class="at">Date =</span> predictedArimaDF<span class="sc">$</span>YearQuarter,</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">Temperature =</span> predictedArimaDF<span class="sc">$</span>Point.Forecast, <span class="at">Type =</span> <span class="st">"Predicted"</span>))</span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>predictedArimaDF<span class="sc">$</span>Temperature <span class="ot">=</span> predictedArimaDF<span class="sc">$</span>Point.Forecast</span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a>predictedArimaDF<span class="sc">$</span>Type <span class="ot">=</span> <span class="st">"Predicted"</span></span>
+<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-15"><a href="#cb57-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the ggplot</span></span>
+<span id="cb57-16"><a href="#cb57-16" aria-hidden="true" tabindex="-1"></a>plotARIMA <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(combinedDataframeAMOC, <span class="fu">aes</span>(<span class="at">x =</span> Date, <span class="at">y =</span> Temperature,</span>
+<span id="cb57-17"><a href="#cb57-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> Type, <span class="at">group =</span> <span class="dv">1</span>)) <span class="sc">+</span> <span class="fu">geom_line</span>() <span class="sc">+</span> <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"blue"</span>,</span>
+<span id="cb57-18"><a href="#cb57-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"red"</span>))</span>
+<span id="cb57-19"><a href="#cb57-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-20"><a href="#cb57-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the 95% confidence interval</span></span>
+<span id="cb57-21"><a href="#cb57-21" aria-hidden="true" tabindex="-1"></a>plotARIMA <span class="ot">&lt;-</span> plotARIMA <span class="sc">+</span> <span class="fu">geom_ribbon</span>(<span class="at">data =</span> predictedArimaDF, <span class="fu">aes</span>(<span class="at">x =</span> YearQuarter,</span>
+<span id="cb57-22"><a href="#cb57-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">ymin =</span> Lo<span class="fl">.95</span>, <span class="at">ymax =</span> Hi<span class="fl">.95</span>), <span class="at">fill =</span> <span class="st">"red"</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>)</span>
+<span id="cb57-23"><a href="#cb57-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-24"><a href="#cb57-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust the x-axis labels</span></span>
+<span id="cb57-25"><a href="#cb57-25" aria-hidden="true" tabindex="-1"></a>plotARIMA <span class="ot">&lt;-</span> plotARIMA <span class="sc">+</span> <span class="fu">scale_x_discrete</span>(<span class="at">breaks =</span> combinedDataframeAMOC<span class="sc">$</span>Date[<span class="fu">c</span>(<span class="cn">TRUE</span>,</span>
+<span id="cb57-26"><a href="#cb57-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rep</span>(<span class="cn">FALSE</span>, <span class="dv">3</span>))], <span class="at">labels =</span> combinedDataframeAMOC<span class="sc">$</span>Date[<span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="fu">rep</span>(<span class="cn">FALSE</span>,</span>
+<span id="cb57-27"><a href="#cb57-27" aria-hidden="true" tabindex="-1"></a>    <span class="dv">3</span>))])</span>
+<span id="cb57-28"><a href="#cb57-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-29"><a href="#cb57-29" aria-hidden="true" tabindex="-1"></a>plotARIMA <span class="ot">&lt;-</span> plotARIMA <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb57-30"><a href="#cb57-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">8</span>))</span>
+<span id="cb57-31"><a href="#cb57-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-32"><a href="#cb57-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the plot</span></span>
+<span id="cb57-33"><a href="#cb57-33" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(plotARIMA)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SpaceAndTimeAssignment_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>As we can see from the graph the ARIMA (2,0,0) seems to give us a sensible forecast for the 2021 quarter values, however as we can see the interval of the prediction accuracy our model is not too certain on the values most likely due to our model not accounting for the seasonal cycle of our data.</p>
+</section>
+<section id="c-1" class="level3">
+<h3 class="anchored" data-anchor-id="c-1">2 c)</h3>
+<section id="initial-assumptions" class="level4">
+<h4 class="anchored" data-anchor-id="initial-assumptions">Initial assumptions</h4>
+<p>From the previous exploratory analysis of the data we have established that the data did not need to be differentiated since it was constant, this translates to polynomial DLM component of order 2 that will use linear model to account for this type of changes in the data.</p>
+<p>Furthermore, from the residual analysis we have inferred that there is an underlying seasonal trend present on the data, this seasonal trend will be represented by a seasonal component of frequency 4 to represent the 4 quarters per year.</p>
+</section>
+<section id="model-fitting" class="level4">
+<h4 class="anchored" data-anchor-id="model-fitting">model fitting</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="do">## linear model, order = 2, quadratic order = 3 , etc</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a><span class="do">## what we want is a linear model with a seasonal component so we add</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a><span class="do">## the 2 components together in a model</span></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a><span class="do">## things to try, another term like quadratic, or a arma component</span></span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a><span class="do">## stacked on top of this</span></span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Initial model with a linear polynomial and a seasonal component</span></span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>buildFun <span class="ot">=</span> <span class="cf">function</span>(x) {</span>
+<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dlmModPoly</span>(<span class="at">order =</span> <span class="dv">2</span>, <span class="at">dV =</span> <span class="fu">exp</span>(x[<span class="dv">1</span>]), <span class="at">dW =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">exp</span>(x[<span class="dv">2</span>]))) <span class="sc">+</span> <span class="fu">dlmModSeas</span>(<span class="at">frequency =</span> <span class="dv">4</span>,</span>
+<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">dV =</span> <span class="dv">0</span>, <span class="at">dW =</span> <span class="fu">c</span>(<span class="fu">exp</span>(x[<span class="dv">3</span>]), <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">2</span>)))</span>
+<span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a>linearDLM <span class="ot">=</span> <span class="fu">dlmMLE</span>(tsAtlantic, <span class="at">parm =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="at">build =</span> buildFun)</span>
+<span id="cb58-17"><a href="#cb58-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-18"><a href="#cb58-18" aria-hidden="true" tabindex="-1"></a>linearDLM<span class="sc">$</span>par</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]   1.151339 -18.078101  -2.189479</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>fittedLinearDLM <span class="ot">=</span> <span class="fu">buildFun</span>(linearDLM<span class="sc">$</span>par)</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(fittedLinearDLM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         [,1]
+[1,] 3.162425</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">W</span>(fittedLinearDLM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1]         [,2]     [,3] [,4] [,5]
+[1,]    0 0.000000e+00 0.000000    0    0
+[2,]    0 1.408576e-08 0.000000    0    0
+[3,]    0 0.000000e+00 0.111975    0    0
+[4,]    0 0.000000e+00 0.000000    0    0
+[5,]    0 0.000000e+00 0.000000    0    0</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="do">## second model with a quadratic polynomial and a seasonal component</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>buildFunQuad <span class="ot">=</span> <span class="cf">function</span>(x) {</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dlmModPoly</span>(<span class="at">order =</span> <span class="dv">3</span>, <span class="at">dV =</span> <span class="fu">exp</span>(x[<span class="dv">1</span>]), <span class="at">dW =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">exp</span>(x[<span class="dv">2</span>]), <span class="fu">exp</span>(x[<span class="dv">3</span>]))) <span class="sc">+</span></span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">dlmModSeas</span>(<span class="at">frequency =</span> <span class="dv">4</span>, <span class="at">dV =</span> <span class="dv">0</span>, <span class="at">dW =</span> <span class="fu">c</span>(<span class="fu">exp</span>(x[<span class="dv">4</span>]), <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">2</span>)))</span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a>quadraticDLM <span class="ot">=</span> <span class="fu">dlmMLE</span>(tsAtlantic, <span class="at">parm =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>), <span class="at">build =</span> buildFunQuad)</span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a>quadraticDLM<span class="sc">$</span>par</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]   1.161355 -17.807081 -28.603103  -2.352292</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>fittedQuadraticDLM <span class="ot">=</span> <span class="fu">buildFunQuad</span>(quadraticDLM<span class="sc">$</span>par)</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a><span class="fu">V</span>(fittedQuadraticDLM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         [,1]
+[1,] 3.194257</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">W</span>(fittedQuadraticDLM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1]         [,2]         [,3]       [,4] [,5] [,6]
+[1,]    0 0.000000e+00 0.000000e+00 0.00000000    0    0
+[2,]    0 1.847069e-08 0.000000e+00 0.00000000    0    0
+[3,]    0 0.000000e+00 3.782948e-13 0.00000000    0    0
+[4,]    0 0.000000e+00 0.000000e+00 0.09515082    0    0
+[5,]    0 0.000000e+00 0.000000e+00 0.00000000    0    0
+[6,]    0 0.000000e+00 0.000000e+00 0.00000000    0    0</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="todo-include-dlm-with-arima" class="level2">
+<h2 class="anchored" data-anchor-id="todo-include-dlm-with-arima">TODO include dlm with arima?</h2>
+<p>Now we will compare both models through their log likelihood using the dlmLL function and see if the extra flexibility from the extra polynomial function is providing a better fit</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dlmLL</span>(tsAtlantic, fittedLinearDLM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 94.98804</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dlmLL</span>(tsAtlantic, fittedQuadraticDLM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 108.043</code></pre>
+</div>
+</div>
+<p>As we can see the dlm model using only a linear polynomial has a lower log likelihood than the model with an extra quadratic term, meaning this extra flexibility does not contribute to a better model fit and as such we will use the linear fitted model to do our forecasting.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>amocPredict <span class="ot">&lt;-</span> <span class="fu">dlmFilter</span>(tsAtlantic, <span class="at">mod =</span> fittedLinearDLM)</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(amocPredict)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Length Class  Mode   
+y    44    ts     numeric
+mod  10    dlm    list   
+m   225    mts    numeric
+U.C  45    -none- list   
+D.C 225    -none- numeric
+a   220    mts    numeric
+U.R  44    -none- list   
+D.R 220    -none- numeric
+f    44    ts     numeric</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">cbind</span>(tsAtlantic, <span class="fu">dropFirst</span>(amocPredict<span class="sc">$</span>a[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)]))</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">window</span>(x, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2010</span>, <span class="dv">1</span>))</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(x) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Gas"</span>, <span class="st">"Trend"</span>, <span class="st">"Seasonal"</span>)</span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, <span class="at">type =</span> <span class="st">"o"</span>, <span class="at">main =</span> <span class="st">"Atlantic AMOC at 26,5N 2010-2020"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SpaceAndTimeAssignment_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>amocForecast <span class="ot">=</span> <span class="fu">dlmForecast</span>(amocPredict, <span class="at">nAhead =</span> <span class="dv">4</span>)</span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(amocForecast)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Length Class  Mode   
+a 20     mts    numeric
+R  4     -none- list   
+f  4     ts     numeric
+Q  4     -none- list   </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(amocForecast<span class="sc">$</span>a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4 5</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(amocForecast<span class="sc">$</span>f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4 1</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>sqrtR <span class="ot">&lt;-</span> <span class="fu">sapply</span>(amocForecast<span class="sc">$</span>R, <span class="cf">function</span>(x) <span class="fu">sqrt</span>(x[<span class="dv">1</span>, <span class="dv">1</span>]))</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>pl <span class="ot">&lt;-</span> amocForecast<span class="sc">$</span>a[, <span class="dv">1</span>] <span class="sc">+</span> <span class="fu">qnorm</span>(<span class="fl">0.025</span>, <span class="at">sd =</span> sqrtR)</span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>pu <span class="ot">&lt;-</span> amocForecast<span class="sc">$</span>a[, <span class="dv">1</span>] <span class="sc">+</span> <span class="fu">qnorm</span>(<span class="fl">0.975</span>, <span class="at">sd =</span> sqrtR)</span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">ts.union</span>(<span class="fu">window</span>(tsAtlantic, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2010</span>, <span class="dv">1</span>)), amocForecast<span class="sc">$</span>a[, <span class="dv">1</span>],</span>
+<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a>    amocForecast<span class="sc">$</span>f, pl, pu)</span>
+<span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, <span class="at">plot.type =</span> <span class="st">"single"</span>, <span class="at">type =</span> <span class="st">"o"</span>, <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">20</span>, <span class="dv">3</span>, <span class="cn">NA</span>, <span class="cn">NA</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"darkgrey"</span>,</span>
+<span id="cb83-8"><a href="#cb83-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"brown"</span>, <span class="st">"brown"</span>, <span class="st">"blue"</span>, <span class="st">"blue"</span>), <span class="at">ylab =</span> <span class="st">"Log gas consumption"</span>)</span>
+<span id="cb83-9"><a href="#cb83-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-10"><a href="#cb83-10" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomright"</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Observed"</span>, <span class="st">"Forecast"</span>, <span class="st">"95% interval"</span>),</span>
+<span id="cb83-11"><a href="#cb83-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">20</span>, <span class="cn">NA</span>), <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"darkgrey"</span>, <span class="st">"brown"</span>,</span>
+<span id="cb83-12"><a href="#cb83-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"blue"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SpaceAndTimeAssignment_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tsdiag</span>(amocPredict)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SpaceAndTimeAssignment_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<section id="d-1" class="level3">
+<h3 class="anchored" data-anchor-id="d-1">2 d)</h3>
+<p>Again comparing the forecast values and their respective prediction intervals as we can see from the graphs bellow the dlm model has smaller prediction intervals, most likely due to being able to explain the underlying seasonal trend reducing therefore the uncertainty in comparison the ARIMA model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(plotARIMA)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SpaceAndTimeAssignment_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>sqaretRoot <span class="ot">&lt;-</span> <span class="fu">sapply</span>(amocForecast<span class="sc">$</span>R, <span class="cf">function</span>(x) <span class="fu">sqrt</span>(x[<span class="dv">1</span>, <span class="dv">1</span>]))</span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>predictionLow <span class="ot">&lt;-</span> amocForecast<span class="sc">$</span>a[, <span class="dv">1</span>] <span class="sc">+</span> <span class="fu">qnorm</span>(<span class="fl">0.025</span>, <span class="at">sd =</span> sqaretRoot)  <span class="do">## Low</span></span>
+<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>predictionUpper <span class="ot">&lt;-</span> amocForecast<span class="sc">$</span>a[, <span class="dv">1</span>] <span class="sc">+</span> <span class="fu">qnorm</span>(<span class="fl">0.975</span>, <span class="at">sd =</span> sqaretRoot)  <span class="do">## Upper </span></span>
+<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">ts.union</span>(<span class="fu">window</span>(tsAtlantic, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2010</span>, <span class="dv">1</span>)), amocForecast<span class="sc">$</span>a[, <span class="dv">1</span>],</span>
+<span id="cb86-5"><a href="#cb86-5" aria-hidden="true" tabindex="-1"></a>    amocForecast<span class="sc">$</span>f, predictionLow, predictionUpper)</span>
+<span id="cb86-6"><a href="#cb86-6" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">2</span>))</span>
+<span id="cb86-7"><a href="#cb86-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(x, <span class="at">plot.type =</span> <span class="st">"single"</span>, <span class="at">type =</span> <span class="st">"o"</span>, <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">20</span>, <span class="dv">3</span>, <span class="cn">NA</span>, <span class="cn">NA</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"darkgrey"</span>,</span>
+<span id="cb86-8"><a href="#cb86-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"brown"</span>, <span class="st">"brown"</span>, <span class="st">"blue"</span>, <span class="st">"blue"</span>), <span class="at">ylab =</span> <span class="st">"Log gas consumption"</span>)</span>
+<span id="cb86-9"><a href="#cb86-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-10"><a href="#cb86-10" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"bottomright"</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">"Observed"</span>, <span class="st">"Forecast"</span>, <span class="st">"95% interval"</span>),</span>
+<span id="cb86-11"><a href="#cb86-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">pch =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">20</span>, <span class="cn">NA</span>), <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"darkgrey"</span>, <span class="st">"brown"</span>,</span>
+<span id="cb86-12"><a href="#cb86-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"blue"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SpaceAndTimeAssignment_files/figure-html/unnamed-chunk-37-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="e" class="level3">
+<h3 class="anchored" data-anchor-id="e">2 e)</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co"># AMOCDFMonthly &lt;- AMOCDF %&gt;% mutate(YearMonth = paste0(year(Date),</span></span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a><span class="co"># '-', month(Date, label = TRUE, abbr = FALSE)))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+
+</div>
+</section>
+</section>
+<section id="question-3" class="level2">
+<h2 class="anchored" data-anchor-id="question-3">Question 3</h2>
+<section id="question-3-a" class="level3">
+<h3 class="anchored" data-anchor-id="question-3-a">Question 3 a)</h3>
+<p>I will start with the time series analysis of the temperature in California</p>
+<p>other approach see max temp in the entire state with 8 cities</p>
+</section>
+</section>
+<section id="todo-warning" class="level2">
+<h2 class="anchored" data-anchor-id="todo-warning">TODO WARNING</h2>
+<p>For a dataset of daily data with only 1 year of a cycle data available a daily frequency won’t be a very good fit because we only have one observation per cycle, we need a hidden entry to capture the 12 months instead</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>californiaTempDF<span class="sc">$</span>Date <span class="ot">=</span> <span class="fu">as.Date</span>(<span class="fu">as.character</span>(californiaTempDF<span class="sc">$</span>Date), <span class="at">format =</span> <span class="st">"%Y%m%d"</span>,</span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">origin =</span> <span class="st">"1970-01-01"</span>)</span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a><span class="do">## its better to just get a time series object for each city and plot</span></span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a><span class="do">## each of those in the same plot</span></span>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a>tsCaliforniaSanDiegoTemp <span class="ot">=</span> <span class="fu">ts</span>(californiaTempDF<span class="sc">$</span><span class="st">`</span><span class="at">San Diego</span><span class="st">`</span>, <span class="at">start =</span> <span class="fu">c</span>(<span class="dv">2012</span>,</span>
+<span id="cb88-8"><a href="#cb88-8" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>), <span class="at">frequency =</span> <span class="dv">366</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot.ts</span>(tsCaliforniaSanDiegoTemp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SpaceAndTimeAssignment_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>californiaLongTempDF <span class="ot">=</span> <span class="fu">pivot_longer</span>(californiaTempDF, <span class="at">cols =</span> <span class="sc">-</span>Date, <span class="at">names_to =</span> <span class="st">"Location"</span>,</span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Temperature"</span>)</span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>spatialTemperatureCaliforniaDF <span class="ot">=</span> <span class="fu">merge</span>(californiaLongTempDF, californiaSpatialDataDF)</span>
+<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-6"><a href="#cb90-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-7"><a href="#cb90-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> spatialTemperatureCaliforniaDF) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> Lat, <span class="at">y =</span> Long,</span>
+<span id="cb90-8"><a href="#cb90-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> Temperature, <span class="at">size =</span> Temperature)) <span class="sc">+</span> <span class="fu">scale_color_continuous</span>(<span class="at">low =</span> <span class="st">"blue"</span>,</span>
+<span id="cb90-9"><a href="#cb90-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">high =</span> <span class="st">"red"</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Precipitation in Netherlands Stations"</span>,</span>
+<span id="cb90-10"><a href="#cb90-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Longitude"</span>, <span class="at">y =</span> <span class="st">"Latitude"</span>, <span class="at">color =</span> <span class="st">"Precipitation"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SpaceAndTimeAssignment_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<section id="b-2" class="level3">
+<h3 class="anchored" data-anchor-id="b-2">3 b)</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>geoDataCalifornia <span class="ot">=</span> <span class="fu">as.geodata</span>(spatialTemperatureCaliforniaDF, <span class="at">coords.col =</span> <span class="dv">4</span><span class="sc">:</span><span class="dv">5</span>,</span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">data.col =</span> <span class="st">"Temperature"</span>, <span class="at">covar.col =</span> <span class="st">"Elev"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>as.geodata: 4004 replicated data locations found. 
+ Consider using jitterDupCoords() for jittering replicated locations. 
+WARNING: there are data at coincident or very closed locations, some of the geoR's functions may not work.
+ Use function dup.coords() to locate duplicated coordinates.
+ Consider using jitterDupCoords() for jittering replicated locations </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>variogramCalifornia <span class="ot">=</span> <span class="fu">variog</span>(geoDataCalifornia)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>variog: computing omnidirectional variogram
+variog: co-locatted data found, adding one bin at the origin</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(variogramCalifornia)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="SpaceAndTimeAssignment_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

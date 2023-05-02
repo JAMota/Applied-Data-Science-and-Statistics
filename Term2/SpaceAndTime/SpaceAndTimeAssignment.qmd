@@ -1,6 +1,9 @@
 ---
 title: "SpaceAndTime"
-format: html
+format: 
+  pdf:
+    toc: true
+    toc-depth: 4
 editor: visual
 ---
 
@@ -31,7 +34,7 @@ library(dlm)
 
 ```
 
-## Question 1 Spatial modelling dutch
+## Question 1 Spatial modelling Kingdom of the Netherlands
 
 ### 1 a)
 
@@ -157,9 +160,11 @@ kriging_result = krige(precip ~ 1, netherlandsDF, grid, model = fitted_variogram
 
 ## TODO look for better initial values.
 
-
+Now that we have the variogram we will start by fitting a model to estimate the covariance via weightled least squares.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+#?variofit
 
 krigingVariogramFitted <- variofit(variogramPrecipitationNetherlands)
 
@@ -392,7 +397,15 @@ We will now check the residuals to verify if any of ou previously selected model
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
+# Set smaller margins
+par(mar = c(4, 4, 2, 2))
+
 tsdiag(model200)
+
+# Reset margins
+par(mar = c(5, 4, 4, 2) + 0.1)
+
+
 
 ```
 Initially from the standardised residuals plot we can identify some sort of sinusoidal pattern, this implies that there is a seasonal trend that is not being accounted for in our model and as such this trends needs to be accounted in future models to better explain and increase the prediction power of a new model.
@@ -583,7 +596,16 @@ legend("bottomright", legend = c("Observed","Forecast", "95% interval"),
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
+# Set smaller margins
+par(mar = c(4, 4, 2, 2))
+
 tsdiag(amocPredict)
+
+# Reset margins
+par(mar = c(5, 4, 4, 2) + 0.1)
+
+
+
 
 ```
 ### 2 d)
