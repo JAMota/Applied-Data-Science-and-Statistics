@@ -129,7 +129,7 @@ variogramPrecipitationNetherlands = variog(precipitationNetherland_geoR, option=
 plot(variogramPrecipitationNetherlands)
 
 ```
-As we can see from the newly updated variogram 
+As we can see from the newly updated variogram the increase is almost linear with a curve near 0 where we can see the need for the nugget.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE, echo=FALSE}
 
@@ -160,11 +160,12 @@ kriging_result = krige(precip ~ 1, netherlandsDF, grid, model = fitted_variogram
 
 ```
 
-## TODO look for better initial values.
 
 Now that we have the variogram we will start by fitting a model to estimate the covariance via weighted least squares. Fitting this variogram we get the estimated values of $\sigma^2, \phi$ and $\tau^2$ also known as the nugget
 
-We will first start with the default Matrén = 0,5 which is equivalent to an exponential and from there we will try different models to search for the model with the best fit.
+We will first start with the default Matrén = 0,5 which is equivalent to an exponential as the form observed in the previous variogram seems to not fully linear and therefore require the curvature from a function like the exponential function to account for the behaviour at the near 0 distance.
+
+From this we will try different models to search for the model with the best fit.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
@@ -179,6 +180,8 @@ krigingVariogramFittedDefault <- variofit(variogramPrecipitationNetherlands, nug
 krigingVariogramFittedDefault
 
 ```
+Now we will increase the kappa of the Matrén to see if the increased flexibility and smoothness leads to a better fit
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
 krigingVariogramFittedMatrén1.5 <- variofit(variogramPrecipitationNetherlands, kappa=1.5, nugget = 85)
@@ -186,6 +189,65 @@ krigingVariogramFittedMatrén1.5
 
 
 ```
+We will first visually compare these 2 models to see which one has a better
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+par(mar=c(4,4,2,2))
+plot(variogramPrecipitationNetherlands, pch = 19)
+lines(krigingVariogramFittedDefault)
+lines(krigingVariogramFittedMatrén1.5, lty = 2)
+#lines(krigingVariogramFittedMatrén2.5, lty = 3)
+
+
+```
+
+Immediately we can see that the extra flexibility of the Matrén 1,5 not only better follows the actual data, it actually accounts correctly for the initial variance from the nugget which the Matrén 0,5 does not as it simply decreases to 0.
+
+We now will test if any additional flexibility changes can improve the model fit
+
+We will first try to again increase the kappa to see if the model again benefits from the extra flexibility
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+krigingVariogramFittedMatrén2.0 <- variofit(variogramPrecipitationNetherlands, kappa=2, nugget = 85)
+krigingVariogramFittedMatrén2.0
+
+
+```
+Here we will instead see if the model will benefit instead form a cut of flexibility to make it less smooth
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+krigingVariogramFittedMatrén1.0 <- variofit(variogramPrecipitationNetherlands, kappa=1, nugget = 85)
+krigingVariogramFittedMatrén1.0
+
+
+```
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+par(mar=c(4,4,2,2))
+plot(variogramPrecipitationNetherlands, pch = 19)
+lines(krigingVariogramFittedMatrén1.5)
+lines(krigingVariogramFittedMatrén1.0, lty = 2)
+lines(krigingVariogramFittedMatrén2.0, lty = 3)
+
+
+
+```
+As we can see from the new graph it does seem that actually a lower flexibility Matrén has a better fit since the extra flexibility near the start and end of the data points made the models deviate too much from the points.
+
+Lastly we will make very small changes in kappa and use the goodness of fit to evaluate each of the models to determine which one is the better fit.
+
+## TODO
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
@@ -194,40 +256,36 @@ krigingVariogramFittedMatrén1.5
 ```
 
 
+### 1 e)
 
 
 
 
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+maximumLikelihood <- likfit(parana, ini.cov.pars = c(10,1))
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
 
 
+```
 
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
 
 1 h) he predicts using the grid but we have to change it to our own coordinate and the prior use previous results
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
-
-
-
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
-
-
-
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
-
-
-
-```
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
-
-
-
-```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
