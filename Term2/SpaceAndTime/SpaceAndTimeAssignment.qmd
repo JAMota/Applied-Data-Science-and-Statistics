@@ -114,7 +114,7 @@ plot(variogramPrecipitationNetherlands)
 variogramPrecipitationNetherlands$n
 
 ```
-From the plotted variogram we can see there a very clear need for a nugget as there is a non-zero value around zero distance, this values seems to be around  100 at the zero distance from how much is it decreasing.
+From the plotted variogram we can see there a very clear need for a nugget as there is a non-zero value around zero distance, this values seems to be around 75 to 100 at the zero distance from how much is it decreasing.
 
 The semi variance continuous to increase with distance till around the distance of 2 degrees distance wise, after this there is a decrease in variance that is not representative of the data as we are more and more uncertain the further we are from our known points, as such we will choose the distance of two as the cut off for the maximum distance.
 
@@ -126,8 +126,10 @@ we know change the maximum distance change and recut our previous variogram.
 
 variogramPrecipitationNetherlands = variog(precipitationNetherland_geoR, option='bin', max.dist = 2)
 
-```
+plot(variogramPrecipitationNetherlands)
 
+```
+As we can see from the newly updated variogram 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE, echo=FALSE}
 
@@ -160,18 +162,45 @@ kriging_result = krige(precip ~ 1, netherlandsDF, grid, model = fitted_variogram
 
 ## TODO look for better initial values.
 
-Now that we have the variogram we will start by fitting a model to estimate the covariance via weightled least squares.
+Now that we have the variogram we will start by fitting a model to estimate the covariance via weighted least squares. Fitting this variogram we get the estimated values of $\sigma^2, \phi$ and $\tau^2$ also known as the nugget
+
+We will first start with the default Matrén = 0,5 which is equivalent to an exponential and from there we will try different models to search for the model with the best fit.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
 #?variofit
+## thau = nugget variability
+## sigmasq = if the model can capture more or less of the total variability
+## phi = if the correlation extends over a bigger or smaller distance
+## loss value = goodness of fit (smaller means better fit)
 
-krigingVariogramFitted <- variofit(variogramPrecipitationNetherlands)
+krigingVariogramFittedDefault <- variofit(variogramPrecipitationNetherlands, nugget = 85)
 
-krigingVariogramFitted
+krigingVariogramFittedDefault
 
 ```
-fitting this variogram we get the estimated values of $\sigma^2, \phi$ and $\tau^2$ also known as the nugget
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+krigingVariogramFittedMatrén1.5 <- variofit(variogramPrecipitationNetherlands, kappa=1.5, nugget = 85)
+krigingVariogramFittedMatrén1.5
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+
+
+
+
+
+
+
+
 
 
 1 h) he predicts using the grid but we have to change it to our own coordinate and the prior use previous results
