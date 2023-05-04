@@ -400,19 +400,37 @@ plot(xv.ml, error = TRUE, std.error = FALSE, pch = 19)
 
 ```
 
+From these plots we can see that the residuals seem mostly normal without any quickly identifiable patterns or bias.
+
+From the first top left graph we can see however that we seem to sightly underestimate more data points.
+
+To account for bias we will also perform cross-validation to the next best performing model using the spherical function instead
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+xv.ml <- xvalid(precipitationNetherland_geoR, model = SphericallinearREMLmaximumLikelihoodNetherlandsInitial10.1)
+par(mfrow=c(3,2),mar=c(4,2,2,2))
+plot(xv.ml, error = TRUE, std.error = FALSE, pch = 19)
+
+```
+As we can see the data at the start seems to be systematically underestimated and at the end it seems to overestimated. Furthermore the theoretical data plot seems to be less linear. This confirms that the spherical covariance function is indeed a worse model than the Matrén model.
+
+### 1 f)
+
+
+
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
 
 
 ```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+### 1 g)
 
 
+### 1 h)
 
-```
-
-1 h) he predicts using the grid but we have to change it to our own coordinate and the prior use previous results
+he predicts using the grid but we have to change it to our own coordinate and the prior use previous results
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
