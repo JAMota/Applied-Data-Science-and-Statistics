@@ -176,7 +176,7 @@ From this we will try different models to search for the model with the best fit
 ## phi = if the correlation extends over a bigger or smaller distance
 ## loss value = goodness of fit (smaller means better fit)
 
-krigingVariogramFittedDefault <- variofit(variogramPrecipitationNetherlands, nugget = 85)
+krigingVariogramFittedDefault =variofit(variogramPrecipitationNetherlands, nugget = 85)
 
 krigingVariogramFittedDefault
 
@@ -185,7 +185,7 @@ Now we will increase the kappa of the Matrén to see if the increased flexibilit
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-krigingVariogramFittedMatrén1.5 <- variofit(variogramPrecipitationNetherlands, kappa=1.5, nugget = 85)
+krigingVariogramFittedMatrén1.5 =variofit(variogramPrecipitationNetherlands, kappa=1.5, nugget = 85)
 krigingVariogramFittedMatrén1.5
 
 
@@ -211,7 +211,7 @@ We will first try to again increase the kappa to see if the model again benefits
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-krigingVariogramFittedMatrén2.0 <- variofit(variogramPrecipitationNetherlands, kappa=2, nugget = 85)
+krigingVariogramFittedMatrén2.0 =variofit(variogramPrecipitationNetherlands, kappa=2, nugget = 85)
 krigingVariogramFittedMatrén2.0
 
 
@@ -220,7 +220,7 @@ Here we will instead see if the model will benefit instead form a cut of flexibi
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-krigingVariogramFittedMatrén1.0 <- variofit(variogramPrecipitationNetherlands, kappa=1, nugget = 85)
+krigingVariogramFittedMatrén1.0 =variofit(variogramPrecipitationNetherlands, kappa=1, nugget = 85)
 krigingVariogramFittedMatrén1.0
 
 
@@ -266,16 +266,16 @@ To fit a model using the maximum likelihood we will have to try multiple initial
 
 #?likest
 
-maximumLikelihoodNetherlandsInitial10.1 <- likfit(precipitationNetherland_geoR,  ini.cov.pars = c(10,1))
-maximumLikelihoodNetherlandsInitial1.10 <- likfit(precipitationNetherland_geoR,  ini.cov.pars = c(1,10))
+maximumLikelihoodNetherlandsInitial10.1 =likfit(precipitationNetherland_geoR,  ini.cov.pars = c(10,1))
+maximumLikelihoodNetherlandsInitial1.10 =likfit(precipitationNetherland_geoR,  ini.cov.pars = c(1,10))
 
-maximumLikelihoodNetherlandsInitial100.10 <- likfit(precipitationNetherland_geoR,  ini.cov.pars = c(100,10))
-maximumLikelihoodNetherlandsInitial10.100 <- likfit(precipitationNetherland_geoR,  ini.cov.pars = c(10,100))
+maximumLikelihoodNetherlandsInitial100.10 =likfit(precipitationNetherland_geoR,  ini.cov.pars = c(100,10))
+maximumLikelihoodNetherlandsInitial10.100 =likfit(precipitationNetherland_geoR,  ini.cov.pars = c(10,100))
 
-maximumLikelihoodNetherlandsInitial1.1 <- likfit(precipitationNetherland_geoR,  ini.cov.pars = c(1,1))
+maximumLikelihoodNetherlandsInitial1.1 =likfit(precipitationNetherland_geoR,  ini.cov.pars = c(1,1))
 
-maximumLikelihoodNetherlandsInitial1000.1000 <- likfit(precipitationNetherland_geoR,  ini.cov.pars = c(1000,1000))
-maximumLikelihoodNetherlandsInitial500.500 <- likfit(precipitationNetherland_geoR,  ini.cov.pars = c(500,500))
+maximumLikelihoodNetherlandsInitial1000.1000 =likfit(precipitationNetherland_geoR,  ini.cov.pars = c(1000,1000))
+maximumLikelihoodNetherlandsInitial500.500 =likfit(precipitationNetherland_geoR,  ini.cov.pars = c(500,500))
 
 
 ```
@@ -292,6 +292,113 @@ maximumLikelihoodNetherlandsInitial500.500
 
 ```
 As we can see from the maximised log-likelihoods it does seem that have indeed reached the maximum log-likelihood as none of the values are too fastly different and the likelihood worsedned as we started to increase much more our starting values.
+
+Next we will try the REML that takes into account the fact that some of the parameters of the model are related to the variance of the residuals and not the mean.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), warning=FALSE}
+
+REMLmaximumLikelihoodNetherlandsInitial10.1 =likfit(precipitationNetherland_geoR, ini.cov.pars = c(10,1), lik.method = 'REML')
+REMLmaximumLikelihoodNetherlandsInitial1.10 =likfit(precipitationNetherland_geoR, ini.cov.pars = c(1,10), lik.method = 'REML')
+
+REMLmaximumLikelihoodNetherlandsInitial100.1 =likfit(precipitationNetherland_geoR, ini.cov.pars = c(100,1), lik.method = 'REML')
+REMLmaximumLikelihoodNetherlandsInitial1.100 =likfit(precipitationNetherland_geoR, ini.cov.pars = c(1,100), lik.method = 'REML')
+
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+REMLmaximumLikelihoodNetherlandsInitial10.1
+REMLmaximumLikelihoodNetherlandsInitial1.10
+REMLmaximumLikelihoodNetherlandsInitial100.1
+REMLmaximumLikelihoodNetherlandsInitial1.100
+
+
+```
+
+As we can see from these new models, the new likelihood method actually did improve our model as we have a lower log-likelihood.
+
+Since the data did not seem to be perfectly stationary as seen in the previous questions, we will now check if adding a linear trend improves our model
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+linearREMLmaximumLikelihoodNetherlandsInitial10.1 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(10,1), lik.method = 'REML')
+linearREMLmaximumLikelihoodNetherlandsInitial1.10 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(1,10), lik.method = 'REML')
+
+
+linearREMLmaximumLikelihoodNetherlandsInitial100.10 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(100,10), lik.method = 'REML')
+linearREMLmaximumLikelihoodNetherlandsInitial10.100 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(10,100), lik.method = 'REML')
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+linearREMLmaximumLikelihoodNetherlandsInitial10.1
+linearREMLmaximumLikelihoodNetherlandsInitial1.10
+linearREMLmaximumLikelihoodNetherlandsInitial100.10
+linearREMLmaximumLikelihoodNetherlandsInitial10.100
+
+```
+From these models we can see that the linear trend does indeed improve our model, now we will check if there are any other covariance functions that can improve the model further.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+Matren0.5linearREMLmaximumLikelihoodNetherlandsInitial10.1 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(10,1), lik.method = 'REML', cov.model = 'matern', kappa = 0.5)
+Matren1.0linearREMLmaximumLikelihoodNetherlandsInitial10.1 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(10,1), lik.method = 'REML', cov.model = 'matern', kappa = 1)
+Matren1.5linearREMLmaximumLikelihoodNetherlandsInitial10.1 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(10,1), lik.method = 'REML', cov.model = 'matern', kappa = 1.5)
+Matren2.0linearREMLmaximumLikelihoodNetherlandsInitial10.1 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(10,1), lik.method = 'REML', cov.model = 'matern', kappa = 2)
+Matren2.5linearREMLmaximumLikelihoodNetherlandsInitial10.1 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(10,1), lik.method = 'REML', cov.model = 'matern', kappa = 2.5)
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+Matren0.5linearREMLmaximumLikelihoodNetherlandsInitial10.1
+Matren1.0linearREMLmaximumLikelihoodNetherlandsInitial10.1
+Matren1.5linearREMLmaximumLikelihoodNetherlandsInitial10.1
+Matren2.0linearREMLmaximumLikelihoodNetherlandsInitial10.1
+Matren2.5linearREMLmaximumLikelihoodNetherlandsInitial10.1
+
+```
+
+It does seem that the matrén covariance function did indeed slightly improved the model so we will compare it to a model using a spherical covariance function. The spherical covariance function is appropriate for this scenario has the spatial correlation between data points decreases rapidly as the distance between the points increases and we are limited with the range of correlation has after 2 degrees of distance we loose sensible correlation, hence the cut in the variogram.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+SphericallinearREMLmaximumLikelihoodNetherlandsInitial10.1 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(10,1), lik.method = 'REML', cov.model = 'spherical')
+
+SphericallinearREMLmaximumLikelihoodNetherlandsInitial1.10 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(1,10), lik.method = 'REML', cov.model = 'spherical')
+
+SphericallinearREMLmaximumLikelihoodNetherlandsInitial100.10 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(100,10), lik.method = 'REML', cov.model = 'spherical')
+SphericallinearREMLmaximumLikelihoodNetherlandsInitial10.100 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(10,100), lik.method = 'REML', cov.model = 'spherical')
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+SphericallinearREMLmaximumLikelihoodNetherlandsInitial10.1
+SphericallinearREMLmaximumLikelihoodNetherlandsInitial1.10
+SphericallinearREMLmaximumLikelihoodNetherlandsInitial100.10
+SphericallinearREMLmaximumLikelihoodNetherlandsInitial10.100
+
+```
+
+As we can see the spherical covariance function does not provide as good of a fit as the Matrén.
+
+We will now validate the model by doing cross-validation on the model.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+xv.ml <- xvalid(precipitationNetherland_geoR, model = Matren2.5linearREMLmaximumLikelihoodNetherlandsInitial10.1)
+par(mfrow=c(3,2),mar=c(4,2,2,2))
+plot(xv.ml, error = TRUE, std.error = FALSE, pch = 19)
+
+```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
@@ -539,7 +646,7 @@ predictedArimaDF = data.frame(forecast(model200, 4))
 predictedArimaDF$YearQuarter =  c("2021-Q1"	, "2021-Q2", "2021-Q3","2021-Q4"	)
 
 # Combine real_data and pred_data into a single data frame
-combinedDataframeAMOC <- rbind(
+combinedDataframeAMOC =rbind(
   data.frame(Date = YearQuarterAverage$YearQuarter, Temperature = YearQuarterAverage$AverageStrength, Type = "Real"),
   data.frame(Date = predictedArimaDF$YearQuarter, Temperature = predictedArimaDF$Point.Forecast, Type = "Predicted")
 )
@@ -550,24 +657,24 @@ predictedArimaDF$Type = "Predicted"
 
 
 # Create the ggplot
-plotARIMA <- ggplot(combinedDataframeAMOC, aes(x = Date, y = Temperature, color = Type, group = 1)) +
+plotARIMA =ggplot(combinedDataframeAMOC, aes(x = Date, y = Temperature, color = Type, group = 1)) +
   geom_line() +
   scale_color_manual(values = c("blue", "red"))
 
 # Add the 95% confidence interval
-plotARIMA <- plotARIMA + geom_ribbon(
+plotARIMA =plotARIMA + geom_ribbon(
   data = predictedArimaDF, aes(x = YearQuarter, ymin = Lo.95, ymax = Hi.95),
   fill = "red",
   alpha = 0.2
 )
 
 # Adjust the x-axis labels
-plotARIMA <- plotARIMA + scale_x_discrete(
+plotARIMA =plotARIMA + scale_x_discrete(
   breaks = combinedDataframeAMOC$Date[c(TRUE, rep(FALSE, 3))],
   labels = combinedDataframeAMOC$Date[c(TRUE, rep(FALSE, 3))]
 )
 
-plotARIMA <- plotARIMA + theme(
+plotARIMA =plotARIMA + theme(
   axis.text.x = element_text(angle = 90, vjust = 0.5, size = 8)
 )
 
@@ -655,7 +762,7 @@ As we can see the dlm model using only a linear polynomial has a lower log likel
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-amocPredict <- dlmFilter(tsAtlantic, mod = fittedLinearDLM)
+amocPredict =dlmFilter(tsAtlantic, mod = fittedLinearDLM)
 summary(amocPredict)
 
 
@@ -663,9 +770,9 @@ summary(amocPredict)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-x <- cbind(tsAtlantic, dropFirst(amocPredict$a[,c(1,3)]))
-x <- window(x, start = c(2010,1))
-colnames(x) <- c("Gas", "Trend", "Seasonal")
+x =cbind(tsAtlantic, dropFirst(amocPredict$a[,c(1,3)]))
+x =window(x, start = c(2010,1))
+colnames(x) =c("Gas", "Trend", "Seasonal")
 plot(x, type = 'o', main = "Atlantic AMOC at 26,5N 2010-2020")
 
 ```
@@ -684,10 +791,10 @@ dim(amocForecast$f)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-sqrtR <- sapply(amocForecast$R, function(x) sqrt(x[1,1]))
-pl <- amocForecast$a[,1] + qnorm(0.025, sd = sqrtR)
-pu <- amocForecast$a[,1] + qnorm(0.975, sd = sqrtR)
-x <- ts.union(window(tsAtlantic, start = c(2010, 1)),
+sqrtR =sapply(amocForecast$R, function(x) sqrt(x[1,1]))
+pl =amocForecast$a[,1] + qnorm(0.025, sd = sqrtR)
+pu =amocForecast$a[,1] + qnorm(0.975, sd = sqrtR)
+x =ts.union(window(tsAtlantic, start = c(2010, 1)),
     amocForecast$a[,1],
     amocForecast$f, pl, pu)
 par(mar=c(4,4,2,2))
@@ -723,10 +830,10 @@ Again comparing the forecast values and their respective prediction intervals as
 
 print(plotARIMA)
 
-sqaretRoot <- sapply(amocForecast$R, function(x) sqrt(x[1,1]))
-predictionLow <- amocForecast$a[,1] + qnorm(0.025, sd = sqaretRoot) ## Low
-predictionUpper <- amocForecast$a[,1] + qnorm(0.975, sd = sqaretRoot) ## Upper 
-x <- ts.union(window(tsAtlantic, start = c(2010, 1)),
+sqaretRoot =sapply(amocForecast$R, function(x) sqrt(x[1,1]))
+predictionLow =amocForecast$a[,1] + qnorm(0.025, sd = sqaretRoot) ## Low
+predictionUpper =amocForecast$a[,1] + qnorm(0.975, sd = sqaretRoot) ## Upper 
+x =ts.union(window(tsAtlantic, start = c(2010, 1)),
     amocForecast$a[,1],
     amocForecast$f, predictionLow, predictionUpper)
 par(mar=c(4,4,2,2))
@@ -747,7 +854,7 @@ legend("bottomright", legend = c("Observed","Forecast", "95% interval"),
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-# AMOCDFMonthly <- AMOCDF %>%
+# AMOCDFMonthly =AMOCDF %>%
 #   mutate(YearMonth = paste0(year(Date), "-", month(Date, label = TRUE, abbr = FALSE)))
 
 
