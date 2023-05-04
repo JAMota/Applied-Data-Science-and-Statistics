@@ -33,6 +33,7 @@ library(dlm)
 
 
 ```
+## TODO check if I checked all the residuals for all models
 
 ## Question 1 Spatial modelling Kingdom of the Netherlands
 
@@ -259,19 +260,38 @@ Lastly we will make very small changes in kappa and use the goodness of fit to e
 ### 1 e)
 
 
-
+To fit a model using the maximum likelihood we will have to try multiple initial values to make sure this is indeed the maximum likelihood and not just a local maximum.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-maximumLikelihood <- likfit(parana, ini.cov.pars = c(10,1))
+#?likest
+
+maximumLikelihoodNetherlandsInitial10.1 <- likfit(precipitationNetherland_geoR,  ini.cov.pars = c(10,1))
+maximumLikelihoodNetherlandsInitial1.10 <- likfit(precipitationNetherland_geoR,  ini.cov.pars = c(1,10))
+
+maximumLikelihoodNetherlandsInitial100.10 <- likfit(precipitationNetherland_geoR,  ini.cov.pars = c(100,10))
+maximumLikelihoodNetherlandsInitial10.100 <- likfit(precipitationNetherland_geoR,  ini.cov.pars = c(10,100))
+
+maximumLikelihoodNetherlandsInitial1.1 <- likfit(precipitationNetherland_geoR,  ini.cov.pars = c(1,1))
+
+maximumLikelihoodNetherlandsInitial1000.1000 <- likfit(precipitationNetherland_geoR,  ini.cov.pars = c(1000,1000))
+maximumLikelihoodNetherlandsInitial500.500 <- likfit(precipitationNetherland_geoR,  ini.cov.pars = c(500,500))
+
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-
+maximumLikelihoodNetherlandsInitial10.1
+maximumLikelihoodNetherlandsInitial1.10
+maximumLikelihoodNetherlandsInitial100.10
+maximumLikelihoodNetherlandsInitial10.100
+maximumLikelihoodNetherlandsInitial1.1
+maximumLikelihoodNetherlandsInitial1000.1000
+maximumLikelihoodNetherlandsInitial500.500
 
 ```
+As we can see from the maximised log-likelihoods it does seem that have indeed reached the maximum log-likelihood as none of the values are too fastly different and the likelihood worsedned as we started to increase much more our starting values.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
