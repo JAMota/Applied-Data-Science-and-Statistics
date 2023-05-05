@@ -1385,6 +1385,38 @@ plot(x, type = 'o', main = "Atlantic AMOC at 26,5N 2010-2020")
 #### Forecast
 
 
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+amocForecast = dlmForecast(amocPredict, nAhead = 12)
+summary(amocForecast)
+
+dim(amocForecast$a)
+
+dim(amocForecast$f)
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+sqrtR =sapply(amocForecast$R, function(x) sqrt(x[1,1]))
+pl =amocForecast$a[,1] + qnorm(0.025, sd = sqrtR)
+pu =amocForecast$a[,1] + qnorm(0.975, sd = sqrtR)
+
+x =ts.union(window(tsAtlanticMonthly, start = c(2010, 1)),
+    amocForecast$a[,1],
+    amocForecast$f, pl, pu)
+par(mar=c(4,4,2,2))
+plot(x, plot.type = "single", type = 'o', pch = c(1, 20, 3, NA, NA),
+    col = c("darkgrey", "brown", "brown", "blue", "blue"),
+    ylab = "Log gas consumption")
+
+legend("bottomright", legend = c("Observed","Forecast", "95% interval"),
+    bty = 'n', pch = c(1, 20, NA), lty = 1,
+    col = c("darkgrey", "brown", "blue"))
+
+```
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
