@@ -457,7 +457,7 @@ Now for the maximum likelihood function
 
 
 # Set the krige.control parameters
-krigeControl = krige.control(type.krige = "OK", cov.model = krigingVariogramFittedMatrén1.0$cov.model, cov.pars = krigingVariogramFittedMatrén1.0$cov.pars)
+krigeControl = krige.control(type.krige = "OK", cov.model = Matren2.5linearREMLmaximumLikelihoodNetherlandsInitial10.1$cov.model, cov.pars = Matren2.5linearREMLmaximumLikelihoodNetherlandsInitial10.1$cov.pars)
 
 
 # Kriging with the fitted variogram model
@@ -470,7 +470,17 @@ predictions = krigeResults$predict
 
 # done above
 #actualPrecipitationValues = randomRowsPrecipitation[,4]
-comparisonvariogram = data.frame(actualPrecipitationValues, predictions)
+comparisonMaximumLikelihood = data.frame(actualPrecipitationValues, predictions)
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+comparisonvariogram
+comparisonMaximumLikelihood 
 
 
 
