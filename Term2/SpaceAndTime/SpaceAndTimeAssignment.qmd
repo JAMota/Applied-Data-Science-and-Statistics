@@ -518,22 +518,22 @@ As we can see from both the real values and the MAE, MSE and RMSE the variogram 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
 # Determine the range of the coordinates
-x_range = range(precipitationNetherland_geoR$coords[, 1])
-y_range = range(precipitationNetherland_geoR$coords[, 2])
+xRange = range(precipitationNetherland_geoR$coords[, 1])
+yRange = range(precipitationNetherland_geoR$coords[, 2])
 
 # Create a grid with 0.05-degree spacing
-grid_points = expand.grid(x = seq(x_range[1], x_range[2], by = 0.05),
-                           y = seq(y_range[1], y_range[2], by = 0.05))
+gridPoints = expand.grid(x = seq(xRange[1], xRange[2], by = 0.05),
+                           y = seq(yRange[1], yRange[2], by = 0.05))
 
 
 # Kriging with the fitted variogram model
-krigeResults = krige.conv(precipitationNetherland_geoR, locations = grid_points, krige = krigeControl)
+krigeResults = krige.conv(precipitationNetherland_geoR, locations = gridPoints, krige = krigeControl)
 
 # Create a data frame for the grid points with the predicted mean and variance
-grid_data = data.frame(grid_points, mean = krigeResults$predict, variance = krigeResults$krige.var)
+gridData = data.frame(gridPoints, mean = krigeResults$predict, variance = krigeResults$krige.var)
 
 # Mean plot
-mean_plot = ggplot(grid_data, aes(x = x, y = y, fill = mean)) +
+meanPlot = ggplot(gridData, aes(x = x, y = y, fill = mean)) +
   geom_tile() +
   scale_fill_gradientn(colors = c("blue", "green", "yellow", "red")) +
   theme_minimal() +
@@ -541,7 +541,7 @@ mean_plot = ggplot(grid_data, aes(x = x, y = y, fill = mean)) +
   labs(x = "Longitude", y = "Latitude", fill = "Mean")
 
 # Variance plot
-variance_plot = ggplot(grid_data, aes(x = x, y = y, fill = variance)) +
+variancePlot = ggplot(gridData, aes(x = x, y = y, fill = variance)) +
   geom_tile() +
   scale_fill_gradientn(colors = c("white", "blue", "green", "yellow", "red")) +
   theme_minimal() +
@@ -549,8 +549,8 @@ variance_plot = ggplot(grid_data, aes(x = x, y = y, fill = variance)) +
   labs(x = "Longitude", y = "Latitude", fill = "Variance")
 
 # Display the plots
-print(mean_plot)
-print(variance_plot)
+print(meanPlot)
+print(variancePlot)
 
 
 ```
