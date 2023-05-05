@@ -601,7 +601,7 @@ phiProbability <- phiProbability / sum(phiProbability)
 tauSqProbability <- tauSqProbability / sum(tauSqProbability)
 
 
-ex.grid <- as.matrix(expand.grid(seq(50.5,53.5,l=6), seq(3.5,7,l=7)))
+ex.grid <- as.matrix(expand.grid(seq(50.5,53.5,l=15), seq(3.5,7,l=15)))
 
 
 # Fitting the krige.bayes model with the informative priors
@@ -625,39 +625,30 @@ Now we will compare the posterior of both of the models to see the impact of the
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
 # Extract posterior samples for phi and tau^2_rel
-posterior_samples_model1 <- krigeBayesModelWithNugget$posterior$phi
-posterior_samples_model2 <- krigeBayesModelWithoutNugget$posterior$phi
-
+posterior_samples_model1 <- krigeBayesModelWithNugget$posterior$phi$phi.marginal$phi
+posterior_samples_model2 <- krigeBayesModelWithoutNugget$posterior$phi$phi.marginal$phi
 
 # Plot the posterior distributions
-hist(posterior_samples_model1[, "phi"], freq = FALSE, main = "Posterior Distributions for phi", xlab = "phi", col = "blue", xlim = range(c(posterior_samples_model1[, "phi"], posterior_samples_model2[, "phi"])))
-hist(posterior_samples_model2[, "phi"], freq = FALSE, add = TRUE, col = rgb(0, 1, 0, 0.5))
+hist(posterior_samples_model1, freq = FALSE, main = "Posterior Distributions for phi (Model 1)", xlab = "phi", col = "blue", xlim = range(c(posterior_samples_model1, posterior_samples_model2)))
+hist(posterior_samples_model2, freq = FALSE, main = "Posterior Distributions for phi (Model 2)", xlab = "phi", col = "blue", xlim = range(c(posterior_samples_model1, posterior_samples_model2)))
+
 
 # Compare summary statistics
 summary_model1 <- summary(posterior_samples_model1)
 summary_model2 <- summary(posterior_samples_model2)
-cat("Model 1 summary statistics for phi:\n", summary_model1[, "phi"])
-cat("Model 2 summary statistics for phi:\n", summary_model2[, "phi"])
 
-# Calculate MAP estimates
-MAP_model1_phi <- posterior_samples_model1[which.max(density(posterior_samples_model1[, "phi"])$y), "phi"]
-MAP_model2_phi <- posterior_samples_model2[which.max(density(posterior_samples_model2[, "phi"])$y), "phi"]
-cat("Model 1 MAP estimate for phi:", MAP_model1_phi, "\n")
-cat("Model 2 MAP estimate for phi:", MAP_model2_phi, "\n")
+cat("model 1 :\n")
+summary_model1
+cat("\n\n model 2 :\n")
 
+summary_model2
 
-
-
-# Plot the posterior distributions for phi
-par(mfrow = c(2, 1)) # Set up a 2x1 grid of plots
-
-hist(posterior_samples_model1[, "phi"], freq = FALSE, main = "Posterior Distributions for phi (Model 1)", xlab = "phi", col = "blue")
-hist(posterior_samples_model2[, "phi"], freq = FALSE, main = "Posterior Distributions for phi (Model 2)", xlab = "phi", col = "blue")
 
 # Reset the plot layout
 par(mfrow = c(1, 1))
 
 ```
+As we can seem with a low number of binds we can't see any significant difference in the summaries or histogram between the models with and without a nugget
 
 ## Question 2
 
@@ -1089,6 +1080,228 @@ legend("bottomright", legend = c("Observed","Forecast", "95% interval"),
 
 # AMOCDFMonthly =AMOCDF %>%
 #   mutate(YearMonth = paste0(year(Date), "-", month(Date, label = TRUE, abbr = FALSE)))
+
+
+## I will now make a column with the month and year that I will use to create the monthly averages 
+AMOCDF$YearMonth = paste(AMOCDF$Year, AMOCDF$Month, sep = "-")
+
+YearMonthlyAverage = AMOCDF %>%
+  group_by(YearMonth) %>%
+  summarise(AverageStrength = mean(Strength))
+
+```
+
+Now we will create a new montly time series object and make it univariate
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+tsAtlanticMonthly = ts(YearMonthlyAverage, start = c(2010, 1), frequency = 12)
+
+tsAtlanticMonthly = tsAtlanticMonthly[, "AverageStrength"]
+
+plot.ts(tsAtlanticMonthly)
+
+```
+Seeing this graph we can observe that the data continues being stationary for the ARIMA model but a seasonal trend not only is more apparently but it also appear to need to be differentiated as it seems to have a decreasing linear trend
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+acf(tsAtlanticMonthly)
+
+pacf(tsAtlanticMonthly)
+
+
+```
+
+The acf has a very clear cut-off as only 3 the values are significant which is very similar to what we had observed previously.
+
+The main difference is in the pacf, where we can now say for sure that there is a very clear cut-off after the first value.
+
+#### Model testing
+
+These pattern suggests that an ARMA/ARIMA model might be the most appropriate so first we will check them out with the seasonal component of order 1,  the so quick cut-off of both the ACF and PACF also might suggest that p and q will be smaller values.
+
+<!-- From these model summaries we can see that has we increase p and q the AIC increases, with our best performing model being the ARIMA 1,0,1 so now we will check if this continues to happen when we account for the monthly seasonal cycles -->
+
+#### Seasonal check
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+## initial assumption
+
+
+modelMonthlySeasonal100.110 = Arima(tsAtlanticMonthly, order = c(1,0,0), 
+                                  seasonal = list(order = c(1, 1, 0), period = 12))
+
+modelMonthlySeasonal100.011 = Arima(tsAtlanticMonthly, order = c(1,0,0), 
+                                  seasonal = list(order = c(0, 1, 1), period = 12))
+
+modelMonthlySeasonal200.210 = Arima(tsAtlanticMonthly, order = c(2,0,0), 
+                                  seasonal = list(order = c(2, 1, 0), period = 12))
+modelMonthlySeasonal200.012 = Arima(tsAtlanticMonthly, order = c(2,0,0), 
+                                  seasonal = list(order = c(0, 1, 2), period = 12))
+
+modelMonthlySeasonal001.110 = Arima(tsAtlanticMonthly, order = c(0,0,1), 
+                                  seasonal = list(order = c(1, 1, 0), period = 12))
+
+modelMonthlySeasonal001.011 = Arima(tsAtlanticMonthly, order = c(0,0,1), 
+                                  seasonal = list(order = c(0, 1, 1), period = 12))
+
+modelMonthlySeasonal002.210 = Arima(tsAtlanticMonthly, order = c(0,0,2), 
+                                  seasonal = list(order = c(2, 1, 0), period = 12))
+modelMonthlySeasonal002.012 = Arima(tsAtlanticMonthly, order = c(0,0,2), 
+                                  seasonal = list(order = c(0, 1, 2), period = 12))
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+modelMonthlySeasonal100.110
+
+modelMonthlySeasonal100.011
+
+modelMonthlySeasonal200.210
+modelMonthlySeasonal200.012
+
+modelMonthlySeasonal001.110
+
+modelMonthlySeasonal001.011
+
+modelMonthlySeasonal002.210
+modelMonthlySeasonal002.012
+
+```
+
+So as suspected from both the time series plot and the last exercise analysis the added seasonality does increase our model goodness of fit while also penalising the increased in complexity with so far. 
+
+Now lets compare them to bigger p and q values to see if our initial assumptions do hold up
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+modelMonthlySeasonal301 = Arima(tsAtlanticMonthly, order = c(3,0,1), 
+                                  seasonal = list(order = c(1, 1, 1), period = 12))
+modelMonthlySeasonal302 = Arima(tsAtlanticMonthly, order = c(3,0,2), 
+                                  seasonal = list(order = c(1, 1, 0), period = 12))
+modelMonthlySeasonal303 = Arima(tsAtlanticMonthly, order = c(3,1,3), 
+                                  seasonal = list(order = c(1, 1, 0), period = 12))
+
+modelMonthlySeasonal103 = Arima(tsAtlanticMonthly, order = c(1,0,3), 
+                                  seasonal = list(order = c(1, 1, 1), period = 12))
+modelMonthlySeasonal203 = Arima(tsAtlanticMonthly, order = c(2,1,3), 
+                                  seasonal = list(order = c(1, 1, 0), period = 12))
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+modelMonthlySeasonal301
+modelMonthlySeasonal302
+modelMonthlySeasonal303
+
+modelMonthlySeasonal103
+modelMonthlySeasonal203
+
+
+```
+As we can see here the initial assumption that a smaller p and q value would better fit the model.
+
+Now we will use auto.arima to verify if our assumptions were indeed correct
+
+#### auto arima check
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+?auto.arima
+
+monthlyModelAuto = auto.arima(tsAtlanticMonthly, max.d = 0, max.p = 5, max.q = 5,  D =1)
+monthlyModelAuto
+
+```
+From what we can see the auto arima has indeed confirmed our initial assumption by picking a model that we already had seen as the best performer ARIMA(1,0,0)(0,1,1)[12] 
+
+
+#### Forecasting 
+
+Now using the forecast function we will forecast the next 4 quarters of 2021 
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+forecast(modelMonthlySeasonal100.011, 12)
+
+
+```
+
+But this data is better visualized in a graph to better understand if the predictions are sensible compared to our real data.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+predictedArimaSeasonalDF = data.frame(forecast(modelMonthlySeasonal100.011, 12))  
+
+predictedArimaDF$YearQuarter =  c("2021-Q1"	, "2021-Q2", "2021-Q3","2021-Q4"	)
+
+# Combine real_data and pred_data into a single data frame
+combinedDataframeAMOC =rbind(
+  data.frame(Date = YearQuarterAverage$YearQuarter, Temperature = YearQuarterAverage$AverageStrength, Type = "Real"),
+  data.frame(Date = predictedArimaDF$YearQuarter, Temperature = predictedArimaDF$Point.Forecast, Type = "Predicted")
+)
+
+predictedArimaDF$Temperature = predictedArimaDF$Point.Forecast
+
+predictedArimaDF$Type = "Predicted"
+
+
+# Create the ggplot
+plotARIMA =ggplot(combinedDataframeAMOC, aes(x = Date, y = Temperature, color = Type, group = 1)) +
+  geom_line() +
+  scale_color_manual(values = c("blue", "red"))
+
+# Add the 95% confidence interval
+plotARIMA =plotARIMA + geom_ribbon(
+  data = predictedArimaDF, aes(x = YearQuarter, ymin = Lo.95, ymax = Hi.95),
+  fill = "red",
+  alpha = 0.2
+)
+
+# Adjust the x-axis labels
+plotARIMA =plotARIMA + scale_x_discrete(
+  breaks = combinedDataframeAMOC$Date[c(TRUE, rep(FALSE, 3))],
+  labels = combinedDataframeAMOC$Date[c(TRUE, rep(FALSE, 3))]
+)
+
+plotARIMA =plotARIMA + theme(
+  axis.text.x = element_text(angle = 90, vjust = 0.5, size = 8)
+)
+
+# Display the plot
+print(plotARIMA)
+
+
+
+
+```
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
 
 
 ```
