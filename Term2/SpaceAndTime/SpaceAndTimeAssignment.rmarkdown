@@ -1,0 +1,1970 @@
+---
+title: "SpaceAndTime"
+format: 
+  pdf:
+    toc: true
+    toc-depth: 4
+editor: visual
+---
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, output=FALSE}
+rm(list = ls())
+
+library(class) # this has the knn function
+library(ggplot2)
+library(tidyverse)
+library(tidyr)
+library(DataExplorer)
+
+netherlandsDF = read_csv("assessmentData/netherlands.csv")
+californiaTempDF = read_csv("assessmentData/maxTempCalifornia.csv")
+AMOCDF = read_csv("assessmentData/AMOCdata.csv")
+californiaSpatialDataDF = read_csv("assessmentData/metadataCA.csv")
+
+#install.packages('gstat')
+#library(gstat)
+library(geoR)
+library(viridis)
+library(sp)
+
+library(forecast)
+
+library(dlm)
+
+
+```
+
+## TODO check if I checked all the residuals for all models
+
+## Question 1 Spatial modelling Kingdom of the Netherlands
+
+### 1 a)
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+ggplot(data = netherlandsDF) +
+  geom_point(aes(x = longitude, y = latitude, size = precip, color = precip)) +
+  scale_color_continuous(low = "blue", high = "red") +
+  labs(title = "Precipitation in Netherlands Stations",
+       x = "Longitude",
+       y = "Latitude",
+       size = "Precipitation",
+       color = "Precipitation") +
+  theme_minimal()
+
+```
+
+From what we can see from the data it does seem to be spatially correlated as we can that the Dutch provinces of north Holland, Friesland and Groningen has higher precipitation and as we go south the precipitation does decrease as we can see from the Dutch provinces of Zeeland, north Brabant and Limburg where precipitation is significantly lower than their northern counterparts. 
+
+From this data, latitude seems to be the biggest factor in the variation of the precipitation as the longitude only suggests some slight variations in the data.
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+# Create geodata object
+precipitationNetherland_geoR = as.geodata(netherlandsDF, coords.col = c("longitude", "latitude"), data.col = "precip")
+
+summary(precipitationNetherland_geoR)
+
+```
+
+<!-- https://notepub.io/notes/mathematics/statistics/descriptive-statistics/descriptive-statistics-moments-skewness-and-kurtosis/ -->
+<!-- Central Tendency Measures in  Negatively, Zero, Positively Skewed Curve -->
+
+
+As we can see from the numerical summary of the data the median is different from the mean, which indicates it is not a symmetric distribution of data points and is instead positively skewed since the mean is bigger than the median. 
+As such there are more values on the left side of the distribution.
+
+### 1 b)
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+# set seed for reproducibility
+set.seed(26041999)
+
+# Select 3 random rows from the data frame
+randomRowsPrecipitation = netherlandsDF %>% sample_n(3)
+
+# Add a new column with labels
+randomRowsPrecipitation$label = c("A", "B", "C")
+
+# Print the randomly selected rows
+randomRowsPrecipitation
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+# Remove the selected rows from the original dataset
+netherlandsDF_filtered = netherlandsDF %>% anti_join(randomRowsPrecipitation)
+
+# Print the resulting dataframe
+netherlandsDF_filtered
+
+## recreate the geoData object with the new filtered dataframe
+precipitationNetherland_geoR = as.geodata(netherlandsDF_filtered, coords.col = c("longitude", "latitude"), data.col = "precip")
+
+```
+
+
+### 1 c)
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+# # Calculate empirical variogram
+variogramPrecipitationNetherlands = variog(precipitationNetherland_geoR)
+
+# Plot empirical variogram
+plot(variogramPrecipitationNetherlands)
+
+variogramPrecipitationNetherlands$n
+
+```
+
+From the plotted variogram we can see there a very clear need for a nugget as there is a non-zero value around zero distance, this values seems to be around 75 to 100 at the zero distance from how much is it decreasing.
+
+The semi variance continuous to increase with distance till around the distance of 2 degrees distance wise, after this there is a decrease in variance that is not representative of the data as we are more and more uncertain the further we are from our known points, as such we will choose the distance of two as the cut off for the maximum distance.
+
+<!-- , as such there is no clear trend to help us decide in a clear cut off to set as our maximum distance, as such it is better to compare multiple models with different maximum distances to determine the most optimal maximum distance. -->
+
+we know change the maximum distance change and recut our previous variogram.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+variogramPrecipitationNetherlands = variog(precipitationNetherland_geoR, option='bin', max.dist = 2)
+
+plot(variogramPrecipitationNetherlands)
+
+```
+
+As we can see from the newly updated variogram the increase is almost linear with a curve near 0 where we can see the need for the nugget.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE, echo=FALSE}
+
+coordinates(netherlandsDF) = ~longitude+latitude
+geodata = as.geodata(netherlandsDF, coords.col = 1:2, data.col = 4)
+
+sample_variogram = variog(geodata)
+
+
+```
+
+
+### 1 d)
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), eval=FALSE, echo=FALSE}
+
+# Create a grid for interpolation
+grid = expand.grid(longitude = seq(min(netherlandsDF$longitude), max(netherlandsDF$longitude),
+          length.out = 100),
+          latitude = seq(min(netherlandsDF$latitude), max(netherlandsDF$latitude), length.out = 100))
+
+coordinates(grid) = ~longitude + latitude
+gridded(grid) = TRUE
+
+# Perform ordinary Kriging
+kriging_result = krige(precip ~ 1, netherlandsDF, grid, model = fitted_variogram)
+
+
+```
+
+
+
+Now that we have the variogram we will start by fitting a model to estimate the covariance via weighted least squares. Fitting this variogram we get the estimated values of $\sigma^2, \phi$ and $\tau^2$ also known as the nugget
+
+We will first start with the default Matrén = 0,5 which is equivalent to an exponential as the form observed in the previous variogram seems to not fully linear and therefore require the curvature from a function like the exponential function to account for the behaviour at the near 0 distance.
+
+From this we will try different models to search for the model with the best fit.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+#?variofit
+## thau = nugget variability
+## sigmasq = if the model can capture more or less of the total variability
+## phi = if the correlation extends over a bigger or smaller distance
+## loss value = goodness of fit (smaller means better fit)
+
+krigingVariogramFittedDefault =variofit(variogramPrecipitationNetherlands, nugget = 85)
+
+krigingVariogramFittedDefault
+
+```
+
+Now we will increase the kappa of the Matrén to see if the increased flexibility and smoothness leads to a better fit
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+krigingVariogramFittedMatrén1.5 =variofit(variogramPrecipitationNetherlands, kappa=1.5, nugget = 85)
+krigingVariogramFittedMatrén1.5
+
+
+```
+
+We will first visually compare these 2 models to see which one has a better
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+par(mar=c(4,4,2,2))
+plot(variogramPrecipitationNetherlands, pch = 19)
+lines(krigingVariogramFittedDefault)
+lines(krigingVariogramFittedMatrén1.5, lty = 2)
+#lines(krigingVariogramFittedMatrén2.5, lty = 3)
+
+
+```
+
+
+Immediately we can see that the extra flexibility of the Matrén 1,5 not only better follows the actual data, it actually accounts correctly for the initial variance from the nugget which the Matrén 0,5 does not as it simply decreases to 0.
+
+We now will test if any additional flexibility changes can improve the model fit
+
+We will first try to again increase the kappa to see if the model again benefits from the extra flexibility
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+krigingVariogramFittedMatrén2.0 =variofit(variogramPrecipitationNetherlands, kappa=2, nugget = 85)
+krigingVariogramFittedMatrén2.0
+
+
+```
+
+Here we will instead see if the model will benefit instead form a cut of flexibility to make it less smooth
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+krigingVariogramFittedMatrén1.0 =variofit(variogramPrecipitationNetherlands, kappa=1, nugget = 85)
+krigingVariogramFittedMatrén1.0
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+par(mar=c(4,4,2,2))
+plot(variogramPrecipitationNetherlands, pch = 19)
+lines(krigingVariogramFittedMatrén1.5)
+lines(krigingVariogramFittedMatrén1.0, lty = 2)
+lines(krigingVariogramFittedMatrén2.0, lty = 3)
+
+
+
+```
+
+As we can see from the new graph it does seem that actually a lower flexibility Matrén has a better fit since the extra flexibility near the start and end of the data points made the models deviate too much from the points.
+
+<!-- ## TODO -->
+<!-- Lastly we will make very small changes in kappa and use the goodness of fit to evaluate each of the models to determine which one is the better fit. -->
+
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+
+
+### 1 e)
+
+
+To fit a model using the maximum likelihood we will have to try multiple initial values to make sure this is indeed the maximum likelihood and not just a local maximum.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+#?likest
+
+maximumLikelihoodNetherlandsInitial10.1 =likfit(precipitationNetherland_geoR,  ini.cov.pars = c(10,1))
+maximumLikelihoodNetherlandsInitial1.10 =likfit(precipitationNetherland_geoR,  ini.cov.pars = c(1,10))
+
+maximumLikelihoodNetherlandsInitial100.10 =likfit(precipitationNetherland_geoR,  ini.cov.pars = c(100,10))
+maximumLikelihoodNetherlandsInitial10.100 =likfit(precipitationNetherland_geoR,  ini.cov.pars = c(10,100))
+
+maximumLikelihoodNetherlandsInitial1.1 =likfit(precipitationNetherland_geoR,  ini.cov.pars = c(1,1))
+
+maximumLikelihoodNetherlandsInitial1000.1000 =likfit(precipitationNetherland_geoR,  ini.cov.pars = c(1000,1000))
+maximumLikelihoodNetherlandsInitial500.500 =likfit(precipitationNetherland_geoR,  ini.cov.pars = c(500,500))
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+maximumLikelihoodNetherlandsInitial10.1
+maximumLikelihoodNetherlandsInitial1.10
+maximumLikelihoodNetherlandsInitial100.10
+maximumLikelihoodNetherlandsInitial10.100
+maximumLikelihoodNetherlandsInitial1.1
+maximumLikelihoodNetherlandsInitial1000.1000
+maximumLikelihoodNetherlandsInitial500.500
+
+```
+
+As we can see from the maximised log-likelihoods it does seem that have indeed reached the maximum log-likelihood as none of the values are too fastly different and the likelihood worsedned as we started to increase much more our starting values.
+
+Next we will try the REML that takes into account the fact that some of the parameters of the model are related to the variance of the residuals and not the mean.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), warning=FALSE}
+
+REMLmaximumLikelihoodNetherlandsInitial10.1 =likfit(precipitationNetherland_geoR, ini.cov.pars = c(10,1), lik.method = 'REML')
+REMLmaximumLikelihoodNetherlandsInitial1.10 =likfit(precipitationNetherland_geoR, ini.cov.pars = c(1,10), lik.method = 'REML')
+
+REMLmaximumLikelihoodNetherlandsInitial100.1 =likfit(precipitationNetherland_geoR, ini.cov.pars = c(100,1), lik.method = 'REML')
+REMLmaximumLikelihoodNetherlandsInitial1.100 =likfit(precipitationNetherland_geoR, ini.cov.pars = c(1,100), lik.method = 'REML')
+
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+REMLmaximumLikelihoodNetherlandsInitial10.1
+REMLmaximumLikelihoodNetherlandsInitial1.10
+REMLmaximumLikelihoodNetherlandsInitial100.1
+REMLmaximumLikelihoodNetherlandsInitial1.100
+
+
+```
+
+
+As we can see from these new models, the new likelihood method actually did improve our model as we have a lower log-likelihood.
+
+Since the data did not seem to be perfectly stationary as seen in the previous questions, we will now check if adding a linear trend improves our model
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+linearREMLmaximumLikelihoodNetherlandsInitial10.1 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(10,1), lik.method = 'REML')
+linearREMLmaximumLikelihoodNetherlandsInitial1.10 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(1,10), lik.method = 'REML')
+
+
+linearREMLmaximumLikelihoodNetherlandsInitial100.10 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(100,10), lik.method = 'REML')
+linearREMLmaximumLikelihoodNetherlandsInitial10.100 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(10,100), lik.method = 'REML')
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+linearREMLmaximumLikelihoodNetherlandsInitial10.1
+linearREMLmaximumLikelihoodNetherlandsInitial1.10
+linearREMLmaximumLikelihoodNetherlandsInitial100.10
+linearREMLmaximumLikelihoodNetherlandsInitial10.100
+
+```
+
+From these models we can see that the linear trend does indeed improve our model, now we will check if there are any other covariance functions that can improve the model further.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+Matren0.5linearREMLmaximumLikelihoodNetherlandsInitial10.1 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(10,1), lik.method = 'REML', cov.model = 'matern', kappa = 0.5)
+Matren1.0linearREMLmaximumLikelihoodNetherlandsInitial10.1 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(10,1), lik.method = 'REML', cov.model = 'matern', kappa = 1)
+Matren1.5linearREMLmaximumLikelihoodNetherlandsInitial10.1 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(10,1), lik.method = 'REML', cov.model = 'matern', kappa = 1.5)
+Matren2.0linearREMLmaximumLikelihoodNetherlandsInitial10.1 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(10,1), lik.method = 'REML', cov.model = 'matern', kappa = 2)
+Matren2.5linearREMLmaximumLikelihoodNetherlandsInitial10.1 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(10,1), lik.method = 'REML', cov.model = 'matern', kappa = 2.5)
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+Matren0.5linearREMLmaximumLikelihoodNetherlandsInitial10.1
+Matren1.0linearREMLmaximumLikelihoodNetherlandsInitial10.1
+Matren1.5linearREMLmaximumLikelihoodNetherlandsInitial10.1
+Matren2.0linearREMLmaximumLikelihoodNetherlandsInitial10.1
+Matren2.5linearREMLmaximumLikelihoodNetherlandsInitial10.1
+
+```
+
+
+It does seem that the matrén covariance function did indeed slightly improved the model so we will compare it to a model using a spherical covariance function. The spherical covariance function is appropriate for this scenario has the spatial correlation between data points decreases rapidly as the distance between the points increases and we are limited with the range of correlation has after 2 degrees of distance we loose sensible correlation, hence the cut in the variogram.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+SphericallinearREMLmaximumLikelihoodNetherlandsInitial10.1 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(10,1), lik.method = 'REML', cov.model = 'spherical')
+
+SphericallinearREMLmaximumLikelihoodNetherlandsInitial1.10 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(1,10), lik.method = 'REML', cov.model = 'spherical')
+
+SphericallinearREMLmaximumLikelihoodNetherlandsInitial100.10 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(100,10), lik.method = 'REML', cov.model = 'spherical')
+SphericallinearREMLmaximumLikelihoodNetherlandsInitial10.100 = likfit(precipitationNetherland_geoR, trend = '1st', ini.cov.pars = c(10,100), lik.method = 'REML', cov.model = 'spherical')
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+SphericallinearREMLmaximumLikelihoodNetherlandsInitial10.1
+SphericallinearREMLmaximumLikelihoodNetherlandsInitial1.10
+SphericallinearREMLmaximumLikelihoodNetherlandsInitial100.10
+SphericallinearREMLmaximumLikelihoodNetherlandsInitial10.100
+
+```
+
+
+As we can see the spherical covariance function does not provide as good of a fit as the Matrén.
+
+We will now validate the model by doing cross-validation on the model.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+xv.ml = xvalid(precipitationNetherland_geoR, model = Matren2.5linearREMLmaximumLikelihoodNetherlandsInitial10.1)
+par(mfrow=c(3,2),mar=c(4,2,2,2))
+plot(xv.ml, error = TRUE, std.error = FALSE, pch = 19)
+
+```
+
+
+From these plots we can see that the residuals seem mostly normal without any quickly identifiable patterns or bias.
+
+From the first top left graph we can see however that we seem to sightly underestimate more data points.
+
+To account for bias we will also perform cross-validation to the next best performing model using the spherical function instead
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+xv.ml = xvalid(precipitationNetherland_geoR, model = SphericallinearREMLmaximumLikelihoodNetherlandsInitial10.1)
+par(mfrow=c(3,2),mar=c(4,2,2,2))
+plot(xv.ml, error = TRUE, std.error = FALSE, pch = 19)
+
+```
+
+As we can see the data at the start seems to be systematically underestimated and at the end it seems to overestimated. Furthermore the theoretical data plot seems to be less linear. This confirms that the spherical covariance function is indeed a worse model than the Matrén model.
+
+### 1 f)
+
+First we will start by making the predictions using the variogram
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+spatialPointsABC =  randomRowsPrecipitation[, c("longitude", "latitude")]
+
+
+# Set the krige.control parameters
+krigeControl = krige.control(type.krige = "OK", cov.model = krigingVariogramFittedMatrén1.0$cov.model, cov.pars = krigingVariogramFittedMatrén1.0$cov.pars)
+
+
+# Kriging with the fitted variogram model
+krigeResults = krige.conv(precipitationNetherland_geoR, locations = spatialPointsABC, krige = krigeControl)
+
+# Extract predictions from the kriging results
+predictions = krigeResults$predict
+
+# Compare the predicted values with the actual precipitation values
+
+actualPrecipitationValues = randomRowsPrecipitation[,4]
+
+comparisonvariogram = data.frame(actualPrecipitationValues, predictions)
+
+
+
+```
+
+
+Now for the maximum likelihood function
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+# done above
+#spatialPointsABC =  randomRowsPrecipitation[, c("longitude", "latitude")]
+
+
+# Set the krige.control parameters
+krigeControl = krige.control(type.krige = "OK", cov.model = Matren2.5linearREMLmaximumLikelihoodNetherlandsInitial10.1$cov.model, cov.pars = Matren2.5linearREMLmaximumLikelihoodNetherlandsInitial10.1$cov.pars)
+
+
+# Kriging with the fitted variogram model
+krigeResults = krige.conv(precipitationNetherland_geoR, locations = spatialPointsABC, krige = krigeControl)
+
+# Extract predictions from the kriging results
+predictions = krigeResults$predict
+
+# Compare the predicted values with the actual precipitation values
+
+# done above
+#actualPrecipitationValues = randomRowsPrecipitation[,4]
+comparisonMaximumLikelihood = data.frame(actualPrecipitationValues, predictions)
+
+
+
+```
+
+Now that we have made the predictions for our 2 models we will check the predicted values compared to the real values for each of the models.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+comparisonvariogram
+comparisonMaximumLikelihood 
+
+# Calculate Mean Absolute Error (MAE)
+MAEVariogram = mean(abs(comparisonvariogram$precip - comparisonvariogram$predictions))
+MAEMaximumLikelihood = mean(abs(comparisonMaximumLikelihood$precip - comparisonMaximumLikelihood$predictions))
+
+
+# Calculate Mean Squared Error (MSE)
+mseVariogram = mean((comparisonvariogram$precip - comparisonvariogram$predictions)^2)
+mseMaximumLikelihood = mean((comparisonMaximumLikelihood$precip - comparisonMaximumLikelihood$predictions)^2)
+
+
+# Calculate Root Mean Squared Error (RMSE)
+rmseVariogram = sqrt(mseVariogram)
+rmseMaximumLikelihood = sqrt(mseMaximumLikelihood)
+
+
+# Display the calculated metrics
+cat("Mean Absolute Error (MAE) of the Variogram:", MAEVariogram, "\n")
+cat("Mean Squared Error (MSE) of the Variogram:", mseVariogram, "\n")
+cat("Root Mean Squared Error (RMSE) of the Variogram:", rmseVariogram, "\n")
+cat("\n\n")
+cat("Mean Absolute Error (MAE) of the maximum likelihood:", MAEMaximumLikelihood, "\n")
+cat("Mean Squared Error (MSE) of the maximum likelihood:", mseMaximumLikelihood, "\n")
+cat("Root Mean Squared Error (RMSE) of the maximum likelihood:", rmseMaximumLikelihood, "\n")
+
+
+
+```
+
+As we can see from both the real values and the MAE, MSE and RMSE the variogram has as much better performance predicting those 3 points than our maximum likelihood model
+
+### 1 g)
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+# Determine the range of the coordinates
+xRange = range(precipitationNetherland_geoR$coords[, 1])
+yRange = range(precipitationNetherland_geoR$coords[, 2])
+
+# Create a grid with 0.05-degree spacing
+gridPoints = expand.grid(x = seq(xRange[1], xRange[2], by = 0.05),
+                           y = seq(yRange[1], yRange[2], by = 0.05))
+
+
+# Kriging with the fitted variogram model
+krigeResults = krige.conv(precipitationNetherland_geoR, locations = gridPoints, krige = krigeControl)
+
+# Create a data frame for the grid points with the predicted mean and variance
+gridData = data.frame(gridPoints, mean = krigeResults$predict, variance = krigeResults$krige.var)
+
+# Mean plot
+meanPlot = ggplot(gridData, aes(x = x, y = y, fill = mean)) +
+  geom_tile() +
+  scale_fill_gradientn(colors = c("blue", "green", "yellow", "red")) +
+  theme_minimal() +
+  ggtitle("Mean Plot") +
+  labs(x = "Longitude", y = "Latitude", fill = "Mean")
+
+# Variance plot
+variancePlot = ggplot(gridData, aes(x = x, y = y, fill = variance)) +
+  geom_tile() +
+  scale_fill_gradientn(colors = c("white", "blue", "green", "yellow", "red")) +
+  theme_minimal() +
+  ggtitle("Variance Plot") +
+  labs(x = "Longitude", y = "Latitude", fill = "Variance")
+
+# Display the plots
+print(meanPlot)
+print(variancePlot)
+
+
+```
+
+
+
+### 1 h)
+
+<!-- he predicts using the grid but we have to change it to our own coordinate and the prior use previous results -->
+
+For the priors I will be using the estimated values from our latest maximum likelihood model.
+
+<!-- priorNugget = krigingVariogramFittedMatrén1.0$nugget -->
+
+<!-- priorCovariance = krigingVariogramFittedMatrén1.0$cov.pars -->
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+# Extract the estimated parameters
+
+priorPhiVariogram = krigingVariogramFittedMatrén1.0$cov.pars[1]
+priorTauSQVariogram = krigingVariogramFittedMatrén1.0$cov.pars[2]
+
+
+priorPhiMaximumLikelihood = Matren1.0linearREMLmaximumLikelihoodNetherlandsInitial10.1$cov.pars[1]
+priorTauSQMaximumLikelihood = Matren1.0linearREMLmaximumLikelihoodNetherlandsInitial10.1$cov.pars[2]
+
+
+```
+
+
+The function does not support continuous priors directly so we will fit them as discrete priors.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+# Creating discrete priors for phi and tau^2_rel AKA this is for the model with a nugget
+phiDiscrete <- seq(min(priorPhiVariogram, priorPhiMaximumLikelihood) * 0.5, max(priorPhiVariogram, priorPhiMaximumLikelihood) * 1.5, length.out = 50)
+
+tauSqDiscrete <- seq(min(priorTauSQVariogram, priorTauSQMaximumLikelihood) * 0.5, max(priorTauSQVariogram, priorTauSQMaximumLikelihood) * 1.5, length.out = 50)
+
+# Informative priors based on the parameter estimates
+phiProbability <- dnorm(phiDiscrete, mean = (priorPhiVariogram + priorPhiMaximumLikelihood) / 2, sd = abs(priorPhiVariogram - priorPhiMaximumLikelihood) / 2)
+tauSqProbability <- dnorm(tauSqDiscrete, mean = (priorTauSQVariogram + priorTauSQMaximumLikelihood) / 2, sd = abs(priorTauSQVariogram - priorTauSQMaximumLikelihood) / 2)
+
+# Normalizing the probabilities
+phiProbability <- phiProbability / sum(phiProbability)
+tauSqProbability <- tauSqProbability / sum(tauSqProbability)
+
+
+ex.grid <- as.matrix(expand.grid(seq(50.5,53.5,l=15), seq(3.5,7,l=15)))
+
+
+# Fitting the krige.bayes model with the informative priors
+krigeBayesModelWithNugget <- krige.bayes(geodata = precipitationNetherland_geoR, loc = ex.grid, prior = prior.control(phi.prior = phiProbability, phi.discrete = phiDiscrete, tausq.rel.prior = tauSqProbability, tausq.rel.discrete = tauSqDiscrete))
+
+
+krigeBayesModelWithoutNugget <- krige.bayes(geodata = precipitationNetherland_geoR, loc = ex.grid,
+                        prior =  prior.control(phi.prior = phiProbability, phi.discrete = phiDiscrete))
+
+
+
+summary(krigeBayesModelWithoutNugget$posterior$sample)
+
+summary(krigeBayesModelWithNugget$posterior$sample)
+
+
+```
+
+
+Now we will compare the posterior of both of the models to see the impact of the nugget
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+# Extract posterior samples for phi and tau^2_rel
+posterior_samples_model1 <- krigeBayesModelWithNugget$posterior$phi$phi.marginal$phi
+posterior_samples_model2 <- krigeBayesModelWithoutNugget$posterior$phi$phi.marginal$phi
+
+# Plot the posterior distributions
+hist(posterior_samples_model1, freq = FALSE, main = "Posterior Distributions for phi (Model 1)", xlab = "phi", col = "blue", xlim = range(c(posterior_samples_model1, posterior_samples_model2)))
+hist(posterior_samples_model2, freq = FALSE, main = "Posterior Distributions for phi (Model 2)", xlab = "phi", col = "blue", xlim = range(c(posterior_samples_model1, posterior_samples_model2)))
+
+
+# Compare summary statistics
+summary_model1 <- summary(posterior_samples_model1)
+summary_model2 <- summary(posterior_samples_model2)
+
+cat("model 1 :\n")
+summary_model1
+cat("\n\n model 2 :\n")
+
+summary_model2
+
+
+# Reset the plot layout
+par(mfrow = c(1, 1))
+
+```
+
+As we can seem with a low number of binds we can't see any significant difference in the summaries or histogram between the models with and without a nugget
+
+## Question 2
+
+### 2 a)
+
+We fist start by making the appropriate changes in the data to average the data to quarterly means
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+AMOCDF$Date = as.Date(AMOCDF$Date, format = "%d/%m/%Y")
+
+## I will now make a column with the quarter and year that I will use to create the averages per quarter
+AMOCDF$YearQuarter = paste(AMOCDF$Year, AMOCDF$Quarter, sep = "-")
+
+YearQuarterAverage = AMOCDF %>%
+  group_by(YearQuarter) %>%
+  summarise(AverageStrength = mean(Strength))
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72), echo=FALSE, eval=FALSE }
+
+## nevermind ts object does this
+
+YearQuarterAverage$Year = str_extract(YearQuarterAverage$YearQuarter, "\\d{4}")
+
+YearQuarterAverage$Quarter = str_extract(YearQuarterAverage$YearQuarter, "(?<=Q)\\d")
+
+YearQuarterAverage$YearLabel = ifelse(YearQuarterAverage$Quarter == 1,
+                                       YearQuarterAverage$Year,"")
+
+# plot with year label
+ggplot(YearQuarterAverage, aes(x = YearQuarter, y = AverageStrength)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  xlab("Year") +
+  ylab("Average Strength") +
+  ggtitle("Average Strength by Year") +
+  scale_x_discrete(labels = function(x) ifelse(seq_along(x) %% 4 == 1, x, ""))
+
+#write.csv(YearQuarterAverage, "data.csv", row.names=FALSE)
+
+
+
+```
+
+
+Now we will convert the average data to a time series object to be able to plot it
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+
+tsAtlantic = ts(YearQuarterAverage, start = c(2010, 1), frequency = 4)
+
+tsAtlantic = tsAtlantic[, "AverageStrength"]
+
+plot.ts(tsAtlantic)
+
+
+```
+
+#### Trend analysis
+
+From this graph we can see a yearly oscillation of Sverdrups. We can also identify that the peaks in Sverdrups are usually in the last quarter before the start of a new year and the valleys are on the second quarter of the year.
+
+The data does seem stationary enough that if we were to differentiate we would start losing some of the structure.
+
+
+### 2 b)
+
+#### ACF
+
+First we will start by checking the ACF(Autocorrelation Function) and PACF(Partial Autocorrelation Function) to check for if we have stationary data or not to help us decide between an ARMA or an ARIMA model. 
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+acf(tsAtlantic)
+
+
+```
+
+
+We can see that for ACF OF Average strength slowly decreases as lag increases to infinity with lag = 3 still being a significant values, meaning it is not a simple MA model as AR is clearly not quickly cut-off.
+
+#### PACF
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+pacf(tsAtlantic)
+
+```
+
+
+The PACF seems to be cut-off at lag 0,5 indicating an AR model might be a best fit for our data to be a   but with some almost significant values after the cut it might be also appropriate to some non-zero q values to confirm our initial assumption
+
+As such we will now proceed to fit multiple model firstly with the initial assumption that, then I will both use models with non-zero q and the model given by the auto.arima function to double check that the assumptions made by the previous analyses is correct.
+
+<!-- The PACF of the average strength has a mix values above and bellow the relevance interval so although it does look like there is a gradual decrease as lag increases to infinity it is not very conclusive and it can also be a sharp cut-off instead. -->
+
+<!-- Since both ACF and PACF seem to be slowly decaying and the the previous question plot does not seem to indicate any trend that needs to be differentiated, we will start by fitting multiple ARMA models with multiple choices of p and q values -->
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+# it is always a good practice to try multiple values of p,d and q to see if we can do better
+## we then obviously compare via the AIC of the models and their log likelihoods
+## it is never enough to check those we also need to check the residuals
+
+## order is p, d ,q 
+
+##initial models under our assumptions
+
+model100 = Arima(tsAtlantic, order = c(1,0,0))
+model200 = Arima(tsAtlantic, order = c(2,0,0))
+model300 = Arima(tsAtlantic, order = c(3,0,0))
+
+## now I will add postive q values
+
+model101 = Arima(tsAtlantic, order = c(1,0,1))
+model102 = Arima(tsAtlantic, order = c(1,0,2))
+model103 = Arima(tsAtlantic, order = c(1,0,3))
+
+model201 = Arima(tsAtlantic, order = c(2,0,1))
+model202 = Arima(tsAtlantic, order = c(2,0,2))
+model203 = Arima(tsAtlantic, order = c(2,0,3))
+
+model301 = Arima(tsAtlantic, order = c(3,0,1))
+model302 = Arima(tsAtlantic, order = c(3,0,2))
+model303 = Arima(tsAtlantic, order = c(3,0,3))
+
+
+
+## lastly we will use auto.arima without seasonality to confirm our inital assumptions
+modelAuto = auto.arima(tsAtlantic, max.d = 0, max.p = 5, max.q = 5, seasonal = FALSE)
+
+
+```
+
+
+#### best model selection
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+model100
+model200
+model300
+
+```
+
+As we can see from these inital models ARIMA(2,0,0) is the model that has the best fit has we can see from its lower AIC score of 194,9.
+
+Now we will check against the other models to check the validity of our assumptions.
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+model101
+model102
+model103
+
+model201
+model202
+model203
+
+model301
+model302
+model303
+
+```
+
+In this initial analysis we have found models that do have a lower AIC lower log likelihood than our previous best model, however these model ma's standard error are to close the the ma values indicating that while we are getting a better fit we might be overfitting to our data.
+
+As such this does confirm our initial assumption for the choice of a zero q value.
+
+Now lastly we will check if the auto.arima function does comfirm our initial assumptions.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+modelAuto
+
+```
+
+The function does confirm our assumption that ARIMA(2,0,0) is indeed the best model.
+
+We will now check the residuals to verify if any of ou previously selected model validates well or if it is simply the best of bad models.
+
+## talk about the model being more easily explainability  becaues MA = 0
+
+
+#### Best model residual validation
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+# Set smaller margins
+par(mar = c(4, 4, 2, 2))
+
+tsdiag(model200)
+
+# Reset margins
+par(mar = c(5, 4, 4, 2) + 0.1)
+
+
+
+```
+
+Initially from the standardised residuals plot we can identify some sort of sinusoidal pattern, this implies that there is a seasonal trend that is not being accounted for in our model and as such this trends needs to be accounted in future models to better explain and increase the prediction power of a new model.
+
+
+#### Forecasting 
+
+Now using the forecast function we will forecast the next 4 quarters of 2021 
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+forecast(model200, 4)
+
+
+```
+
+
+But this data is better visualized in a graph to better understand if the predictions are sensible compared to our real data.
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+predictedArimaDF = data.frame(forecast(model200, 4))  
+
+predictedArimaDF$YearQuarter =  c("2021-Q1"	, "2021-Q2", "2021-Q3","2021-Q4"	)
+
+# Combine real_data and pred_data into a single data frame
+combinedDataframeAMOC =rbind(
+  data.frame(Date = YearQuarterAverage$YearQuarter, Temperature = YearQuarterAverage$AverageStrength, Type = "Real"),
+  data.frame(Date = predictedArimaDF$YearQuarter, Temperature = predictedArimaDF$Point.Forecast, Type = "Predicted")
+)
+
+predictedArimaDF$Temperature = predictedArimaDF$Point.Forecast
+
+predictedArimaDF$Type = "Predicted"
+
+
+# Create the ggplot
+plotARIMA =ggplot(combinedDataframeAMOC, aes(x = Date, y = Temperature, color = Type, group = 1)) +
+  geom_line() +
+  scale_color_manual(values = c("blue", "red"))
+
+# Add the 95% confidence interval
+plotARIMA =plotARIMA + geom_ribbon(
+  data = predictedArimaDF, aes(x = YearQuarter, ymin = Lo.95, ymax = Hi.95),
+  fill = "red",
+  alpha = 0.2
+)
+
+# Adjust the x-axis labels
+plotARIMA =plotARIMA + scale_x_discrete(
+  breaks = combinedDataframeAMOC$Date[c(TRUE, rep(FALSE, 3))],
+  labels = combinedDataframeAMOC$Date[c(TRUE, rep(FALSE, 3))]
+)
+
+plotARIMA =plotARIMA + theme(
+  axis.text.x = element_text(angle = 90, vjust = 0.5, size = 8)
+)
+
+# Display the plot
+print(plotARIMA)
+
+
+
+
+```
+
+As we can see from the graph the ARIMA (2,0,0) seems to give us a sensible forecast for the 2021 quarter values, however as we can see the interval of the prediction accuracy our model is not too certain on the values most likely due to our model not accounting for the seasonal cycle of our data.
+
+### 2 c)
+
+#### Initial assumptions
+
+From the previous exploratory analysis of the data we have established that the data did not need to be differentiated since it was constant, this translates to polynomial DLM component of order 2 that will use linear model to account for this type of changes in the data.
+
+Furthermore, from the residual analysis we have inferred that there is an underlying seasonal trend present on the data, this seasonal trend will be represented by a seasonal component of frequency 4 to represent the 4 quarters per year.
+
+#### model fitting
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+## linear model, order = 2, quadratic order = 3 , etc
+
+## what we want is a linear model with a seasonal component so we add the 2 components together in a model
+
+## things to try, another term like quadratic, or a arma component stacked on top of this
+
+## Initial model with a linear polynomial and a seasonal component
+
+buildFun = function(x) {
+dlmModPoly(order = 2, dV = exp(x[1]), dW = c(0, exp(x[2]))) +
+dlmModSeas(frequency = 4, dV = 0, dW = c(exp(x[3]), rep(0,2)))
+}
+
+linearDLM = dlmMLE(tsAtlantic, parm = c(0,0,0), build = buildFun)
+
+linearDLM$par
+
+fittedLinearDLM = buildFun(linearDLM$par)
+
+V(fittedLinearDLM)
+
+W(fittedLinearDLM)
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## second model with a quadratic polynomial and a seasonal component
+
+buildFunQuad = function(x) {
+  dlmModPoly(order = 3, dV = exp(x[1]), dW = c(0, exp(x[2]), exp(x[3]))) +
+  dlmModSeas(frequency = 4, dV = 0, dW = c(exp(x[4]), rep(0,2)))
+}
+
+quadraticDLM = dlmMLE(tsAtlantic, parm = c(0,0,0,0), build = buildFunQuad)
+
+quadraticDLM$par
+
+fittedQuadraticDLM = buildFunQuad(quadraticDLM$par)
+
+V(fittedQuadraticDLM)
+
+W(fittedQuadraticDLM)
+
+```
+
+Now we will compare both models through their log likelihood using the dlmLL function and see if the extra flexibility from the extra polynomial function is providing a better fit
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+dlmLL(tsAtlantic, fittedLinearDLM)
+
+dlmLL(tsAtlantic, fittedQuadraticDLM)
+
+```
+
+As we can see the dlm model using only a linear polynomial has a lower log likelihood than the model with an extra quadratic term, meaning this extra flexibility does not contribute to a better model fit and as such we will use the linear fitted model to do our forecasting.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+amocPredict =dlmFilter(tsAtlantic, mod = fittedLinearDLM)
+summary(amocPredict)
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+x =cbind(tsAtlantic, dropFirst(amocPredict$a[,c(1,3)]))
+x =window(x, start = c(2010,1))
+colnames(x) =c("Gas", "Trend", "Seasonal")
+plot(x, type = 'o', main = "Atlantic AMOC at 26,5N 2010-2020")
+
+```
+
+
+#### Forecast
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+amocForecast = dlmForecast(amocPredict, nAhead = 4)
+summary(amocForecast)
+
+dim(amocForecast$a)
+
+dim(amocForecast$f)
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+sqrtR =sapply(amocForecast$R, function(x) sqrt(x[1,1]))
+pl =amocForecast$a[,1] + qnorm(0.025, sd = sqrtR)
+pu =amocForecast$a[,1] + qnorm(0.975, sd = sqrtR)
+x =ts.union(window(tsAtlantic, start = c(2010, 1)),
+    amocForecast$a[,1],
+    amocForecast$f, pl, pu)
+par(mar=c(4,4,2,2))
+plot(x, plot.type = "single", type = 'o', pch = c(1, 20, 3, NA, NA),
+    col = c("darkgrey", "brown", "brown", "blue", "blue"),
+    ylab = "Log gas consumption")
+
+legend("bottomright", legend = c("Observed","Forecast", "95% interval"),
+    bty = 'n', pch = c(1, 20, NA), lty = 1,
+    col = c("darkgrey", "brown", "blue"))
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+# Set smaller margins
+par(mar = c(4, 4, 2, 2))
+
+tsdiag(amocPredict)
+
+# Reset margins
+par(mar = c(5, 4, 4, 2) + 0.1)
+
+
+
+
+```
+
+### 2 d)
+
+Again comparing the forecast values and their respective prediction intervals as we can see from the graphs bellow the dlm model has smaller prediction intervals, most likely due to being able to explain the underlying seasonal trend reducing therefore the uncertainty in comparison the ARIMA model.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+print(plotARIMA)
+
+sqaretRoot =sapply(amocForecast$R, function(x) sqrt(x[1,1]))
+predictionLow =amocForecast$a[,1] + qnorm(0.025, sd = sqaretRoot) ## Low
+predictionUpper =amocForecast$a[,1] + qnorm(0.975, sd = sqaretRoot) ## Upper 
+x =ts.union(window(tsAtlantic, start = c(2010, 1)),
+    amocForecast$a[,1],
+    amocForecast$f, predictionLow, predictionUpper)
+par(mar=c(4,4,2,2))
+plot(x, plot.type = "single", type = 'o', pch = c(1, 20, 3, NA, NA),
+    col = c("darkgrey", "brown", "brown", "blue", "blue"),
+    ylab = "Log gas consumption")
+
+legend("bottomright", legend = c("Observed","Forecast", "95% interval"),
+    bty = 'n', pch = c(1, 20, NA), lty = 1,
+    col = c("darkgrey", "brown", "blue"))
+
+
+
+
+```
+
+
+### 2 e)
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+# AMOCDFMonthly =AMOCDF %>%
+#   mutate(YearMonth = paste0(year(Date), "-", month(Date, label = TRUE, abbr = FALSE)))
+
+
+## I will now make a column with the month and year that I will use to create the monthly averages 
+AMOCDF$YearMonth = paste(AMOCDF$Year, AMOCDF$Month, sep = "-")
+
+YearMonthlyAverage = AMOCDF %>%
+  group_by(YearMonth) %>%
+  summarise(AverageStrength = mean(Strength))
+
+```
+
+
+Now we will create a new montly time series object and make it univariate
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+tsAtlanticMonthly = ts(YearMonthlyAverage, start = c(2010, 1), frequency = 12)
+
+tsAtlanticMonthly = tsAtlanticMonthly[, "AverageStrength"]
+
+plot.ts(tsAtlanticMonthly)
+
+```
+
+Seeing this graph we can observe that the data continues being stationary for the ARIMA model but a seasonal trend not only is more apparently but it also appear to need to be differentiated as it seems to have a decreasing linear trend
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+acf(tsAtlanticMonthly)
+
+pacf(tsAtlanticMonthly)
+
+
+```
+
+
+The acf has a very clear cut-off as only 3 the values are significant which is very similar to what we had observed previously.
+
+The main difference is in the pacf, where we can now say for sure that there is a very clear cut-off after the first value.
+
+#### Model testing
+
+These pattern suggests that an ARMA/ARIMA model might be the most appropriate so first we will check them out with the seasonal component of order 1,  the so quick cut-off of both the ACF and PACF also might suggest that p and q will be smaller values.
+
+<!-- From these model summaries we can see that has we increase p and q the AIC increases, with our best performing model being the ARIMA 1,0,1 so now we will check if this continues to happen when we account for the monthly seasonal cycles -->
+
+#### Seasonal check
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+## initial assumption
+
+
+modelMonthlySeasonal100.110 = Arima(tsAtlanticMonthly, order = c(1,0,0), 
+                                  seasonal = list(order = c(1, 1, 0), period = 12))
+
+modelMonthlySeasonal100.011 = Arima(tsAtlanticMonthly, order = c(1,0,0), 
+                                  seasonal = list(order = c(0, 1, 1), period = 12))
+
+modelMonthlySeasonal200.210 = Arima(tsAtlanticMonthly, order = c(2,0,0), 
+                                  seasonal = list(order = c(2, 1, 0), period = 12))
+modelMonthlySeasonal200.012 = Arima(tsAtlanticMonthly, order = c(2,0,0), 
+                                  seasonal = list(order = c(0, 1, 2), period = 12))
+
+modelMonthlySeasonal001.110 = Arima(tsAtlanticMonthly, order = c(0,0,1), 
+                                  seasonal = list(order = c(1, 1, 0), period = 12))
+
+modelMonthlySeasonal001.011 = Arima(tsAtlanticMonthly, order = c(0,0,1), 
+                                  seasonal = list(order = c(0, 1, 1), period = 12))
+
+modelMonthlySeasonal002.210 = Arima(tsAtlanticMonthly, order = c(0,0,2), 
+                                  seasonal = list(order = c(2, 1, 0), period = 12))
+modelMonthlySeasonal002.012 = Arima(tsAtlanticMonthly, order = c(0,0,2), 
+                                  seasonal = list(order = c(0, 1, 2), period = 12))
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+modelMonthlySeasonal100.110
+
+modelMonthlySeasonal100.011
+
+modelMonthlySeasonal200.210
+modelMonthlySeasonal200.012
+
+modelMonthlySeasonal001.110
+
+modelMonthlySeasonal001.011
+
+modelMonthlySeasonal002.210
+modelMonthlySeasonal002.012
+
+```
+
+
+So as suspected from both the time series plot and the last exercise analysis the added seasonality does increase our model goodness of fit while also penalising the increased in complexity with so far. 
+
+Now lets compare them to bigger p and q values to see if our initial assumptions do hold up
+
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+modelMonthlySeasonal301 = Arima(tsAtlanticMonthly, order = c(3,0,1), 
+                                  seasonal = list(order = c(1, 1, 1), period = 12))
+modelMonthlySeasonal302 = Arima(tsAtlanticMonthly, order = c(3,0,2), 
+                                  seasonal = list(order = c(1, 1, 0), period = 12))
+modelMonthlySeasonal303 = Arima(tsAtlanticMonthly, order = c(3,1,3), 
+                                  seasonal = list(order = c(1, 1, 0), period = 12))
+
+modelMonthlySeasonal103 = Arima(tsAtlanticMonthly, order = c(1,0,3), 
+                                  seasonal = list(order = c(1, 1, 1), period = 12))
+modelMonthlySeasonal203 = Arima(tsAtlanticMonthly, order = c(2,1,3), 
+                                  seasonal = list(order = c(1, 1, 0), period = 12))
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+modelMonthlySeasonal301
+modelMonthlySeasonal302
+modelMonthlySeasonal303
+
+modelMonthlySeasonal103
+modelMonthlySeasonal203
+
+
+```
+
+As we can see here the initial assumption that a smaller p and q value would better fit the model.
+
+Now we will use auto.arima to verify if our assumptions were indeed correct
+
+#### auto arima check
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+?auto.arima
+
+monthlyModelAuto = auto.arima(tsAtlanticMonthly, max.d = 0, max.p = 5, max.q = 5,  D =1)
+monthlyModelAuto
+
+```
+
+From what we can see the auto arima has indeed confirmed our initial assumption by picking a model that we already had seen as the best performer ARIMA(1,0,0)(0,1,1)[12] 
+
+
+#### Forecasting 
+
+Now using the forecast function we will forecast the next 4 quarters of 2021 
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+forecast(modelMonthlySeasonal100.011, 12)
+
+
+```
+
+
+But this data is better visualized in a graph to better understand if the predictions are sensible compared to our real data.
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+predictedArimaSeasonalDF = data.frame(forecast(modelMonthlySeasonal100.011, 12))  
+
+predictedArimaSeasonalDF$YearMonth = c("2021-1", "2021-2", "2021-3", "2021-4", "2021-5", "2021-6", "2021-7", "2021-8", "2021-9", "2021-10", "2021-11", "2021-12")
+
+predictedArimaSeasonalDF$Type = "Predicted"
+
+predictedArimaSeasonalDF$Temperature = predictedArimaSeasonalDF$Point.Forecast
+
+YearMonthlyAverage$Type = "Real"
+YearMonthlyAverage$Temperature = YearMonthlyAverage$AverageStrength
+
+
+# Combine real_data and pred_data into a single data frame
+combinedDataframeAMOC = rbind(
+  data.frame(Date = YearMonthlyAverage$YearMonth, Temperature = YearMonthlyAverage$Temperature, Type = "Real"),
+  data.frame(Date = predictedArimaSeasonalDF$YearMonth, Temperature = predictedArimaSeasonalDF$Temperature, Type = "Predicted")
+)
+
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+# Create the ggplot
+plotARIMA2 = ggplot(combinedDataframeAMOC, aes(x = Date, y = Temperature, color = Type, group = 1)) +
+  geom_line() +
+  scale_color_manual(values = c("blue", "red"))
+
+# Add the 80% and 95% confidence intervals
+plotARIMA2 = plotARIMA2 + geom_ribbon(
+  data = predictedArimaSeasonalDF, aes(x = YearMonth, ymin = Lo.95, ymax = Hi.95),
+  fill = "red", alpha = 0.2
+) + geom_ribbon(
+  data = predictedArimaSeasonalDF, aes(x = YearMonth, ymin = Lo.80, ymax = Hi.80),
+  fill = "blue", alpha = 0.2
+)
+
+# Adjust the x-axis labels
+plotARIMA2 = plotARIMA2 + scale_x_discrete(
+  breaks = c("2021-1", "2021-4", "2021-8", "2021-12"),
+  labels = c("Q1", "Q2", "Q3", "Q4")
+)
+
+plotARIMA2 = plotARIMA2 + theme(
+  axis.text.x = element_text(angle = 90, vjust = 0.5, size = 8)
+)
+
+# Display the plot
+print(plotARIMA2)
+
+
+```
+
+
+#### DLM
+
+#### model fitting
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+## linear model, order = 2, quadratic order = 3 , etc
+
+## what we want is a linear model with a seasonal component so we add the 2 components together in a model
+
+## things to try, another term like quadratic, or a arma component stacked on top of this
+
+## Initial model with a linear polynomial and a seasonal component
+
+buildFun = function(x) {
+dlmModPoly(order = 2, dV = exp(x[1]), dW = c(0, exp(x[2]))) +
+dlmModSeas(frequency = 12, dV = 0, dW = c(exp(x[3]), rep(0,10)))
+}
+
+linearDLM = dlmMLE(tsAtlanticMonthly, parm = c(0,0,0), build = buildFun)
+
+linearDLM$par
+
+fittedLinearDLM = buildFun(linearDLM$par)
+
+V(fittedLinearDLM)
+
+W(fittedLinearDLM)
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## second model with a quadratic polynomial and a seasonal component
+
+buildFunQuad = function(x) {
+  dlmModPoly(order = 3, dV = exp(x[1]), dW = c(0, exp(x[2]), exp(x[3]))) +
+  dlmModSeas(frequency = 12, dV = 0, dW = c(exp(x[4]), rep(0,10)))
+}
+
+quadraticDLM = dlmMLE(tsAtlanticMonthly, parm = c(0,0,0,0), build = buildFunQuad)
+
+quadraticDLM$par
+
+fittedQuadraticDLM = buildFunQuad(quadraticDLM$par)
+
+V(fittedQuadraticDLM)
+
+W(fittedQuadraticDLM)
+
+```
+
+Now we will compare both models through their log likelihood using the dlmLL function and see if the extra flexibility from the extra polynomial function is providing a better fit
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+dlmLL(tsAtlanticMonthly, fittedLinearDLM)
+
+dlmLL(tsAtlanticMonthly, fittedQuadraticDLM)
+
+```
+
+As we can see the dlm model using only a linear polynomial has a lower log likelihood than the model with an extra quadratic term, meaning this extra flexibility does not contribute to a better model fit and as such we will use the linear fitted model to do our forecasting.
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+amocPredict =dlmFilter(tsAtlanticMonthly, mod = fittedLinearDLM)
+summary(amocPredict)
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+x =cbind(tsAtlanticMonthly, dropFirst(amocPredict$a[,c(1,3)]))
+x =window(x, start = c(2010,1))
+colnames(x) =c("Gas", "Trend", "Seasonal")
+plot(x, type = 'o', main = "Atlantic AMOC at 26,5N 2010-2020")
+
+```
+
+
+
+#### Forecast
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+amocForecastMonthly = dlmForecast(amocPredict, nAhead = 12)
+summary(amocForecastMonthly)
+
+dim(amocForecastMonthly$a)
+
+dim(amocForecastMonthly$f)
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+sqrtR =sapply(amocForecastMonthly$R, function(x) sqrt(x[1,1]))
+pl =amocForecastMonthly$a[,1] + qnorm(0.025, sd = sqrtR)
+pu =amocForecastMonthly$a[,1] + qnorm(0.975, sd = sqrtR)
+
+x =ts.union(window(tsAtlanticMonthly, start = c(2010, 1)),
+    amocForecastMonthly$a[,1],
+    amocForecastMonthly$f, pl, pu)
+par(mar=c(4,4,2,2))
+plot(x, plot.type = "single", type = 'o', pch = c(1, 20, 3, NA, NA),
+    col = c("darkgrey", "brown", "brown", "blue", "blue"),
+    ylab = "Log gas consumption")
+
+legend("bottomright", legend = c("Observed","Forecast", "95% interval"),
+    bty = 'n', pch = c(1, 20, NA), lty = 1,
+    col = c("darkgrey", "brown", "blue"))
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+# Set smaller margins
+par(mar = c(4, 4, 2, 2))
+
+tsdiag(amocPredict)
+
+# Reset margins
+par(mar = c(5, 4, 4, 2) + 0.1)
+
+```
+
+Lastly checking the residuals, they seem to be mostly normally distributed with a good mixture of over and under estimations, especially in the middle with some slight seasonality on both ends being present
+
+### 2 f)
+
+Now starting with the ARIMA models
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+predictedArimaDF = data.frame(forecast(model200, 4))  
+
+predictedArimaDF$YearQuarter =  c("2021-Q1"	, "2021-Q2", "2021-Q3","2021-Q4"	)
+
+# Combine real_data and pred_data into a single data frame
+combinedDataframeAMOC =rbind(
+  data.frame(Date = YearQuarterAverage$YearQuarter, Temperature = YearQuarterAverage$AverageStrength, Type = "Real"),
+  data.frame(Date = predictedArimaDF$YearQuarter, Temperature = predictedArimaDF$Point.Forecast, Type = "Predicted")
+)
+
+predictedArimaDF$Temperature = predictedArimaDF$Point.Forecast
+
+predictedArimaDF$Type = "Predicted"
+
+
+# Create the ggplot
+plotARIMA =ggplot(combinedDataframeAMOC, aes(x = Date, y = Temperature, color = Type, group = 1)) +
+  geom_line() +
+  scale_color_manual(values = c("blue", "red"))
+
+# Add the 95% confidence interval
+plotARIMA =plotARIMA + geom_ribbon(
+  data = predictedArimaDF, aes(x = YearQuarter, ymin = Lo.95, ymax = Hi.95),
+  fill = "red",
+  alpha = 0.2
+)
+
+# Adjust the x-axis labels
+plotARIMA =plotARIMA + scale_x_discrete(
+  breaks = combinedDataframeAMOC$Date[c(TRUE, rep(FALSE, 3))],
+  labels = combinedDataframeAMOC$Date[c(TRUE, rep(FALSE, 3))]
+)
+
+plotARIMA =plotARIMA + theme(
+  axis.text.x = element_text(angle = 90, vjust = 0.5, size = 8)
+)
+
+print(plotARIMA)
+print(plotARIMA2)
+
+
+```
+
+
+The most obvious difference is the level of detail on the seasonality, with the monthly averages capturing an almost opposite effect than the quarterly averages in both the predicted and also in some of the real data, the forecast also has the opposite trend, with an actual expected decrease in Sverdrups around between the 2nd quarter and the mid 3rd quarter which again seems to follow the opposite trend on the quartely data.
+
+![1st dlm](dlm.png)
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+sqrtR =sapply(amocForecastMonthly$R, function(x) sqrt(x[1,1]))
+pl =amocForecastMonthly$a[,1] + qnorm(0.025, sd = sqrtR)
+pu =amocForecastMonthly$a[,1] + qnorm(0.975, sd = sqrtR)
+
+x =ts.union(window(tsAtlanticMonthly, start = c(2010, 1)),
+    amocForecastMonthly$a[,1],
+    amocForecastMonthly$f, pl, pu)
+par(mar=c(4,4,2,2))
+plot(x, plot.type = "single", type = 'o', pch = c(1, 20, 3, NA, NA),
+    col = c("darkgrey", "brown", "brown", "blue", "blue"),
+    ylab = "Log gas consumption")
+
+legend("bottomright", legend = c("Observed","Forecast", "95% interval"),
+    bty = 'n', pch = c(1, 20, NA), lty = 1,
+    col = c("darkgrey", "brown", "blue"))
+
+```
+
+Observing the 2 graphs of the dlm models we can see that although the quarterly predictions do not completly predict the spike during the first half of the year compared to the monthly data the second half of the year seems to be relative similarly forecasted with the exception of December where the monthly data show again a decrease but the quarterly data is not capable of capturing.
+
+Despise these changes the predicted overall trend is quite similar with the quaterly trend very slighty increasing the monthly data seeming to remaind constant. 
+
+## Question 3
+
+### Question 3 a)
+
+
+
+my approach is to see the max temp in the entire state with 8 cities
+
+
+<!-- For a dataset of daily data with only 1 year of a cycle data available a daily frequency won't be a very good fit because we only have one observation per cycle, we need a hidden entry to capture the 12 months instead -->
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+californiaLongTempDF = pivot_longer(californiaTempDF, 
+                               cols = -Date, 
+                               names_to = "Location", 
+                               values_to = "Temperature")
+
+spatialTemperatureCaliforniaDF = merge(californiaLongTempDF, californiaSpatialDataDF)
+
+
+ggplot(data = spatialTemperatureCaliforniaDF) +
+  geom_point(aes(x = Lat, y = Long, color = Temperature, size = Temperature)) +
+  scale_color_continuous(low = "blue", high = "red") +
+  labs(title = "Temperature in California",
+       x = "Longitude",
+       y = "Latitude",
+       color = "temperature") +
+  theme_minimal()
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+californiaTempDF$Date = as.Date(as.character(californiaTempDF$Date), format = "%Y%m%d", origin = "1970-01-01")
+
+californiaTempDF$max <- apply(californiaTempDF, 1, max, na.rm=TRUE)
+
+
+tsCaliforniaMaxTemp = ts(californiaTempDF$max, start = c(2012,1), frequency = 366)
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+plot.ts(tsCaliforniaMaxTemp)
+
+```
+
+
+As we can see from the time series trend, august to September seems to be the hottest months while january to feburary seems to be the coldest months in the californian state.
+
+
+### 3 b)
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+geoDataCalifornia= as.geodata( spatialTemperatureCaliforniaDF, coords.col = 4:5, data.col = "Temperature", covar.col = "Elev")
+
+variogramCalifornia= variog(geoDataCalifornia)
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+plot(variogramCalifornia)
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+
+### 3 c)
+
+Here we create a ts object with frequency 366 because 2012 does indeed have the 29th of February, removing the dates from the 9th to the 17th of november
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+toPredictValues = californiaTempDF %>% filter((Date >= as.Date("2012-11-09") & Date <= as.Date("2012-11-17")))
+
+californiaTempDF = californiaTempDF %>% filter(!(Date >= as.Date("2012-11-09") & Date <= as.Date("2012-11-17")))
+
+
+tsCaliforniaNapaTemp = ts(californiaTempDF$Napa, start = c(2012,1), frequency = 366)
+
+plot.ts(tsCaliforniaNapaTemp)
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+tsCaliforniaDeathValleyTemp = ts(californiaTempDF$`Death Valley`, start = c(2012,1), frequency = 366)
+
+plot.ts(tsCaliforniaDeathValleyTemp)
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+acf(tsCaliforniaDeathValleyTemp)
+
+pacf(tsCaliforniaDeathValleyTemp)
+
+```
+
+In death valley we can clearly see that ACF is very slowly descending without any cut-off and PAC seems to have a very quick cut off, this means that the best model will most likely will be AR with a possibly larger p value
+
+Now checking for Napa
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+acf(tsCaliforniaNapaTemp)
+pacf(tsCaliforniaNapaTemp)
+
+```
+
+We can once again see the same pattern of a very slowly decreasing ACF but this time PACF does seem to at least not has such a clear cut off meanig there might a smaller q non-zero q value requiring an ARIMA for this city
+
+The model for both cities does seem stationary with a linear trend on seasonality however it is not clear enough since we only have 1 year worth of data
+
+#### model checking Nappa
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+## initial assumption
+
+
+modelMonthlySeasonal100.110Napa = Arima(tsCaliforniaNapaTemp, order = c(1,0,0), 
+                                  seasonal = list(order = c(1, 1, 0), period = 12))
+
+modelMonthlySeasonal100.011Napa = Arima(tsCaliforniaNapaTemp, order = c(1,0,0), 
+                                  seasonal = list(order = c(0, 1, 1), period = 12))
+
+modelMonthlySeasonal200.210Napa = Arima(tsCaliforniaNapaTemp, order = c(2,0,0), 
+                                  seasonal = list(order = c(2, 1, 0), period = 12))
+modelMonthlySeasonal200.012Napa = Arima(tsCaliforniaNapaTemp, order = c(2,0,0), 
+                                  seasonal = list(order = c(0, 1, 2), period = 12))
+
+modelMonthlySeasonal001.110Napa = Arima(tsCaliforniaNapaTemp, order = c(0,0,1), 
+                                  seasonal = list(order = c(1, 1, 0), period = 12))
+
+modelMonthlySeasonal001.011Napa = Arima(tsCaliforniaNapaTemp, order = c(0,0,1), 
+                                  seasonal = list(order = c(0, 1, 1), period = 12))
+
+modelMonthlySeasonal002.210Napa = Arima(tsCaliforniaNapaTemp, order = c(0,0,2), 
+                                  seasonal = list(order = c(2, 1, 0), period = 12))
+modelMonthlySeasonal002.012Napa = Arima(tsCaliforniaNapaTemp, order = c(0,0,2), 
+                                  seasonal = list(order = c(0, 1, 2), period = 12))
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+modelMonthlySeasonal100.110Napa 
+
+modelMonthlySeasonal100.011Napa
+
+modelMonthlySeasonal200.210Napa
+modelMonthlySeasonal200.012Napa
+
+modelMonthlySeasonal001.110Napa
+
+modelMonthlySeasonal001.011Napa
+
+modelMonthlySeasonal002.210Napa
+modelMonthlySeasonal002.012Napa
+
+```
+
+So far it seems the second model is the most adequate
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+NapaModelAuto = auto.arima(tsCaliforniaNapaTemp, max.d = 0, max.p = 5, max.q = 5)
+
+NapaModelAuto
+
+```
+
+it seems there isn't enough data for auto.arima to fully caught the seasonality needed
+
+
+#### Forecasting 
+
+Now using the forecast function we will produce an out of time cross-validation to forecast the values in the 2 weeks of November
+
+Here we simply 
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+forecast(modelMonthlySeasonal100.011Napa, h=8)
+
+toPredictValues$Napa
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+# Create a new time series object with missing values replaced by zeros
+tsCaliforniaNapaTempFilled <- tsCaliforniaNapaTemp
+tsCaliforniaNapaTempFilled[is.na(tsCaliforniaNapaTempFilled)] <- 0
+
+# Update the ARIMA model with the filled time series (missing values replaced by zeros)
+updatedArimaModelNappa <- Arima(tsCaliforniaNapaTempFilled, model = modelMonthlySeasonal100.011Napa)
+
+# Generate predictions for the entire time series (including missing values)
+predictionsDeath <- fitted(updatedArimaModelNappa)
+
+predictionsDeath
+
+```
+
+
+#### Death valley
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+## initial assumption
+
+
+modelMonthlySeasonal100.110DeathValley = Arima(tsCaliforniaDeathValleyTemp, order = c(1,0,0), 
+                                  seasonal = list(order = c(1, 1, 0), period = 12))
+
+modelMonthlySeasonal100.011DeathValley = Arima(tsCaliforniaDeathValleyTemp, order = c(1,0,0), 
+                                  seasonal = list(order = c(0, 1, 1), period = 12))
+
+modelMonthlySeasonal200.210DeathValley = Arima(tsCaliforniaDeathValleyTemp, order = c(2,0,0), 
+                                  seasonal = list(order = c(2, 1, 0), period = 12))
+modelMonthlySeasonal200.012DeathValley = Arima(tsCaliforniaDeathValleyTemp, order = c(2,0,0), 
+                                  seasonal = list(order = c(0, 1, 2), period = 12))
+
+modelMonthlySeasonal001.110DeathValley = Arima(tsCaliforniaDeathValleyTemp, order = c(0,0,1), 
+                                  seasonal = list(order = c(1, 1, 0), period = 12))
+
+modelMonthlySeasonal001.011DeathValley = Arima(tsCaliforniaDeathValleyTemp, order = c(0,0,1), 
+                                  seasonal = list(order = c(0, 1, 1), period = 12))
+
+modelMonthlySeasonal002.210DeathValley = Arima(tsCaliforniaDeathValleyTemp, order = c(0,0,2), 
+                                  seasonal = list(order = c(2, 1, 0), period = 12))
+modelMonthlySeasonal002.012DeathValley = Arima(tsCaliforniaDeathValleyTemp, order = c(0,0,2), 
+                                  seasonal = list(order = c(0, 1, 2), period = 12))
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+modelMonthlySeasonal100.110DeathValley 
+
+modelMonthlySeasonal100.011DeathValley 
+modelMonthlySeasonal200.210DeathValley
+modelMonthlySeasonal200.012DeathValley 
+
+modelMonthlySeasonal001.110DeathValley 
+
+modelMonthlySeasonal001.011DeathValley 
+
+modelMonthlySeasonal002.210DeathValley 
+modelMonthlySeasonal002.012DeathValley 
+
+```
+
+
+#### Forecast
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+forecast(modelMonthlySeasonal100.011DeathValley, h=8)
+
+toPredictValues$`Death Valley`
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+# Create a new time series object with missing values replaced by zeros
+tsCaliforniaDeathValleyTempFilled <- tsCaliforniaDeathValleyTemp
+tsCaliforniaDeathValleyTempFilled[is.na(tsCaliforniaDeathValleyTempFilled)] <- 0
+
+# Update the ARIMA model with the filled time series (missing values replaced by zeros)
+updatedArimaModel <- Arima(tsCaliforniaDeathValleyTempFilled, model = modelMonthlySeasonal100.011DeathValley)
+
+# Generate predictions for the entire time series (including missing values)
+predictionsDeath <- fitted(updatedArimaModel)
+
+predictionsDeath
+
+
+
+```
+
+
+### 3 d)
+
+The predictions could be improved by utilising a method more specific to predicting values before the end of our current data, as the forecast package is not the most optimized for this, unlike packages that utilize Kalman smoother method another way to improve the prediction could be to utilize dlms and see if they have a better performance than the arima function
+Lastly obtaining more data would increasing any model performance by having more data for each point in the cycle
+
+
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+
+```
+

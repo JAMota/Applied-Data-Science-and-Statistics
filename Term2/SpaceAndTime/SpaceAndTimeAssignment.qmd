@@ -32,9 +32,6 @@ library(forecast)
 
 library(dlm)
 
-library(KFAS)
-
-
 
 ```
 ## TODO check if I checked all the residuals for all models
@@ -1718,6 +1715,22 @@ toPredictValues$Napa
 ```
 
 
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+# Create a new time series object with missing values replaced by zeros
+tsCaliforniaNapaTempFilled <- tsCaliforniaNapaTemp
+tsCaliforniaNapaTempFilled[is.na(tsCaliforniaNapaTempFilled)] <- 0
+
+# Update the ARIMA model with the filled time series (missing values replaced by zeros)
+updatedArimaModelNappa <- Arima(tsCaliforniaNapaTempFilled, model = modelMonthlySeasonal100.011Napa)
+
+# Generate predictions for the entire time series (including missing values)
+predictionsDeath <- fitted(updatedArimaModelNappa)
+
+predictionsDeath
+
+```
+
 #### Death valley
 
 
@@ -1778,13 +1791,30 @@ toPredictValues$`Death Valley`
 
 ```
 
-### 3 d)
-
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+# Create a new time series object with missing values replaced by zeros
+tsCaliforniaDeathValleyTempFilled <- tsCaliforniaDeathValleyTemp
+tsCaliforniaDeathValleyTempFilled[is.na(tsCaliforniaDeathValleyTempFilled)] <- 0
+
+# Update the ARIMA model with the filled time series (missing values replaced by zeros)
+updatedArimaModel <- Arima(tsCaliforniaDeathValleyTempFilled, model = modelMonthlySeasonal100.011DeathValley)
+
+# Generate predictions for the entire time series (including missing values)
+predictionsDeath <- fitted(updatedArimaModel)
+
+predictionsDeath
 
 
 
 ```
+
+### 3 d)
+
+The predictions could be improved by utilising a method more specific to predicting values before the end of our current data, as the forecast package is not the most optimized for this, unlike packages that utilize Kalman smoother method another way to improve the prediction could be to utilize dlms and see if they have a better performance than the arima function
+Lastly obtaining more data would increasing any model performance by having more data for each point in the cycle
+
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
