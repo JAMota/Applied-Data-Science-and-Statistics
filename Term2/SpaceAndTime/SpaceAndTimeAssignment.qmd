@@ -601,20 +601,21 @@ phi_probs <- phi_probs / sum(phi_probs)
 tau_sq_rel_probs <- tau_sq_rel_probs / sum(tau_sq_rel_probs)
 
 
-
-# Fitting the krige.bayes model with the informative priors
-krige_bayes_model <- krige.bayes(geodata = precipitationNetherland_geoR, loc = ex.grid, prior = prior.control(phi.prior = phi_probs, phi.discrete = phi_discrete, tausq.rel.prior = tau_sq_rel_probs, tausq.rel.discrete = tau_sq_rel_discrete))
-
-
-
 ex.grid <- as.matrix(expand.grid(seq(50.5,53.5,l=100), seq(3.5,7,l=100)))
 
-ex.bayes <- krige.bayes(geodata = precipitationNetherland_geoR, loc = ex.grid,
-                        model = model.control(cov.m = "matern", kappa = 1.5),
-                        prior = priorParametersNoNugget)
-summary(ex.bayes$posterior$sample)
 
-summary(krige_bayes_model$posterior$sample)
+# Fitting the krige.bayes model with the informative priors
+krigeBayesModelWithNugget <- krige.bayes(geodata = precipitationNetherland_geoR, loc = ex.grid, prior = prior.control(phi.prior = phi_probs, phi.discrete = phi_discrete, tausq.rel.prior = tau_sq_rel_probs, tausq.rel.discrete = tau_sq_rel_discrete))
+
+
+krigeBayesModelWithoutNugget <- krige.bayes(geodata = precipitationNetherland_geoR, loc = ex.grid,
+                        prior =  prior.control(phi.prior = phi_probs, phi.discrete = phi_discrete))
+
+
+
+summary(krigeBayesModelWithoutNugget$posterior$sample)
+
+summary(krigeBayesModelWithNugget$posterior$sample)
 
 
 ```
