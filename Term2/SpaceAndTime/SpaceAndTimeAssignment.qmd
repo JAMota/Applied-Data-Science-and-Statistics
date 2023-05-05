@@ -970,8 +970,6 @@ V(fittedQuadraticDLM)
 W(fittedQuadraticDLM)
 
 ```
-## TODO include dlm with arima?
-
 Now we will compare both models through their log likelihood using the dlmLL function and see if the extra flexibility from the extra polynomial function is providing a better fit
 
 
@@ -1000,6 +998,8 @@ colnames(x) =c("Gas", "Trend", "Seasonal")
 plot(x, type = 'o', main = "Atlantic AMOC at 26,5N 2010-2020")
 
 ```
+
+#### Forecast
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
@@ -1270,12 +1270,12 @@ combinedDataframeAMOC = rbind(
 
 
 # Create the ggplot
-plotARIMA = ggplot(combinedDataframeAMOC, aes(x = Date, y = Temperature, color = Type, group = 1)) +
+plotARIMA2 = ggplot(combinedDataframeAMOC, aes(x = Date, y = Temperature, color = Type, group = 1)) +
   geom_line() +
   scale_color_manual(values = c("blue", "red"))
 
 # Add the 80% and 95% confidence intervals
-plotARIMA = plotARIMA + geom_ribbon(
+plotARIMA2 = plotARIMA2 + geom_ribbon(
   data = predictedArimaSeasonalDF, aes(x = YearMonth, ymin = Lo.95, ymax = Hi.95),
   fill = "red", alpha = 0.2
 ) + geom_ribbon(
@@ -1283,21 +1283,108 @@ plotARIMA = plotARIMA + geom_ribbon(
   fill = "blue", alpha = 0.2
 )
 
-# # Adjust the x-axis labels
-# plotARIMA = plotARIMA + scale_x_discrete(
-#   breaks = c("2021-Q1", "2021-Q2", "2021-Q3", "2021-Q4"),
-#   labels = c("Q1", "Q2", "Q3", "Q4")
-# )
+# Adjust the x-axis labels
+plotARIMA2 = plotARIMA2 + scale_x_discrete(
+  breaks = c("2021-1", "2021-4", "2021-8", "2021-12"),
+  labels = c("Q1", "Q2", "Q3", "Q4")
+)
 
-plotARIMA = plotARIMA + theme(
+plotARIMA2 = plotARIMA2 + theme(
   axis.text.x = element_text(angle = 90, vjust = 0.5, size = 8)
 )
 
 # Display the plot
-print(plotARIMA)
+print(plotARIMA2)
 
 
 ```
+
+#### DLM
+
+#### model fitting
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+## linear model, order = 2, quadratic order = 3 , etc
+
+## what we want is a linear model with a seasonal component so we add the 2 components together in a model
+
+## things to try, another term like quadratic, or a arma component stacked on top of this
+
+## Initial model with a linear polynomial and a seasonal component
+
+buildFun = function(x) {
+dlmModPoly(order = 2, dV = exp(x[1]), dW = c(0, exp(x[2]))) +
+dlmModSeas(frequency = 12, dV = 0, dW = c(exp(x[3]), rep(0,10)))
+}
+
+linearDLM = dlmMLE(tsAtlanticMonthly, parm = c(0,0,0), build = buildFun)
+
+linearDLM$par
+
+fittedLinearDLM = buildFun(linearDLM$par)
+
+V(fittedLinearDLM)
+
+W(fittedLinearDLM)
+
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+
+## second model with a quadratic polynomial and a seasonal component
+
+buildFunQuad = function(x) {
+  dlmModPoly(order = 3, dV = exp(x[1]), dW = c(0, exp(x[2]), exp(x[3]))) +
+  dlmModSeas(frequency = 12, dV = 0, dW = c(exp(x[4]), rep(0,10)))
+}
+
+quadraticDLM = dlmMLE(tsAtlanticMonthly, parm = c(0,0,0,0), build = buildFunQuad)
+
+quadraticDLM$par
+
+fittedQuadraticDLM = buildFunQuad(quadraticDLM$par)
+
+V(fittedQuadraticDLM)
+
+W(fittedQuadraticDLM)
+
+```
+Now we will compare both models through their log likelihood using the dlmLL function and see if the extra flexibility from the extra polynomial function is providing a better fit
+
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+dlmLL(tsAtlanticMonthly, fittedLinearDLM)
+
+dlmLL(tsAtlanticMonthly, fittedQuadraticDLM)
+
+```
+As we can see the dlm model using only a linear polynomial has a lower log likelihood than the model with an extra quadratic term, meaning this extra flexibility does not contribute to a better model fit and as such we will use the linear fitted model to do our forecasting.
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+amocPredict =dlmFilter(tsAtlanticMonthly, mod = fittedLinearDLM)
+summary(amocPredict)
+
+
+```
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+x =cbind(tsAtlanticMonthly, dropFirst(amocPredict$a[,c(1,3)]))
+x =window(x, start = c(2010,1))
+colnames(x) =c("Gas", "Trend", "Seasonal")
+plot(x, type = 'o', main = "Atlantic AMOC at 26,5N 2010-2020")
+
+```
+
+
+#### Forecast
+
+
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
