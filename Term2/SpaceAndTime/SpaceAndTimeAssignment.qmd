@@ -23,13 +23,15 @@ AMOCDF = read_csv("assessmentData/AMOCdata.csv")
 californiaSpatialDataDF = read_csv("assessmentData/metadataCA.csv")
 
 #install.packages('gstat')
+#library(gstat)
 library(geoR)
 library(viridis)
 library(sp)
-library(gstat)
+
 library(forecast)
 
 library(dlm)
+
 
 
 ```
@@ -558,9 +560,36 @@ print(variancePlot)
 
 ### 1 h)
 
-he predicts using the grid but we have to change it to our own coordinate and the prior use previous results
+<!-- he predicts using the grid but we have to change it to our own coordinate and the prior use previous results -->
+
+For the priors I will be using the estimated values from our latest maximum likelihood model.
+
+<!-- priorNugget = krigingVariogramFittedMatrén1.0$nugget -->
+
+<!-- priorCovariance = krigingVariogramFittedMatrén1.0$cov.pars -->
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+# Extract the estimated parameters
+
+priorMean = Matren1.0linearREMLmaximumLikelihoodNetherlandsInitial10.1$beta
+priorSigmaSQ = Matren1.0linearREMLmaximumLikelihoodNetherlandsInitial10.1$sigmasq
+priorNugget = Matren1.0linearREMLmaximumLikelihoodNetherlandsInitial10.1$nugget
+priorCovariance = Matren1.0linearREMLmaximumLikelihoodNetherlandsInitial10.1$cov.pars
+
+
+ ?prior.control
+# <- prior.control(mean.prior = priorMean, 
+#                             var.prior = priorSigmaSQ, 
+#                             nugget.prior = 0, 
+#                             cov.prior = priorCovariance)
+# 
+# 
+# priors <- prior.control(mean.prior = c(priorMean), var.prior = c(priorSigmaSQ), 
+#                         nugget.prior = c(0), cov.prior = c(priorCovariance))
+
+
+kriging_result <- krige.bayes(geodata = precipitationNetherland_geoR, locations = spatialPointsABC, priors = priorParametersNoNugget)
 
 
 
@@ -568,6 +597,30 @@ he predicts using the grid but we have to change it to our own coordinate and th
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
+
+priorParametersNoNugget = prior.control(
+  beta.prior = "normal", # Normal prior for mean parameter β
+  beta = priorMean, # Mean hyperparameter for β
+  beta.var = priorSigmaSQ, # Covariance hyperparameter for β
+
+  sigmasq.prior = "sc.inv.chisq", # Scaled inverse Chi-squared prior for σ²
+  sigmasq = 2, # Fixed value for σ², only used if sigmasq.prior = "fixed"
+  df.sigmasq = 3, # Degrees of freedom for σ² prior
+
+  phi.prior = "uniform", # Uniform prior for range parameter ϕ
+  phi = priorCovariance, # Range for uniform prior or hyperparameter ν for exponential prior
+
+  tausq.prior = "fixed", # Fixed value for nugget effect τ²
+  tausq = 0 # Fixed value for τ²
+)
+
+
+ex.grid <- as.matrix(expand.grid(seq(50.5,53.5,l=6), seq(3.5,7,l=7)))
+
+ex.bayes <- krige.bayes(geodata = precipitationNetherland_geoR, loc = ex.grid,
+                        model = model.control(cov.m = "matern", kappa = 1.5),
+                        prior = priorParametersNoNugget)
+summary(ex.bayes$posterior$sample)
 
 
 ```
