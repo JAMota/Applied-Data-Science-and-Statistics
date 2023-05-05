@@ -588,34 +588,42 @@ The function does not support continuous priors directly so we will fit them as 
 
 
 # Creating discrete priors for phi and tau^2_rel AKA this is for the model with a nugget
-phi_discrete <- seq(min(priorPhiVariogram, priorPhiMaximumLikelihood) * 0.5, max(priorPhiVariogram, priorPhiMaximumLikelihood) * 1.5, length.out = 50)
+phiDiscrete <- seq(min(priorPhiVariogram, priorPhiMaximumLikelihood) * 0.5, max(priorPhiVariogram, priorPhiMaximumLikelihood) * 1.5, length.out = 50)
 
-tau_sq_rel_discrete <- seq(min(priorTauSQVariogram, priorTauSQMaximumLikelihood) * 0.5, max(priorTauSQVariogram, priorTauSQMaximumLikelihood) * 1.5, length.out = 50)
+tauSqDiscrete <- seq(min(priorTauSQVariogram, priorTauSQMaximumLikelihood) * 0.5, max(priorTauSQVariogram, priorTauSQMaximumLikelihood) * 1.5, length.out = 50)
 
 # Informative priors based on the parameter estimates
-phi_probs <- dnorm(phi_discrete, mean = (priorPhiVariogram + priorPhiMaximumLikelihood) / 2, sd = abs(priorPhiVariogram - priorPhiMaximumLikelihood) / 2)
-tau_sq_rel_probs <- dnorm(tau_sq_rel_discrete, mean = (priorTauSQVariogram + priorTauSQMaximumLikelihood) / 2, sd = abs(priorTauSQVariogram - priorTauSQMaximumLikelihood) / 2)
+phiProbability <- dnorm(phiDiscrete, mean = (priorPhiVariogram + priorPhiMaximumLikelihood) / 2, sd = abs(priorPhiVariogram - priorPhiMaximumLikelihood) / 2)
+tauSqProbability <- dnorm(tauSqDiscrete, mean = (priorTauSQVariogram + priorTauSQMaximumLikelihood) / 2, sd = abs(priorTauSQVariogram - priorTauSQMaximumLikelihood) / 2)
 
 # Normalizing the probabilities
-phi_probs <- phi_probs / sum(phi_probs)
-tau_sq_rel_probs <- tau_sq_rel_probs / sum(tau_sq_rel_probs)
+phiProbability <- phiProbability / sum(phiProbability)
+tauSqProbability <- tauSqProbability / sum(tauSqProbability)
 
 
 ex.grid <- as.matrix(expand.grid(seq(50.5,53.5,l=100), seq(3.5,7,l=100)))
 
 
 # Fitting the krige.bayes model with the informative priors
-krigeBayesModelWithNugget <- krige.bayes(geodata = precipitationNetherland_geoR, loc = ex.grid, prior = prior.control(phi.prior = phi_probs, phi.discrete = phi_discrete, tausq.rel.prior = tau_sq_rel_probs, tausq.rel.discrete = tau_sq_rel_discrete))
+krigeBayesModelWithNugget <- krige.bayes(geodata = precipitationNetherland_geoR, loc = ex.grid, prior = prior.control(phi.prior = phiProbability, phi.discrete = phiDiscrete, tausq.rel.prior = tauSqProbability, tausq.rel.discrete = tauSqDiscrete))
 
 
 krigeBayesModelWithoutNugget <- krige.bayes(geodata = precipitationNetherland_geoR, loc = ex.grid,
-                        prior =  prior.control(phi.prior = phi_probs, phi.discrete = phi_discrete))
+                        prior =  prior.control(phi.prior = phiProbability, phi.discrete = phiDiscrete))
 
 
 
 summary(krigeBayesModelWithoutNugget$posterior$sample)
 
 summary(krigeBayesModelWithNugget$posterior$sample)
+
+
+```
+
+Now we will compare the posterior of both of the models to see the impact of the nugget
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
 
 
 ```
