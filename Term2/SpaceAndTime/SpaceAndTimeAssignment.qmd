@@ -32,6 +32,8 @@ library(forecast)
 
 library(dlm)
 
+library(KFAS)
+
 
 
 ```
@@ -1555,7 +1557,7 @@ tsCaliforniaMaxTemp = ts(californiaTempDF$max, start = c(2012,1), frequency = 36
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-plot.ts(tsCaliforniaSanDiegoTemp)
+plot.ts(tsCaliforniaMaxTemp)
 
 ```
 
@@ -1595,9 +1597,15 @@ plot(variogramCalifornia)
 
 ### 3 c)
 
-Here we create a ts object with frequency 366 because 2012 does indeed have the 29th of February.
+Here we create a ts object with frequency 366 because 2012 does indeed have the 29th of February, removing the dates from the 9th to the 17th of november
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+toPredictValues = californiaTempDF %>% filter((Date >= as.Date("2012-11-09") & Date <= as.Date("2012-11-17")))
+
+californiaTempDF = californiaTempDF %>% filter(!(Date >= as.Date("2012-11-09") & Date <= as.Date("2012-11-17")))
+
+
 tsCaliforniaNapaTemp = ts(californiaTempDF$Napa, start = c(2012,1), frequency = 366)
 
 plot.ts(tsCaliforniaNapaTemp)
@@ -1605,6 +1613,8 @@ plot.ts(tsCaliforniaNapaTemp)
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
 tsCaliforniaDeathValleyTemp = ts(californiaTempDF$`Death Valley`, start = c(2012,1), frequency = 366)
 
 plot.ts(tsCaliforniaDeathValleyTemp)
@@ -1630,112 +1640,145 @@ pacf(tsCaliforniaNapaTemp)
 ```
 We can once again see the same pattern of a very slowly decreasing ACF but this time PACF does seem to at least not has such a clear cut off meanig there might a smaller q non-zero q value requiring an ARIMA for this city
 
-The model does seem stationary however it is not clear enough since we only have 1 year worth of data
+The model for both cities does seem stationary with a linear trend on seasonality however it is not clear enough since we only have 1 year worth of data
 
-#### model checking
-
-
-
-#### DLM
-
-#### model fitting
+#### model checking Nappa
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-## linear model, order = 2, quadratic order = 3 , etc
-
-## what we want is a linear model with a seasonal component so we add the 2 components together in a model
-
-## things to try, another term like quadratic, or a arma component stacked on top of this
-
-## Initial model with a linear polynomial and a seasonal component
-
-buildFun = function(x) {
-dlmModPoly(order = 2, dV = exp(x[1]), dW = c(0, exp(x[2]))) +
-dlmModSeas(frequency = 366, dV = 0, dW = c(exp(x[3]), rep(0,364)))
-}
-
-linearDLMNapa = dlmMLE(tsCaliforniaNapaTemp, parm = c(0,0,0), build = buildFun)
-
-linearDLMNapa$par
-
-fittedLinearDLMNapa = buildFun(linearDLMNapa$par)
-
-V(fittedLinearDLMNapa)
-
-W(fittedLinearDLMNapa)
+## initial assumption
 
 
+modelMonthlySeasonal100.110Napa = Arima(tsCaliforniaNapaTemp, order = c(1,0,0), 
+                                  seasonal = list(order = c(1, 1, 0), period = 12))
 
-```
+modelMonthlySeasonal100.011Napa = Arima(tsCaliforniaNapaTemp, order = c(1,0,0), 
+                                  seasonal = list(order = c(0, 1, 1), period = 12))
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72)}
+modelMonthlySeasonal200.210Napa = Arima(tsCaliforniaNapaTemp, order = c(2,0,0), 
+                                  seasonal = list(order = c(2, 1, 0), period = 12))
+modelMonthlySeasonal200.012Napa = Arima(tsCaliforniaNapaTemp, order = c(2,0,0), 
+                                  seasonal = list(order = c(0, 1, 2), period = 12))
 
-## second model with a quadratic polynomial and a seasonal component
+modelMonthlySeasonal001.110Napa = Arima(tsCaliforniaNapaTemp, order = c(0,0,1), 
+                                  seasonal = list(order = c(1, 1, 0), period = 12))
 
-buildFunQuad = function(x) {
-  dlmModPoly(order = 3, dV = exp(x[1]), dW = c(0, exp(x[2]), exp(x[3]))) +
-  dlmModSeas(frequency = 12, dV = 0, dW = c(exp(x[4]), rep(0,10)))
-}
+modelMonthlySeasonal001.011Napa = Arima(tsCaliforniaNapaTemp, order = c(0,0,1), 
+                                  seasonal = list(order = c(0, 1, 1), period = 12))
 
-quadraticDLM = dlmMLE(tsAtlanticMonthly, parm = c(0,0,0,0), build = buildFunQuad)
-
-quadraticDLM$par
-
-fittedQuadraticDLM = buildFunQuad(quadraticDLM$par)
-
-V(fittedQuadraticDLM)
-
-W(fittedQuadraticDLM)
-
-```
-Now we will compare both models through their log likelihood using the dlmLL function and see if the extra flexibility from the extra polynomial function is providing a better fit
-
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
-
-dlmLL(tsAtlanticMonthly, fittedLinearDLM)
-
-dlmLL(tsAtlanticMonthly, fittedQuadraticDLM)
-
-```
-As we can see the dlm model using only a linear polynomial has a lower log likelihood than the model with an extra quadratic term, meaning this extra flexibility does not contribute to a better model fit and as such we will use the linear fitted model to do our forecasting.
-
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
-
-amocPredict =dlmFilter(tsAtlanticMonthly, mod = fittedLinearDLM)
-summary(amocPredict)
+modelMonthlySeasonal002.210Napa = Arima(tsCaliforniaNapaTemp, order = c(0,0,2), 
+                                  seasonal = list(order = c(2, 1, 0), period = 12))
+modelMonthlySeasonal002.012Napa = Arima(tsCaliforniaNapaTemp, order = c(0,0,2), 
+                                  seasonal = list(order = c(0, 1, 2), period = 12))
 
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-x =cbind(tsAtlanticMonthly, dropFirst(amocPredict$a[,c(1,3)]))
-x =window(x, start = c(2010,1))
-colnames(x) =c("Gas", "Trend", "Seasonal")
-plot(x, type = 'o', main = "Atlantic AMOC at 26,5N 2010-2020")
+modelMonthlySeasonal100.110Napa 
+
+modelMonthlySeasonal100.011Napa
+
+modelMonthlySeasonal200.210Napa
+modelMonthlySeasonal200.012Napa
+
+modelMonthlySeasonal001.110Napa
+
+modelMonthlySeasonal001.011Napa
+
+modelMonthlySeasonal002.210Napa
+modelMonthlySeasonal002.012Napa
 
 ```
+So far it seems the second model is the most adequate
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+NapaModelAuto = auto.arima(tsCaliforniaNapaTemp, max.d = 0, max.p = 5, max.q = 5)
+
+NapaModelAuto
+
+```
+it seems there isn't enough data for auto.arima to fully caught the seasonality needed
+
+
+#### Forecasting 
+
+Now using the forecast function we will produce an out of time cross-validation to forecast the values in the 2 weeks of November
+
+Here we simply 
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+forecast(modelMonthlySeasonal100.011Napa, h=8)
+
+toPredictValues$Napa
+
+```
+
+
+#### Death valley
 
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
+## initial assumption
+
+
+modelMonthlySeasonal100.110DeathValley = Arima(tsCaliforniaDeathValleyTemp, order = c(1,0,0), 
+                                  seasonal = list(order = c(1, 1, 0), period = 12))
+
+modelMonthlySeasonal100.011DeathValley = Arima(tsCaliforniaDeathValleyTemp, order = c(1,0,0), 
+                                  seasonal = list(order = c(0, 1, 1), period = 12))
+
+modelMonthlySeasonal200.210DeathValley = Arima(tsCaliforniaDeathValleyTemp, order = c(2,0,0), 
+                                  seasonal = list(order = c(2, 1, 0), period = 12))
+modelMonthlySeasonal200.012DeathValley = Arima(tsCaliforniaDeathValleyTemp, order = c(2,0,0), 
+                                  seasonal = list(order = c(0, 1, 2), period = 12))
+
+modelMonthlySeasonal001.110DeathValley = Arima(tsCaliforniaDeathValleyTemp, order = c(0,0,1), 
+                                  seasonal = list(order = c(1, 1, 0), period = 12))
+
+modelMonthlySeasonal001.011DeathValley = Arima(tsCaliforniaDeathValleyTemp, order = c(0,0,1), 
+                                  seasonal = list(order = c(0, 1, 1), period = 12))
+
+modelMonthlySeasonal002.210DeathValley = Arima(tsCaliforniaDeathValleyTemp, order = c(0,0,2), 
+                                  seasonal = list(order = c(2, 1, 0), period = 12))
+modelMonthlySeasonal002.012DeathValley = Arima(tsCaliforniaDeathValleyTemp, order = c(0,0,2), 
+                                  seasonal = list(order = c(0, 1, 2), period = 12))
 
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
+modelMonthlySeasonal100.110DeathValley 
 
+modelMonthlySeasonal100.011DeathValley 
+modelMonthlySeasonal200.210DeathValley
+modelMonthlySeasonal200.012DeathValley 
+
+modelMonthlySeasonal001.110DeathValley 
+
+modelMonthlySeasonal001.011DeathValley 
+
+modelMonthlySeasonal002.210DeathValley 
+modelMonthlySeasonal002.012DeathValley 
 
 ```
+
+#### Forecast
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
+forecast(modelMonthlySeasonal100.011DeathValley, h=8)
 
+toPredictValues$`Death Valley`
 
 ```
+
+### 3 d)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
