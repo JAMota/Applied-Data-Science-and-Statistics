@@ -420,7 +420,7 @@ As we can see the data at the start seems to be systematically underestimated an
 
 ### 1 f)
 
-First we will start by using the predictions using the variogram
+First we will start by making the predictions using the variogram
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
@@ -475,6 +475,7 @@ comparisonMaximumLikelihood = data.frame(actualPrecipitationValues, predictions)
 
 
 ```
+Now that we have made the predictions for our 2 models we will check the predicted values compared to the real values for each of the models.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
@@ -482,11 +483,92 @@ comparisonMaximumLikelihood = data.frame(actualPrecipitationValues, predictions)
 comparisonvariogram
 comparisonMaximumLikelihood 
 
+# Calculate Mean Absolute Error (MAE)
+MAEVariogram <- mean(abs(comparisonvariogram$precip - comparisonvariogram$predictions))
+MAEMaximumLikelihood <- mean(abs(comparisonMaximumLikelihood$precip - comparisonMaximumLikelihood$predictions))
+
+
+# Calculate Mean Squared Error (MSE)
+mseVariogram <- mean((comparisonvariogram$precip - comparisonvariogram$predictions)^2)
+mseMaximumLikelihood <- mean((comparisonMaximumLikelihood$precip - comparisonMaximumLikelihood$predictions)^2)
+
+
+# Calculate Root Mean Squared Error (RMSE)
+rmseVariogram <- sqrt(mseVariogram)
+rmseMaximumLikelihood <- sqrt(mseMaximumLikelihood)
+
+
+# Display the calculated metrics
+cat("Mean Absolute Error (MAE) of the Variogram:", MAEVariogram, "\n")
+cat("Mean Squared Error (MSE) of the Variogram:", mseVariogram, "\n")
+cat("Root Mean Squared Error (RMSE) of the Variogram:", rmseVariogram, "\n")
+cat("\n\n")
+cat("Mean Absolute Error (MAE) of the maximum likelihood:", MAEMaximumLikelihood, "\n")
+cat("Mean Squared Error (MSE) of the maximum likelihood:", mseMaximumLikelihood, "\n")
+cat("Root Mean Squared Error (RMSE) of the maximum likelihood:", rmseMaximumLikelihood, "\n")
+
 
 
 ```
+As we can see from both the real values and the MAE, MSE and RMSE the variogram has as much better performance predicting those 3 points than our maximum likelihood model
 
 ### 1 g)
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+# # Define new grid with 0.05 degree step
+# new_grid <- expand.grid(seq(min(precipitationNetherland_geoR$coords[,1]), max(precipitationNetherland_geoR$coords[,1]), by = 0.05),
+#                         seq(min(precipitationNetherland_geoR$coords[,2]), max(precipitationNetherland_geoR$coords[,2]), by = 0.05))
+# 
+# # Predict mean and variance for new grid using maximum likelihood model
+# preds <- predict(Matren2.5linearREMLmaximumLikelihoodNetherlandsInitial10.1, newdata = new_grid, type = "UK")
+# 
+# # Plot mean
+# image(x = unique(new_grid[,1]), y = unique(new_grid[,2]), z = preds$prediction, col = viridis::viridis(100),
+#       main = "Mean", xlab = "Longitude", ylab = "Latitude", asp = 1)
+# 
+# # Plot variance
+# image(x = unique(new_grid[,1]), y = unique(new_grid[,2]), z = preds$krige.var, col = viridis::viridis(100),
+#       main = "Variance", xlab = "Longitude", ylab = "Latitude", asp = 1)
+
+
+# Determine the range of the coordinates
+x_range <- range(precipitationNetherland_geoR$coords[, 1])
+y_range <- range(precipitationNetherland_geoR$coords[, 2])
+
+# Create a grid with 0.05-degree spacing
+grid_points <- expand.grid(x = seq(x_range[1], x_range[2], by = 0.05),
+                           y = seq(y_range[1], y_range[2], by = 0.05))
+
+
+# Kriging with the fitted variogram model
+krigeResults <- krige.conv(precipitationNetherland_geoR, locations = grid_points, krige = krigeControl)
+
+# Create a data frame for the grid points with the predicted mean and variance
+grid_data <- data.frame(grid_points, mean = krigeResults$predict, variance = krigeResults$krige.var)
+
+# Mean plot
+mean_plot <- ggplot(grid_data, aes(x = x, y = y, fill = mean)) +
+  geom_tile() +
+  scale_fill_gradientn(colors = c("blue", "green", "yellow", "red")) +
+  theme_minimal() +
+  ggtitle("Mean Plot") +
+  labs(x = "Longitude", y = "Latitude", fill = "Mean")
+
+# Variance plot
+variance_plot <- ggplot(grid_data, aes(x = x, y = y, fill = variance)) +
+  geom_tile() +
+  scale_fill_gradientn(colors = c("white", "blue", "green", "yellow", "red")) +
+  theme_minimal() +
+  ggtitle("Variance Plot") +
+  labs(x = "Longitude", y = "Latitude", fill = "Variance")
+
+# Display the plots
+print(mean_plot)
+print(variance_plot)
+
+
+```
 
 
 ### 1 h)
