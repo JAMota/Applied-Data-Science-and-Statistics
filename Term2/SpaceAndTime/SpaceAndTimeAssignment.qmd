@@ -429,18 +429,20 @@ spatialPointsABC =  randomRowsPrecipitation[, c("longitude", "latitude")]
 
 
 # Set the krige.control parameters
-krige_control = krige.control(type.krige = "OK", cov.model = krigingVariogramFittedMatrén1.0$cov.model, cov.pars = krigingVariogramFittedMatrén1.0$cov.pars)
+krigeControl = krige.control(type.krige = "OK", cov.model = krigingVariogramFittedMatrén1.0$cov.model, cov.pars = krigingVariogramFittedMatrén1.0$cov.pars)
 
 
 # Kriging with the fitted variogram model
-krige_result = krige.conv(precipitationNetherland_geoR, locations = spatialPointsABC, krige = krige_control)
+krigeResults = krige.conv(precipitationNetherland_geoR, locations = spatialPointsABC, krige = krigeControl)
 
 # Extract predictions from the kriging results
-predictions = krige_result$predict
+predictions = krigeResults$predict
 
 # Compare the predicted values with the actual precipitation values
-actual_precip = c(89.1, 95.9, 147.2)
-comparisonvariogram = data.frame(actual_precip, predictions)
+
+actualPrecipitationValues = randomRowsPrecipitation[,4]
+
+comparisonvariogram = data.frame(actualPrecipitationValues, predictions)
 
 
 
@@ -450,23 +452,25 @@ Now for the maximum likelihood function
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-#
+# done above
 #spatialPointsABC =  randomRowsPrecipitation[, c("longitude", "latitude")]
 
 
 # Set the krige.control parameters
-krige_control = krige.control(type.krige = "OK", cov.model = krigingVariogramFittedMatrén1.0$cov.model, cov.pars = krigingVariogramFittedMatrén1.0$cov.pars)
+krigeControl = krige.control(type.krige = "OK", cov.model = krigingVariogramFittedMatrén1.0$cov.model, cov.pars = krigingVariogramFittedMatrén1.0$cov.pars)
 
 
 # Kriging with the fitted variogram model
-krige_result = krige.conv(precipitationNetherland_geoR, locations = spatialPointsABC, krige = krige_control)
+krigeResults = krige.conv(precipitationNetherland_geoR, locations = spatialPointsABC, krige = krigeControl)
 
 # Extract predictions from the kriging results
-predictions = krige_result$predict
+predictions = krigeResults$predict
 
 # Compare the predicted values with the actual precipitation values
-actual_precip = c(89.1, 95.9, 147.2)
-comparisonvariogram = data.frame(actual_precip, predictions)
+
+# done above
+#actualPrecipitationValues = randomRowsPrecipitation[,4]
+comparisonvariogram = data.frame(actualPrecipitationValues, predictions)
 
 
 
