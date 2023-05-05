@@ -1387,25 +1387,25 @@ plot(x, type = 'o', main = "Atlantic AMOC at 26,5N 2010-2020")
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-amocForecast = dlmForecast(amocPredict, nAhead = 12)
-summary(amocForecast)
+amocForecastMonthly = dlmForecast(amocPredict, nAhead = 12)
+summary(amocForecastMonthly)
 
-dim(amocForecast$a)
+dim(amocForecastMonthly$a)
 
-dim(amocForecast$f)
+dim(amocForecastMonthly$f)
 
 
 ```
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-sqrtR =sapply(amocForecast$R, function(x) sqrt(x[1,1]))
-pl =amocForecast$a[,1] + qnorm(0.025, sd = sqrtR)
-pu =amocForecast$a[,1] + qnorm(0.975, sd = sqrtR)
+sqrtR =sapply(amocForecastMonthly$R, function(x) sqrt(x[1,1]))
+pl =amocForecastMonthly$a[,1] + qnorm(0.025, sd = sqrtR)
+pu =amocForecastMonthly$a[,1] + qnorm(0.975, sd = sqrtR)
 
 x =ts.union(window(tsAtlanticMonthly, start = c(2010, 1)),
-    amocForecast$a[,1],
-    amocForecast$f, pl, pu)
+    amocForecastMonthly$a[,1],
+    amocForecastMonthly$f, pl, pu)
 par(mar=c(4,4,2,2))
 plot(x, plot.type = "single", type = 'o', pch = c(1, 20, 3, NA, NA),
     col = c("darkgrey", "brown", "brown", "blue", "blue"),
@@ -1416,25 +1416,95 @@ legend("bottomright", legend = c("Observed","Forecast", "95% interval"),
     col = c("darkgrey", "brown", "blue"))
 
 ```
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
+# Set smaller margins
+par(mar = c(4, 4, 2, 2))
+
+tsdiag(amocPredict)
+
+# Reset margins
+par(mar = c(5, 4, 4, 2) + 0.1)
+
+```
+Lastly checking the residuals, they seem to be mostly normally distributed with a good mixture of over and under estimations, especially in the middle with some slight seasonality on both ends being present
+
+### 2 f)
+
+Now starting with the ARIMA models
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
+predictedArimaDF = data.frame(forecast(model200, 4))  
+
+predictedArimaDF$YearQuarter =  c("2021-Q1"	, "2021-Q2", "2021-Q3","2021-Q4"	)
+
+# Combine real_data and pred_data into a single data frame
+combinedDataframeAMOC =rbind(
+  data.frame(Date = YearQuarterAverage$YearQuarter, Temperature = YearQuarterAverage$AverageStrength, Type = "Real"),
+  data.frame(Date = predictedArimaDF$YearQuarter, Temperature = predictedArimaDF$Point.Forecast, Type = "Predicted")
+)
+
+predictedArimaDF$Temperature = predictedArimaDF$Point.Forecast
+
+predictedArimaDF$Type = "Predicted"
+
+
+# Create the ggplot
+plotARIMA =ggplot(combinedDataframeAMOC, aes(x = Date, y = Temperature, color = Type, group = 1)) +
+  geom_line() +
+  scale_color_manual(values = c("blue", "red"))
+
+# Add the 95% confidence interval
+plotARIMA =plotARIMA + geom_ribbon(
+  data = predictedArimaDF, aes(x = YearQuarter, ymin = Lo.95, ymax = Hi.95),
+  fill = "red",
+  alpha = 0.2
+)
+
+# Adjust the x-axis labels
+plotARIMA =plotARIMA + scale_x_discrete(
+  breaks = combinedDataframeAMOC$Date[c(TRUE, rep(FALSE, 3))],
+  labels = combinedDataframeAMOC$Date[c(TRUE, rep(FALSE, 3))]
+)
+
+plotARIMA =plotARIMA + theme(
+  axis.text.x = element_text(angle = 90, vjust = 0.5, size = 8)
+)
+
+print(plotARIMA)
+print(plotARIMA2)
 
 
 ```
 
-```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+The most obvious difference is the level of detail on the seasonality, with the monthly averages capturing an almost opposite effect than the quarterly averages in both the predicted and also in some of the real data, the forecast also has the opposite trend, with an actual expected decrease in Sverdrups around between the 2nd quarter and the mid 3rd quarter which again seems to follow the opposite trend on the quartely data.
 
-
-
-```
+![1st dlm](dlm.png)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
 
+sqrtR =sapply(amocForecastMonthly$R, function(x) sqrt(x[1,1]))
+pl =amocForecastMonthly$a[,1] + qnorm(0.025, sd = sqrtR)
+pu =amocForecastMonthly$a[,1] + qnorm(0.975, sd = sqrtR)
+
+x =ts.union(window(tsAtlanticMonthly, start = c(2010, 1)),
+    amocForecastMonthly$a[,1],
+    amocForecastMonthly$f, pl, pu)
+par(mar=c(4,4,2,2))
+plot(x, plot.type = "single", type = 'o', pch = c(1, 20, 3, NA, NA),
+    col = c("darkgrey", "brown", "brown", "blue", "blue"),
+    ylab = "Log gas consumption")
+
+legend("bottomright", legend = c("Observed","Forecast", "95% interval"),
+    bty = 'n', pch = c(1, 20, NA), lty = 1,
+    col = c("darkgrey", "brown", "blue"))
 
 ```
+Observing the 2 graphs of the dlm models we can see that although the quarterly predictions do not completly predict the spike during the first half of the year compared to the monthly data the second half of the year seems to be relative similarly forecasted with the exception of December where the monthly data show again a decrease but the quarterly data is not capable of capturing.
+
+Despise these changes the predicted overall trend is quite similar with the quaterly trend very slighty increasing the monthly data seeming to remaind constant. 
 
 ## Question 3
 
