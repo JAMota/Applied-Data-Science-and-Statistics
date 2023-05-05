@@ -98,6 +98,9 @@ netherlandsDF_filtered = netherlandsDF %>% anti_join(randomRowsPrecipitation)
 # Print the resulting dataframe
 netherlandsDF_filtered
 
+## recreate the geoData object with the new filtered dataframe
+precipitationNetherland_geoR = as.geodata(netherlandsDF_filtered, coords.col = c("longitude", "latitude"), data.col = "precip")
+
 ```
 
 ### 1 c)
@@ -394,7 +397,7 @@ We will now validate the model by doing cross-validation on the model.
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-xv.ml <- xvalid(precipitationNetherland_geoR, model = Matren2.5linearREMLmaximumLikelihoodNetherlandsInitial10.1)
+xv.ml = xvalid(precipitationNetherland_geoR, model = Matren2.5linearREMLmaximumLikelihoodNetherlandsInitial10.1)
 par(mfrow=c(3,2),mar=c(4,2,2,2))
 plot(xv.ml, error = TRUE, std.error = FALSE, pch = 19)
 
@@ -408,7 +411,7 @@ To account for bias we will also perform cross-validation to the next best perfo
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
-xv.ml <- xvalid(precipitationNetherland_geoR, model = SphericallinearREMLmaximumLikelihoodNetherlandsInitial10.1)
+xv.ml = xvalid(precipitationNetherland_geoR, model = SphericallinearREMLmaximumLikelihoodNetherlandsInitial10.1)
 par(mfrow=c(3,2),mar=c(4,2,2,2))
 plot(xv.ml, error = TRUE, std.error = FALSE, pch = 19)
 
@@ -417,9 +420,53 @@ As we can see the data at the start seems to be systematically underestimated an
 
 ### 1 f)
 
-
+First we will start by using the predictions using the variogram
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+
+spatialPointsABC =  randomRowsPrecipitation[, c("longitude", "latitude")]
+
+
+# Set the krige.control parameters
+krige_control = krige.control(type.krige = "OK", cov.model = krigingVariogramFittedMatrén1.0$cov.model, cov.pars = krigingVariogramFittedMatrén1.0$cov.pars)
+
+
+# Kriging with the fitted variogram model
+krige_result = krige.conv(precipitationNetherland_geoR, locations = spatialPointsABC, krige = krige_control)
+
+# Extract predictions from the kriging results
+predictions = krige_result$predict
+
+# Compare the predicted values with the actual precipitation values
+actual_precip = c(89.1, 95.9, 147.2)
+comparisonvariogram = data.frame(actual_precip, predictions)
+
+
+
+```
+
+Now for the maximum likelihood function
+
+```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
+
+#
+#spatialPointsABC =  randomRowsPrecipitation[, c("longitude", "latitude")]
+
+
+# Set the krige.control parameters
+krige_control = krige.control(type.krige = "OK", cov.model = krigingVariogramFittedMatrén1.0$cov.model, cov.pars = krigingVariogramFittedMatrén1.0$cov.pars)
+
+
+# Kriging with the fitted variogram model
+krige_result = krige.conv(precipitationNetherland_geoR, locations = spatialPointsABC, krige = krige_control)
+
+# Extract predictions from the kriging results
+predictions = krige_result$predict
+
+# Compare the predicted values with the actual precipitation values
+actual_precip = c(89.1, 95.9, 147.2)
+comparisonvariogram = data.frame(actual_precip, predictions)
 
 
 
