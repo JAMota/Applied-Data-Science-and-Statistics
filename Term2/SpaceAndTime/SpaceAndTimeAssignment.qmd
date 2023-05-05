@@ -1243,43 +1243,21 @@ But this data is better visualized in a graph to better understand if the predic
 
 predictedArimaSeasonalDF = data.frame(forecast(modelMonthlySeasonal100.011, 12))  
 
-predictedArimaDF$YearQuarter =  c("2021-Q1"	, "2021-Q2", "2021-Q3","2021-Q4"	)
+predictedArimaSeasonalDF$YearMonth = c("2021-1", "2021-2", "2021-3", "2021-4", "2021-5", "2021-6", "2021-7", "2021-8", "2021-9", "2021-10", "2021-11", "2021-12")
+
+predictedArimaSeasonalDF$Type = "Predicted"
+
+predictedArimaSeasonalDF$Temperature = predictedArimaSeasonalDF$Point.Forecast
+
+YearMonthlyAverage$Type = "Real"
+YearMonthlyAverage$Temperature = YearMonthlyAverage$AverageStrength
+
 
 # Combine real_data and pred_data into a single data frame
-combinedDataframeAMOC =rbind(
-  data.frame(Date = YearQuarterAverage$YearQuarter, Temperature = YearQuarterAverage$AverageStrength, Type = "Real"),
-  data.frame(Date = predictedArimaDF$YearQuarter, Temperature = predictedArimaDF$Point.Forecast, Type = "Predicted")
+combinedDataframeAMOC = rbind(
+  data.frame(Date = YearMonthlyAverage$YearMonth, Temperature = YearMonthlyAverage$Temperature, Type = "Real"),
+  data.frame(Date = predictedArimaSeasonalDF$YearMonth, Temperature = predictedArimaSeasonalDF$Temperature, Type = "Predicted")
 )
-
-predictedArimaDF$Temperature = predictedArimaDF$Point.Forecast
-
-predictedArimaDF$Type = "Predicted"
-
-
-# Create the ggplot
-plotARIMA =ggplot(combinedDataframeAMOC, aes(x = Date, y = Temperature, color = Type, group = 1)) +
-  geom_line() +
-  scale_color_manual(values = c("blue", "red"))
-
-# Add the 95% confidence interval
-plotARIMA =plotARIMA + geom_ribbon(
-  data = predictedArimaDF, aes(x = YearQuarter, ymin = Lo.95, ymax = Hi.95),
-  fill = "red",
-  alpha = 0.2
-)
-
-# Adjust the x-axis labels
-plotARIMA =plotARIMA + scale_x_discrete(
-  breaks = combinedDataframeAMOC$Date[c(TRUE, rep(FALSE, 3))],
-  labels = combinedDataframeAMOC$Date[c(TRUE, rep(FALSE, 3))]
-)
-
-plotARIMA =plotARIMA + theme(
-  axis.text.x = element_text(angle = 90, vjust = 0.5, size = 8)
-)
-
-# Display the plot
-print(plotARIMA)
 
 
 
@@ -1290,6 +1268,33 @@ print(plotARIMA)
 
 ```{r tidy=TRUE, tidy.opts=list(width.cutoff=72) }
 
+
+# Create the ggplot
+plotARIMA = ggplot(combinedDataframeAMOC, aes(x = Date, y = Temperature, color = Type, group = 1)) +
+  geom_line() +
+  scale_color_manual(values = c("blue", "red"))
+
+# Add the 80% and 95% confidence intervals
+plotARIMA = plotARIMA + geom_ribbon(
+  data = predictedArimaSeasonalDF, aes(x = YearMonth, ymin = Lo.95, ymax = Hi.95),
+  fill = "red", alpha = 0.2
+) + geom_ribbon(
+  data = predictedArimaSeasonalDF, aes(x = YearMonth, ymin = Lo.80, ymax = Hi.80),
+  fill = "blue", alpha = 0.2
+)
+
+# # Adjust the x-axis labels
+# plotARIMA = plotARIMA + scale_x_discrete(
+#   breaks = c("2021-Q1", "2021-Q2", "2021-Q3", "2021-Q4"),
+#   labels = c("Q1", "Q2", "Q3", "Q4")
+# )
+
+plotARIMA = plotARIMA + theme(
+  axis.text.x = element_text(angle = 90, vjust = 0.5, size = 8)
+)
+
+# Display the plot
+print(plotARIMA)
 
 
 ```
