@@ -1729,6 +1729,7 @@ predictionsDeath <- fitted(updatedArimaModelNappa)
 
 predictionsDeath
 
+
 ```
 
 #### Death valley
