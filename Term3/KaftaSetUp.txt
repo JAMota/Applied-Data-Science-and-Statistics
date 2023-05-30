@@ -1,0 +1,41 @@
+
+
+#### Set up for kafta install
+
+sudo apt update
+
+sudo apt upgrade
+
+sudo apt install openjdk-8-jdk
+
+curl https://dlcdn.apache.org/kafka/3.4.0/kafka_2.13-3.4.0.tgz
+
+$ tar -xzf kafka_2.13-3.4.0.tgz
+
+cd kafka_2.13-3.4.0
+
+## set up with zookeeper
+
+# Start the ZooKeeper service in a new terminal
+bin/zookeeper-server-start.sh config/zookeeper.properties
+
+# Start the Kafka broker service in a new terminal
+bin/kafka-server-start.sh config/server.
+
+
+## now the kaft enviroment is ready to use
+
+
+##### Create a new topic for our events/jobs 
+
+## in 1 terminal we create the topic first called quickstart-events
+bin/kafka-topics.sh --create --topic quickstart-events --bootstrap-server localhost:9092
+
+## now we can check the status on this topic
+bin/kafka-topics.sh --describe --topic quickstart-events --bootstrap-server localhost:9092
+
+## Creating 2 messages on the topic
+bin/kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost:9092
+>This is the 1st message
+>this is 2nd message for debugging
+
