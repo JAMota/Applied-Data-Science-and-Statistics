@@ -1,3 +1,4 @@
+ssh -i UbuntuApacheKofta_key.pem azureuser@20.90.165.83
 
 
 #### Set up for kafta install
@@ -19,11 +20,15 @@ cd kafka_2.13-3.4.0
 # Start the ZooKeeper service in a new terminal
 bin/zookeeper-server-start.sh config/zookeeper.properties
 
+/home/azureuser/kafka_2.13-3.4.0/bin/zookeeper-server-start.sh -daemon /home/azureuser/kafka_2.13-3.4.0/bin/config/zookeeper.properties
+
 # Start the Kafka broker service in a new terminal
-bin/kafka-server-start.sh config/server.
+bin/kafka-server-start.sh config/server.properties
+
+/home/azureuser/kafka_2.13-3.4.0/bin/kafka-server-start.sh -daemon /home/azureuser/kafka_2.13-3.4.0/bin/config/server.properties
 
 
-## now the kaft enviroment is ready to use
+## now the kafta enviroment is ready to use
 
 
 ##### Create a new topic for our events/jobs 
@@ -38,4 +43,32 @@ bin/kafka-topics.sh --describe --topic quickstart-events --bootstrap-server loca
 bin/kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost:9092
 >This is the 1st message
 >this is 2nd message for debugging
+
+ctrl + c ## this ends the events/jobs writting
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
