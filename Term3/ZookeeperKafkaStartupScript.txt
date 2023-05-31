@@ -1,0 +1,13 @@
+#!/bin/bash
+
+echo "Starting Zookeeper"
+/opt/kafka/bin/zookeeper-server-start.sh -daemon /opt/kafka/config/zookeeper.properties
+
+
+echo "Starting Kafka"
+/opt/kafka/bin/kafka-server-start.sh -daemon /opt/kafka/config/server.properties
+
+
+echo "Creating the topic"
+/opt/kafka/bin/kafka-topics.sh --create --topic quickstart-events --bootstrap-server localhost:9092
+
