@@ -1,0 +1,3 @@
+conda create --name myThesisEnv
+
+conda activate myThesisEnv

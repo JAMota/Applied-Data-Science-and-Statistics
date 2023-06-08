@@ -43,6 +43,9 @@ bin/kafka-topics.sh --create --topic quickstart-events --bootstrap-server localh
 ## now we can check the status on this topic
 bin/kafka-topics.sh --describe --topic quickstart-events --bootstrap-server localhost:9092
 
+bin/kafka-topics.sh --describe --topic heart-data --bootstrap-server 10.0.0.4:9092
+
+
 ## Creating 2 messages on the topic
 bin/kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost:9092
 >This is the 1st message
