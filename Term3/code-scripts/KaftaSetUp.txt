@@ -1,5 +1,9 @@
-ssh -i UbuntuApacheKofta_key.pem azureuser@20.90.165.83
+##connect to the server via ssh
 
+ssh -i UbuntuApacheKofta_key.pem azureuser@20.90.165.83 
+
+## send requests to the server with ssh tunneling
+ssh -i UbuntuApacheKofta_key.pem -N -L 9092:10.0.0.4:9092 azureuser@20.90.165.83
 
 #### Set up for kafta install
 
@@ -54,8 +58,11 @@ bin/kafka-console-producer.sh --topic quickstart-events --bootstrap-server local
 ctrl + c ## this ends the events/jobs writting
 
 
+bin/kafka-console-consumer.sh  --topic heart-data --bootstrap-server 10.0.0.4:9092
 
+bin/kafka-topics.sh --list --bootstrap-server 10.0.0.4:9092
 
+bin/kafka-console-producer.sh --topic heart-data --bootstrap-server 10.0.0.4:9092
 
 
 

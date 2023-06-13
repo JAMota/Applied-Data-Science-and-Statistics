@@ -1,3 +1,5 @@
-conda create --name myThesisEnv
+conda create --name thesis-env
 
-conda activate myThesisEnv
+conda activate thesis-env
+
+spyder
