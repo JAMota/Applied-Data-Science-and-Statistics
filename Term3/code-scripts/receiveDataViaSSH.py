@@ -38,16 +38,19 @@ def consume_from_kafka(topic, ssh_host, ssh_port, ssh_username, ssh_private_key,
                     logging.error("Error while consuming message: %s", msg.error())
                     continue
 
-                logging.debug("Received message: %s", msg.value().decode('utf-8'))
+                logging.info("Received message: %s", msg.value().decode('utf-8'))
 
     except Exception as e:
         logging.error("Error while consuming messages from Kafka: %s", str(e))
+        logging.info("Retrying in 5 seconds...")
+        time.sleep(5)
+        consume_from_kafka(topic, ssh_host, ssh_port, ssh_username, ssh_private_key, kafka_bootstrap_servers)
 
 # SSH tunnel configuration
-ssh_host = '20.90.165.83'
+ssh_host = '20.90.165.83'  # Public IP of the server
 ssh_port = 22  # Default SSH port
 ssh_username = 'azureuser'
-ssh_private_key = "C:/Users/AndreMota/Downloads/UbuntuApacheKofta_key.pem"
+ssh_private_key = "C:/Users/AndreMota/Downloads/UbuntuApacheKofta_key.pem"  # Update with the correct path
 
 # Kafka configuration
 kafka_bootstrap_servers = 'localhost:9092'
