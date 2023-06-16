@@ -4,8 +4,8 @@ Created on Wed Jun 14 01:33:14 2023
 
 @author: AndreMota
 """
-
 import logging
+import time
 from sshtunnel import SSHTunnelForwarder
 from confluent_kafka import Consumer
 
@@ -17,8 +17,11 @@ def consume_from_kafka(topic, ssh_host, ssh_port, ssh_username, ssh_private_key,
                 (ssh_host, ssh_port),
                 ssh_username=ssh_username,
                 ssh_pkey=ssh_private_key,
-                remote_bind_address=('localhost', 9092)
+                remote_bind_address=('10.0.0.4', 9092),
+                local_bind_address=('localhost', 9092)
         ) as tunnel:
+            logging.info("SSH tunnel created. Listening on localhost:9092")
+
             conf = {
                 'bootstrap.servers': kafka_bootstrap_servers,
                 'group.id': 'my-consumer-group',
