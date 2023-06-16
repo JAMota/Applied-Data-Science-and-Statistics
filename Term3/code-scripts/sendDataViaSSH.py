@@ -9,12 +9,14 @@ from time import sleep
 from sshtunnel import SSHTunnelForwarder
 from confluent_kafka import Producer
 
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+
 def send_line_to_topic(line, topic, producer):
     try:
-        logging.info("Sending line to Kafka: %s", line)
+        logging.debug("Sending line to Kafka: %s", line)
         producer.produce(topic, line.encode('utf-8'))
         producer.flush()
-        logging.info("Line sent to Kafka: %s", line)
+        logging.debug("Line sent to Kafka: %s", line)
     except Exception as e:
         logging.error("Error while sending line to Kafka: %s", str(e))
 
@@ -50,8 +52,5 @@ ssh_private_key = "C:/Users/AndreMota/Downloads/UbuntuApacheKofta_key.pem"
 kafka_bootstrap_servers = 'localhost:9092'
 topic = 'heart-data'
 file_path = "C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term3/heartData/b1.txt"
-
-# Set up logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 read_file_and_send_to_kafka(file_path, topic, ssh_host, ssh_port, ssh_username, ssh_private_key, kafka_bootstrap_servers)
