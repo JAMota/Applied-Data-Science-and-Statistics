@@ -5,6 +5,8 @@ ssh -i UbuntuApacheKofta_key.pem azureuser@20.90.165.83
 ## send requests to the server with ssh tunneling
 ssh -i UbuntuApacheKofta_key.pem -N -L 9092:10.0.0.4:9092 azureuser@20.90.165.83
 
+## send a file via ssh
+
 #### Set up for kafta install
 
 sudo apt update
@@ -51,7 +53,7 @@ bin/kafka-topics.sh --describe --topic heart-data --bootstrap-server 10.0.0.4:90
 
 
 ## Creating 2 messages on the topic
-bin/kafka-console-producer.sh --topic quickstart-events --bootstrap-server localhost:9092
+bin/kafka-console-producer.sh --topic heart-data --bootstrap-server 10.0.0.4:9092
 >This is the 1st message
 >this is 2nd message for debugging
 

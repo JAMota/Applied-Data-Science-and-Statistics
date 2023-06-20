@@ -26,10 +26,10 @@ def read_file_and_send_to_kafka(file_path, topic, bootstrap_servers):
 
 
 # Usage example
-file_path = "C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term3/heartData/b1.txt" 
+file_path =  "b1.txt" #"C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term3/heartData/b1.txt" 
 ##'path/to/your/file.txt'
 topic = 'heart-data'  # 'your-kafka-topic'
-bootstrap_servers = 'localhost:9092' 
+bootstrap_servers = '10.0.0.4:9092' 
 #'localhost:9092'  # Update with your Kafka broker addresses
 
 read_file_and_send_to_kafka(file_path, topic, bootstrap_servers)

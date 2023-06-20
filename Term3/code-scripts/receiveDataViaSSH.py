@@ -5,13 +5,12 @@ Created on Wed Jun 14 01:33:14 2023
 @author: AndreMota
 """
 import logging
-import time
 from sshtunnel import SSHTunnelForwarder
 from confluent_kafka import Consumer
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def consume_from_kafka(topic, ssh_host, ssh_port, ssh_username, ssh_private_key, kafka_bootstrap_servers):
+def consume_from_kafka(topic, ssh_host, ssh_port, ssh_username, ssh_private_key, kafka_bootstrap_servers, output_file):
     try:
         with SSHTunnelForwarder(
                 (ssh_host, ssh_port),
@@ -30,30 +29,33 @@ def consume_from_kafka(topic, ssh_host, ssh_port, ssh_username, ssh_private_key,
             consumer = Consumer(conf)
             consumer.subscribe([topic])
 
-            while True:
-                msg = consumer.poll(1.0)
-                if msg is None:
-                    continue
-                if msg.error():
-                    logging.error("Error while consuming message: %s", msg.error())
-                    continue
+            with open(output_file, 'a') as file:
+                while True:
+                    msg = consumer.poll(1.0)
+                    if msg is None:
+                        continue
+                    if msg.error():
+                        logging.error("Error while consuming message: %s", msg.error())
+                        continue
 
-                logging.info("Received message: %s", msg.value().decode('utf-8'))
+                    value = msg.value().decode('utf-8')
+                    logging.info("Received message: %s", value)
+                    file.write(value + '\n')
 
     except Exception as e:
         logging.error("Error while consuming messages from Kafka: %s", str(e))
-        logging.info("Retrying in 5 seconds...")
-        time.sleep(5)
-        consume_from_kafka(topic, ssh_host, ssh_port, ssh_username, ssh_private_key, kafka_bootstrap_servers)
 
 # SSH tunnel configuration
 ssh_host = '20.90.165.83'  # Public IP of the server
 ssh_port = 22  # Default SSH port
 ssh_username = 'azureuser'
-ssh_private_key = "C:/Users/AndreMota/Downloads/UbuntuApacheKofta_key.pem"  # Update with the correct path
+ssh_private_key = "C:/Users/AndreMota/Downloads/UbuntuApacheKofta_key.pem" # Updated with the correct path
 
 # Kafka configuration
 kafka_bootstrap_servers = 'localhost:9092'
 topic = 'heart-data'
 
-consume_from_kafka(topic, ssh_host, ssh_port, ssh_username, ssh_private_key, kafka_bootstrap_servers)
+output_file = 'output_file.txt'  # Updated with the path to the output file
+
+consume_from_kafka(topic, ssh_host, ssh_port, ssh_username, ssh_private_key, kafka_bootstrap_servers, output_file)
+
