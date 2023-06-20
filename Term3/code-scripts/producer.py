@@ -1,9 +1,16 @@
 from time import sleep
 from confluent_kafka import Producer
-
+import time
 
 def send_line_to_topic(line, topic, producer):
-    producer.produce(topic, line.encode('utf-8'))
+    # Create message headers
+    headers = [
+        ('producer_timestamp', str(time.time()).encode('utf-8')),  # Store producer timestamp
+        ('topic_entry_timestamp', str(time.time()).encode('utf-8')),  # Store topic entry timestamp
+        # Add additional headers as needed
+    ]
+
+    producer.produce(topic, line.encode('utf-8'), headers=headers)
     producer.flush()
 
 
@@ -18,6 +25,7 @@ def read_file_and_send_to_kafka(file_path, topic, bootstrap_servers):
             sleep(1)  # Wait for 1 second before sending the next line
 
     producer.flush()
+    producer.close()
 
 
 # Usage example

@@ -18,7 +18,46 @@ def consume_messages():
                 continue
             if msg.error():
                 raise KafkaException(msg.error())
+
+            # Retrieve headers
+            headers = msg.headers()
+
+            # Extract and print custom headers
+            producer_timestamp = None
+            topic_entry_timestamp = None
+            topic_exit_timestamp = None
+            consumer_timestamp = None
+
+            for header in headers:
+                header_key = header[0]
+                header_value = header[1]
+                
+                if header_key == 'producer_timestamp':
+                    producer_timestamp = header_value.decode('utf-8')
+                
+                if header_key == 'topic_entry_timestamp':
+                    topic_entry_timestamp = header_value.decode('utf-8')
+
+                if header_key == 'topic_exit_timestamp':
+                    topic_exit_timestamp = header_value.decode('utf-8')
+
+                if header_key == 'consumer_timestamp':
+                    consumer_timestamp = header_value.decode('utf-8')
+
+            if producer_timestamp:
+                print(f"Producer timestamp: {producer_timestamp}")
+
+            if topic_entry_timestamp:
+                print(f"Topic entry timestamp: {topic_entry_timestamp}")
+
+            if topic_exit_timestamp:
+                print(f"Topic exit timestamp: {topic_exit_timestamp}")
+
+            if consumer_timestamp:
+                print(f"Consumer timestamp: {consumer_timestamp}")
+
             print(f"Received message: {msg.value().decode('utf-8')}")
+
     except KeyboardInterrupt:
         pass
     finally:
@@ -26,3 +65,4 @@ def consume_messages():
 
 
 consume_messages()
+
