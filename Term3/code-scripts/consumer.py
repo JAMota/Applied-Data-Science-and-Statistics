@@ -1,3 +1,4 @@
+import sqlite3
 from confluent_kafka import Consumer, KafkaException
 
 conf = {
@@ -12,6 +13,11 @@ consumer = Consumer(conf)
 def consume_messages():
     try:
         consumer.subscribe(['heart-data'])  # Replace 'your-topic' with the topic you want to consume from
+        
+        # Establish a connection to the SQLite database
+        conn = sqlite3.connect('/opt/sqlite3/heart.db')
+        cursor = conn.cursor()
+
         while True:
             msg = consumer.poll(1.0)  # Poll for new messages with a timeout of 1 second
             if msg is None:
@@ -56,13 +62,23 @@ def consume_messages():
             if consumer_timestamp:
                 print(f"Consumer timestamp: {consumer_timestamp}")
 
+            # Insert the message value and timestamps into the database
+            query = "INSERT INTO heart_data (heart_rate, chest_volume, blood_oxygen) VALUES (?, ?, ?)"
+            values = msg.value().decode('utf-8').split()
+            values.append(producer_timestamp)
+            values.append(topic_entry_timestamp)
+            values.append(topic_exit_timestamp)
+            values.append(consumer_timestamp)
+            cursor.execute(query, values)
+            conn.commit()
+
             print(f"Received message: {msg.value().decode('utf-8')}")
 
     except KeyboardInterrupt:
         pass
     finally:
         consumer.close()
+        conn.close()
 
 
 consume_messages()
-
