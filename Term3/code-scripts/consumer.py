@@ -1,5 +1,6 @@
 import sqlite3
 from confluent_kafka import Consumer, KafkaException
+import time
 
 conf = {
     'bootstrap.servers': '10.0.0.4:9092',  # Update with your Kafka broker's address
@@ -30,9 +31,7 @@ def consume_messages():
 
             # Extract and print custom headers
             producer_timestamp = None
-            topic_entry_timestamp = None
-            topic_exit_timestamp = None
-            consumer_timestamp = None
+            topic_entry_timestamp = str(time.time())
 
             for header in headers:
                 header_key = header[0]
@@ -40,39 +39,20 @@ def consume_messages():
                 
                 if header_key == 'producer_timestamp':
                     producer_timestamp = header_value.decode('utf-8')
-                
-                if header_key == 'topic_entry_timestamp':
-                    topic_entry_timestamp = header_value.decode('utf-8')
-
-                if header_key == 'topic_exit_timestamp':
-                    topic_exit_timestamp = header_value.decode('utf-8')
-
-                if header_key == 'consumer_timestamp':
-                    consumer_timestamp = header_value.decode('utf-8')
 
             if producer_timestamp:
                 print(f"Producer timestamp: {producer_timestamp}")
-
-            if topic_entry_timestamp:
                 print(f"Topic entry timestamp: {topic_entry_timestamp}")
-
-            if topic_exit_timestamp:
-                print(f"Topic exit timestamp: {topic_exit_timestamp}")
-
-            if consumer_timestamp:
-                print(f"Consumer timestamp: {consumer_timestamp}")
 
             # Insert the message values and timestamps into the database
             values = msg.value().decode('utf-8').split()
             values.append(producer_timestamp)
             values.append(topic_entry_timestamp)
-            values.append(topic_exit_timestamp)
-            values.append(consumer_timestamp)
             
             query = """
             INSERT INTO messages (heart_rate, chest_volume, blood_oxygen_concentration, producer_timestamp,
-                                  topic_entry_timestamp, topic_exit_timestamp, consumer_timestamp)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+                                  topic_entry_timestamp)
+            VALUES (?, ?, ?, ?, ?)
             """
             
             cursor.execute(query, values)
