@@ -19,6 +19,9 @@ def consume_messages():
         conn = sqlite3.connect('/opt/sqlite3/heart.db')
         cursor = conn.cursor()
 
+        # Open the timestamps.log file in append mode
+        timestamp_file = open('timestamps.log', 'a')
+
         while True:
             msg = consumer.poll(1.0)  # Poll for new messages with a timeout of 1 second
             if msg is None:
@@ -58,6 +61,10 @@ def consume_messages():
             cursor.execute(query, values)
             conn.commit()
 
+            # Write the timestamps to the timestamps.log file
+            timestamp_file.write(f"{topic_entry_timestamp} {producer_timestamp}\n")
+            timestamp_file.flush()
+
             print(f"Received message: {msg.value().decode('utf-8')}")
 
     except KeyboardInterrupt:
@@ -65,6 +72,7 @@ def consume_messages():
     finally:
         consumer.close()
         conn.close()
+        timestamp_file.close()
 
 
 consume_messages()
