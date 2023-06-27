@@ -16,3 +16,8 @@ CREATE TABLE messages (
     topic_exit_timestamp TIMESTAMP,
     consumer_timestamp TIMESTAMP
 );
+
+
+## see data
+.open heart.db
+SELECT * FROM messages;

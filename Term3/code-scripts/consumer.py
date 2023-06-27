@@ -62,13 +62,19 @@ def consume_messages():
             if consumer_timestamp:
                 print(f"Consumer timestamp: {consumer_timestamp}")
 
-            # Insert the message value and timestamps into the database
-            query = "INSERT INTO heart_data (heart_rate, chest_volume, blood_oxygen) VALUES (?, ?, ?)"
+            # Insert the message values and timestamps into the database
             values = msg.value().decode('utf-8').split()
             values.append(producer_timestamp)
             values.append(topic_entry_timestamp)
             values.append(topic_exit_timestamp)
             values.append(consumer_timestamp)
+            
+            query = """
+            INSERT INTO messages (heart_rate, chest_volume, blood_oxygen_concentration, producer_timestamp,
+                                  topic_entry_timestamp, topic_exit_timestamp, consumer_timestamp)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            """
+            
             cursor.execute(query, values)
             conn.commit()
 
@@ -82,3 +88,4 @@ def consume_messages():
 
 
 consume_messages()
+
