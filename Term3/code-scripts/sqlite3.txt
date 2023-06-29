@@ -15,7 +15,10 @@ CREATE TABLE messages (
     topic_entry_timestamp TIMESTAMP,
     topic_exit_timestamp TIMESTAMP,
     consumer_timestamp TIMESTAMP
+	unique_identifier TEXT
 );
+
+ALTER TABLE messages ADD COLUMN unique_identifier TEXT;
 
 
 ## see data
