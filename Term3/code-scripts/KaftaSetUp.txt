@@ -1,9 +1,9 @@
 ##connect to the server via ssh
 
-ssh -i UbuntuApacheKofta_key.pem azureuser@20.90.165.83 
+ssh -i ApacheServer_key.pem apacheuser@20.77.1.115
 
 ## send requests to the server with ssh tunneling
-ssh -i UbuntuApacheKofta_key.pem -N -L 9092:10.0.0.4:9092 azureuser@20.90.165.83
+ssh -i UbuntuApacheKofta_key.pem -N -L 9092:10.0.0.4:9092 apacheuser@20.77.1.115
 
 ## send a file via ssh
 
