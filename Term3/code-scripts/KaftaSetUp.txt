@@ -3,7 +3,7 @@
 ssh -i ApacheServer_key.pem apacheuser@20.77.1.115
 
 ## send requests to the server with ssh tunneling
-ssh -i UbuntuApacheKofta_key.pem -N -L 9092:10.0.0.4:9092 apacheuser@20.77.1.115
+ssh -i ApacheServer_key.pem -N -L 9092:10.0.0.4:9092 apacheuser@20.77.1.115
 
 ## send a file via ssh
 
@@ -15,22 +15,56 @@ sudo apt upgrade
 
 sudo apt install openjdk-8-jdk
 
-curl https://dlcdn.apache.org/kafka/3.4.0/kafka_2.13-3.4.0.tgz
+wget https://dlcdn.apache.org/kafka/3.5.0/kafka_2.13-3.5.0.tgz
 
-$ tar -xzf kafka_2.13-3.4.0.tgz
+$ tar -xzf kafka_2.13-3.5.0.tgz
 
-sudo mv kafka_2.13-3.4.0 /opt/kafta
+sudo mv kafka_2.13-3.5.0 /opt/kafka
 
-cd /opt/kafka/bin/
 
-## set up with zookeeper
+## configure kafka ip:
+
+cd /opt/kafka/config/
+
+vim server.properties
+
+listeners=PLAINTEXT://IP_ADDRESS:9092
+
+## set up start up script
+
+touch ZookeeperKafkaStartupScript.sh
+
+vim ZookeeperKafkaStartupScript.sh
+
+#!/bin/bash
+
+echo "Starting Zookeeper"
+/opt/kafka/bin/zookeeper-server-start.sh -daemon /opt/kafka/config/zookeeper.properties
+
+
+echo "Starting Kafka"
+/opt/kafka/bin/kafka-server-start.sh -daemon /opt/kafka/config/server.properties
+
+
+echo "Creating the topic"
+/opt/kafka/bin/kafka-topics.sh --create --topic heart-data --bootstrap-server 10.0.0.4:9092
+
+#exit the file and make it executable
+
+chmod +x ZookeeperKafkaStartupScript.sh
+
+
+
+
+
+## set up with zookeeper without script
 
 # Start the ZooKeeper service in a new terminal
 bin/zookeeper-server-start.sh config/zookeeper.properties
 
 /opt/kafka/bin/zookeeper-server-start.sh -daemon /opt/kafka/config/zookeeper.properties
 
-# Start the Kafka broker service in a new terminal
+# Start the Kafka broker service in a new terminal without a script
 bin/kafka-server-start.sh config/server.properties
 
 /opt/kafka/bin/kafka-server-start.sh -daemon /opt/kafka/config/server.properties

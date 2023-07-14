@@ -1,3 +1,10 @@
+
+ssh -i DataBaseServerWE_key.pem sqluser@20.13.124.83
+
+
+## create a database
+
+
 touch heart.db
 
 sudo chmod 777 heart.db

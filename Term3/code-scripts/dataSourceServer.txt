@@ -1,0 +1,26 @@
+ssh -i DataSourceNE_key.pem azureuser@74.234.33.35
+
+
+## send the file with the data to the server
+
+scp -i DataSourceNE_key.pem "C:\AppliedDataScienceAndStatistics\Applied-Data-Science-and-Statistics\Term3\heartData\b1.txt" azureuser@74.234.33.35:/home/azureuser
+scp -i DataSourceNE_key.pem "C:\AppliedDataScienceAndStatistics\Applied-Data-Science-and-Statistics\Term3\heartData\b2.txt" azureuser@74.234.33.35:/home/azureuser
+
+## merge the 2 files
+
+cat b1.txt b2.txt > heartData.txt
+
+## install python depencies
+
+sudo apt update
+sudo apt upgrade
+sudo apt install python3-pip
+
+pip install sshtunnel
+pip install confluent-kafka
+
+## create the script and make it executable
+
+touch sendHeartDataScript.py
+
+chmod +x sendHeartDataScript.py
