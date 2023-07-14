@@ -2,8 +2,19 @@
 ssh -i DataBaseServerWE_key.pem sqluser@20.13.124.83
 
 
+## install sqlite3
+
+sudo apt update
+
+sudo apt install sqlite3
+
 ## create a database
 
+sudo mkdir /opt/sqlite3
+
+sudo chown sqluser /opt/sqlite3
+
+cd /opt/sqlite3
 
 touch heart.db
 

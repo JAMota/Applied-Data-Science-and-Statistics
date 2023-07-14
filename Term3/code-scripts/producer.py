@@ -28,7 +28,7 @@ def read_file_and_send_to_kafka(file_path, topic, bootstrap_servers):
 
 
 # Usage example
-file_path = "b1.txt"
+file_path = "heartData.txt"
 topic = 'heart-data'
 bootstrap_servers = '10.0.0.4:9092'
 
