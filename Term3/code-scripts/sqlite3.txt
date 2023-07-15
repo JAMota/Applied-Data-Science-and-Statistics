@@ -30,11 +30,16 @@ CREATE TABLE messages (
     chest_volume INTEGER,
     blood_oxygen_concentration REAL,
     producer_timestamp TIMESTAMP,
+    message_sent_timestamp TIMESTAMP,
     topic_entry_timestamp TIMESTAMP,
     topic_exit_timestamp TIMESTAMP,
-    consumer_timestamp TIMESTAMP
-	unique_identifier TEXT
+    consumer_received_timestamp TIMESTAMP,
+    consumer_finished_timestamp TIMESTAMP,
+    database_entry_timestamp TIMESTAMP,
+    database_finished_timestamp TIMESTAMP,
+    unique_identifier TEXT
 );
+
 
 ALTER TABLE messages ADD COLUMN unique_identifier TEXT;
 
