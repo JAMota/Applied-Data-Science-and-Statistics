@@ -36,12 +36,13 @@ def consume_messages():
             producer_timestamp = None
             topic_entry_timestamp = str(time.time())
 
-            for header in headers:
-                header_key = header[0]
-                header_value = header[1]
-                
-                if header_key == 'producer_timestamp':
-                    producer_timestamp = header_value.decode('utf-8')
+            if headers is not None:
+                for header in headers:
+                    header_key = header[0]
+                    header_value = header[1]
+                    
+                    if header_key == 'producer_timestamp':
+                        producer_timestamp = header_value.decode('utf-8')
 
             if producer_timestamp:
                 print(f"Producer timestamp: {producer_timestamp}")
@@ -76,4 +77,3 @@ def consume_messages():
 
 
 consume_messages()
-
