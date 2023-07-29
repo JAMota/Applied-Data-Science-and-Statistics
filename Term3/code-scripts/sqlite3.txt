@@ -46,4 +46,5 @@ CREATE TABLE messages (
 
 ## see data
 .open heart.db
+
 SELECT * FROM messages;

@@ -1,16 +1,20 @@
-from time import sleep
+from time import sleep, time
 from confluent_kafka import Producer
-import time
 
 def send_line_to_topic(line, topic, producer):
     # Create message headers
+    producer_timestamp = str(time()).encode('utf-8')  # Store producer timestamp
     headers = [
-        ('producer_timestamp', str(time.time()).encode('utf-8')),  # Store producer timestamp
+        ('producer_timestamp', producer_timestamp),
         # Add additional headers as needed
     ]
 
     producer.produce(topic, line.encode('utf-8'), headers=headers)
     producer.flush()
+
+    # Capture message_sent_timestamp just after sending the message
+    message_sent_timestamp = str(time()).encode('utf-8')
+    print(f"Message sent timestamp: {message_sent_timestamp}")
 
 
 def read_file_and_send_to_kafka(file_path, topic, bootstrap_servers):
