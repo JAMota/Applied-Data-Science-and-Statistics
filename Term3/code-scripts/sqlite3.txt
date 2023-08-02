@@ -24,24 +24,20 @@ sqlite3
 
 .open heart.db
 
-CREATE TABLE messages (
+CREATE TABLE heart_messages (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     heart_rate REAL,
     chest_volume INTEGER,
     blood_oxygen_concentration REAL,
-    producer_timestamp TIMESTAMP,
-    message_sent_timestamp TIMESTAMP,
-    topic_entry_timestamp TIMESTAMP,
-    topic_exit_timestamp TIMESTAMP,
+    producer_entry_timestamp TIMESTAMP,
+    producer_sent_timestamp TIMESTAMP,
+    kafka_entry_timestamp TIMESTAMP,
     consumer_received_timestamp TIMESTAMP,
-    consumer_finished_timestamp TIMESTAMP,
+    consumer_sent_timestamp TIMESTAMP,  
     database_entry_timestamp TIMESTAMP,
-    database_finished_timestamp TIMESTAMP,
-    unique_identifier TEXT
+    database_finished_timestamp TIMESTAMP
 );
 
-
-#ALTER TABLE messages ADD COLUMN unique_identifier TEXT;
 
 
 ## see data

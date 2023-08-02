@@ -53,8 +53,18 @@ echo "Creating the topic"
 
 chmod +x ZookeeperKafkaStartupScript.sh
 
+./ZookeeperKafkaStartupScript.sh
+
+## Setting a timestamp for when each messages arrives at the apache server (broker)
+
+cd /opt/kafka/bin
+
+./kafka-configs.sh --bootstrap-server 10.0.0.4:9092 --entity-type topics --entity-name heart-data  --alter --add-config message.timestamp.type=LogAppendTime
 
 
+
+
+######################################################## OBSOLETE ####################################################################################
 
 
 ## set up with zookeeper without script
