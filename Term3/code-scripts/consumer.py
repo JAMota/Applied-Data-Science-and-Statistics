@@ -1,4 +1,5 @@
-# ...
+import sqlite3
+from confluent_kafka import Consumer, KafkaException
 import time
 
 conf = {
