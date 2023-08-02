@@ -43,4 +43,4 @@ CREATE TABLE heart_messages (
 ## see data
 .open heart.db
 
-SELECT * FROM messages;
+SELECT * FROM heart_messages;
