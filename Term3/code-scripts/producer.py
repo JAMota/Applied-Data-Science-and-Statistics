@@ -3,21 +3,19 @@ from confluent_kafka import Producer
 
 def send_line_to_topic(line, topic, producer):
     # Create message headers
-	producer_entry_timestamp = str(time()).encode('utf-8')  # Store producer timestamp
-	headers = [
-		('producer_entry_timestamp', producer_entry_timestamp),
-		# Add additional headers as needed
-	]
+    producer_entry_timestamp = str(time()).encode('utf-8')  # Store producer entry timestamp
 
-	producer.produce(topic, line.encode('utf-8'), headers=headers)
-	producer.flush()
+    headers = [
+        ('producer_entry_timestamp', producer_entry_timestamp),
+        # Add additional headers as needed
+    ]
 
-	# Capture message_sent_timestamp just after sending the message
-	producer_sent_timestamp = str(time()).encode('utf-8')
-	headers.append(('producer_sent_timestamp', producer_sent_timestamp))
-	print(f"Message sent timestamp: {producer_sent_timestamp}")
+    # Capture message_sent_timestamp just before sending the message
+    producer_sent_timestamp = str(time()).encode('utf-8')
+    headers.append(('producer_sent_timestamp', producer_sent_timestamp))
 
-
+    producer.produce(topic, line.encode('utf-8'), headers=headers)
+    producer.flush()
 
 def read_file_and_send_to_kafka(file_path, topic, bootstrap_servers):
     conf = {'bootstrap.servers': bootstrap_servers}
@@ -31,7 +29,6 @@ def read_file_and_send_to_kafka(file_path, topic, bootstrap_servers):
 
     producer.flush()
     producer.close()
-
 
 # Usage example
 file_path = "heartData.txt"
