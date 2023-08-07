@@ -61,6 +61,11 @@ cd /opt/kafka/bin
 
 ./kafka-configs.sh --bootstrap-server 10.0.0.4:9092 --entity-type topics --entity-name heart-data  --alter --add-config message.timestamp.type=LogAppendTime
 
+## check if it correct
+
+./kafka-configs.sh --bootstrap-server 10.0.0.4:9092 --entity-type topics --entity-name heart-data --describe
+
+
 
 
 

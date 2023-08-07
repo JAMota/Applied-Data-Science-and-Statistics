@@ -3,18 +3,20 @@ from confluent_kafka import Producer
 
 def send_line_to_topic(line, topic, producer):
     # Create message headers
-    producer_timestamp = str(time()).encode('utf-8')  # Store producer timestamp
-    headers = [
-        ('producer_timestamp', producer_timestamp),
-        # Add additional headers as needed
-    ]
+	producer_entry_timestamp = str(time()).encode('utf-8')  # Store producer timestamp
+	headers = [
+		('producer_entry_timestamp', producer_entry_timestamp),
+		# Add additional headers as needed
+	]
 
-    producer.produce(topic, line.encode('utf-8'), headers=headers)
-    producer.flush()
+	producer.produce(topic, line.encode('utf-8'), headers=headers)
+	producer.flush()
 
-    # Capture message_sent_timestamp just after sending the message
-    message_sent_timestamp = str(time()).encode('utf-8')
-    print(f"Message sent timestamp: {message_sent_timestamp}")
+	# Capture message_sent_timestamp just after sending the message
+	producer_sent_timestamp = str(time()).encode('utf-8')
+	headers.append(('producer_sent_timestamp', producer_sent_timestamp))
+	print(f"Message sent timestamp: {producer_sent_timestamp}")
+
 
 
 def read_file_and_send_to_kafka(file_path, topic, bootstrap_servers):
