@@ -15,7 +15,6 @@ def consume_messages():
         consumer.subscribe(['heart-data']) #insert your topic name here
         conn = sqlite3.connect('/opt/sqlite3/heart.db') #insert your database path here
         cursor = conn.cursor()
-        timestamp_file = open('timestamps.log', 'a')
 
         while True:
             msg = consumer.poll(1.0)  
@@ -68,15 +67,17 @@ def consume_messages():
             cursor.execute(query, (*values, kafka_entry_timestamp, consumer_received_timestamp, database_entry_timestamp))
             conn.commit()
             
-            database_finished_timestamp = time.time()  # Time after end of DB operation
             consumer_sent_timestamp = str(time.time())     # consumer_sent_timestamp
+            consumer_finished_timestamp = str(time.time())  # consumer_finished_timestamp
 
-            timestamp_file.write(
-                f"{producer_entry_timestamp} {producer_sent_timestamp} " \
-                f"{kafka_entry_timestamp} {consumer_received_timestamp} " \
-                f"{database_entry_timestamp} {database_finished_timestamp} {consumer_sent_timestamp}\n"
-            )
-            timestamp_file.flush()
+            # Update the row with the consumer_finished_timestamp
+            update_query = """
+            UPDATE heart_messages
+            SET consumer_finished_timestamp = ?
+            WHERE rowid = last_insert_rowid()
+            """
+            cursor.execute(update_query, (consumer_finished_timestamp,))
+            conn.commit()
 
             print(f"Received message: {msg.value().decode('utf-8')}")
 
@@ -85,6 +86,5 @@ def consume_messages():
     finally:
         consumer.close()
         conn.close()
-        timestamp_file.close()
 
 consume_messages()

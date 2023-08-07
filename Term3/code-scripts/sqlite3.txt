@@ -35,7 +35,8 @@ CREATE TABLE heart_messages (
     consumer_received_timestamp TIMESTAMP,
     consumer_sent_timestamp TIMESTAMP,  
     database_entry_timestamp TIMESTAMP,
-    database_finished_timestamp TIMESTAMP
+    database_finished_timestamp TIMESTAMP,
+	consumer_finished_timestamp TIMESTAMP
 );
 
 
