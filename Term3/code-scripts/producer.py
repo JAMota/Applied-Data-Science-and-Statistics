@@ -1,10 +1,8 @@
 from time import sleep, time
 from confluent_kafka import Producer
 
-def send_line_to_topic(line, topic, producer):
+def send_line_to_topic(line, topic, producer, producer_entry_timestamp):
     # Create message headers
-    producer_entry_timestamp = str(time()).encode('utf-8')  # Store producer entry timestamp
-
     headers = [
         ('producer_entry_timestamp', producer_entry_timestamp),
         # Add additional headers as needed
@@ -24,7 +22,8 @@ def read_file_and_send_to_kafka(file_path, topic, bootstrap_servers):
     with open(file_path, 'r') as file:
         for line in file:
             line = line.strip()
-            send_line_to_topic(line, topic, producer)
+            producer_entry_timestamp = str(time()).encode('utf-8')  # Store producer entry timestamp
+            send_line_to_topic(line, topic, producer, producer_entry_timestamp)
             sleep(1)  # Wait for 1 second before sending the next line
 
     producer.flush()
@@ -36,3 +35,4 @@ topic = 'heart-data'
 bootstrap_servers = '10.0.0.4:9092'
 
 read_file_and_send_to_kafka(file_path, topic, bootstrap_servers)
+
