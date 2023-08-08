@@ -69,54 +69,6 @@ cd /opt/kafka/bin
 
 
 
-######################################################## OBSOLETE ####################################################################################
-
-
-## set up with zookeeper without script
-
-# Start the ZooKeeper service in a new terminal
-bin/zookeeper-server-start.sh config/zookeeper.properties
-
-/opt/kafka/bin/zookeeper-server-start.sh -daemon /opt/kafka/config/zookeeper.properties
-
-# Start the Kafka broker service in a new terminal without a script
-bin/kafka-server-start.sh config/server.properties
-
-/opt/kafka/bin/kafka-server-start.sh -daemon /opt/kafka/config/server.properties
-
-
-## now the kafta enviroment is ready to use
-
-
-##### Create a new topic for our events/jobs 
-
-## in 1 terminal we create the topic first called quickstart-events
-bin/kafka-topics.sh --create --topic quickstart-events --bootstrap-server localhost:9092
-
-/opt/kafka/bin/kafka-topics.sh --create --topic quickstart-events --bootstrap-server localhost:9092
-
-## now we can check the status on this topic
-bin/kafka-topics.sh --describe --topic quickstart-events --bootstrap-server localhost:9092
-
-bin/kafka-topics.sh --describe --topic heart-data --bootstrap-server 10.0.0.4:9092
-
-
-## Creating 2 messages on the topic
-bin/kafka-console-producer.sh --topic heart-data --bootstrap-server 10.0.0.4:9092
->This is the 1st message
->this is 2nd message for debugging
-
-ctrl + c ## this ends the events/jobs writting
-
-
-bin/kafka-console-consumer.sh  --topic heart-data --bootstrap-server 10.0.0.4:9092
-
-bin/kafka-topics.sh --list --bootstrap-server 10.0.0.4:9092
-
-bin/kafka-console-producer.sh --topic heart-data --bootstrap-server 10.0.0.4:9092
-
-
-
 
 
 
