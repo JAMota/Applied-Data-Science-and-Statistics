@@ -1,0 +1,85 @@
+---
+title: "DataQueueAnalysis"
+format: html
+editor: visual
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a
+finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that
+includes both content and the output of embedded code. You can embed
+code like this:
+
+```{r, echo=FALSE, output=FALSE}
+library(stats4)
+#install.packages("ssh")
+library(RSQLite)
+library(ssh)
+
+
+```
+
+```{r, echo=FALSE, output=FALSE}}
+##session
+databaseServerIP = "20.13.124.83"
+keyFile = "C:/Users/AndreMota/Downloads/DataBaseServerWE_key.pem"
+hostDatabaseServer = "sqluser@20.13.124.83:/opt/sqlite3/heart.db"
+
+```
+
+Connect to the consumer server to access the data in the database
+
+```{r}
+
+# Define the source and destination paths
+source_path <- hostDatabaseServer
+destination_path <- "C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term3/heartData/"
+
+# Execute the scp command
+command <- paste("scp -i", keyFile, source_path, destination_path)
+system(command)
+
+
+
+```
+Open the file
+
+```{r}
+
+# Connect to the database
+heartData <- dbConnect(SQLite(), dbname = "heartData/heart.db")
+
+heartResult <- dbGetQuery(heartData, "SELECT id, heart_rate, chest_volume,
+       blood_oxygen_concentration, producer_entry_timestamp,
+       producer_sent_timestamp, kafka_entry_timestamp,
+       consumer_received_timestamp, consumer_finished_timestamp
+       FROM heart_messages")
+
+
+
+
+```
+
+
+Timestamps wrangling 
+
+```{r}
+
+
+# Calculate execution time in Linux time
+heartResult$producer_execution_time <- heartResult$producer_sent_timestamp - heartResult$producer_entry_timestamp
+heartResult$consumer_execution_time <- heartResult$consumer_finished_timestamp - heartResult$consumer_received_timestamp
+
+heartResult$producer_execution_time 
+heartResult$consumer_execution_time
+
+```
+
+
+The `echo: false` option disables the printing of code (only output is
+displayed).
