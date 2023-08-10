@@ -17,10 +17,11 @@ code like this:
 
 ```{r, echo=FALSE, output=FALSE}
 library(stats4)
-#install.packages("ssh")
+#install.packages("lubridate")
 library(RSQLite)
 library(ssh)
-
+library(tidyverse)
+library(lubridate)
 
 ```
 
@@ -28,7 +29,7 @@ library(ssh)
 ##session
 databaseServerIP = "20.13.124.83"
 keyFile = "C:/Users/AndreMota/Downloads/DataBaseServerWE_key.pem"
-hostDatabaseServer = "sqluser@20.13.124.83:/opt/sqlite3/heart.db"
+hostDatabaseServer = "sqluser@20.13.124.83:/opt/sqlite3/output.csv"
 
 ```
 
@@ -54,13 +55,32 @@ Open the file
 # Connect to the database
 heartData <- dbConnect(SQLite(), dbname = "heartData/heart.db")
 
-heartResult <- dbGetQuery(heartData, "SELECT id, heart_rate, chest_volume,
-       blood_oxygen_concentration, producer_entry_timestamp,
-       producer_sent_timestamp, kafka_entry_timestamp,
-       consumer_received_timestamp, consumer_finished_timestamp
-       FROM heart_messages")
+
+# Fetch data, casting timestamps as TEXT preserving precision
+heartResult <- dbGetQuery(heartData, 
+"SELECT id, heart_rate, chest_volume, blood_oxygen_concentration, 
+CAST(producer_entry_timestamp AS TEXT) AS producer_entry_timestamp,
+CAST(producer_sent_timestamp AS TEXT) AS producer_sent_timestamp,
+CAST(kafka_entry_timestamp AS TEXT) AS kafka_entry_timestamp,
+CAST(consumer_received_timestamp AS TEXT) AS consumer_received_timestamp,
+CAST(consumer_finished_timestamp AS TEXT) AS consumer_finished_timestamp
+FROM heart_messages")
+
+# Convert timestamp columns to numeric and to milliseconds
+heartResult$producer_entry_timestamp <- as.numeric(heartResult$producer_entry_timestamp) * 1000
+heartResult$producer_sent_timestamp <- as.numeric(heartResult$producer_sent_timestamp) * 1000
+heartResult$kafka_entry_timestamp <- as.numeric(heartResult$kafka_entry_timestamp) 
+heartResult$consumer_received_timestamp <- as.numeric(heartResult$consumer_received_timestamp) * 1000
+heartResult$consumer_finished_timestamp <- as.numeric(heartResult$consumer_finished_timestamp) * 1000
 
 
+# Print full values to check for correct conversion
+options(digits = 20) # Increase number of significant digits
+print(head(heartResult$producer_entry_timestamp))
+
+
+# Disconnect from the database
+dbDisconnect(heartData)
 
 
 ```
@@ -71,15 +91,47 @@ Timestamps wrangling
 ```{r}
 
 
-# Calculate execution time in Linux time
+## calculate execution time 
 heartResult$producer_execution_time <- heartResult$producer_sent_timestamp - heartResult$producer_entry_timestamp
 heartResult$consumer_execution_time <- heartResult$consumer_finished_timestamp - heartResult$consumer_received_timestamp
+
+## calculate travel time 
+
+heartResult$producer_travel_time <- heartResult$kafka_entry_timestamp - heartResult$producer_sent_timestamp
+
 
 heartResult$producer_execution_time 
 heartResult$consumer_execution_time
 
+heartResult$producer_travel_time
+
+## use the broker travel times to calculate broker execution
+
+brokerTravelTime = read.csv("heartData/averageTime.csv", header = FALSE, colClasses = c("character"))
+colnames(brokerTravelTime) = "brokerTravelTime"
+
+brokerTravelTime$brokerTravelTime = as.numeric(brokerTravelTime$brokerTravelTime) 
+
+heartResult <- cbind(heartResult, brokerTravelTime)
+
+
 ```
 
 
-The `echo: false` option disables the printing of code (only output is
-displayed).
+```{r}
+
+
+
+```
+
+```{r}
+
+
+
+```
+
+```{r}
+
+
+
+```

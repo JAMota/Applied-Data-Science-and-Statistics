@@ -66,12 +66,14 @@ cd /opt/kafka/bin
 ./kafka-configs.sh --bootstrap-server 10.0.0.4:9092 --entity-type topics --entity-name heart-data --describe
 
 
+## to account what is the average travel time between the broker the sqlite3 server we will send 10000 pings with a second interval to emulate the travel time
+
+nohup ping -c 34015 -i 1 10.2.0.4 > pingLogs.txt &
+
+cat pingLogs.txt
 
 
-
-
-
-
+ grep "time=" pingLogs.txt | awk -F"time=" '{print $2}' | awk '{print $1}' > averageTime.csv
 
 
 

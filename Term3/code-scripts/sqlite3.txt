@@ -45,3 +45,10 @@ CREATE TABLE heart_messages (
 .open heart.db
 
 SELECT * FROM heart_messages;
+
+## to extract the data as a csv
+
+.open heart.db
+.mode csv
+.output output.csv
+SELECT * FROM heart_messages;
