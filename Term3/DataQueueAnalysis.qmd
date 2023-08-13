@@ -149,6 +149,8 @@ A function for the log-likelihood
 
 ```{r}
 
+arrival = nrow(heartResult)
+
 log_likelihood <- function(traffic_intensity_rho, arrival) {
   n <- length(x)
   return(-n*rho + sum(x)*log(rho) - sum(log(factorial(x))))
