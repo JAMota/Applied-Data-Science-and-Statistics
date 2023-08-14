@@ -73,7 +73,11 @@ nohup ping -c 34015 -i 1 10.2.0.4 > pingLogs.txt &
 cat pingLogs.txt
 
 
- grep "time=" pingLogs.txt | awk -F"time=" '{print $2}' | awk '{print $1}' > averageTime.csv
+grep "time=" pingLogs.txt | awk -F"time=" '{print $2}' | awk '{print $1}' > averageTime.csv
+ 
+## get logs
+ 
+scp -i ApacheServer_key.pem  apacheuser@20.77.1.115:/home/apacheuser/averageTime.csv C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term3/heartData/
 
 
 

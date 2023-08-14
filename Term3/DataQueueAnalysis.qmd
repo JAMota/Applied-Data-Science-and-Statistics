@@ -29,7 +29,7 @@ library(lubridate)
 ##session
 databaseServerIP = "20.13.124.83"
 keyFile = "C:/Users/AndreMota/Downloads/DataBaseServerWE_key.pem"
-hostDatabaseServer = "sqluser@20.13.124.83:/opt/sqlite3/output.csv"
+hostDatabaseServer = "sqluser@20.13.124.83:/opt/sqlite3/heart.db"
 
 ```
 
@@ -42,7 +42,7 @@ source_path <- hostDatabaseServer
 destination_path <- "C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term3/heartData/"
 
 # Execute the scp command
-command <- paste("scp -i", keyFile, source_path, destination_path)
+command <- paste("scp -i", keyFile, source_path, destination_path) ## add -f to force a new file
 system(command)
 
 
@@ -122,7 +122,13 @@ brokerTravelTime$kafka_travel_time = as.numeric(brokerTravelTime$kafka_travel_ti
 
 brokerTravelTime$kafka_travel_time = brokerTravelTime$kafka_travel_time /1000
 
-heartResult <- cbind(heartResult, brokerTravelTime)
+n <- nrow(heartResult)
+
+# Select the first n rows from brokerTravelTime
+selectedBrokerTravelTime <- data.frame(brokerTravelTime[1:n, ])
+colnames(selectedBrokerTravelTime) = "kafka_travel_time"
+
+heartResult <- cbind(heartResult, selectedBrokerTravelTime)
 
 
 heartResult$kafka_execution_time = heartResult$consumer_received_timestamp - heartResult$kafka_entry_timestamp - heartResult$kafka_travel_time
