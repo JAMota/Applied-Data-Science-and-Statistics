@@ -1,0 +1,13 @@
+Questions:
+
+Since we have the model assumptions in the introduction, when does it make sense to start talking about the prototype
+
+On the data collectiom or any other section does it make sense to make reference to the appendix (yes, we can say more details on appendix A,B)
+in the appendix do not include the output of the code
+
+Ask for any resource to properly explain quantitative analysis modeling (look for applied papers, RSSC)
+
+On the conclusion we can talk about the limitations and future extensions like stability, modeling each steps , relaxing the D assumptions
+
+presentation :
+measure the efficenecy trhought queuing theoery - equations - equations used and final results
