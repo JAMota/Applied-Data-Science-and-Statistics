@@ -131,7 +131,10 @@ colnames(selectedBrokerTravelTime) = "kafka_travel_time"
 heartResult <- cbind(heartResult, selectedBrokerTravelTime)
 
 
-heartResult$kafka_execution_time = heartResult$consumer_received_timestamp - heartResult$kafka_entry_timestamp - heartResult$kafka_travel_time
+heartResult$kafka_execution_time = heartResult$consumer_received_timestamp - heartResult$kafka_entry_timestamp  - heartResult$kafka_travel_time
+
+
+
 
 ```
 
