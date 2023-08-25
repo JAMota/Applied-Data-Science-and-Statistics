@@ -20,9 +20,8 @@ touch heart.db
 
 sudo chmod 777 heart.db
 
-sqlite3
+sqlite3 heart.db
 
-.open heart.db
 
 CREATE TABLE heart_messages (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

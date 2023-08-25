@@ -10,3 +10,29 @@ basically its like saying I have been teached how to cook and the chef that teac
 
 make 3 circles with things I am going to research on, what is common to the 3 circles is my research question
 
+
+
+I am interested in working on Data Pipeline Design and Optimization or a similar method of data system optimization, preferably field relevant tools such as python, SQL or NoSQL and workflow/pipeline tools for example AWS pipeline or Apache Airflow/Kafka/NiFi
+
+I am mainly interested in a project with tasks such as:
+    
+Designing and implementing efficient data pipelines for specific data processing tasks, such as  image analysis, time-series data analysis or natural language processing.
+Developing new techniques for data pipeline optimization, such as automated pipeline tuning, dynamic pipeline routing or parallel processing.
+Evaluating the performance of existing data pipelines and identifying areas for improvement, using metrics such as data throughput, processing time or data quality.
+Studying the impact of data pipeline design and optimization on downstream data analysis tasks, such as machine learning or data visualization.
+
+. 
+Business benefits for each of the tasks:
+    -Designing and implementing efficient data pipelines: By designing and implementing efficient data pipelines, companies and projects can improve the speed, accuracy, and scalability of their data processing tasks. This can lead to faster insights, more accurate predictions, and improved decision-making, which can ultimately result in better business outcomes.
+    -Developing new techniques for data pipeline optimization: By developing new techniques for data pipeline optimization, companies and projects can reduce the time and resources required to process and analyse large datasets. This can lead to cost savings, improved efficiency, and more agile decision-making, which can give companies a competitive advantage.
+    -Evaluating the performance of existing data pipelines: By evaluating the performance of existing data pipelines, companies and projects can identify bottlenecks, inefficiencies, and areas for improvement. This can help them to optimize their pipelines, improve data quality, and reduce errors and inaccuracies, which can lead to better decision-making and improved business outcomes.
+    -Studying the impact of data pipeline design and optimization on downstream data analysis tasks: By studying the impact of data pipeline design and optimization on downstream data analysis tasks, companies and projects can understand how their data processing workflows affect the accuracy and usefulness of their insights. This can help them to optimize their pipelines to better support downstream tasks, such as machine learning or data visualization, which can ultimately result in better business outcomes.
+
+. 
+I would prefer for this project to be as close to a real life job scenario and I capable of working on a project that would also require some background knowledge in DevOps or DataOps due to my previous computer science degree.
+
+Further reading about the topic: 
+ -What is a data pipeline: https://www.ibm.com/topics/data-pipeline
+
+-Data Processing Pipeline Design and Optimization System requirements: https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7552504
+

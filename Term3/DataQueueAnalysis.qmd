@@ -17,11 +17,15 @@ code like this:
 
 ```{r, echo=FALSE, output=FALSE}
 library(stats4)
-#install.packages("lubridate")
+#install.packages("pracma")
 library(RSQLite)
 library(ssh)
 library(tidyverse)
 library(lubridate)
+library(pracma)
+
+#install.packages("maxLik")
+library(maxLik)
 
 ```
 
@@ -134,24 +138,82 @@ heartResult <- cbind(heartResult, selectedBrokerTravelTime)
 heartResult$kafka_execution_time = heartResult$consumer_received_timestamp - heartResult$kafka_entry_timestamp  - heartResult$kafka_travel_time
 
 
+heartResultCut = heartResult$consumer_execution_time
 
+selected_row <- heartResult$consumer_execution_time  # Replace with the actual column name
+
+# Calculate the 99.5% quantile
+quantile_975 <- quantile(selected_row, 0.995)
+
+# Filter out values above the 99.5% quantile
+filtered_data <- selected_row[selected_row <= quantile_975]
+
+# Print the filtered data
+print(filtered_data)
+
+summary(filtered_data)
+
+summary(heartResult$consumer_execution_time)
 
 ```
 
 
+#Exploratory data analysis
 
-Calculate average arrival rate and service time
+
+```{r}
+
+heartDataExploration <- heartResult[, 2:4]
+
+summary(heartDataExploration)
+
+
+ggplot(heartDataExploration, aes(x = heartDataExploration$heart_rate)) +
+  geom_histogram(binwidth = 1, fill = "red", color = "black") +
+  labs(x = "Heart Rate", y = "Frequency") +
+  xlim(40, 120) 
+
+
+ggplot(heartDataExploration, aes(x = heartDataExploration$chest_volume)) +
+  geom_histogram(binwidth = 1, fill = "green", color = "blue") +
+  labs(x = "Chest Volume", y = "Frequency") 
+
+
+ggplot(heartDataExploration, aes(x = heartDataExploration$blood_oxygen_concentration)) +
+  geom_histogram(binwidth = 1, fill = "orange", color = "red") +
+  labs(x = "Blood Oxygen Concentration", y = "Frequency") +
+   xlim(0, 9000)
+
+
+
+
+```
+
+```{r}
+
+
+
+```
+
+## classical approach MLE
+
+#Calculate average arrival rate and service time
 
 ```{r}
 
 inter_arrival_times = diff(heartResult$producer_entry_timestamp) 
 
-arrival_rate_lambda <- 1/mean(inter_arrival_times)
+arrival_rate_lambda <- 1/mean(inter_arrival_times/1000) #convert mili to seconds
 
 service_time_mu = 1 / mean(heartResult$queue_service_time)
 
 traffic_intensity_rho = arrival_rate_lambda / service_time_mu
 
+arrival_rate_lambda
+service_time_mu
+traffic_intensity_rho
+
+summary(heartResult$consumer_execution_time)
 
 ```
 A function for the log-likelihood
@@ -166,6 +228,7 @@ log_likelihood <- function(traffic_intensity_rho, arrival) {
 }
 
 
+
 # epsilon <- 0.0001
 # result <- optim(par=0.5, fn=log_likelihood, x=x, method="L-BFGS-B", lower=0, upper=1-epsilon)
 # rho_hat <- result$par
@@ -175,26 +238,109 @@ log_likelihood <- function(traffic_intensity_rho, arrival) {
 # }
 
 
-```
+#     Use the optim() function in R to find the value of rho that maximizes the log-likelihood. The optim() function performs a one-dimensional optimization of scalar function by iteratively choosing input values within the constraints of the problem. In this case, rho must be between 0 and 1-epsilon, where epsilon is a small positive number close to 0 (e.g., 0.0001).
+# 
+# epsilon <- 0.0001
+# result <- optim(par=0.5, fn=log_likelihood, x=x, method="L-BFGS-B", lower=0, upper=1-epsilon)
+# rho_hat <- result$par
+# 
+#     Finally, if the estimated rho is greater than 1-epsilon, set rho to be 1-epsilon.
+# 
+# if (rho_hat > 1-epsilon) {
+#   rho_hat <- 1-epsilon
+# }
+
+#The final value of rho_hat is the MLE of rho.
 
 
-    Use the optim() function in R to find the value of rho that maximizes the log-likelihood. The optim() function performs a one-dimensional optimization of scalar function by iteratively choosing input values within the constraints of the problem. In this case, rho must be between 0 and 1-epsilon, where epsilon is a small positive number close to 0 (e.g., 0.0001).
 
-epsilon <- 0.0001
-result <- optim(par=0.5, fn=log_likelihood, x=x, method="L-BFGS-B", lower=0, upper=1-epsilon)
-rho_hat <- result$par
-
-    Finally, if the estimated rho is greater than 1-epsilon, set rho to be 1-epsilon.
-
-if (rho_hat > 1-epsilon) {
-  rho_hat <- 1-epsilon
+logLik <- function(rho, x) {
+  n <- length(x)
+  return(-n*rho + sum(x)*log(rho) - sum(log(factorial(x))))
 }
 
-    The final value of rho_hat is the MLE of rho.
+
+```
+
+## all data estimation
+```{r}
+
+logLik <- function(rho, x) {
+  n <- length(x)
+  return(-n*rho + sum(x)*log(rho) - sum(log(factorial(x))))
+}
+
+#arrival_rate_lambda
+#service_time_mu
+#traffic_intensity_rho
+
+arrival_times = inter_arrival_times/1000
+
+# Perform the MLE
+start <- c(traffic_intensity_rho=arrival_rate_lambda/service_time_mu)
+  # initial value for rho
+result <- maxLik(logLik, start=start, x=arrival_times)
+
+# Print the result
+print(summary(result))
+
+
+
+```
+
+
+producer analysis
 
 
 ```{r}
 
+## it is the same, because they both start at the same point
+lambdaProducer = arrival_rate_lambda 
+
+muProducer = 1/ mean(heartResult$producer_execution_time)
+
+rhoProducer = lambdaProducer / muProducer
+
+summary(heartResult$producer_execution_time)
+
+
+lambdaProducer
+muProducer
+rhoProducer
+
+
+
+```
+
+MLE 
+```{r}
+
+# Sample data (number of arrivals during service time)
+data <- heartResult$producer_entry_timestamp
+
+# Define the log-likelihood function
+log_likelihood <- function(rho, x) {
+  n <- length(x)
+  -n * rho + sum(x) * log(rho) - sum(log(factorial(x)))
+}
+
+# Constraint and optimization
+epsilon <- 0.001  # Choose a suitable small value for epsilon
+result <- optim(par = 0.5, fn = log_likelihood, x = data, lower = 0, upper = 1 - epsilon)
+
+# Calculate MLE estimate
+mle_estimate <- ifelse(result$par < 1 - epsilon, result$par, 1 - epsilon)
+
+cat("MLE Estimate of rho:", mle_estimate, "\n")
+
+
+
+
+```
+
+
+
+```{r}
 
 
 ```
@@ -210,7 +356,6 @@ if (rho_hat > 1-epsilon) {
 ```{r}
 
 
-
 ```
 
 
@@ -220,8 +365,33 @@ if (rho_hat > 1-epsilon) {
 
 ```
 
+## insights
 
 ```{r}
+
+
+ggplot(heartResult, aes(x = heartResult$queue_service_time)) +
+  geom_histogram(binwidth = 0.5, fill = "red", color = "black") +
+  labs(x = "Queue total service time", y = "Frequency") 
+#+  xlim(0, 40) +
+
+ggplot(heartResult, aes(x = heartResult$queue_service_time)) +
+  geom_histogram(binwidth = 0.5, fill = "red", color = "black") +
+  labs(x = "Queue total service time", y = "Frequency") +
+  xlim(0, 40) 
+
+
+
+```
+
+```{r}
+
+
+
+```
+
+```{r}
+
 
 
 
@@ -230,13 +400,13 @@ if (rho_hat > 1-epsilon) {
 
 ```{r}
 
-
-
-```
-
-
-```{r}
-
+# Create a scatter plot with the regression line
+ggplot(heartResult, aes(x = id, y = queue_service_time)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  labs(x = "ID", y = "Queue Service Time") +
+  ylim(0,30) +
+  ggtitle("Linear Regression: Queue Service Time")
 
 
 ```
