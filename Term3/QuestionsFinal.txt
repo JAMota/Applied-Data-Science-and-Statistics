@@ -28,7 +28,7 @@ theory, : look up what are the data pipeline processing, extra chapter about thi
 
 subections: on what each parameter of the queueing theory means
 
-Research qustion: measure and effiency measure of the pipeline (and motivation, use what I had in the form)
+Research qustion: measure and effiency measure of the pipeline (and motivation, use what I had in the form) (better utilize computacional resources)
 
 
 make figures with both the exploratory analysis of the heart data and the parameters of mu and lambda
