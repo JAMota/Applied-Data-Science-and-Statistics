@@ -138,22 +138,6 @@ heartResult <- cbind(heartResult, selectedBrokerTravelTime)
 heartResult$kafka_execution_time = heartResult$consumer_received_timestamp - heartResult$kafka_entry_timestamp  - heartResult$kafka_travel_time
 
 
-heartResultCut = heartResult$consumer_execution_time
-
-selected_row <- heartResult$consumer_execution_time  # Replace with the actual column name
-
-# Calculate the 99.5% quantile
-quantile_975 <- quantile(selected_row, 0.995)
-
-# Filter out values above the 99.5% quantile
-filtered_data <- selected_row[selected_row <= quantile_975]
-
-# Print the filtered data
-print(filtered_data)
-
-summary(filtered_data)
-
-summary(heartResult$consumer_execution_time)
 
 ```
 
@@ -216,51 +200,7 @@ traffic_intensity_rho
 summary(heartResult$consumer_execution_time)
 
 ```
-A function for the log-likelihood
 
-```{r}
-
-arrival = nrow(heartResult)
-
-log_likelihood <- function(traffic_intensity_rho, arrival) {
-  n <- length(x)
-  return(-n*rho + sum(x)*log(rho) - sum(log(factorial(x))))
-}
-
-
-
-# epsilon <- 0.0001
-# result <- optim(par=0.5, fn=log_likelihood, x=x, method="L-BFGS-B", lower=0, upper=1-epsilon)
-# rho_hat <- result$par
-# 
-# if (rho_hat > 1-epsilon) {
-#   rho_hat <- 1-epsilon
-# }
-
-
-#     Use the optim() function in R to find the value of rho that maximizes the log-likelihood. The optim() function performs a one-dimensional optimization of scalar function by iteratively choosing input values within the constraints of the problem. In this case, rho must be between 0 and 1-epsilon, where epsilon is a small positive number close to 0 (e.g., 0.0001).
-# 
-# epsilon <- 0.0001
-# result <- optim(par=0.5, fn=log_likelihood, x=x, method="L-BFGS-B", lower=0, upper=1-epsilon)
-# rho_hat <- result$par
-# 
-#     Finally, if the estimated rho is greater than 1-epsilon, set rho to be 1-epsilon.
-# 
-# if (rho_hat > 1-epsilon) {
-#   rho_hat <- 1-epsilon
-# }
-
-#The final value of rho_hat is the MLE of rho.
-
-
-
-logLik <- function(rho, x) {
-  n <- length(x)
-  return(-n*rho + sum(x)*log(rho) - sum(log(factorial(x))))
-}
-
-
-```
 
 ## all data estimation
 ```{r}
@@ -270,9 +210,6 @@ logLik <- function(rho, x) {
   return(-n*rho + sum(x)*log(rho) - sum(log(factorial(x))))
 }
 
-#arrival_rate_lambda
-#service_time_mu
-#traffic_intensity_rho
 
 arrival_times = inter_arrival_times/1000
 
@@ -289,7 +226,145 @@ print(summary(result))
 ```
 
 
-producer analysis
+## filtered outlier data
+```{r}
+
+##filtering the data
+
+selected_row <- heartResult$consumer_execution_time  # Replace with the actual column name
+
+# Calculate the 99.5% quantile
+quantile_995 <- quantile(selected_row, 0.995)
+
+# Filter out values above the 99.5% quantile
+filtered_data <- selected_row[selected_row <= quantile_995]
+
+#summary(filtered_data)
+#summary(heartResult$consumer_execution_time)
+filtered_indices <- selected_row <= quantile_975
+heartResultFiltered <- heartResult[filtered_indices, ]
+
+
+## MLE
+
+
+logLik <- function(rho, x) {
+  n <- length(x)
+  return(-n*rho + sum(x)*log(rho) - sum(log(factorial(x))))
+}
+
+
+inter_arrival_times_filtered = diff(heartResultFiltered$producer_entry_timestamp/1000)
+
+arrival_times_filtered = 1/mean(inter_arrival_times_filtered)
+
+service_time_mu_filtered = 1/mean(heartResultFiltered$queue_service_time)
+
+traffic_intensity_rho_filtered=arrival_times_filtered/service_time_mu_filtered
+
+# Perform the MLE
+start_filtered <- c(traffic_intensity_rho_filtered=arrival_times_filtered/service_time_mu_filtered)
+  # initial value for rho
+result_filtered <- maxLik(logLik, start=start_filtered, x=arrival_times_filtered)
+
+# Print the result
+print(summary(result_filtered))
+
+
+
+```
+
+
+## what-if analysis 0,5
+```{r}
+
+heartResultPerformanceImproved = heartResult
+
+
+
+
+## MLE
+
+
+logLike <- function(rho, x) {
+  n <- length(x)
+  return(-n*rho + sum(x)*log(rho) - sum(log(factorial(x))))
+}
+
+
+inter_arrival_times_performance = diff(heartResultPerformanceImproved$producer_entry_timestamp/1000)
+
+##Improving performance
+inter_arrival_times_performance = inter_arrival_times_performance *2
+
+arrival_times_performance = 1/mean(inter_arrival_times_performance) #lambda
+
+service_time_mu_performance = 1/mean(heartResultPerformanceImproved$queue_service_time)
+
+traffic_intensity_rho_performance=arrival_times_performance/service_time_mu_performance
+
+# Perform the MLE
+start_performance <- c(traffic_intensity_rho_performance=arrival_times_performance/service_time_mu_performance)
+  # initial value for rho
+result_performance <- maxLik(logLike, start=start_performance, x=arrival_times_performance)
+
+# Print the result
+print(summary(result_performance))
+
+
+
+```
+
+
+## what-if analysis 1- or 0,99
+```{r}
+
+heartResultPerformanceImproved = heartResult
+
+
+
+
+## MLE
+
+
+logLike <- function(rho, x) {
+  n <- length(x)
+  return(-n*rho + sum(x)*log(rho) - sum(log(factorial(x))))
+}
+
+
+inter_arrival_times_performance = diff(heartResultPerformanceImproved$producer_entry_timestamp/1000)
+
+##Improving performance
+inter_arrival_times_performance = inter_arrival_times_performance 
+
+arrival_times_performance = 1/mean(inter_arrival_times_performance)
+
+service_time_mu_performance = 1/mean(heartResultPerformanceImproved$queue_service_time)
+
+traffic_intensity_rho_performance=arrival_times_performance/service_time_mu_performance
+
+# Perform the MLE
+start_performance <- c(traffic_intensity_rho_performance=arrival_times_performance/service_time_mu_performance)
+  # initial value for rho
+result_performance <- maxLik(logLike, start=start_performance, x=arrival_times_performance)
+
+# Print the result
+print(summary(result_performance))
+
+
+
+```
+
+
+
+
+
+
+
+
+
+## producer analysis
 
 
 ```{r}
@@ -299,45 +374,38 @@ lambdaProducer = arrival_rate_lambda
 
 muProducer = 1/ mean(heartResult$producer_execution_time)
 
+muProducer = 1/0.02 #deterministic
+
 rhoProducer = lambdaProducer / muProducer
 
 summary(heartResult$producer_execution_time)
 
 
-lambdaProducer
-muProducer
-rhoProducer
+
 
 
 
 ```
 
-MLE 
+## MLE producer
 ```{r}
 
-# Sample data (number of arrivals during service time)
-data <- heartResult$producer_entry_timestamp
-
-# Define the log-likelihood function
-log_likelihood <- function(rho, x) {
+logLike <- function(rho, x) {
   n <- length(x)
-  -n * rho + sum(x) * log(rho) - sum(log(factorial(x)))
+  return(-n*rho + sum(x)*log(rho) - sum(log(factorial(x))))
 }
 
-# Constraint and optimization
-epsilon <- 0.001  # Choose a suitable small value for epsilon
-result <- optim(par = 0.5, fn = log_likelihood, x = data, lower = 0, upper = 1 - epsilon)
+# Perform the MLE
+start_producer <- c(rhoProducer = lambdaProducer / muProducer)
+  # initial value for rho
+result_producer <- maxLik(logLike, start=start_producer, x=lambdaProducer)
 
-# Calculate MLE estimate
-mle_estimate <- ifelse(result$par < 1 - epsilon, result$par, 1 - epsilon)
-
-cat("MLE Estimate of rho:", mle_estimate, "\n")
-
-
+# Print the result
+print(summary(result_producer))
 
 
 ```
-
+Terrible estimation
 
 
 ```{r}
