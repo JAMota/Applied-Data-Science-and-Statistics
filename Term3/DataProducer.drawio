@@ -1,0 +1,37 @@
+<mxfile host="app.diagrams.net" modified="2023-08-30T11:04:54.713Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/116.0" etag="q471gLG9gfKbo7sgO788" version="21.5.2">
+  <diagram name="Página-1" id="xNhPNnMRd9htXLf8wS57">
+    <mxGraphModel dx="1877" dy="558" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="g9L9M4cXe2nwXgYZEAq0-9" value="&lt;font style=&quot;font-size: 24px;&quot;&gt;Data queue start&lt;br&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="170" y="265" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Mj44HCYbNgbTF1gR-l1p-1" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry y="200" width="128" height="168" as="geometry" />
+        </mxCell>
+        <mxCell id="Mj44HCYbNgbTF1gR-l1p-2" value="" style="shape=image;html=1;verticalAlign=top;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;imageAspect=0;aspect=fixed;image=https://cdn3.iconfinder.com/data/icons/clinical-3/96/medic-128.png" vertex="1" parent="Mj44HCYbNgbTF1gR-l1p-1">
+          <mxGeometry y="40" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="Mj44HCYbNgbTF1gR-l1p-3" value="&lt;font style=&quot;font-size: 17px;&quot;&gt;Raw Data Source&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="Mj44HCYbNgbTF1gR-l1p-1">
+          <mxGeometry x="-13" width="126" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Mj44HCYbNgbTF1gR-l1p-4" value="&lt;font style=&quot;font-size: 24px;&quot;&gt;Data producer&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="10" y="90" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Mj44HCYbNgbTF1gR-l1p-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="100" y="290" as="sourcePoint" />
+            <mxPoint x="180" y="290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Mj44HCYbNgbTF1gR-l1p-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="Mj44HCYbNgbTF1gR-l1p-7" target="Mj44HCYbNgbTF1gR-l1p-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Mj44HCYbNgbTF1gR-l1p-7" value="&lt;font style=&quot;font-size: 24px;&quot;&gt;Data queue start&lt;br&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="-140" y="275" width="80" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

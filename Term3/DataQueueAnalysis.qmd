@@ -42,11 +42,11 @@ Connect to the consumer server to access the data in the database
 ```{r}
 
 # Define the source and destination paths
-source_path <- hostDatabaseServer
-destination_path <- "C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term3/heartData/"
+source_path = hostDatabaseServer
+destination_path = "C:/AppliedDataScienceAndStatistics/Applied-Data-Science-and-Statistics/Term3/heartData/"
 
 # Execute the scp command
-command <- paste("scp -i", keyFile, source_path, destination_path) ## add -f to force a new file
+command = paste("scp -i", keyFile, source_path, destination_path) ## add -f to force a new file
 system(command)
 
 
@@ -57,11 +57,11 @@ Open the file
 ```{r}
 
 # Connect to the database
-heartData <- dbConnect(SQLite(), dbname = "heartData/heart.db")
+heartData = dbConnect(SQLite(), dbname = "heartData/heart.db")
 
 
 # Fetch data, casting timestamps as TEXT preserving precision
-heartResult <- dbGetQuery(heartData, 
+heartResult = dbGetQuery(heartData, 
 "SELECT id, heart_rate, chest_volume, blood_oxygen_concentration, 
 CAST(producer_entry_timestamp AS TEXT) AS producer_entry_timestamp,
 CAST(producer_sent_timestamp AS TEXT) AS producer_sent_timestamp,
@@ -71,11 +71,11 @@ CAST(consumer_finished_timestamp AS TEXT) AS consumer_finished_timestamp
 FROM heart_messages")
 
 # Convert timestamp columns to numeric and to milliseconds
-heartResult$producer_entry_timestamp <- as.numeric(heartResult$producer_entry_timestamp) * 1000
-heartResult$producer_sent_timestamp <- as.numeric(heartResult$producer_sent_timestamp) * 1000
-heartResult$kafka_entry_timestamp <- as.numeric(heartResult$kafka_entry_timestamp) 
-heartResult$consumer_received_timestamp <- as.numeric(heartResult$consumer_received_timestamp) * 1000
-heartResult$consumer_finished_timestamp <- as.numeric(heartResult$consumer_finished_timestamp) * 1000
+heartResult$producer_entry_timestamp = as.numeric(heartResult$producer_entry_timestamp) * 1000
+heartResult$producer_sent_timestamp = as.numeric(heartResult$producer_sent_timestamp) * 1000
+heartResult$kafka_entry_timestamp = as.numeric(heartResult$kafka_entry_timestamp) 
+heartResult$consumer_received_timestamp = as.numeric(heartResult$consumer_received_timestamp) * 1000
+heartResult$consumer_finished_timestamp = as.numeric(heartResult$consumer_finished_timestamp) * 1000
 
 
 # Print full values to check for correct conversion
@@ -96,12 +96,12 @@ Timestamps wrangling
 
 
 ## calculate execution time 
-heartResult$producer_execution_time <- heartResult$producer_sent_timestamp - heartResult$producer_entry_timestamp
-heartResult$consumer_execution_time <- heartResult$consumer_finished_timestamp - heartResult$consumer_received_timestamp
+heartResult$producer_execution_time = heartResult$producer_sent_timestamp - heartResult$producer_entry_timestamp
+heartResult$consumer_execution_time = heartResult$consumer_finished_timestamp - heartResult$consumer_received_timestamp
 
 ## calculate travel time 
 
-heartResult$producer_travel_time <- heartResult$kafka_entry_timestamp - heartResult$producer_sent_timestamp
+heartResult$producer_travel_time = heartResult$kafka_entry_timestamp - heartResult$producer_sent_timestamp
 
 
 heartResult$producer_execution_time 
@@ -126,13 +126,13 @@ brokerTravelTime$kafka_travel_time = as.numeric(brokerTravelTime$kafka_travel_ti
 
 brokerTravelTime$kafka_travel_time = brokerTravelTime$kafka_travel_time /1000
 
-n <- nrow(heartResult)
+n = nrow(heartResult)
 
 # Select the first n rows from brokerTravelTime
-selectedBrokerTravelTime <- data.frame(brokerTravelTime[1:n, ])
+selectedBrokerTravelTime = data.frame(brokerTravelTime[1:n, ])
 colnames(selectedBrokerTravelTime) = "kafka_travel_time"
 
-heartResult <- cbind(heartResult, selectedBrokerTravelTime)
+heartResult = cbind(heartResult, selectedBrokerTravelTime)
 
 
 heartResult$kafka_execution_time = heartResult$consumer_received_timestamp - heartResult$kafka_entry_timestamp  - heartResult$kafka_travel_time
@@ -147,7 +147,7 @@ heartResult$kafka_execution_time = heartResult$consumer_received_timestamp - hea
 
 ```{r}
 
-heartDataExploration <- heartResult[, 2:4]
+heartDataExploration = heartResult[, 2:4]
 
 summary(heartDataExploration)
 
@@ -187,7 +187,7 @@ ggplot(heartDataExploration, aes(x = heartDataExploration$blood_oxygen_concentra
 
 inter_arrival_times = diff(heartResult$producer_entry_timestamp) 
 
-arrival_rate_lambda <- 1/mean(inter_arrival_times/1000) #convert mili to seconds
+arrival_rate_lambda = 1/mean(inter_arrival_times/1000) #convert mili to seconds
 
 service_time_mu = 1 / mean(heartResult$queue_service_time)
 
@@ -205,8 +205,8 @@ summary(heartResult$consumer_execution_time)
 ## all data estimation
 ```{r}
 
-logLik <- function(rho, x) {
-  n <- length(x)
+logLik = function(rho, x) {
+  n = length(x)
   return(-n*rho + sum(x)*log(rho) - sum(log(factorial(x))))
 }
 
@@ -214,9 +214,9 @@ logLik <- function(rho, x) {
 inter_arrival_times = inter_arrival_times/1000
 
 # Perform the MLE
-start <- c(traffic_intensity_rho=arrival_rate_lambda/service_time_mu)
+start = c(traffic_intensity_rho=arrival_rate_lambda/service_time_mu)
   # initial value for rho
-result <- maxLik(logLik, start=start, x=inter_arrival_times)
+result = maxLik(logLik, start=start, x=inter_arrival_times)
 
 # Print the result
 print(summary(result))
@@ -231,25 +231,25 @@ print(summary(result))
 
 ##filtering the data
 
-selected_row <- heartResult$consumer_execution_time  # Replace with the actual column name
+selected_row = heartResult$consumer_execution_time  # Replace with the actual column name
 
 # Calculate the 99.5% quantile
-quantile_995 <- quantile(selected_row, 0.995)
+quantile_995 = quantile(selected_row, 0.995)
 
 # Filter out values above the 99.5% quantile
-filtered_data <- selected_row[selected_row <= quantile_995]
+filtered_data = selected_row[selected_row <= quantile_995]
 
 #summary(filtered_data)
 #summary(heartResult$consumer_execution_time)
-filtered_indices <- selected_row <= quantile_975
-heartResultFiltered <- heartResult[filtered_indices, ]
+filtered_indices = selected_row <= quantile_975
+heartResultFiltered = heartResult[filtered_indices, ]
 
 
 ## MLE
 
 
-logLik <- function(rho, x) {
-  n <- length(x)
+logLik = function(rho, x) {
+  n = length(x)
   return(-n*rho + sum(x)*log(rho) - sum(log(factorial(x))))
 }
 
@@ -265,11 +265,11 @@ traffic_intensity_rho_filtered=lamda_filtered/service_time_mu_filtered
 arrival_times_filtered = 1/inter_arrival_times_filtered
 
 # Perform the MLE
-start_filtered <- c(traffic_intensity_rho_filtered=lamda_filtered/service_time_mu_filtered)
+start_filtered = c(traffic_intensity_rho_filtered=lamda_filtered/service_time_mu_filtered)
 
 
   # initial value for rho
-result_filtered <- maxLik(logLik, start=start_filtered, x=arrival_times_filtered)
+result_filtered = maxLik(logLik, start=start_filtered, x=arrival_times_filtered)
 
 # Print the result
 print(summary(result_filtered))
@@ -290,8 +290,8 @@ heartResultPerformanceImproved = heartResult
 ## MLE
 
 
-logLike <- function(rho, x) {
-  n <- length(x)
+logLike = function(rho, x) {
+  n = length(x)
   return(-n*rho + sum(x)*log(rho) - sum(log(factorial(x))))
 }
 
@@ -310,9 +310,9 @@ service_time_mu_performance = 1/mean(heartResultPerformanceImproved$queue_servic
 traffic_intensity_rho_performance=arrival_times_performance/service_time_mu_performance
 
 # Perform the MLE
-start_performance <- c(traffic_intensity_rho_performance=arrival_times_performance/service_time_mu_performance)
+start_performance = c(traffic_intensity_rho_performance=arrival_times_performance/service_time_mu_performance)
   # initial value for rho
-result_performance <- maxLik(logLike, start=start_performance, x=arrival_times_performance2)
+result_performance = maxLik(logLike, start=start_performance, x=arrival_times_performance2)
 
 # Print the result
 print(summary(result_performance))
@@ -344,8 +344,8 @@ rhoProducer = lambdaProducer / muProducer
 ## MLE producer
 ```{r}
 
-logLike <- function(rho, x) {
-  n <- length(x)
+logLike = function(rho, x) {
+  n = length(x)
   return(-n*rho + sum(x)*log(rho) - sum(log(factorial(x))))
 }
 
@@ -361,9 +361,9 @@ traffic_intensity_rho_filtered=lamda_filtered/service_time_mu_filtered
 arrival_times_filtered = 1/inter_arrival_times_filtered
 
 # Perform the MLE
-start_producer <- c(rhoProducer = lambdaProducer / muProducer)
+start_producer = c(rhoProducer = lambdaProducer / muProducer)
   # initial value for rho
-result_filtered <- maxLik(logLik, start=start_producer, x=arrival_times_filtered)
+result_filtered = maxLik(logLik, start=start_producer, x=arrival_times_filtered)
 
 # Print the result
 print(summary(result_filtered))
@@ -374,6 +374,55 @@ print(summary(result_filtered))
 ```
 
 
+## consumer analysis
+
+
+```{r}
+
+## it is the same, because they both start at the same point
+lambdaProducer = arrival_rate_lambda 
+
+#muProducer = 1/ mean(heartResult$producer_execution_time)
+
+
+
+
+inter_arrival_times = diff(heartResult$consumer_execution_time)
+
+arrival_rate_lambda = 1/mean(inter_arrival_times/1000) #convert mili to seconds
+
+service_time_mu = 1 / mean(heartResult$consumer_execution_time)
+
+traffic_intensity_rho = arrival_rate_lambda / service_time_mu
+
+
+
+
+
+```
+
+## MLE consumer
+```{r}
+
+logLike = function(rho, x) {
+  n = length(x)
+  return(-n*rho + sum(x)*log(rho) - sum(log(factorial(x))))
+}
+
+
+
+# Perform the MLE
+start_producer = c(traffic_intensity_rho = arrival_rate_lambda / service_time_mu)
+  # initial value for rho
+result_filtered = maxLik(logLik, start=start_producer, x=arrival_times_filtered)
+
+# Print the result
+print(summary(result_filtered))
+
+
+
+
+```
 ```{r}
 
 
