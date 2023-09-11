@@ -1,0 +1,41 @@
+Questions:
+
+Since we have the model assumptions in the introduction, when does it make sense to start talking about the prototype
+
+On the data collectiom or any other section does it make sense to make reference to the appendix (yes, we can say more details on appendix A,B)
+in the appendix do not include the output of the code
+
+Ask for any resource to properly explain quantitative analysis modeling (look for applied papers, RSSC)
+
+On the conclusion we can talk about the limitations and future extensions like stability, modeling each steps , relaxing the D assumptions
+
+presentation :
+measure the efficenecy trhought queuing theoery - equations - equations used and final results
+
+
+ASK: How sensitive are your results to the method used/
+assumptions made? How do your results relate to those in the literature, which may use different
+methods? 
+
+
+I have estimated the service time and I have realised one of the assumptions were not correct, how do I write about that problem?
+
+
+write about unstable rho AKA >1 (in data analysis)
+
+Detailed review of literature on which project is based, Description of methodology, underlying
+theory, : look up what are the data pipeline processing, extra chapter about this
+
+subections: on what each parameter of the queueing theory means
+
+Research qustion: measure and effiency measure of the pipeline (and motivation, use what I had in the form)
+
+
+make figures with both the exploratory analysis of the heart data and the parameters of mu and lambda
+
+
+What further
+research do you think is needed? e.g. additional data, methodological developments : linking to other useful things to measure
+
+
+Check out other methods to evaloate a data pipeline instead of just queueing theory
